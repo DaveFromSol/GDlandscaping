@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd gd-website-standalone && npm install && npm run build",
+  "outputDirectory": "gd-website-standalone/build",
+  "installCommand": "cd gd-website-standalone && npm install"
+}
