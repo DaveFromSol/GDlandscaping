@@ -1,32 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import EmployeeService from '../services/employeeService';
-import LoadingSpinner from './LoadingSpinner';
+import React from 'react';
 
 const FinancialSummary = ({ jobs }) => {
-  const [employees, setEmployees] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const loadEmployees = async () => {
-      try {
-        const employeeData = await EmployeeService.getEmployees();
-        setEmployees(employeeData);
-      } catch (error) {
-        console.error('Error loading employees:', error);
-        // Fallback to empty array if Firebase fails
-        setEmployees([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadEmployees();
-  }, []);
-
-  if (loading) {
-    return <LoadingSpinner message="Loading financial data..." />;
-  }
+  const employees = [
+    { id: 1, name: 'Mike Rodriguez', hourlyRate: 25 },
+    { id: 2, name: 'Sarah Johnson', hourlyRate: 22 },
+    { id: 3, name: 'Tom Wilson', hourlyRate: 20 },
+    { id: 4, name: 'Lisa Chen', hourlyRate: 28 }
+  ];
   
   const completedJobs = jobs.filter(job => job.status === 'completed');
   
@@ -101,7 +81,7 @@ const FinancialSummary = ({ jobs }) => {
             });
             
             return Object.entries(employeeEarnings).map(([employeeId, earnings]) => {
-              const employee = employees.find(emp => emp.id === employeeId);
+              const employee = employees.find(emp => emp.id === parseInt(employeeId));
               const avgHourlyRate = earnings.totalHours > 0 ? earnings.totalEarnings / earnings.totalHours : 0;
               
               return (
@@ -120,24 +100,6 @@ const FinancialSummary = ({ jobs }) => {
       </div>
     </div>
   );
-};
-
-FinancialSummary.propTypes = {
-  jobs: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      status: PropTypes.string.isRequired,
-      revenue: PropTypes.number,
-      materialCosts: PropTypes.number,
-      laborAssignments: PropTypes.arrayOf(
-        PropTypes.shape({
-          employeeId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-          hours: PropTypes.number,
-          paidAmount: PropTypes.number
-        })
-      )
-    })
-  ).isRequired
 };
 
 export default FinancialSummary;

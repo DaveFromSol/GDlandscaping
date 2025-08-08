@@ -16,6 +16,9 @@ import { db, auth } from '../firebase';
 // Collection reference
 const USERS_COLLECTION = 'users';
 
+/**
+ * User Service for Firebase operations
+ */
 export class UserService {
   
   /**

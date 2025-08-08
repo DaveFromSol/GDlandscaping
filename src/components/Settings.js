@@ -17,7 +17,7 @@ const Settings = () => {
       logoUrl: ''
     },
     maps: {
-      googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || '',
+      googleMapsApiKey: 'AIzaSyDiFzxddX5tpdulBf8YMVXFekxFUJ2ys-c',
       defaultLocation: 'Your City, ST',
       routingEnabled: true
     },
@@ -91,7 +91,7 @@ const Settings = () => {
         logoUrl: ''
       },
       maps: {
-        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || '',
+        googleMapsApiKey: 'AIzaSyDiFzxddX5tpdulBf8YMVXFekxFUJ2ys-c',
         defaultLocation: 'Your City, ST',
         routingEnabled: true
       },

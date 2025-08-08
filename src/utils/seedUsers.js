@@ -1,5 +1,4 @@
 import UserService from '../services/userService';
-import { USER_ROLES } from './constants';
 
 /**
  * Seed initial users into Firebase
@@ -13,7 +12,7 @@ export const seedInitialUsers = async () => {
       name: 'Admin User',
       email: 'admin@gdlandscaping.com',
       password: 'admin123',
-      role: USER_ROLES.ADMIN,
+      role: 'admin',
       permissions: ['all'],
       assignedJobs: []
     },
@@ -21,7 +20,7 @@ export const seedInitialUsers = async () => {
       name: 'Mike Rodriguez',
       email: 'manager@gdlandscaping.com',
       password: 'manager123',
-      role: USER_ROLES.MANAGER,
+      role: 'manager',
       permissions: ['dashboard', 'schedule', 'clients', 'equipment', 'reports'],
       assignedJobs: [1, 2]
     },
@@ -29,7 +28,7 @@ export const seedInitialUsers = async () => {
       name: 'Sarah Johnson',
       email: 'employee@gdlandscaping.com',
       password: 'employee123',
-      role: USER_ROLES.EMPLOYEE,
+      role: 'employee',
       permissions: ['schedule', 'equipment'],
       assignedJobs: [1, 3]
     }
