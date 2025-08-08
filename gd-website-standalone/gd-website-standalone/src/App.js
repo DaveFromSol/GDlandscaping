@@ -1,7 +1,21 @@
 import React, { useState } from 'react';
 import './App.css';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
+import Clients from './components/Clients';
+import Projects from './components/Projects';
+import Schedule from './components/Schedule';
+import Reports from './components/Reports';
+import Settings from './components/Settings';
+import ContactInquiries from './components/ContactInquiries';
+import UserManagement from './components/UserManagement';
+import Equipment from './components/Equipment';
+import MapRoute from './components/MapRoute';
+import { useFirebaseData } from './hooks/useFirebaseData';
 
 function App() {
+  const [mode, setMode] = useState('website'); // 'website' or 'dashboard'
+  const [user, setUser] = useState(null);
   const [activeSection, setActiveSection] = useState('home');
   const [contactForm, setContactForm] = useState({
     name: '',
@@ -12,6 +26,14 @@ function App() {
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
+  
+  // Firebase data hooks for dashboard functionality
+  const { data: dashboardData, loading: dashboardLoading } = useFirebaseData('dashboard');
+  const { data: jobs, loading: jobsLoading } = useFirebaseData('jobs');
+  const { data: employees, loading: employeesLoading } = useFirebaseData('employees');
+  const { data: clients, loading: clientsLoading } = useFirebaseData('clients');
+  const { data: projects, loading: projectsLoading } = useFirebaseData('projects');
+  const { data: contactInquiries, loading: inquiriesLoading } = useFirebaseData('contactInquiries');
 
   const services = [
     {
@@ -168,58 +190,154 @@ function App() {
     }, 1000);
   };
 
-  const renderNavigation = () => (
-    <nav className="website-nav">
-      <div className="nav-container">
-        <div className="logo">
-          <img src="/GD.png" alt="GD Landscaping - Professional Landscaping Services Berlin CT" style={{height: '40px', marginRight: '10px'}} />
-          <h2>GD Landscaping</h2>
-        </div>
-        <ul className="nav-menu">
-          <li>
-            <button 
-              className={activeSection === 'home' ? 'active' : ''}
-              onClick={() => setActiveSection('home')}
-            >
-              Home
-            </button>
-          </li>
-          <li>
-            <button 
-              className={activeSection === 'services' ? 'active' : ''}
-              onClick={() => setActiveSection('services')}
-            >
-              Services
-            </button>
-          </li>
-          <li>
-            <button 
-              className={activeSection === 'portfolio' ? 'active' : ''}
-              onClick={() => setActiveSection('portfolio')}
-            >
-              Portfolio
-            </button>
-          </li>
-          <li>
-            <button 
-              className={activeSection === 'about' ? 'active' : ''}
-              onClick={() => setActiveSection('about')}
-            >
-              About
-            </button>
-          </li>
-          <li>
-            <button 
-              className={activeSection === 'contact' ? 'active' : ''}
-              onClick={() => setActiveSection('contact')}
-            >
-              Contact
-            </button>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  );
+  const renderNavigation = () => {
+    if (mode === 'dashboard') {
+      return (
+        <nav className="dashboard-nav">
+          <div className="nav-container">
+            <div className="logo">
+              <img src="/GD.png" alt="GD Landscaping" style={{height: '40px', marginRight: '10px'}} />
+              <h2>GD Admin</h2>
+            </div>
+            <ul className="nav-menu">
+              <li>
+                <button 
+                  className={activeSection === 'dashboard' ? 'active' : ''}
+                  onClick={() => setActiveSection('dashboard')}
+                >
+                  Dashboard
+                </button>
+              </li>
+              <li>
+                <button 
+                  className={activeSection === 'clients' ? 'active' : ''}
+                  onClick={() => setActiveSection('clients')}
+                >
+                  Clients
+                </button>
+              </li>
+              <li>
+                <button 
+                  className={activeSection === 'projects' ? 'active' : ''}
+                  onClick={() => setActiveSection('projects')}
+                >
+                  Projects
+                </button>
+              </li>
+              <li>
+                <button 
+                  className={activeSection === 'schedule' ? 'active' : ''}
+                  onClick={() => setActiveSection('schedule')}
+                >
+                  Schedule
+                </button>
+              </li>
+              <li>
+                <button 
+                  className={activeSection === 'reports' ? 'active' : ''}
+                  onClick={() => setActiveSection('reports')}
+                >
+                  Reports
+                </button>
+              </li>
+              <li>
+                <button 
+                  className={activeSection === 'settings' ? 'active' : ''}
+                  onClick={() => setActiveSection('settings')}
+                >
+                  Settings
+                </button>
+              </li>
+            </ul>
+            <div className="nav-actions">
+              <button 
+                className="mode-switch"
+                onClick={() => {
+                  setMode('website');
+                  setActiveSection('home');
+                }}
+              >
+                View Website
+              </button>
+              <button 
+                className="logout-btn"
+                onClick={() => {
+                  setUser(null);
+                  setActiveSection('home');
+                }}
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </nav>
+      );
+    } else {
+      return (
+        <nav className="website-nav">
+          <div className="nav-container">
+            <div className="logo">
+              <img src="/GD.png" alt="GD Landscaping - Professional Landscaping Services Berlin CT" style={{height: '40px', marginRight: '10px'}} />
+              <h2>GD Landscaping</h2>
+            </div>
+            <ul className="nav-menu">
+              <li>
+                <button 
+                  className={activeSection === 'home' ? 'active' : ''}
+                  onClick={() => setActiveSection('home')}
+                >
+                  Home
+                </button>
+              </li>
+              <li>
+                <button 
+                  className={activeSection === 'services' ? 'active' : ''}
+                  onClick={() => setActiveSection('services')}
+                >
+                  Services
+                </button>
+              </li>
+              <li>
+                <button 
+                  className={activeSection === 'portfolio' ? 'active' : ''}
+                  onClick={() => setActiveSection('portfolio')}
+                >
+                  Portfolio
+                </button>
+              </li>
+              <li>
+                <button 
+                  className={activeSection === 'about' ? 'active' : ''}
+                  onClick={() => setActiveSection('about')}
+                >
+                  About
+                </button>
+              </li>
+              <li>
+                <button 
+                  className={activeSection === 'contact' ? 'active' : ''}
+                  onClick={() => setActiveSection('contact')}
+                >
+                  Contact
+                </button>
+              </li>
+            </ul>
+            <div className="nav-actions">
+              <button 
+                className="admin-login"
+                onClick={() => {
+                  setMode('dashboard');
+                  setActiveSection('login');
+                }}
+              >
+                Admin Login
+              </button>
+            </div>
+          </div>
+        </nav>
+      );
+    }
+  };
 
   const renderHome = () => (
     <div className="home-section">
@@ -733,6 +851,58 @@ function App() {
       </div>
     </div>
   );
+
+  const renderDashboardContent = () => {
+    if (!user && activeSection !== 'login') {
+      setActiveSection('login');
+      return null;
+    }
+
+    switch (activeSection) {
+      case 'login':
+        return (
+          <Login 
+            onLogin={(userData) => {
+              setUser(userData);
+              setActiveSection('dashboard');
+            }} 
+          />
+        );
+      case 'dashboard':
+        return <Dashboard dashboardData={dashboardData} jobs={jobs} />;
+      case 'clients':
+        return <Clients clients={clients} />;
+      case 'projects':
+        return <Projects projects={projects} clients={clients} />;
+      case 'schedule':
+        return <Schedule jobs={jobs} employees={employees} />;
+      case 'reports':
+        return <Reports jobs={jobs} clients={clients} />;
+      case 'settings':
+        return <Settings />;
+      case 'contact-inquiries':
+        return <ContactInquiries inquiries={contactInquiries} />;
+      case 'user-management':
+        return <UserManagement />;
+      case 'equipment':
+        return <Equipment />;
+      case 'map-route':
+        return <MapRoute jobs={jobs} />;
+      default:
+        return <Dashboard dashboardData={dashboardData} jobs={jobs} />;
+    }
+  };
+
+  if (mode === 'dashboard') {
+    return (
+      <div className="app dashboard-mode">
+        {renderNavigation()}
+        <main className="dashboard-main">
+          {renderDashboardContent()}
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="website">

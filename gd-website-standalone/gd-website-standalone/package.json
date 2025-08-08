@@ -4,6 +4,7 @@
   "description": "GD Landscaping Business Website",
   "private": true,
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.16.2",
     "firebase": "^10.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
