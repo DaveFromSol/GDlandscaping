@@ -13,9 +13,6 @@ import { db } from '../firebase';
 // Collection reference
 const CONTACTS_COLLECTION = 'contact_inquiries';
 
-/**
- * Contact Service for Firebase operations
- */
 export class ContactService {
   
   /**

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 
@@ -44,27 +45,19 @@ const Login = ({ onLogin }) => {
     });
   };
 
-  // Demo login credentials
+  // Demo login - auto-fill credentials without passwords
   const loginAsDemo = (role) => {
-    const demoCredentials = {
-      admin: { email: 'admin@gdlandscaping.com', password: 'admin123' },
-      manager: { email: 'manager@gdlandscaping.com', password: 'manager123' },
-      employee: { email: 'employee@gdlandscaping.com', password: 'employee123' }
+    const demoEmails = {
+      admin: 'admin@gdlandscaping.com',
+      manager: 'manager@gdlandscaping.com',
+      employee: 'employee@gdlandscaping.com'
     };
 
-    const credentials = demoCredentials[role];
     setFormData({
-      email: credentials.email,
-      password: credentials.password,
+      email: demoEmails[role],
+      password: '',
       confirmPassword: ''
     });
-
-    // Immediately login with demo user
-    const mockUser = {
-      email: credentials.email,
-      displayName: role === 'admin' ? 'Admin User' : role === 'manager' ? 'Mike Rodriguez' : 'Sarah Johnson'
-    };
-    onLogin(mockUser);
   };
 
   return (
@@ -165,12 +158,16 @@ const Login = ({ onLogin }) => {
                 Employee Demo
               </button>
             </div>
-            <small>Click any demo button to auto-fill credentials</small>
+            <small>Click any demo button to auto-fill email</small>
           </div>
         </div>
       </div>
     </div>
   );
+};
+
+Login.propTypes = {
+  onLogin: PropTypes.func.isRequired
 };
 
 export default Login;
