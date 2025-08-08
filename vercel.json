@@ -1,6 +1,0 @@
-{
-  "cwd": "gd-website-standalone",
-  "installCommand": "npm install",
-  "buildCommand": "npm run build",
-  "outputDirectory": "build"
-}
