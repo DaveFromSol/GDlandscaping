@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebase';
 import SEOHead from '../components/SEOHead';
 
 const ContactPage = () => {
@@ -39,7 +41,7 @@ const ContactPage = () => {
     }
 
     try {
-      // Prepare form data for admin panel
+      // Prepare form data for Firebase
       const submissionData = {
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -51,25 +53,13 @@ const ContactPage = () => {
         budget: formData.budget || 'Not specified',
         message: formData.message || 'No additional details provided',
         newsletter: formData.newsletter,
-        submissionDate: new Date().toISOString(),
+        submissionDate: serverTimestamp(),
         source: 'Website Contact Form'
       };
 
-      // Send to admin panel - replace with your admin panel API URL
-      const response = await fetch('/api/contact-submissions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submissionData)
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log('Form submitted successfully:', result);
+      // Save to Firebase
+      const docRef = await addDoc(collection(db, 'contactSubmissions'), submissionData);
+      console.log('Form submitted successfully with ID:', docRef.id);
 
       setSubmitStatus('success');
       setFormData({
