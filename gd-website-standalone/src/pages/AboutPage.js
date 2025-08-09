@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 
 const AboutPage = () => {
@@ -48,22 +49,59 @@ const AboutPage = () => {
         <div className="container">
           <div className="about-hero">
             <div className="about-hero-content">
+              <div className="about-badge">
+                <span>🏆 Berlin CT's Premier Landscaping</span>
+              </div>
               <h1>About GD Landscaping</h1>
               <p className="hero-subtitle">Your trusted partners in creating and maintaining beautiful outdoor spaces throughout Berlin CT and surrounding communities.</p>
+              <div className="hero-stats">
+                <div className="hero-stat">
+                  <span className="stat-number">75+</span>
+                  <span className="stat-label">Towns Served</span>
+                </div>
+                <div className="hero-stat">
+                  <span className="stat-number">100%</span>
+                  <span className="stat-label">Satisfaction</span>
+                </div>
+                <div className="hero-stat">
+                  <span className="stat-number">2024</span>
+                  <span className="stat-label">Founded</span>
+                </div>
+              </div>
             </div>
             <div className="about-hero-image">
-              <img src="/GD.png" alt="GD Landscaping Logo" />
+              <div className="logo-container">
+                <img src="/GD.png" alt="GD Landscaping Logo" />
+                <div className="logo-accent"></div>
+              </div>
             </div>
           </div>
 
           <div className="about-story">
             <div className="story-content">
-              <h2>Our Story</h2>
-              <p>GD Landscaping was founded with a simple mission: to transform outdoor spaces into beautiful, functional environments that our clients can enjoy year-round. Based in Berlin, Connecticut, we've quickly established ourselves as the area's premier landscaping service provider.</p>
-              
-              <p>What sets us apart is our commitment to quality craftsmanship, personalized service, and deep understanding of Connecticut's unique climate and soil conditions. Every project we undertake reflects our passion for creating landscapes that not only look stunning but also thrive in our local environment.</p>
-              
-              <p>From our humble beginnings, we've grown to serve over 75 communities within a 25-mile radius of Berlin, building lasting relationships with homeowners and businesses who trust us with their most important outdoor spaces.</p>
+              <div className="section-header">
+                <h2>Our Story</h2>
+                <div className="section-line"></div>
+              </div>
+              <div className="story-grid">
+                <div className="story-text">
+                  <div className="story-highlight">
+                    <h3>🚀 Our Mission</h3>
+                    <p>GD Landscaping was founded with a simple mission: to transform outdoor spaces into beautiful, functional environments that our clients can enjoy year-round.</p>
+                  </div>
+                  
+                  <p>Based in Berlin, Connecticut, we've quickly established ourselves as the area's premier landscaping service provider. What sets us apart is our commitment to quality craftsmanship, personalized service, and deep understanding of Connecticut's unique climate and soil conditions.</p>
+                  
+                  <p>Every project we undertake reflects our passion for creating landscapes that not only look stunning but also thrive in our local environment. From our humble beginnings, we've grown to serve over 75 communities within a 25-mile radius of Berlin.</p>
+                </div>
+                <div className="story-visual">
+                  <div className="story-card">
+                    <div className="card-icon">🌳</div>
+                    <h4>Rooted in Excellence</h4>
+                    <p>Building lasting relationships with homeowners and businesses who trust us with their most important outdoor spaces.</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -234,8 +272,8 @@ const AboutPage = () => {
               <h2>Ready to Get Started?</h2>
               <p>Experience the GD Landscaping difference. Contact us today for your free consultation and discover how we can transform your outdoor space.</p>
               <div className="cta-buttons">
-                <a href="/contact" className="cta-primary">Get Free Quote</a>
-                <a href="/services" className="cta-secondary">View Our Services</a>
+                <Link to="/contact" className="cta-primary">Get Free Quote</Link>
+                <Link to="/services" className="cta-secondary">View Our Services</Link>
               </div>
             </div>
           </div>
