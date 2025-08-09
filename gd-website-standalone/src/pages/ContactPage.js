@@ -16,7 +16,7 @@ const ContactPage = () => {
         "postalCode": "06037",
         "addressCountry": "US"
       },
-      "telephone": "(555) 123-4567",
+      "telephone": "(860) 526-7583",
       "email": "contact@gdlandscaping.com",
       "url": "https://gdlandscaping.com"
     }
@@ -47,7 +47,7 @@ const ContactPage = () => {
                 <div className="contact-icon">📞</div>
                 <div className="contact-details">
                   <h3>Phone</h3>
-                  <p>(555) 123-4567</p>
+                  <p>(860) 526-7583</p>
                   <small>Call for immediate service</small>
                 </div>
               </div>
@@ -182,7 +182,7 @@ const ContactPage = () => {
             <div className="emergency-info">
               <h3>🚨 Emergency Services</h3>
               <p>Tree down? Storm damage? We offer 24/7 emergency landscaping services for urgent situations.</p>
-              <a href="tel:(555)123-4567" className="emergency-btn">Call Emergency Line: (555) 123-4567</a>
+              <a href="tel:(860)526-7583" className="emergency-btn">Call Emergency Line: (860) 526-7583</a>
             </div>
           </div>
         </div>

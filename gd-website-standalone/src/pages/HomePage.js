@@ -14,7 +14,7 @@ const HomePage = () => {
       "postalCode": "06037",
       "addressCountry": "US"
     },
-    "telephone": "(555) 123-4567",
+    "telephone": "(860) 526-7583",
     "email": "contact@gdlandscaping.com",
     "url": "https://gdlandscaping.com",
     "serviceArea": {

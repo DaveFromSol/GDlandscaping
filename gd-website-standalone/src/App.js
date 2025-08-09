@@ -154,7 +154,7 @@ function App() {
               </div>
               <div className="footer-section">
                 <h4>Contact</h4>
-                <p>Phone: (555) 123-4567</p>
+                <p>Phone: (860) 526-7583</p>
                 <p>Email: contact@gdlandscaping.com</p>
               </div>
             </div>
