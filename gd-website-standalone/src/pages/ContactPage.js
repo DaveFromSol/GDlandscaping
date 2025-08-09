@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import emailjs from '@emailjs/browser';
 import SEOHead from '../components/SEOHead';
 
 const ContactPage = () => {
@@ -40,28 +39,37 @@ const ContactPage = () => {
     }
 
     try {
-      // EmailJS configuration - you'll need to set these up in your EmailJS account
-      const templateParams = {
-        to_email: 'Contact@gdlandscapingllc.com',
-        from_name: `${formData.firstName} ${formData.lastName}`,
-        from_email: formData.email || 'No email provided',
+      // Prepare form data for admin panel
+      const submissionData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email || 'No email provided',
         phone: formData.phone,
         address: formData.address || 'Not provided',
         services: formData.services || 'Not specified',
-        project_type: formData.projectType || 'Not specified',
+        projectType: formData.projectType || 'Not specified',
         budget: formData.budget || 'Not specified',
         message: formData.message || 'No additional details provided',
-        newsletter: formData.newsletter ? 'Yes' : 'No',
-        submission_date: new Date().toLocaleDateString()
+        newsletter: formData.newsletter,
+        submissionDate: new Date().toISOString(),
+        source: 'Website Contact Form'
       };
 
-      // Replace 'your_service_id', 'your_template_id', 'your_public_key' with actual EmailJS credentials
-      await emailjs.send(
-        'service_gdlandscaping', // You'll need to create this service
-        'template_contact_form', // You'll need to create this template
-        templateParams,
-        'YOUR_PUBLIC_KEY' // You'll need to add your EmailJS public key
-      );
+      // Send to admin panel - replace with your admin panel API URL
+      const response = await fetch('/api/contact-submissions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionData)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('Form submitted successfully:', result);
 
       setSubmitStatus('success');
       setFormData({
