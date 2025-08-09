@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 
 const ServicesPage = () => {
@@ -134,29 +135,92 @@ const ServicesPage = () => {
       
       <div className="services-section">
         <div className="container">
-          <h1>Professional Landscaping Services</h1>
-          <p className="section-subtitle">Comprehensive landscaping solutions for residential and commercial properties in Berlin CT and surrounding areas</p>
+          <div className="services-hero">
+            <div className="services-hero-content">
+              <div className="services-badge">
+                <span>🌱 Complete Landscaping Solutions</span>
+              </div>
+              <h1>Professional Landscaping Services</h1>
+              <p className="section-subtitle">Comprehensive landscaping solutions for residential and commercial properties in Berlin CT and surrounding areas</p>
+              <div className="services-highlights">
+                <div className="highlight-stat">
+                  <span className="stat-number">10+</span>
+                  <span className="stat-label">Services</span>
+                </div>
+                <div className="highlight-stat">
+                  <span className="stat-number">75+</span>
+                  <span className="stat-label">Towns Served</span>
+                </div>
+                <div className="highlight-stat">
+                  <span className="stat-number">100%</span>
+                  <span className="stat-label">Satisfaction</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="services-categories">
+            <div className="category-header">
+              <h2>Our Service Categories</h2>
+              <div className="section-line"></div>
+              <p>From basic lawn maintenance to complete landscape transformations, we offer comprehensive services to meet all your outdoor needs.</p>
+            </div>
+          </div>
           
           <div className="services-grid">
             {services.map(service => (
               <div key={service.id} className="service-card">
-                <div className="service-icon">{service.image}</div>
-                <h3>{service.name}</h3>
+                <div className="service-header">
+                  <div className="service-icon">{service.image}</div>
+                  <div className="service-title-price">
+                    <h3>{service.name}</h3>
+                    <div className="service-price">{service.price}</div>
+                  </div>
+                </div>
                 <p className="service-description">{service.description}</p>
-                <div className="service-price">{service.price}</div>
-                <ul className="service-features">
-                  {service.features.map((feature, index) => (
-                    <li key={index}>{feature}</li>
-                  ))}
-                </ul>
-                <a 
-                  href="/contact"
+                <div className="service-features">
+                  <h4>What's Included:</h4>
+                  <ul>
+                    {service.features.map((feature, index) => (
+                      <li key={index}>{feature}</li>
+                    ))}
+                  </ul>
+                </div>
+                <Link 
+                  to="/contact"
                   className="service-cta"
                 >
                   Get Quote
-                </a>
+                </Link>
               </div>
             ))}
+          </div>
+
+          <div className="services-guarantee">
+            <div className="guarantee-content">
+              <div className="guarantee-icon">🛡️</div>
+              <div className="guarantee-text">
+                <h3>Our Service Guarantee</h3>
+                <p>We stand behind every service with our 100% satisfaction guarantee. Licensed, insured, and committed to excellence in every project.</p>
+                <div className="guarantee-features">
+                  <span className="feature">✓ Licensed & Insured</span>
+                  <span className="feature">✓ 100% Satisfaction Guarantee</span>
+                  <span className="feature">✓ Free Estimates</span>
+                  <span className="feature">✓ Emergency Services Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="services-cta">
+            <div className="cta-content">
+              <h2>Ready to Transform Your Outdoor Space?</h2>
+              <p>Contact GD Landscaping today for your free consultation and discover how our professional services can enhance your property.</p>
+              <div className="cta-buttons">
+                <Link to="/contact" className="cta-primary">Get Free Quote</Link>
+                <Link to="/portfolio" className="cta-secondary">View Our Work</Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
