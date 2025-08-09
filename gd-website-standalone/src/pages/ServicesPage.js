@@ -8,7 +8,7 @@ const ServicesPage = () => {
       id: 1,
       name: 'Lawn Maintenance',
       description: 'Regular mowing, edging, and lawn care',
-      price: 'Starting at $75',
+      price: 'Starting at $40',
       image: '🌱',
       features: ['Weekly mowing', 'Edge trimming', 'Leaf removal', 'Fertilization']
     },
@@ -24,7 +24,7 @@ const ServicesPage = () => {
       id: 3,
       name: 'Tree Services',
       description: 'Tree trimming, removal, and maintenance',
-      price: 'Starting at $200',
+      price: 'Starting at $100',
       image: '🌳',
       features: ['Tree trimming', 'Tree removal', 'Stump grinding', 'Emergency service']
     },
@@ -32,7 +32,7 @@ const ServicesPage = () => {
       id: 4,
       name: 'Hardscaping',
       description: 'Patios, walkways, and retaining walls',
-      price: 'Starting at $1,500',
+      price: 'Depends',
       image: '🏗️',
       features: ['Patio installation', 'Walkway creation', 'Retaining walls', 'Outdoor kitchens']
     },
@@ -48,7 +48,7 @@ const ServicesPage = () => {
       id: 6,
       name: 'Seasonal Cleanup',
       description: 'Spring and fall yard cleanup services',
-      price: 'Starting at $150',
+      price: 'Starting at $100',
       image: '🍂',
       features: ['Leaf removal', 'Debris cleanup', 'Mulching', 'Plant preparation']
     },
