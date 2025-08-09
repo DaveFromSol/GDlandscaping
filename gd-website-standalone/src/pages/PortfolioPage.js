@@ -5,45 +5,31 @@ const PortfolioPage = () => {
   const portfolioItems = [
     {
       id: 1,
-      title: "Beautiful Garden Transformation",
-      category: "Residential",
-      image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500&h=300&fit=crop",
-      description: "Complete landscape renovation with native plantings and stone pathways."
+      title: 'Residential Landscape Design',
+      description: 'Complete backyard transformation with native plantings and stone pathways',
+      image: '/1A0AA44E-D251-41D2-B56A-9543E6E408BD%20-%20Edited.png',
+      category: 'Residential'
     },
     {
       id: 2,
-      title: "Modern Patio Design",
-      category: "Residential",
-      image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=500&h=300&fit=crop",
-      description: "Contemporary hardscape design with integrated seating and fire feature."
+      title: 'Residential Property Maintenance',
+      description: 'Professional lawn care and landscaping for residential properties',
+      image: '/A4D59809-8BCD-4140-837C-A18E6A093CA2_L0_001%20-%20Edited.jpg',
+      category: 'Residential'
     },
     {
       id: 3,
-      title: "Lush Lawn Installation",
-      category: "Residential",
-      image: "https://images.unsplash.com/photo-1558904541-efa843a96f01?w=500&h=300&fit=crop",
-      description: "Professional sod installation with irrigation system setup."
+      title: 'Residential Hardscaping & Patios',
+      description: 'Custom stone patios and outdoor living spaces for residential homes',
+      image: '/IMG_2692%20-%20Edited%20-%20Edited.png',
+      category: 'Residential'
     },
     {
       id: 4,
-      title: "Tree Service Excellence",
-      category: "Residential",
-      image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500&h=300&fit=crop",
-      description: "Expert tree pruning and maintenance for optimal health and safety."
-    },
-    {
-      id: 5,
-      title: "Seasonal Color Display",
-      category: "Residential",
-      image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500&h=300&fit=crop",
-      description: "Vibrant seasonal plantings and flower bed design."
-    },
-    {
-      id: 6,
-      title: "Outdoor Living Space",
-      category: "Residential",
-      image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=500&h=300&fit=crop",
-      description: "Complete outdoor entertainment area with landscaping integration."
+      title: 'Recent Landscaping Project',
+      description: 'Professional landscaping transformation in Berlin CT area',
+      image: '/IMG_5078%20(1).avif',
+      category: 'Residential'
     }
   ];
 
@@ -82,51 +68,29 @@ const PortfolioPage = () => {
       
       <div className="portfolio-section">
         <div className="container">
-          <div className="portfolio-hero">
-            <h1>Our Portfolio</h1>
-            <p className="section-subtitle">Discover the transformation power of professional landscaping through our completed projects in Berlin CT and surrounding areas.</p>
-          </div>
-
-          <div className="portfolio-stats">
-            <div className="stat-item">
-              <div className="stat-number">100+</div>
-              <div className="stat-label">Projects Completed</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">5⭐</div>
-              <div className="stat-label">Average Rating</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">75+</div>
-              <div className="stat-label">Towns Served</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">100%</div>
-              <div className="stat-label">Satisfaction Rate</div>
-            </div>
-          </div>
-
-          <div className="portfolio-categories">
-            <h2>Project Categories</h2>
-            <div className="category-filters">
-              <button className="filter-btn active">All Projects</button>
-              <button className="filter-btn">Residential</button>
-              <button className="filter-btn">Commercial</button>
-              <button className="filter-btn">Hardscaping</button>
-              <button className="filter-btn">Lawn Care</button>
-              <button className="filter-btn">Tree Services</button>
-            </div>
-          </div>
-
+          <h1>Our Recent Work</h1>
+          <p className="section-subtitle">Professional landscaping projects completed in Berlin CT and surrounding areas. See the quality and craftsmanship that sets GD Landscaping apart.</p>
+          
           <div className="portfolio-grid">
-            {portfolioItems.map(item => (
-              <div key={item.id} className="portfolio-card">
+            {portfolioItems.map(project => (
+              <div key={project.id} className="portfolio-item">
                 <div className="portfolio-image">
-                  <img src={item.image} alt={item.title} loading="lazy" />
+                  <img 
+                    src={project.image} 
+                    alt={`${project.title} - Professional Landscaping Work in Berlin CT by GD Landscaping`}
+                    className="portfolio-img"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div className="portfolio-placeholder" style={{display: 'none'}}>
+                    🏡<br/>Project<br/>Image
+                  </div>
                   <div className="portfolio-overlay">
-                    <div className="portfolio-category">{item.category}</div>
-                    <h3>{item.title}</h3>
-                    <p>{item.description}</p>
+                    <div className="portfolio-category">{project.category}</div>
+                    <h3>{project.title}</h3>
+                    <p>{project.description}</p>
                   </div>
                 </div>
               </div>
@@ -134,69 +98,11 @@ const PortfolioPage = () => {
           </div>
 
           <div className="portfolio-cta">
-            <div className="cta-content">
-              <h2>Ready to Transform Your Outdoor Space?</h2>
-              <p>Let's create something beautiful together. Contact us today for your free consultation and quote.</p>
-              <div className="cta-buttons">
-                <a href="/contact" className="cta-primary">Get Free Quote</a>
-                <a href="/services" className="cta-secondary">View Services</a>
-              </div>
-            </div>
-          </div>
-
-          <div className="testimonials-preview">
-            <h2>What Our Clients Say</h2>
-            <div className="testimonials-grid">
-              <div className="testimonial-card">
-                <div className="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p>"GD Landscaping completely transformed our backyard. From design to completion, they were professional, creative, and exceeded our expectations."</p>
-                <div className="testimonial-author">
-                  <strong>Jennifer Walsh</strong>
-                  <span>Berlin, CT</span>
-                </div>
-              </div>
-              <div className="testimonial-card">
-                <div className="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p>"Outstanding work on our front yard landscaping. The team was punctual, clean, and delivered exactly what they promised. Highly recommend!"</p>
-                <div className="testimonial-author">
-                  <strong>Robert Thompson</strong>
-                  <span>Cromwell, CT</span>
-                </div>
-              </div>
-              <div className="testimonial-card">
-                <div className="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p>"Professional tree service and landscape maintenance. They've been taking care of our property for over a year now. Excellent quality and service."</p>
-                <div className="testimonial-author">
-                  <strong>Maria Rodriguez</strong>
-                  <span>Middletown, CT</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="process-overview">
-            <h2>Our Process</h2>
-            <div className="process-steps">
-              <div className="process-step">
-                <div className="step-number">1</div>
-                <h3>Consultation</h3>
-                <p>Free on-site consultation to understand your vision and needs</p>
-              </div>
-              <div className="process-step">
-                <div className="step-number">2</div>
-                <h3>Design</h3>
-                <p>Custom design proposal with detailed plans and material selections</p>
-              </div>
-              <div className="process-step">
-                <div className="step-number">3</div>
-                <h3>Installation</h3>
-                <p>Professional installation by our experienced, insured team</p>
-              </div>
-              <div className="process-step">
-                <div className="step-number">4</div>
-                <h3>Maintenance</h3>
-                <p>Ongoing support and maintenance to keep your landscape beautiful</p>
-              </div>
+            <h2>Ready to Transform Your Outdoor Space?</h2>
+            <p>Contact GD Landscaping today for your free consultation and quote.</p>
+            <div className="cta-buttons">
+              <a href="/contact" className="cta-primary">Get Free Quote</a>
+              <a href="/services" className="cta-secondary">View Our Services</a>
             </div>
           </div>
         </div>
