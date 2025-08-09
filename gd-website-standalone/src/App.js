@@ -124,17 +124,17 @@ function App() {
     },
     {
       id: 2,
-      title: 'Commercial Property Maintenance',
-      description: 'Professional lawn care and landscaping for business properties',
+      title: 'Residential Property Maintenance',
+      description: 'Professional lawn care and landscaping for residential properties',
       image: '/A4D59809-8BCD-4140-837C-A18E6A093CA2_L0_001%20-%20Edited.jpg',
-      category: 'Commercial'
+      category: 'Residential'
     },
     {
       id: 3,
-      title: 'Hardscaping & Patios',
-      description: 'Custom stone patios and outdoor living spaces designed for entertaining',
+      title: 'Residential Hardscaping & Patios',
+      description: 'Custom stone patios and outdoor living spaces for residential homes',
       image: '/IMG_2692%20-%20Edited%20-%20Edited.png',
-      category: 'Hardscaping'
+      category: 'Residential'
     },
     {
       id: 4,
