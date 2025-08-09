@@ -115,13 +115,13 @@ const ContactPage = () => {
       />
       
       <div className="contact-section">
-        <div className="promo-banner">
-          <div className="container">
-            <div className="promo-content">
-              <span className="promo-icon">🌸</span>
-              <div className="promo-text">
-                <strong>Spring Special: 50% OFF Spring Cleanups!</strong>
-                <span>Limited time offer - Call (860) 526-7583 to book now</span>
+        <div className="promo-banner bg-gradient-to-r from-primary-500 to-primary-600 text-white py-4 px-4 relative overflow-hidden">
+          <div className="container max-w-6xl mx-auto">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 relative z-10">
+              <span className="text-2xl animate-pulse">🌸</span>
+              <div className="text-center">
+                <div className="font-bold text-lg sm:text-xl mb-1">Spring Special: 50% OFF Spring Cleanups!</div>
+                <div className="text-sm sm:text-base opacity-90">Limited time offer - Call (860) 526-7583 to book now</div>
               </div>
             </div>
           </div>
@@ -151,7 +151,7 @@ const ContactPage = () => {
             </div>
           </div>
 
-          <div className="contact-grid">
+          <div className="contact-grid grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
             <div className="contact-info">
               <div className="info-header">
                 <h2>Get In Touch</h2>
@@ -203,21 +203,22 @@ const ContactPage = () => {
               </div>
             </div>
 
-            <div className="contact-form">
+            <div className="contact-form bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-200 w-full max-w-none">
               <div className="form-header">
                 <h2>Request Your Free Quote</h2>
                 <p className="form-subtitle">Fill out the form below and we'll get back to you within 24 hours</p>
               </div>
               <form onSubmit={handleSubmit}>
-                <div className="form-row">
+                <div className="form-row grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="form-group">
-                    <label htmlFor="firstName">First Name *</label>
+                    <label htmlFor="firstName" className="block text-gray-700 font-medium mb-2 text-sm">First Name *</label>
                     <input 
                       type="text" 
                       id="firstName" 
                       name="firstName" 
                       value={formData.firstName}
                       onChange={handleInputChange}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 transition-all"
                       required 
                     />
                   </div>
@@ -234,7 +235,7 @@ const ContactPage = () => {
                   </div>
                 </div>
 
-                <div className="form-row">
+                <div className="form-row grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="form-group">
                     <label htmlFor="email">Email Address</label>
                     <input 
@@ -366,7 +367,7 @@ const ContactPage = () => {
 
                 <button 
                   type="submit" 
-                  className="submit-btn"
+                  className="submit-btn w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none text-lg uppercase tracking-wide"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? 'Sending...' : 'Get My Free Quote'}
