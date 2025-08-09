@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [contactForm, setContactForm] = useState({
     name: '',
     email: '',
@@ -176,11 +177,25 @@ function App() {
           <img src="/GD.png" alt="GD Landscaping - Professional Landscaping Services Berlin CT" style={{height: '40px', marginRight: '10px'}} />
           <h2>GD Landscaping</h2>
         </div>
-        <ul className="nav-menu">
+        
+        {/* Mobile Hamburger Button */}
+        <button 
+          className="mobile-menu-toggle"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <ul className={`nav-menu ${mobileMenuOpen ? 'mobile-open' : ''}`}>
           <li>
             <button 
               className={activeSection === 'home' ? 'active' : ''}
-              onClick={() => setActiveSection('home')}
+              onClick={() => {
+                setActiveSection('home');
+                setMobileMenuOpen(false);
+              }}
             >
               Home
             </button>
@@ -188,7 +203,10 @@ function App() {
           <li>
             <button 
               className={activeSection === 'services' ? 'active' : ''}
-              onClick={() => setActiveSection('services')}
+              onClick={() => {
+                setActiveSection('services');
+                setMobileMenuOpen(false);
+              }}
             >
               Services
             </button>
@@ -196,7 +214,10 @@ function App() {
           <li>
             <button 
               className={activeSection === 'portfolio' ? 'active' : ''}
-              onClick={() => setActiveSection('portfolio')}
+              onClick={() => {
+                setActiveSection('portfolio');
+                setMobileMenuOpen(false);
+              }}
             >
               Portfolio
             </button>
@@ -204,7 +225,10 @@ function App() {
           <li>
             <button 
               className={activeSection === 'about' ? 'active' : ''}
-              onClick={() => setActiveSection('about')}
+              onClick={() => {
+                setActiveSection('about');
+                setMobileMenuOpen(false);
+              }}
             >
               About
             </button>
@@ -212,7 +236,10 @@ function App() {
           <li>
             <button 
               className={activeSection === 'contact' ? 'active' : ''}
-              onClick={() => setActiveSection('contact')}
+              onClick={() => {
+                setActiveSection('contact');
+                setMobileMenuOpen(false);
+              }}
             >
               Contact
             </button>
