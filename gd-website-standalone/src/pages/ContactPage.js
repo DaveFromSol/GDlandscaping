@@ -35,15 +35,41 @@ const ContactPage = () => {
       <div className="contact-section">
         <div className="container">
           <div className="contact-hero">
-            <h1>Contact GD Landscaping</h1>
-            <p className="section-subtitle">Ready to transform your outdoor space? Get in touch for a free consultation and quote.</p>
+            <div className="contact-hero-content">
+              <div className="contact-badge">
+                <span>📞 Get Your Free Quote Today</span>
+              </div>
+              <h1>Contact GD Landscaping</h1>
+              <p className="section-subtitle">Ready to transform your outdoor space? Get in touch for a free consultation and quote.</p>
+              <div className="contact-highlights">
+                <div className="highlight-item">
+                  <span className="highlight-icon">⚡</span>
+                  <span>Same-Day Response</span>
+                </div>
+                <div className="highlight-item">
+                  <span className="highlight-icon">💰</span>
+                  <span>Free Estimates</span>
+                </div>
+                <div className="highlight-item">
+                  <span className="highlight-icon">🛡️</span>
+                  <span>Licensed & Insured</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="contact-grid">
             <div className="contact-info">
-              <h2>Get In Touch</h2>
+              <div className="info-header">
+                <h2>Get In Touch</h2>
+                <div className="section-line"></div>
+              </div>
               <div className="contact-notice">
-                <p><strong>📞 Please contact by phone call only right now for immediate service</strong></p>
+                <div className="notice-icon">📞</div>
+                <div className="notice-content">
+                  <h4>Call for Immediate Service</h4>
+                  <p>Please contact by phone for fastest response and scheduling</p>
+                </div>
               </div>
               
               <div className="contact-item">
@@ -85,7 +111,10 @@ const ContactPage = () => {
             </div>
 
             <div className="contact-form">
-              <h2>Request Your Free Quote</h2>
+              <div className="form-header">
+                <h2>Request Your Free Quote</h2>
+                <p className="form-subtitle">Fill out the form below and we'll get back to you within 24 hours</p>
+              </div>
               <form>
                 <div className="form-row">
                   <div className="form-group">
@@ -182,10 +211,43 @@ const ContactPage = () => {
           </div>
 
           <div className="emergency-contact">
-            <div className="emergency-info">
-              <h3>🚨 Emergency Services</h3>
-              <p>Tree down? Storm damage? We offer 24/7 emergency landscaping services for urgent situations.</p>
-              <a href="tel:(860)526-7583" className="emergency-btn">Call Emergency Line: (860) 526-7583</a>
+            <div className="emergency-card">
+              <div className="emergency-icon">🚨</div>
+              <div className="emergency-content">
+                <h3>24/7 Emergency Services</h3>
+                <p>Tree down? Storm damage? Urgent landscaping needs? We're here to help around the clock.</p>
+                <div className="emergency-features">
+                  <span className="feature">✓ Immediate Response</span>
+                  <span className="feature">✓ Storm Damage Cleanup</span>
+                  <span className="feature">✓ Tree Removal</span>
+                  <span className="feature">✓ Safety First</span>
+                </div>
+                <a href="tel:(860)526-7583" className="emergency-btn">
+                  <span className="btn-icon">📞</span>
+                  Call Emergency Line: (860) 526-7583
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="contact-cta">
+            <div className="cta-content">
+              <h2>Ready to Start Your Project?</h2>
+              <p>Join hundreds of satisfied customers who trust GD Landscaping for their outdoor needs.</p>
+              <div className="cta-stats">
+                <div className="cta-stat">
+                  <span className="stat-number">100+</span>
+                  <span className="stat-label">Projects Completed</span>
+                </div>
+                <div className="cta-stat">
+                  <span className="stat-number">5⭐</span>
+                  <span className="stat-label">Average Rating</span>
+                </div>
+                <div className="cta-stat">
+                  <span className="stat-number">24/7</span>
+                  <span className="stat-label">Emergency Service</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
