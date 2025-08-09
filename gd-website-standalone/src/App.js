@@ -171,24 +171,33 @@ function App() {
   };
 
   const renderNavigation = () => (
-    <nav className="website-nav">
-      <div className="nav-container">
-        <div className="logo">
-          <img src="/GD.png" alt="GD Landscaping - Professional Landscaping Services Berlin CT" style={{height: '40px', marginRight: '10px'}} />
-          <h2>GD Landscaping</h2>
-        </div>
-        
-        {/* Mobile Hamburger Button */}
-        <button 
-          className="mobile-menu-toggle"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+    <>
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div 
+          className="mobile-menu-overlay"
+          onClick={() => setMobileMenuOpen(false)}
+        ></div>
+      )}
+      
+      <nav className="website-nav">
+        <div className="nav-container">
+          <div className="logo">
+            <img src="/GD.png" alt="GD Landscaping - Professional Landscaping Services Berlin CT" style={{height: '40px', marginRight: '10px'}} />
+            <h2>GD Landscaping</h2>
+          </div>
+          
+          {/* Mobile Hamburger Button */}
+          <button 
+            className={`mobile-menu-toggle ${mobileMenuOpen ? 'active' : ''}`}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
 
-        <ul className={`nav-menu ${mobileMenuOpen ? 'mobile-open' : ''}`}>
+          <ul className={`nav-menu ${mobileMenuOpen ? 'mobile-open' : ''}`}>
           <li>
             <button 
               className={activeSection === 'home' ? 'active' : ''}
@@ -247,6 +256,7 @@ function App() {
         </ul>
       </div>
     </nav>
+    </>
   );
 
   const renderHome = () => (
