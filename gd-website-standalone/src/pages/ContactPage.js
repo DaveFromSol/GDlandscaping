@@ -1,7 +1,89 @@
-import React from 'react';
+import React, { useState } from 'react';
+import emailjs from '@emailjs/browser';
 import SEOHead from '../components/SEOHead';
 
 const ContactPage = () => {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address: '',
+    services: '',
+    projectType: '',
+    budget: '',
+    message: '',
+    newsletter: false
+  });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState('');
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('');
+
+    // Basic validation
+    if (!formData.firstName || !formData.lastName || !formData.phone) {
+      setSubmitStatus('Please fill in all required fields.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      // EmailJS configuration - you'll need to set these up in your EmailJS account
+      const templateParams = {
+        to_email: 'Contact@gdlandscapingllc.com',
+        from_name: `${formData.firstName} ${formData.lastName}`,
+        from_email: formData.email || 'No email provided',
+        phone: formData.phone,
+        address: formData.address || 'Not provided',
+        services: formData.services || 'Not specified',
+        project_type: formData.projectType || 'Not specified',
+        budget: formData.budget || 'Not specified',
+        message: formData.message || 'No additional details provided',
+        newsletter: formData.newsletter ? 'Yes' : 'No',
+        submission_date: new Date().toLocaleDateString()
+      };
+
+      // Replace 'your_service_id', 'your_template_id', 'your_public_key' with actual EmailJS credentials
+      await emailjs.send(
+        'service_gdlandscaping', // You'll need to create this service
+        'template_contact_form', // You'll need to create this template
+        templateParams,
+        'YOUR_PUBLIC_KEY' // You'll need to add your EmailJS public key
+      );
+
+      setSubmitStatus('success');
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        address: '',
+        services: '',
+        projectType: '',
+        budget: '',
+        message: '',
+        newsletter: false
+      });
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setSubmitStatus('error');
+    }
+
+    setIsSubmitting(false);
+  };
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "ContactPage",
@@ -33,6 +115,17 @@ const ContactPage = () => {
       />
       
       <div className="contact-section">
+        <div className="promo-banner">
+          <div className="container">
+            <div className="promo-content">
+              <span className="promo-icon">🌸</span>
+              <div className="promo-text">
+                <strong>Spring Special: 50% OFF Spring Cleanups!</strong>
+                <span>Limited time offer - Call (860) 526-7583 to book now</span>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="container">
           <div className="contact-hero">
             <div className="contact-hero-content">
@@ -115,37 +208,76 @@ const ContactPage = () => {
                 <h2>Request Your Free Quote</h2>
                 <p className="form-subtitle">Fill out the form below and we'll get back to you within 24 hours</p>
               </div>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="form-row">
                   <div className="form-group">
                     <label htmlFor="firstName">First Name *</label>
-                    <input type="text" id="firstName" name="firstName" required />
+                    <input 
+                      type="text" 
+                      id="firstName" 
+                      name="firstName" 
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                      required 
+                    />
                   </div>
                   <div className="form-group">
                     <label htmlFor="lastName">Last Name *</label>
-                    <input type="text" id="lastName" name="lastName" required />
+                    <input 
+                      type="text" 
+                      id="lastName" 
+                      name="lastName" 
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                      required 
+                    />
                   </div>
                 </div>
 
                 <div className="form-row">
                   <div className="form-group">
                     <label htmlFor="email">Email Address</label>
-                    <input type="email" id="email" name="email" />
+                    <input 
+                      type="email" 
+                      id="email" 
+                      name="email" 
+                      value={formData.email}
+                      onChange={handleInputChange}
+                    />
                   </div>
                   <div className="form-group">
                     <label htmlFor="phone">Phone Number *</label>
-                    <input type="tel" id="phone" name="phone" required />
+                    <input 
+                      type="tel" 
+                      id="phone" 
+                      name="phone" 
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      required 
+                    />
                   </div>
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="address">Property Address</label>
-                  <input type="text" id="address" name="address" placeholder="Street address, City, State" />
+                  <input 
+                    type="text" 
+                    id="address" 
+                    name="address" 
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    placeholder="Street address, City, State" 
+                  />
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="services">Services Needed</label>
-                  <select id="services" name="services">
+                  <select 
+                    id="services" 
+                    name="services"
+                    value={formData.services}
+                    onChange={handleInputChange}
+                  >
                     <option value="">Select a service</option>
                     <option value="lawn-maintenance">Lawn Maintenance</option>
                     <option value="landscape-design">Landscape Design</option>
@@ -164,7 +296,12 @@ const ContactPage = () => {
 
                 <div className="form-group">
                   <label htmlFor="projectType">Property Type</label>
-                  <select id="projectType" name="projectType">
+                  <select 
+                    id="projectType" 
+                    name="projectType"
+                    value={formData.projectType}
+                    onChange={handleInputChange}
+                  >
                     <option value="">Select property type</option>
                     <option value="residential">Residential</option>
                     <option value="commercial">Commercial</option>
@@ -174,7 +311,12 @@ const ContactPage = () => {
 
                 <div className="form-group">
                   <label htmlFor="budget">Estimated Budget Range</label>
-                  <select id="budget" name="budget">
+                  <select 
+                    id="budget" 
+                    name="budget"
+                    value={formData.budget}
+                    onChange={handleInputChange}
+                  >
                     <option value="">Select budget range</option>
                     <option value="50-100">$50 - $100</option>
                     <option value="100-200">$100 - $200</option>
@@ -191,20 +333,43 @@ const ContactPage = () => {
                     id="message" 
                     name="message" 
                     rows="5" 
+                    value={formData.message}
+                    onChange={handleInputChange}
                     placeholder="Tell us about your project, timeline, specific needs, or any questions you have..."
                   ></textarea>
                 </div>
 
                 <div className="form-group checkbox-group">
                   <label className="checkbox-label">
-                    <input type="checkbox" id="newsletter" name="newsletter" />
+                    <input 
+                      type="checkbox" 
+                      id="newsletter" 
+                      name="newsletter" 
+                      checked={formData.newsletter}
+                      onChange={handleInputChange}
+                    />
                     <span className="checkmark"></span>
                     I'd like to receive seasonal landscaping tips and service reminders
                   </label>
                 </div>
 
-                <button type="submit" className="submit-btn">
-                  Get My Free Quote
+                {submitStatus && (
+                  <div className={`form-status ${submitStatus === 'success' ? 'success' : 'error'}`}>
+                    {submitStatus === 'success' 
+                      ? '✅ Thank you! Your quote request has been sent successfully. We\'ll contact you within 24 hours.' 
+                      : submitStatus === 'error'
+                      ? '❌ Sorry, there was an error sending your message. Please try again or call us directly.'
+                      : submitStatus
+                    }
+                  </div>
+                )}
+
+                <button 
+                  type="submit" 
+                  className="submit-btn"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Sending...' : 'Get My Free Quote'}
                 </button>
               </form>
             </div>
