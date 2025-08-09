@@ -206,7 +206,7 @@ function App() {
                 setMobileMenuOpen(false);
               }}
             >
-              Home
+              🏠 Home
             </button>
           </li>
           <li>
@@ -217,7 +217,7 @@ function App() {
                 setMobileMenuOpen(false);
               }}
             >
-              Services
+              🌱 Services
             </button>
           </li>
           <li>
@@ -228,7 +228,7 @@ function App() {
                 setMobileMenuOpen(false);
               }}
             >
-              Portfolio
+              📸 Portfolio
             </button>
           </li>
           <li>
@@ -239,7 +239,7 @@ function App() {
                 setMobileMenuOpen(false);
               }}
             >
-              About
+              ℹ️ About
             </button>
           </li>
           <li>
@@ -250,7 +250,7 @@ function App() {
                 setMobileMenuOpen(false);
               }}
             >
-              Contact
+              📞 Contact
             </button>
           </li>
         </ul>
