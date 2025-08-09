@@ -1095,6 +1095,21 @@
   margin: 0;
 }
 
+.contact-notice {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.contact-notice p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
 .contact-form {
   background: #f8fafc;
   padding: 2rem;

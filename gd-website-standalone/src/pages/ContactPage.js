@@ -42,6 +42,9 @@ const ContactPage = () => {
           <div className="contact-grid">
             <div className="contact-info">
               <h2>Get In Touch</h2>
+              <div className="contact-notice">
+                <p><strong>📞 Please contact by phone call only right now for immediate service</strong></p>
+              </div>
               
               <div className="contact-item">
                 <div className="contact-icon">📞</div>
@@ -97,8 +100,8 @@ const ContactPage = () => {
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="email">Email Address *</label>
-                    <input type="email" id="email" name="email" required />
+                    <label htmlFor="email">Email Address</label>
+                    <input type="email" id="email" name="email" />
                   </div>
                   <div className="form-group">
                     <label htmlFor="phone">Phone Number *</label>
@@ -144,12 +147,12 @@ const ContactPage = () => {
                   <label htmlFor="budget">Estimated Budget Range</label>
                   <select id="budget" name="budget">
                     <option value="">Select budget range</option>
-                    <option value="under-500">Under $500</option>
-                    <option value="500-1000">$500 - $1,000</option>
-                    <option value="1000-2500">$1,000 - $2,500</option>
-                    <option value="2500-5000">$2,500 - $5,000</option>
-                    <option value="5000-10000">$5,000 - $10,000</option>
-                    <option value="over-10000">Over $10,000</option>
+                    <option value="50-100">$50 - $100</option>
+                    <option value="100-200">$100 - $200</option>
+                    <option value="200-400">$200 - $400</option>
+                    <option value="400-600">$400 - $600</option>
+                    <option value="600-1000">$600 - $1,000</option>
+                    <option value="over-1000">Over $1,000</option>
                   </select>
                 </div>
 
