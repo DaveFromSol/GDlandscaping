@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 
 const PortfolioPage = () => {
@@ -89,8 +90,6 @@ const PortfolioPage = () => {
                   </div>
                   <div className="portfolio-overlay">
                     <div className="portfolio-category">{project.category}</div>
-                    <h3>{project.title}</h3>
-                    <p>{project.description}</p>
                   </div>
                 </div>
               </div>
@@ -101,8 +100,8 @@ const PortfolioPage = () => {
             <h2>Ready to Transform Your Outdoor Space?</h2>
             <p>Contact GD Landscaping today for your free consultation and quote.</p>
             <div className="cta-buttons">
-              <a href="/contact" className="cta-primary">Get Free Quote</a>
-              <a href="/services" className="cta-secondary">View Our Services</a>
+              <Link to="/contact" className="cta-primary">Get Free Quote</Link>
+              <Link to="/services" className="cta-secondary">View Our Services</Link>
             </div>
           </div>
         </div>
