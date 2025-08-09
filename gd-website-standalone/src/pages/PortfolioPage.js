@@ -90,6 +90,10 @@ const PortfolioPage = () => {
                   </div>
                   <div className="portfolio-overlay">
                     <div className="portfolio-category">{project.category}</div>
+                    <div className="portfolio-text-box">
+                      <h3>{project.title}</h3>
+                      <p>{project.description}</p>
+                    </div>
                   </div>
                 </div>
               </div>
