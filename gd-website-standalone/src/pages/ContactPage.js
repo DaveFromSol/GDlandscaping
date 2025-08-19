@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebase';
 import SEOHead from '../components/SEOHead';
 
 const ContactPage = () => {
@@ -41,39 +39,71 @@ const ContactPage = () => {
     }
 
     try {
-      // Prepare form data for Firebase
-      const submissionData = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email || 'No email provided',
-        phone: formData.phone,
-        address: formData.address || 'Not provided',
-        services: formData.services || 'Not specified',
-        projectType: formData.projectType || 'Not specified',
-        budget: formData.budget || 'Not specified',
-        message: formData.message || 'No additional details provided',
-        newsletter: formData.newsletter,
-        submissionDate: serverTimestamp(),
-        source: 'Website Contact Form'
-      };
+      // Prepare email content
+      const emailContent = `
+        New Quote Request from GD Landscaping Website
+        
+        Contact Information:
+        Name: ${formData.firstName} ${formData.lastName}
+        Email: ${formData.email || 'Not provided'}
+        Phone: ${formData.phone}
+        Address: ${formData.address || 'Not provided'}
+        
+        Project Details:
+        Services: ${formData.services || 'Not specified'}
+        Property Type: ${formData.projectType || 'Not specified'}
+        Budget Range: ${formData.budget || 'Not specified'}
+        
+        Message:
+        ${formData.message || 'No additional details provided'}
+        
+        Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}
+        
+        Submitted: ${new Date().toLocaleString()}
+        Source: Website Contact Form
+      `;
 
-      // Save to Firebase
-      const docRef = await addDoc(collection(db, 'contactSubmissions'), submissionData);
-      console.log('Form submitted successfully with ID:', docRef.id);
-
-      setSubmitStatus('success');
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        address: '',
-        services: '',
-        projectType: '',
-        budget: '',
-        message: '',
-        newsletter: false
+      // Send email using Mailjet
+      const response = await fetch('https://api.mailjet.com/v3.1/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${btoa(`${process.env.REACT_APP_MAILJET_API_KEY}:${process.env.REACT_APP_MAILJET_SECRET_KEY}`)}`
+        },
+        body: JSON.stringify({
+          Messages: [{
+            From: {
+              Email: "noreply@gdlandscaping.com",
+              Name: "GD Landscaping Website"
+            },
+            To: [{
+              Email: "contact@gdlandscaping.com",
+              Name: "GD Landscaping"
+            }],
+            Subject: `New Quote Request from ${formData.firstName} ${formData.lastName}`,
+            TextPart: emailContent,
+            HTMLPart: emailContent.replace(/\n/g, '<br>')
+          }]
+        })
       });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          phone: '',
+          address: '',
+          services: '',
+          projectType: '',
+          budget: '',
+          message: '',
+          newsletter: false
+        });
+      } else {
+        throw new Error('Failed to send email');
+      }
     } catch (error) {
       console.error('Form submission error:', error);
       setSubmitStatus('error');
@@ -132,6 +162,7 @@ const ContactPage = () => {
                 src="https://quote-dusky-iota.vercel.app" 
                 width="100%" 
                 height="600" 
+                title="Instant Lawn Care Quote Calculator"
                 style={{border:'none', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)'}}
                 allowFullScreen>
               </iframe>
