@@ -125,6 +125,19 @@ const ContactPage = () => {
           </div>
         </div>
         <div className="container">
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold text-center mb-6">Instant Lawn Care Quote</h2>
+            <div className="w-full flex justify-center">
+              <iframe 
+                src="https://quote-dusky-iota.vercel.app" 
+                width="100%" 
+                height="600" 
+                style={{border:'none', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)'}}
+                allowFullScreen>
+              </iframe>
+            </div>
+          </section>
+
           <div className="contact-hero">
             <div className="contact-hero-content">
               <div className="contact-badge">
