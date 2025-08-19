@@ -3,9 +3,5 @@
     "api/send-booking.js": {
       "maxDuration": 10
     }
-  },
-  "env": {
-    "REACT_APP_MAILJET_API_KEY": "@mailjet-api-key",
-    "REACT_APP_MAILJET_SECRET_KEY": "@mailjet-secret-key"
   }
 }
