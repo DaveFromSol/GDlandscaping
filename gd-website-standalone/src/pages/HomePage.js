@@ -2,37 +2,63 @@ import React from 'react';
 import SEOHead from '../components/SEOHead';
 
 const HomePage = () => {
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "GD Landscaping",
-    "description": "Professional landscaping services in Berlin CT and surrounding areas",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Berlin",
-      "addressRegion": "CT", 
-      "postalCode": "06037",
-      "addressCountry": "US"
-    },
-    "telephone": "(860) 526-7583",
-    "email": "contact@gdlandscaping.com",
-    "url": "https://gdlandscaping.com",
-    "serviceArea": {
-      "@type": "GeoCircle",
-      "geoMidpoint": {
-        "@type": "GeoCoordinates",
-        "latitude": 41.6219,
-        "longitude": -72.7553
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "GD Landscaping",
+      "description": "Professional landscaping services in Berlin CT and surrounding areas",
+      "logo": "https://gdlandscapingllc.com/GD.png",
+      "image": "https://gdlandscapingllc.com/GD.png",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Berlin",
+        "addressRegion": "CT", 
+        "postalCode": "06037",
+        "addressCountry": "US"
       },
-      "geoRadius": "25 miles"
+      "telephone": "(860) 526-7583",
+      "email": "contact@gdlandscaping.com",
+      "url": "https://gdlandscapingllc.com",
+      "sameAs": [
+        "https://www.gdlandscapingllc.com"
+      ],
+      "serviceArea": {
+        "@type": "GeoCircle",
+        "geoMidpoint": {
+          "@type": "GeoCoordinates",
+          "latitude": 41.6219,
+          "longitude": -72.7553
+        },
+        "geoRadius": "25 miles"
+      },
+      "services": ["Lawn Maintenance", "Landscape Design", "Tree Services", "Hardscaping", "Irrigation Systems", "Seasonal Cleanup"],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "reviewCount": "20"
+      },
+      "priceRange": "$$",
+      "paymentAccepted": "Cash, Check, Credit Card",
+      "currenciesAccepted": "USD"
     },
-    "services": ["Lawn Maintenance", "Landscape Design", "Tree Services", "Hardscaping", "Irrigation Systems", "Seasonal Cleanup"],
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "5",
-      "reviewCount": "20"
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "GD Landscaping",
+      "logo": "https://gdlandscapingllc.com/GD.png",
+      "url": "https://gdlandscapingllc.com",
+      "sameAs": [
+        "https://www.gdlandscapingllc.com"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "(860) 526-7583",
+        "contactType": "customer service",
+        "email": "contact@gdlandscaping.com"
+      }
     }
-  };
+  ];
 
   return (
     <>
