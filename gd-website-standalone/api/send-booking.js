@@ -1,8 +1,19 @@
 export default async function handler(req, res) {
   // Enable CORS for the quote app
-  res.setHeader('Access-Control-Allow-Origin', 'https://quote-dusky-iota.vercel.app');
+  const allowedOrigins = [
+    'https://quote-dusky-iota.vercel.app',
+    'https://gdlandscapingllc.com',
+    'https://www.gdlandscapingllc.com'
+  ];
+  
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
 
   // Handle preflight requests
   if (req.method === 'OPTIONS') {
