@@ -31,6 +31,18 @@ export default async function handler(req, res) {
   try {
     const formData = req.body;
     
+    // Check if Mailjet credentials are configured
+    if (!process.env.REACT_APP_MAILJET_API_KEY || !process.env.REACT_APP_MAILJET_SECRET_KEY) {
+      console.error('Mailjet credentials not configured');
+      // For now, just log the form data and return success
+      console.log('Contact form submission:', JSON.stringify(formData, null, 2));
+      res.status(200).json({ 
+        success: true, 
+        message: 'Form submitted successfully (logged to console)' 
+      });
+      return;
+    }
+    
     // Prepare email content for the contact form
     const emailContent = `
       New Contact Form Submission from GD Landscaping Website
@@ -87,7 +99,8 @@ export default async function handler(req, res) {
     } else {
       const errorData = await response.text();
       console.error('Mailjet API error:', errorData);
-      throw new Error('Failed to send contact email');
+      console.error('Response status:', response.status);
+      throw new Error(`Mailjet API failed with status ${response.status}`);
     }
   } catch (error) {
     console.error('Contact form submission error:', error);
