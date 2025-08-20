@@ -39,55 +39,18 @@ const ContactPage = () => {
     }
 
     try {
-      // Prepare email content
-      const emailContent = `
-        New Quote Request from GD Landscaping Website
-        
-        Contact Information:
-        Name: ${formData.firstName} ${formData.lastName}
-        Email: ${formData.email || 'Not provided'}
-        Phone: ${formData.phone}
-        Address: ${formData.address || 'Not provided'}
-        
-        Project Details:
-        Services: ${formData.services || 'Not specified'}
-        Property Type: ${formData.projectType || 'Not specified'}
-        Budget Range: ${formData.budget || 'Not specified'}
-        
-        Message:
-        ${formData.message || 'No additional details provided'}
-        
-        Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}
-        
-        Submitted: ${new Date().toLocaleString()}
-        Source: Website Contact Form
-      `;
-
-      // Send email using Mailjet
-      const response = await fetch('https://api.mailjet.com/v3.1/send', {
+      // Send form data to API endpoint
+      const response = await fetch('/api/send-contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Basic ${btoa(`${process.env.REACT_APP_MAILJET_API_KEY}:${process.env.REACT_APP_MAILJET_SECRET_KEY}`)}`
         },
-        body: JSON.stringify({
-          Messages: [{
-            From: {
-              Email: "noreply@gdlandscaping.com",
-              Name: "GD Landscaping Website"
-            },
-            To: [{
-              Email: "contact@gdlandscaping.com",
-              Name: "GD Landscaping"
-            }],
-            Subject: `New Quote Request from ${formData.firstName} ${formData.lastName}`,
-            TextPart: emailContent,
-            HTMLPart: emailContent.replace(/\n/g, '<br>')
-          }]
-        })
+        body: JSON.stringify(formData)
       });
 
-      if (response.ok) {
+      const result = await response.json();
+
+      if (response.ok && result.success) {
         setSubmitStatus('success');
         setFormData({
           firstName: '',
@@ -102,7 +65,7 @@ const ContactPage = () => {
           newsletter: false
         });
       } else {
-        throw new Error('Failed to send email');
+        throw new Error(result.error || 'Failed to send message');
       }
     } catch (error) {
       console.error('Form submission error:', error);
