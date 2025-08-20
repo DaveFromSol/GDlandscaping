@@ -139,13 +139,18 @@ const ContactPage = () => {
         <div className="container">
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-center mb-6">Instant Lawn Care Quote</h2>
-            <div className="w-full flex justify-center">
+            <div className="w-full" style={{height: '100vh', minHeight: '600px'}}>
               <iframe 
                 src="https://quote-dusky-iota.vercel.app" 
                 width="100%" 
-                height="600" 
+                height="100%" 
                 title="Instant Lawn Care Quote Calculator"
-                style={{border:'none', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)'}}
+                style={{
+                  border: 'none', 
+                  borderRadius: '12px', 
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                  display: 'block'
+                }}
                 allowFullScreen>
               </iframe>
             </div>

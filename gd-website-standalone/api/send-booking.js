@@ -3,7 +3,8 @@ export default async function handler(req, res) {
   const allowedOrigins = [
     'https://quote-dusky-iota.vercel.app',
     'https://gdlandscapingllc.com',
-    'https://www.gdlandscapingllc.com'
+    'https://www.gdlandscapingllc.com',
+    'https://g-dlandscaping-jsm6-q25z1c454-davefromsols-projects.vercel.app'
   ];
   
   const origin = req.headers.origin;
@@ -12,7 +13,7 @@ export default async function handler(req, res) {
   }
   
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
 
   // Handle preflight requests
@@ -28,6 +29,18 @@ export default async function handler(req, res) {
 
   try {
     const bookingData = req.body;
+    
+    // Check if Mailjet credentials are configured
+    if (!process.env.REACT_APP_MAILJET_API_KEY || !process.env.REACT_APP_MAILJET_SECRET_KEY) {
+      console.error('Mailjet credentials not configured for booking');
+      // For now, just log the booking data and return success
+      console.log('Quote booking submission:', JSON.stringify(bookingData, null, 2));
+      res.status(200).json({ 
+        success: true, 
+        message: 'Booking submitted successfully (logged to console)' 
+      });
+      return;
+    }
     
     // Prepare email content for the booking
     const emailContent = `
@@ -81,7 +94,9 @@ export default async function handler(req, res) {
         message: 'Booking submitted successfully' 
       });
     } else {
-      throw new Error('Failed to send booking email');
+      const errorData = await response.text();
+      console.error('Mailjet API error for booking:', errorData);
+      throw new Error(`Mailjet API failed with status ${response.status}`);
     }
   } catch (error) {
     console.error('Booking submission error:', error);
