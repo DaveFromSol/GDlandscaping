@@ -39,7 +39,26 @@ const ContactPage = () => {
     }
 
     try {
-      // Send form data to API endpoint
+      // For local development, simulate successful submission
+      if (window.location.hostname === 'localhost') {
+        console.log('Local development - form data:', formData);
+        setSubmitStatus('success');
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          phone: '',
+          address: '',
+          services: '',
+          projectType: '',
+          budget: '',
+          message: '',
+          newsletter: false
+        });
+        return;
+      }
+
+      // Send form data to API endpoint (production)
       const response = await fetch('/api/send-contact', {
         method: 'POST',
         headers: {
