@@ -85,7 +85,7 @@ export default async function handler(req, res) {
             Name: "GD Landscaping Website"
           },
           To: [{
-            Email: "contact@gdlandscaping.com",
+            Email: "contact@gdlandscapingllc.com",
             Name: "GD Landscaping"
           }],
           Subject: `New Quote Request from ${formData.firstName} ${formData.lastName}`,

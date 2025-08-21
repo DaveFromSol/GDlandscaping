@@ -78,7 +78,7 @@ export default async function handler(req, res) {
             Name: "GD Landscaping Quote Widget"
           },
           To: [{
-            Email: "contact@gdlandscaping.com",
+            Email: "contact@gdlandscapingllc.com",
             Name: "GD Landscaping"
           }],
           Subject: `New Quote Booking - ${bookingData.customerName || 'Customer'} - $${bookingData.estimatedPrice || 'TBD'}`,
