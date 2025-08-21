@@ -31,6 +31,10 @@ export default async function handler(req, res) {
   try {
     const formData = req.body;
     
+    // Debug environment variables
+    console.log('API Key exists:', !!process.env.REACT_APP_MAILJET_API_KEY);
+    console.log('Secret Key exists:', !!process.env.REACT_APP_MAILJET_SECRET_KEY);
+    
     // Check if Mailjet credentials are configured
     if (!process.env.REACT_APP_MAILJET_API_KEY || !process.env.REACT_APP_MAILJET_SECRET_KEY) {
       console.error('Mailjet credentials not configured');
