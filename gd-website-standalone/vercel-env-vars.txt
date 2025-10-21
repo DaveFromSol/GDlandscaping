@@ -1,0 +1,41 @@
+VERCEL ENVIRONMENT VARIABLES
+================================
+
+Copy and paste each line into Vercel Dashboard → Settings → Environment Variables:
+
+Variable Name: REACT_APP_FIREBASE_API_KEY
+Value: AIzaSyB5s2qqA5kGWewADT21yein_FWi3Yh87L8
+
+Variable Name: REACT_APP_FIREBASE_AUTH_DOMAIN
+Value: gd-landscaping-app.firebaseapp.com
+
+Variable Name: REACT_APP_FIREBASE_PROJECT_ID
+Value: gd-landscaping-app
+
+Variable Name: REACT_APP_FIREBASE_STORAGE_BUCKET
+Value: gd-landscaping-app.firebasestorage.app
+
+Variable Name: REACT_APP_FIREBASE_MESSAGING_SENDER_ID
+Value: 405717266236
+
+Variable Name: REACT_APP_FIREBASE_APP_ID
+Value: 1:405717266236:web:85f3946a326e482c9e7839
+
+Variable Name: REACT_APP_FIREBASE_MEASUREMENT_ID
+Value: G-S8CXQC7532
+
+Variable Name: REACT_APP_GOOGLE_MAPS_API_KEY
+Value: AIzaSyDiFzxddX5tpdulBf8YMVXFekxFUJ2ys-c
+
+=================================
+
+INSTRUCTIONS:
+1. Go to Vercel Dashboard
+2. Select your project
+3. Go to Settings → Environment Variables
+4. Click "Add New"
+5. Copy each Variable Name and Value above
+6. Add all 7 variables
+7. Redeploy your project
+
+After adding these, your website will work with Firebase on Vercel!

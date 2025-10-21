@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/send-booking.js": {
+      "maxDuration": 10
+    }
+  }
+}

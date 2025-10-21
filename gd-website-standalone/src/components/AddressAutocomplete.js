@@ -1,0 +1,220 @@
+import React, { useEffect, useRef, useState } from 'react';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+import { useNavigate } from 'react-router-dom';
+import PropertyMapModal from './PropertyMapModal';
+
+const AddressAutocomplete = () => {
+  const geocoderContainerRef = useRef(null);
+  const geocoderRef = useRef(null);
+  const [selectedAddress, setSelectedAddress] = useState('');
+  const [showMap, setShowMap] = useState(false);
+  const [addressData, setAddressData] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!geocoderContainerRef.current) return;
+
+    // Prevent duplicate geocoder initialization
+    if (geocoderRef.current) return;
+
+    const geocoder = new MapboxGeocoder({
+      accessToken: 'pk.eyJ1IjoiZHJpY2h0ZXIwNiIsImEiOiJjbWd0anR3ZXEwNTUwMnNwdDRmaDZ5ZndiIn0.UbCV_Y8l1Duq9B2Q77OFCw',
+      types: 'address',
+      countries: 'us',
+      bbox: [-73.2, 41.2, -71.3, 42.7], // CT and Central MA bounding box
+      proximity: {
+        longitude: -72.7553,
+        latitude: 41.6219
+      }, // Berlin, CT
+      placeholder: 'Enter your address for instant quote...',
+      mapboxgl: null, // We're not using a map, just the geocoder
+    });
+
+    geocoderRef.current = geocoder;
+    geocoder.addTo(geocoderContainerRef.current);
+
+    // Handle address selection
+    geocoder.on('result', (e) => {
+      const address = e.result.place_name;
+      const coordinates = e.result.center; // [longitude, latitude]
+
+      setSelectedAddress(address);
+      setAddressData({
+        address: address,
+        coordinates: coordinates
+      });
+
+      // Show the map modal
+      setShowMap(true);
+    });
+
+    // Clean up - don't call onRemove as it causes errors in some cases
+    // The geocoder will be cleaned up when the component unmounts anyway
+    return () => {
+      if (geocoderRef.current) {
+        // Clear the container to remove the geocoder DOM elements
+        if (geocoderContainerRef.current) {
+          geocoderContainerRef.current.innerHTML = '';
+        }
+        geocoderRef.current = null;
+      }
+    };
+  }, []);
+
+  const handleMapClose = () => {
+    setShowMap(false);
+  };
+
+  const handleMapConfirm = (data) => {
+    setShowMap(false);
+
+    // Redirect to quote page with property data for instant pricing
+    navigate('/quote', {
+      state: {
+        address: data.address,
+        coordinates: data.coordinates,
+        propertySize: data.propertySize
+      }
+    });
+  };
+
+  return (
+    <>
+      <div style={{
+        width: '100%',
+        maxWidth: '600px',
+        margin: '0 auto'
+      }}>
+        <div
+          ref={geocoderContainerRef}
+          style={{
+            fontSize: '16px'
+          }}
+        />
+      <style>{`
+        .mapboxgl-ctrl-geocoder {
+          min-width: 100%;
+          max-width: 100%;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+          border-radius: 8px;
+          font-size: 16px;
+          z-index: 1000;
+        }
+
+        .mapboxgl-ctrl-geocoder--input {
+          height: 60px;
+          padding: 0 50px 0 20px;
+          font-size: 18px;
+          color: #333;
+          border-radius: 8px;
+        }
+
+        .mapboxgl-ctrl-geocoder--input:focus {
+          outline: none;
+          box-shadow: 0 4px 20px rgba(45, 80, 22, 0.3);
+        }
+
+        .mapboxgl-ctrl-geocoder--icon-search {
+          top: 18px;
+          left: auto;
+          right: 15px;
+          width: 24px;
+          height: 24px;
+        }
+
+        .mapboxgl-ctrl-geocoder--button {
+          top: 18px;
+          right: 15px;
+        }
+
+        .mapboxgl-ctrl-geocoder--icon {
+          fill: #2d5016;
+        }
+
+        .mapboxgl-ctrl-geocoder--suggestion {
+          padding: 12px 20px;
+          font-size: 16px;
+          white-space: normal !important;
+          word-wrap: break-word !important;
+          overflow: visible !important;
+          text-overflow: clip !important;
+          line-height: 1.4 !important;
+          min-height: 50px;
+        }
+
+        .mapboxgl-ctrl-geocoder--suggestion-title {
+          font-weight: 600;
+          color: #333;
+          white-space: normal !important;
+          word-wrap: break-word !important;
+          overflow: visible !important;
+          text-overflow: clip !important;
+        }
+
+        .mapboxgl-ctrl-geocoder--suggestion-address {
+          color: #666;
+          font-size: 14px;
+          white-space: normal !important;
+          word-wrap: break-word !important;
+          overflow: visible !important;
+          text-overflow: clip !important;
+          margin-top: 4px;
+        }
+
+        .mapboxgl-ctrl-geocoder .suggestions {
+          border-radius: 0 0 8px 8px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+          max-height: 400px !important;
+          overflow-y: auto !important;
+          width: 100% !important;
+          z-index: 1001;
+        }
+
+        .mapboxgl-ctrl-geocoder--suggestion:hover {
+          background-color: #f0f4ed;
+        }
+
+        /* Ensure suggestions container doesn't get clipped */
+        .mapboxgl-ctrl-geocoder .suggestions-wrapper {
+          overflow: visible !important;
+        }
+
+        @media (max-width: 768px) {
+          .mapboxgl-ctrl-geocoder--input {
+            height: 55px;
+            font-size: 16px;
+            padding: 0 45px 0 15px;
+          }
+
+          .mapboxgl-ctrl-geocoder--icon-search,
+          .mapboxgl-ctrl-geocoder--button {
+            top: 16px;
+          }
+
+          .mapboxgl-ctrl-geocoder--suggestion {
+            font-size: 14px;
+            padding: 10px 15px;
+          }
+
+          .mapboxgl-ctrl-geocoder--suggestion-address {
+            font-size: 12px;
+          }
+        }
+      `}</style>
+      </div>
+
+      {/* Property Map Modal */}
+      {showMap && addressData && (
+        <PropertyMapModal
+          address={addressData.address}
+          coordinates={addressData.coordinates}
+          onClose={handleMapClose}
+          onConfirm={handleMapConfirm}
+        />
+      )}
+    </>
+  );
+};
+
+export default AddressAutocomplete;
