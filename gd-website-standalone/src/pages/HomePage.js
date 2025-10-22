@@ -103,13 +103,13 @@ const HomePage = () => {
                 padding: '0 20px'
               }}>
                 <h2 style={{
-                  color: 'white',
+                  color: 'black',
                   fontSize: '24px',
                   fontWeight: '600',
                   marginBottom: '15px',
-                  textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+                  textShadow: '1px 1px 2px rgba(255,255,255,0.5)'
                 }}>
-                  Type Your Address for Instant Quote
+                  Type Your Address for Instant Lawn Care Quote
                 </h2>
                 <AddressAutocomplete />
               </div>
