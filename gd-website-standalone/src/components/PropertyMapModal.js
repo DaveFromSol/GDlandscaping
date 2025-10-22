@@ -304,7 +304,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
             } else {
               // Fallback: If "contains" returns 0 results, try distance-based query
               console.warn(`⚠️ "Contains" query returned 0 results - point may be on road/boundary`);
-              console.log(`Falling back to distance-based query (50m radius)...`);
+              console.log(`Falling back to distance-based query (10m radius)...`);
 
               const distanceParams = new URLSearchParams({
                 f: 'json',
@@ -312,7 +312,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
                 spatialRel: 'esriSpatialRelIntersects',
                 geometry: pointGeom,
                 geometryType: 'esriGeometryPoint',
-                distance: '50',  // 50 meters
+                distance: '10',  // 10 meters - tight radius to avoid neighbors
                 units: 'esriSRUnit_Meter',
                 inSR: '4326',
                 outFields: '*',
@@ -344,17 +344,60 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
                     return inside;
                   };
 
-                  // Find parcel containing the point
-                  let selectedFeature = fallbackData.features.find(f =>
-                    f.geometry?.rings?.[0] && isPointInPolygon(coords, f.geometry.rings[0])
-                  );
+                  // Extract street number from address for matching
+                  const extractStreetNumber = (addr) => {
+                    if (!addr) return null;
+                    const match = addr.match(/^\s*(\d+[A-Za-z]?)\s+/);
+                    return match ? match[1].toLowerCase() : null;
+                  };
+                  const inputStreetNumber = extractStreetNumber(address);
 
-                  // If none contain the point, use closest by centroid
+                  // PRIORITY 1: Find parcel containing the point with matching street number
+                  let selectedFeature = fallbackData.features.find(f => {
+                    if (!f.geometry?.rings?.[0]) return false;
+                    const containsPoint = isPointInPolygon(coords, f.geometry.rings[0]);
+                    if (!containsPoint) return false;
+
+                    // Check address match
+                    if (inputStreetNumber) {
+                      const parcelAddr = f.attributes?.SITEADDR || f.attributes?.Location ||
+                                        f.attributes?.PROPLOC || f.attributes?.ADDRESS || '';
+                      const parcelNumber = extractStreetNumber(parcelAddr);
+                      if (parcelNumber && parcelNumber === inputStreetNumber) {
+                        console.log(`✓ PERFECT: Parcel contains point AND matches address number ${inputStreetNumber}`);
+                        return true;
+                      }
+                    }
+                    return false;
+                  });
+
+                  // PRIORITY 2: Find parcel containing the point (even without address match)
                   if (!selectedFeature) {
-                    selectedFeature = fallbackData.features[0];  // Closest (already sorted by distance typically)
-                    console.log(`Using closest parcel (point not inside any)`);
-                  } else {
-                    console.log(`✓ Found parcel containing point`);
+                    selectedFeature = fallbackData.features.find(f =>
+                      f.geometry?.rings?.[0] && isPointInPolygon(coords, f.geometry.rings[0])
+                    );
+                    if (selectedFeature) {
+                      console.log(`✓ Found parcel containing point (no address match verified)`);
+                    }
+                  }
+
+                  // PRIORITY 3: Use closest parcel with matching street number
+                  if (!selectedFeature && inputStreetNumber) {
+                    selectedFeature = fallbackData.features.find(f => {
+                      const parcelAddr = f.attributes?.SITEADDR || f.attributes?.Location ||
+                                        f.attributes?.PROPLOC || f.attributes?.ADDRESS || '';
+                      const parcelNumber = extractStreetNumber(parcelAddr);
+                      return parcelNumber && parcelNumber === inputStreetNumber;
+                    });
+                    if (selectedFeature) {
+                      console.log(`Using closest parcel with matching address number ${inputStreetNumber}`);
+                    }
+                  }
+
+                  // PRIORITY 4: Last resort - use closest by distance
+                  if (!selectedFeature) {
+                    selectedFeature = fallbackData.features[0];
+                    console.warn(`⚠️ Using closest parcel (no point containment or address match)`);
                   }
 
                   if (selectedFeature?.geometry?.rings) {
@@ -479,7 +522,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
 
           // If "contains" returns 0 results, fallback to distance query
           if (!ctCAMAData.features || ctCAMAData.features.length === 0) {
-            console.warn(`⚠️ "Contains" returned 0 results - falling back to 200m distance query`);
+            console.warn(`⚠️ "Contains" returned 0 results - falling back to 10m distance query`);
             queryType = 'distance';
 
             const distanceParams = new URLSearchParams({
@@ -489,7 +532,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
               geometry: pointGeom,
               geometryType: 'esriGeometryPoint',
               inSR: '4326',
-              distance: '200',
+              distance: '10',  // 10 meters - tight radius to avoid neighbors
               units: 'esriSRUnit_Meter',
               outFields: '*',
               outSR: '4326',
@@ -582,19 +625,37 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
                   ? isPointInPolygon(coords, f.geometry.rings[0])
                   : false;
 
-                return { ...f, distance, containsPoint };
+                // Extract address number for matching
+                const extractStreetNumber = (addr) => {
+                  if (!addr) return null;
+                  const match = addr.match(/^\s*(\d+[A-Za-z]?)\s+/);
+                  return match ? match[1].toLowerCase() : null;
+                };
+                const inputStreetNumber = extractStreetNumber(address);
+                const addressNumber = extractStreetNumber(f.attributes?.Location || '');
+                const matchesAddress = inputStreetNumber && addressNumber === inputStreetNumber;
+
+                return { ...f, distance, containsPoint, matchesAddress };
               })
               .sort((a, b) => {
-                // CRITICAL: First priority - Parcels that contain the query point
-                // If ANY parcel contains the point, ONLY those should be considered
+                // PRIORITY 1: Parcels that BOTH contain the point AND match the address number
+                const aPerfect = a.containsPoint && a.matchesAddress;
+                const bPerfect = b.containsPoint && b.matchesAddress;
+                if (aPerfect && !bPerfect) return -1;
+                if (!aPerfect && bPerfect) return 1;
+
+                // PRIORITY 2: Parcels that contain the query point (even without address match)
                 if (a.containsPoint && !b.containsPoint) return -1;
                 if (!a.containsPoint && b.containsPoint) return 1;
 
-                // If BOTH contain point OR NEITHER contains point, compare by distance
-                // Distance is MORE important than use code to avoid selecting neighbor's house
+                // PRIORITY 3: For parcels that both contain OR both don't contain, prefer address match
+                if (a.matchesAddress && !b.matchesAddress) return -1;
+                if (!a.matchesAddress && b.matchesAddress) return 1;
+
+                // PRIORITY 4: Distance from centroid
                 const distanceDiff = a.distance - b.distance;
 
-                // Only consider use code if distances are very similar (within 0.00002 degrees ~2 meters)
+                // PRIORITY 5: Use code preference (only if distances very similar)
                 if (Math.abs(distanceDiff) < 0.00002) {
                   const aUseCode = (a.attributes?.Use_Code_Desc || '').toLowerCase();
                   const bUseCode = (b.attributes?.Use_Code_Desc || '').toLowerCase();
@@ -623,34 +684,38 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
             if (queryType === 'contains') {
               // Direct selection - parcel contains the point
               closestParcel = validFeatures[0];
-              selectionStatus = 'perfect-contains';
-              distanceMeters = closestParcel.distance * 111000; // Calculate for logging
-              console.log(`✓ PERFECT: "Contains" query returned parcel with point inside`);
+              distanceMeters = closestParcel.distance * 111000;
+
+              // Check if address also matches for perfect confidence
+              if (closestParcel.matchesAddress) {
+                selectionStatus = 'perfect-match';
+                console.log(`✓ PERFECT: "Contains" query with matching address number`);
+              } else {
+                selectionStatus = 'perfect-contains';
+                console.log(`✓ PERFECT: "Contains" query returned parcel with point inside`);
+              }
             } else {
               // Distance-based selection (fallback)
-              closestParcel = validFeatures[0]; // Already sorted by centroid distance
+              closestParcel = validFeatures[0]; // Already sorted by priority
               distanceMeters = closestParcel.distance * 111000;
               const MAX_DISTANCE_METERS = 30;
 
-              // Simple address check
-              const extractStreetNumber = (addr) => {
-                const match = addr.match(/^\s*(\d+[A-Za-z]?)\s+/);
-                return match ? match[1].toLowerCase() : null;
-              };
-
-              const inputStreetNum = extractStreetNumber(address);
-              const parcelStreetNum = extractStreetNumber(closestParcel.attributes?.Location || '');
-
               // Determine quality of distance-based match
-              if (distanceMeters > MAX_DISTANCE_METERS) {
-                selectionStatus = 'far';
-                console.warn(`⚠️ DISTANT MATCH: ${distanceMeters.toFixed(1)}m away (>${MAX_DISTANCE_METERS}m)`);
-              } else if (inputStreetNum && parcelStreetNum && inputStreetNum !== parcelStreetNum) {
-                selectionStatus = 'address-mismatch';
-                console.warn(`⚠️ ADDRESS MISMATCH: "${inputStreetNum}" vs "${parcelStreetNum}"`);
+              if (closestParcel.containsPoint && closestParcel.matchesAddress) {
+                selectionStatus = 'perfect-match';
+                console.log(`✓ PERFECT: Point inside parcel AND address matches`);
               } else if (closestParcel.containsPoint) {
                 selectionStatus = 'perfect-pip';
                 console.log(`✓ PERFECT: Point-in-polygon check passed (${distanceMeters.toFixed(1)}m from centroid)`);
+              } else if (closestParcel.matchesAddress && distanceMeters <= MAX_DISTANCE_METERS) {
+                selectionStatus = 'address-match';
+                console.log(`✓ GOOD: Address number matches (${distanceMeters.toFixed(1)}m from centroid)`);
+              } else if (distanceMeters > MAX_DISTANCE_METERS) {
+                selectionStatus = 'far';
+                console.warn(`⚠️ DISTANT MATCH: ${distanceMeters.toFixed(1)}m away (>${MAX_DISTANCE_METERS}m)`);
+              } else if (!closestParcel.matchesAddress) {
+                selectionStatus = 'address-unknown';
+                console.warn(`⚠️ Address match could not be verified (${distanceMeters.toFixed(1)}m from centroid)`);
               } else {
                 selectionStatus = 'good';
                 console.log(`✓ GOOD: Closest parcel (${distanceMeters.toFixed(1)}m)`);
@@ -666,6 +731,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
               const dist = (f.distance * 111000).toFixed(1);
               console.log(`${isSelected ? '✓ SELECTED' : `  Option ${idx + 1}`}:`, {
                 containsPoint: f.containsPoint,
+                matchesAddress: f.matchesAddress,
                 distance: `${dist}m`,
                 location: f.attributes?.Location || 'N/A',
                 useCode: f.attributes?.Use_Code_Desc,
