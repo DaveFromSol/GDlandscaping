@@ -1,0 +1,275 @@
+.instant-quote-landing {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.hero-content {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.hero-title {
+  font-size: 48px;
+  font-weight: 800;
+  color: white;
+  text-align: center;
+  margin: 0 0 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+  margin: 0 0 50px;
+  font-weight: 400;
+}
+
+.quote-input-section {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  margin: 0 auto 60px;
+  max-width: 700px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.input-label {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  text-align: center;
+  margin: 0 0 24px;
+}
+
+/* Features Grid */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin: 0 0 60px;
+}
+
+.feature-card {
+  background: white;
+  border-radius: 12px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.feature-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 12px;
+}
+
+.feature-card p {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* How It Works */
+.how-it-works {
+  background: white;
+  border-radius: 16px;
+  padding: 48px 40px;
+  margin: 0 0 60px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.how-it-works h2 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1f2937;
+  text-align: center;
+  margin: 0 0 40px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 32px;
+}
+
+.step {
+  text-align: center;
+}
+
+.step-number {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%);
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow: 0 4px 12px rgba(45, 80, 22, 0.3);
+}
+
+.step h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 8px;
+}
+
+.step p {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* CTA Section */
+.cta-section {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.cta-section h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 12px;
+}
+
+.cta-section p {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 24px;
+}
+
+.back-button {
+  background: white;
+  color: #2d5016;
+  border: none;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  background: #f9fafb;
+}
+
+/* Footer */
+.landing-footer {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+.landing-footer p {
+  margin: 0;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 32px;
+  }
+
+  .hero-subtitle {
+    font-size: 18px;
+    margin-bottom: 32px;
+  }
+
+  .quote-input-section {
+    padding: 24px;
+    margin-bottom: 40px;
+  }
+
+  .input-label {
+    font-size: 22px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .how-it-works {
+    padding: 32px 24px;
+    margin-bottom: 40px;
+  }
+
+  .how-it-works h2 {
+    font-size: 28px;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .cta-section {
+    padding: 24px;
+  }
+
+  .cta-section h2 {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 28px;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+  }
+
+  .quote-input-section {
+    padding: 20px;
+  }
+
+  .input-label {
+    font-size: 20px;
+  }
+
+  .feature-card {
+    padding: 24px 16px;
+  }
+}

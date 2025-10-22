@@ -23,6 +23,7 @@ import LawnCareMiddletownPage from './pages/LawnCareMiddletownPage';
 import LawnCareRockyHillPage from './pages/LawnCareRockyHillPage';
 import LawnCareNewingtonPage from './pages/LawnCareNewingtonPage';
 import LawnCareBerlinPage from './pages/LawnCareBerlinPage';
+import InstantQuotePage from './pages/InstantQuotePage';
 
 const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -156,6 +157,7 @@ function App() {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/quote" element={<QuotePage />} />
+              <Route path="/instant-quote" element={<InstantQuotePage />} />
               <Route path="/snow-removal" element={<SnowRemovalPage />} />
               <Route path="/snow-removal-new-britain-ct" element={<SnowRemovalNewBritainPage />} />
               <Route path="/snow-removal-cromwell-ct" element={<SnowRemovalCromwellPage />} />
