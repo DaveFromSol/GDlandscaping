@@ -1349,7 +1349,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
         maxHeight: '90vh',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
+        overflow: 'auto',
         boxShadow: '0 20px 60px rgba(0,0,0,0.3)'
       }}>
         {/* Header */}
@@ -1401,7 +1401,13 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
         </div>
 
         {/* Map Container */}
-        <div style={{ flex: 1, position: 'relative', minHeight: '500px', height: '60vh' }}>
+        <div style={{
+          flex: 1,
+          position: 'relative',
+          minHeight: '300px',
+          height: window.innerWidth <= 768 ? '40vh' : '60vh',
+          maxHeight: window.innerWidth <= 768 ? '50vh' : 'none'
+        }}>
           {isLoading && (
             <div style={{
               position: 'absolute',
@@ -1558,11 +1564,16 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
 
         {/* Footer */}
         <div style={{
-          padding: '20px 24px',
+          padding: window.innerWidth <= 768 ? '16px' : '20px 24px',
           borderTop: '1px solid #e5e7eb',
           display: 'flex',
           gap: '12px',
-          justifyContent: 'flex-end'
+          justifyContent: window.innerWidth <= 768 ? 'stretch' : 'flex-end',
+          flexDirection: window.innerWidth <= 768 ? 'column' : 'row',
+          backgroundColor: 'white',
+          position: 'sticky',
+          bottom: 0,
+          zIndex: 10
         }}>
           <button
             onClick={onClose}
@@ -1575,7 +1586,9 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
               color: '#374151',
               borderRadius: '8px',
               cursor: 'pointer',
-              transition: 'all 0.2s'
+              transition: 'all 0.2s',
+              flex: window.innerWidth <= 768 ? '1' : 'none',
+              width: window.innerWidth <= 768 ? '100%' : 'auto'
             }}
             onMouseOver={(e) => e.target.style.backgroundColor = '#f9fafb'}
             onMouseOut={(e) => e.target.style.backgroundColor = 'white'}
@@ -1585,7 +1598,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
           <button
             onClick={handleConfirm}
             style={{
-              padding: '12px 32px',
+              padding: '14px 32px',
               fontSize: '16px',
               fontWeight: '600',
               border: 'none',
@@ -1593,7 +1606,9 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
               color: 'white',
               borderRadius: '8px',
               cursor: 'pointer',
-              transition: 'all 0.2s'
+              transition: 'all 0.2s',
+              flex: window.innerWidth <= 768 ? '1' : 'none',
+              width: window.innerWidth <= 768 ? '100%' : 'auto'
             }}
             onMouseOver={(e) => e.target.style.backgroundColor = '#1f3810'}
             onMouseOut={(e) => e.target.style.backgroundColor = '#2d5016'}
