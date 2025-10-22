@@ -277,7 +277,7 @@ const QuotePage = () => {
     <div className="quote-page">
       <div className="quote-container">
         <div className="quote-header">
-          <h1>Your Instant Quote</h1>
+          <h1 style={{ color: 'white' }}>Lawn Care Instant Quote</h1>
           <div className="property-info">
             <p className="address">{address}</p>
             <p className="size">
