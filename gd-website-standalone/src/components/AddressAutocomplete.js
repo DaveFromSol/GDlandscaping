@@ -74,7 +74,8 @@ const AddressAutocomplete = () => {
       state: {
         address: data.address,
         coordinates: data.coordinates,
-        propertySize: data.propertySize
+        propertySize: data.propertySize,
+        parcelGeometry: data.parcelGeometry
       }
     });
   };
@@ -100,6 +101,7 @@ const AddressAutocomplete = () => {
           border-radius: 8px;
           font-size: 16px;
           z-index: 1000;
+          position: relative !important;
         }
 
         .mapboxgl-ctrl-geocoder--input {
@@ -167,8 +169,14 @@ const AddressAutocomplete = () => {
           box-shadow: 0 4px 20px rgba(0,0,0,0.15);
           max-height: 400px !important;
           overflow-y: auto !important;
+          overflow-x: hidden !important;
           width: 100% !important;
+          min-width: 100% !important;
+          left: 0 !important;
+          right: 0 !important;
           z-index: 1001;
+          position: absolute !important;
+          background: white;
         }
 
         .mapboxgl-ctrl-geocoder--suggestion:hover {

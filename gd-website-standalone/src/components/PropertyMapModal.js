@@ -6,6 +6,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [propertySize, setPropertySize] = useState(null);
+  const [parcelGeometry, setParcelGeometry] = useState(null);
   const [drawing, setDrawing] = useState(false);
   const [drawnArea, setDrawnArea] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -265,6 +266,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
               // Extract geometry
               if (feature.geometry && feature.geometry.rings) {
                 const polygonCoords = feature.geometry.rings[0].map(ring => [ring[0], ring[1]]);
+                setParcelGeometry(feature.geometry);
 
                 console.log(`Drawing official ${townGis.name} CT parcel boundary`);
                 setDataSource('cadastre');
@@ -402,6 +404,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
 
                   if (selectedFeature?.geometry?.rings) {
                     const polygonCoords = selectedFeature.geometry.rings[0].map(ring => [ring[0], ring[1]]);
+                    setParcelGeometry(selectedFeature.geometry);
                     console.log(`Drawing official ${townGis.name} CT parcel boundary (via fallback)`);
                     setDataSource('cadastre');
 
@@ -744,6 +747,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
 
             if (feature.geometry && feature.geometry.rings) {
               const polygonCoords = feature.geometry.rings[0].map(ring => [ring[0], ring[1]]);
+              setParcelGeometry(feature.geometry);
 
               console.log('Drawing official CT CAMA parcel boundary');
               setDataSource('cadastre');
@@ -1323,7 +1327,8 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
     onConfirm({
       address,
       coordinates,
-      propertySize
+      propertySize,
+      parcelGeometry
     });
   };
 

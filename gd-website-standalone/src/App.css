@@ -638,7 +638,7 @@
 }
 
 .stat-label {
-  color: #6b7280;
+  color: #6b7280 !important;
   font-size: 0.9rem;
   font-weight: 600;
 }

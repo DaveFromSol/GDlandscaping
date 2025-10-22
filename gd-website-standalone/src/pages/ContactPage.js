@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import AddressAutocomplete from '../components/AddressAutocomplete';
 import { useFirebase } from '../contexts/FirebaseContext';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
@@ -169,10 +170,12 @@ Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}`,
   return (
     <>
       <SEOHead
-        title="Contact GD Landscaping - Get Your Free Quote Today | Berlin CT Landscaping Services"
-        description="Contact GD Landscaping for professional landscaping services in Berlin CT. Get your free quote today for lawn care, landscape design, tree services, and hardscaping."
-        keywords="contact GD Landscaping, free landscaping quote Berlin CT, landscaping estimates Hartford County, lawn care consultation Connecticut, tree service quote Berlin CT"
-        canonicalUrl="https://gdlandscaping.com/contact"
+        title="Contact GD Landscaping | Free Quotes - Berlin CT Lawn Care & Snow Removal Services"
+        description="Get your free landscaping quote today! Contact GD Landscaping in Berlin CT for lawn care, snow removal, and landscaping services. Same-day response guaranteed."
+        keywords="contact GD Landscaping Berlin CT, free landscaping quote Connecticut, lawn care estimate Hartford County, snow removal quote Berlin, landscaping consultation CT, instant lawn quote Berlin"
+        canonicalUrl="https://gdlandscapingllc.com/contact"
+        ogImage="/GD.png"
+        ogType="website"
         structuredData={structuredData}
       />
       
@@ -201,6 +204,34 @@ Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}`,
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Instant Quote Section */}
+          <div style={{
+            margin: '40px 0',
+            padding: '32px',
+            background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+            borderRadius: '16px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+          }}>
+            <h2 style={{
+              color: '#2d5016',
+              fontSize: '28px',
+              fontWeight: '700',
+              marginBottom: '12px',
+              textAlign: 'center'
+            }}>
+              Get Your Instant Lawn Care Quote
+            </h2>
+            <p style={{
+              color: '#6b7280',
+              fontSize: '16px',
+              marginBottom: '24px',
+              textAlign: 'center'
+            }}>
+              Enter your address to see your property boundary and get accurate pricing in seconds
+            </p>
+            <AddressAutocomplete />
           </div>
 
           <div className="contact-grid grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">

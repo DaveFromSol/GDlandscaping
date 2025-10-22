@@ -1,16 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useFirebase } from '../contexts/FirebaseContext';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import './QuotePage.css';
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiZHJpY2h0ZXIwNiIsImEiOiJjbWd0anR3ZXEwNTUwMnNwdDRmaDZ5ZndiIn0.UbCV_Y8l1Duq9B2Q77OFCw';
 
 const QuotePage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { db } = useFirebase();
+  const mapContainerRef = useRef(null);
+  const mapRef = useRef(null);
 
   // Get property data from navigation state
-  const { address, coordinates, propertySize } = location.state || {};
+  const { address, coordinates, propertySize, parcelGeometry } = location.state || {};
 
   // Booking form state
   const [showBookingForm, setShowBookingForm] = useState(false);
@@ -46,10 +52,7 @@ const QuotePage = () => {
       }
     },
     leafCleanup: { enabled: false, frequency: 'one-time', price: 85 },
-    fertilization: { enabled: false, frequency: 'one-time', price: 65 },
-    mulching: { enabled: false, frequency: 'one-time', price: 120 },
-    edging: { enabled: false, frequency: 'bi-weekly', price: 25 },
-    weeding: { enabled: false, frequency: 'monthly', price: 40 }
+    fertilization: { enabled: false, frequency: 'one-time', price: 65 }
   });
 
   // Calculate base lawn mowing price based on property size
@@ -82,6 +85,71 @@ const QuotePage = () => {
       }
     }));
   }, [propertySize]);
+
+  // Initialize map
+  useEffect(() => {
+    if (!mapContainerRef.current || !coordinates || mapRef.current) return;
+
+    const map = new mapboxgl.Map({
+      container: mapContainerRef.current,
+      style: 'mapbox://styles/mapbox/satellite-streets-v12',
+      center: coordinates,
+      zoom: 18,
+      attributionControl: false
+    });
+
+    mapRef.current = map;
+
+    map.on('load', () => {
+      // Add parcel boundary if available
+      if (parcelGeometry && parcelGeometry.rings) {
+        const coordinates = parcelGeometry.rings[0].map(coord => [coord[0], coord[1]]);
+
+        map.addSource('parcel', {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            geometry: {
+              type: 'Polygon',
+              coordinates: [coordinates]
+            }
+          }
+        });
+
+        map.addLayer({
+          id: 'parcel-fill',
+          type: 'fill',
+          source: 'parcel',
+          paint: {
+            'fill-color': '#22c55e',
+            'fill-opacity': 0.3
+          }
+        });
+
+        map.addLayer({
+          id: 'parcel-outline',
+          type: 'line',
+          source: 'parcel',
+          paint: {
+            'line-color': '#16a34a',
+            'line-width': 3
+          }
+        });
+      }
+
+      // Add property marker
+      new mapboxgl.Marker({ color: '#ef4444' })
+        .setLngLat(coordinates)
+        .addTo(map);
+    });
+
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
+    };
+  }, [coordinates, parcelGeometry]);
 
   // Toggle service enabled/disabled
   const toggleService = (serviceName) => {
@@ -179,21 +247,6 @@ const QuotePage = () => {
       name: 'Fertilization',
       description: 'Professional lawn fertilization treatment',
       icon: '🌿'
-    },
-    mulching: {
-      name: 'Mulching',
-      description: 'Fresh mulch installation in garden beds',
-      icon: '🪵'
-    },
-    edging: {
-      name: 'Edging',
-      description: 'Clean border definition along walkways',
-      icon: '📏'
-    },
-    weeding: {
-      name: 'Weeding',
-      description: 'Garden bed and landscape weeding',
-      icon: '🌾'
     }
   };
 
@@ -277,13 +330,29 @@ const QuotePage = () => {
     <div className="quote-page">
       <div className="quote-container">
         <div className="quote-header">
-          <h1 style={{ color: 'white' }}>Lawn Care Instant Quote</h1>
-          <div className="property-info">
-            <p className="address">{address}</p>
-            <p className="size">
-              {propertySize.acres} acres ({propertySize.sqFt?.toLocaleString()} sq ft)
-            </p>
+          <div className="header-content">
+            <h1 style={{ color: 'white' }}>Lawn Care Instant Quote</h1>
+            <div className="property-info">
+              <p className="address">{address}</p>
+              <p className="size">
+                {propertySize.acres} acres ({propertySize.sqFt?.toLocaleString()} sq ft)
+              </p>
+            </div>
           </div>
+
+          {/* Property Map inside header */}
+          <div
+            ref={mapContainerRef}
+            className="property-map"
+            style={{
+              width: '100%',
+              height: '300px',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              marginTop: '20px',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.2)'
+            }}
+          />
         </div>
 
         <div className="quote-content">
@@ -547,7 +616,6 @@ const QuotePage = () => {
               )}
 
               <p className="quote-note">
-                This is an estimated quote. Final pricing may vary based on property conditions.
                 No payment required at this time.
               </p>
             </div>

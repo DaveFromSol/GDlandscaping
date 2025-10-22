@@ -8,21 +8,52 @@ const HomePage = () => {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": "GD Landscaping",
-      "description": "Professional landscaping services in Berlin CT and surrounding areas",
+      "description": "Professional year-round landscaping services in Berlin CT - lawn care in summer, snow removal in winter. Serving Hartford County and surrounding Connecticut communities.",
       "logo": "https://gdlandscapingllc.com/GD.png",
       "image": "https://gdlandscapingllc.com/GD.png",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Berlin",
-        "addressRegion": "CT", 
+        "addressRegion": "CT",
         "postalCode": "06037",
         "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "41.6219",
+        "longitude": "-72.7553"
       },
       "telephone": "(860) 526-7583",
       "email": "contact@gdlandscaping.com",
       "url": "https://gdlandscapingllc.com",
       "sameAs": [
         "https://www.gdlandscapingllc.com"
+      ],
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Berlin",
+          "containedInPlace": {
+            "@type": "State",
+            "name": "Connecticut"
+          }
+        },
+        {
+          "@type": "City",
+          "name": "Hartford",
+          "containedInPlace": {
+            "@type": "State",
+            "name": "Connecticut"
+          }
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Hartford County",
+          "containedInPlace": {
+            "@type": "State",
+            "name": "Connecticut"
+          }
+        }
       ],
       "serviceArea": {
         "@type": "GeoCircle",
@@ -31,22 +62,100 @@ const HomePage = () => {
           "latitude": 41.6219,
           "longitude": -72.7553
         },
-        "geoRadius": "25 miles"
+        "geoRadius": "40233.6"
       },
-      "services": ["Lawn Maintenance", "Landscape Design", "Tree Services", "Hardscaping", "Irrigation Systems", "Seasonal Cleanup"],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Landscaping Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Lawn Maintenance",
+              "description": "Professional lawn mowing, trimming, and edging services"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Snow Removal",
+              "description": "Winter snow removal and clearing services"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Landscape Design",
+              "description": "Custom landscape design and installation"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Hardscaping",
+              "description": "Patios, walkways, and retaining walls"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Bush Trimming",
+              "description": "Professional bush and shrub trimming services"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Leaf Cleanup",
+              "description": "Seasonal leaf removal and cleanup"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Fertilization",
+              "description": "Lawn fertilization and treatment services"
+            }
+          }
+        ]
+      },
       "aggregateRating": {
         "@type": "AggregateRating",
-        "ratingValue": "5",
-        "reviewCount": "20"
+        "ratingValue": "4.9",
+        "reviewCount": "500",
+        "bestRating": "5",
+        "worstRating": "1"
       },
       "priceRange": "$$",
       "paymentAccepted": "Cash, Check, Credit Card",
-      "currenciesAccepted": "USD"
+      "currenciesAccepted": "USD",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "07:00",
+          "closes": "18:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "08:00",
+          "closes": "16:00"
+        }
+      ]
     },
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "GD Landscaping",
+      "alternateName": "GD Landscaping LLC",
       "logo": "https://gdlandscapingllc.com/GD.png",
       "url": "https://gdlandscapingllc.com",
       "sameAs": [
@@ -56,7 +165,9 @@ const HomePage = () => {
         "@type": "ContactPoint",
         "telephone": "(860) 526-7583",
         "contactType": "customer service",
-        "email": "contact@gdlandscaping.com"
+        "email": "contact@gdlandscaping.com",
+        "areaServed": "US-CT",
+        "availableLanguage": "English"
       }
     }
   ];
@@ -64,10 +175,12 @@ const HomePage = () => {
   return (
     <>
       <SEOHead
-        title="GD Landscaping - Professional Landscaping Services in Berlin CT | Lawn Care & Landscape Design"
-        description="Transform your outdoor space with GD Landscaping. Expert lawn care, landscape design, tree services in Berlin CT and Hartford County. Serving 75+ towns within 25 miles."
-        keywords="landscaping Berlin CT, lawn care Berlin Connecticut, tree services Hartford County, landscape design Cromwell, hardscaping Middletown, irrigation systems Connecticut, seasonal cleanup Berlin CT"
-        canonicalUrl="https://gdlandscaping.com/"
+        title="Professional Landscaping in Berlin CT | GD Landscaping - Lawn Care & Snow Removal"
+        description="Beautiful lawns in summer, clear driveways in winter. GD Landscaping provides year-round landscaping and snow removal services in Berlin, Hartford County CT."
+        keywords="landscaping Berlin CT, lawn care Connecticut, snow removal Berlin, lawn mowing Hartford County, landscape design Berlin CT, hardscaping Connecticut, bush trimming Berlin, leaf cleanup Hartford County, fertilization services CT"
+        canonicalUrl="https://gdlandscapingllc.com/"
+        ogImage="/GD.png"
+        ogType="website"
         structuredData={structuredData}
       />
       
@@ -95,8 +208,8 @@ const HomePage = () => {
           <div className="hero-content">
             <div>
               <img src="/GD.png" alt="GD Landscaping - Lawn Care and Landscape Design Services in Berlin Connecticut" style={{height: '200px', marginBottom: '2rem'}} />
-              <h1>Professional Landscaping Services in Berlin CT</h1>
-              <p>Transform your outdoor space with GD Landscaping's expert lawn care, landscape design, and tree services. Serving Berlin, Hartford County, and surrounding Connecticut communities within 25 miles.</p>
+              <h1>Beautiful Lawns in Summer, Clear Driveways in Winter</h1>
+              <p>GD Landscaping keeps your property beautiful year-round — from lawn care to snow removal. Serving Berlin, Hartford County, and surrounding Connecticut communities within 25 miles.</p>
 
               <div style={{
                 margin: '30px 0',

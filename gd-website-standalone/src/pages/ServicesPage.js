@@ -32,7 +32,7 @@ const ServicesPage = () => {
       id: 4,
       name: 'Hardscaping',
       description: 'Patios, walkways, and retaining walls',
-      price: 'Depends',
+      price: 'Starting at $300',
       image: '🏗️',
       features: ['Patio installation', 'Walkway creation', 'Retaining walls', 'Outdoor kitchens']
     },
@@ -134,10 +134,12 @@ const ServicesPage = () => {
   return (
     <>
       <SEOHead
-        title="Landscaping Services in Berlin CT | GD Landscaping - Lawn Care, Tree Services, Hardscaping"
-        description="Professional landscaping services in Berlin CT. Lawn maintenance, landscape design, tree services, hardscaping, irrigation systems. Serving Hartford County & surrounding areas."
-        keywords="lawn maintenance Berlin CT, landscape design Hartford County, tree services Connecticut, hardscaping Berlin, irrigation systems CT, seasonal cleanup Berlin CT"
-        canonicalUrl="https://gdlandscaping.com/services"
+        title="Landscaping Services Berlin CT | GD Landscaping - Lawn Care, Snow Removal, Hardscaping"
+        description="Complete landscaping services in Berlin CT: lawn maintenance, snow removal, tree services, hardscaping & more. Serving Hartford County. Free estimates available."
+        keywords="landscaping services Berlin CT, lawn maintenance Berlin, snow removal Hartford County, tree services Connecticut, hardscaping Berlin CT, irrigation systems Connecticut, seasonal cleanup Berlin, lawn fertilization CT, mulching services Berlin"
+        canonicalUrl="https://gdlandscapingllc.com/services"
+        ogImage="/GD.png"
+        ogType="website"
         structuredData={structuredData}
       />
       
