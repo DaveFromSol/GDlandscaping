@@ -53,10 +53,6 @@ const InstantQuotePage = () => {
             <img src="/GD.png" alt="GD Landscaping" className="landing-logo" />
           </div>
 
-          <div className="hero-badge">
-            <span>⚡ Instant Quote Technology</span>
-          </div>
-
           <h1 className="hero-title">
             Get Your Lawn Care Quote in 30 Seconds
           </h1>
@@ -81,7 +77,7 @@ const InstantQuotePage = () => {
           {/* Social Proof */}
           <div className="social-proof">
             <div className="proof-stat">
-              <div className="stat-number">500+</div>
+              <div className="stat-number">5000+</div>
               <div className="stat-label">Properties Quoted</div>
             </div>
             <div className="proof-stat">
