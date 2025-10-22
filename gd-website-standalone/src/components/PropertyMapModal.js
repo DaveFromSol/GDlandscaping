@@ -114,11 +114,12 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
             name: 'New Britain',
             url: 'https://gis.vgsi.com/newbritainct/rest/services/Parcel/MapServer/0/query'
           },
-          {
-            keywords: ['rocky hill'],
-            name: 'Rocky Hill',
-            url: 'https://gis.rockyhillct.gov/arcgis/rest/services/Parcels/MapServer/0/query'
-          },
+          // Rocky Hill GIS server is offline - commented out to fall back to CT CAMA
+          // {
+          //   keywords: ['rocky hill'],
+          //   name: 'Rocky Hill',
+          //   url: 'https://gis.rockyhillct.gov/arcgis/rest/services/Parcels/MapServer/0/query'
+          // },
           {
             keywords: ['berlin', 'kensington'], // Kensington is a village within Berlin, CT
             name: 'Berlin',
@@ -161,11 +162,13 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
             name: 'Wethersfield',
             url: 'https://gis.wethersfieldct.gov/arcgis/rest/services/Parcels/MapServer/0/query'
           },
-          {
-            keywords: ['cromwell'],
-            name: 'Cromwell',
-            url: 'https://gis.cromwellct.com/arcgis/rest/services/Parcels/MapServer/0/query'
-          },
+          // Cromwell GIS server (gis.cromwellct.com) is not working - returns "Web Site Not Found"
+          // Commented out to fall back to Regrid/Geocodio for Cromwell addresses
+          // {
+          //   keywords: ['cromwell'],
+          //   name: 'Cromwell',
+          //   url: 'https://gis.cromwellct.com/arcgis/rest/services/Parcels/MapServer/0/query'
+          // },
           {
             keywords: ['portland'],
             name: 'Portland',
@@ -175,7 +178,17 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
             keywords: ['plainville'],
             name: 'Plainville',
             url: 'https://server1.mapxpress.net/arcgis/rest/services/Plainville/GCX_PLAINVILLE/MapServer/19/query'
+          },
+          {
+            keywords: ['bristol'],
+            name: 'Bristol',
+            url: 'https://server1.mapxpress.net/arcgis/rest/services/Bristol/Parcels/MapServer/0/query'
           }
+          // The following towns within 15 miles of Berlin are supported via CT CAMA statewide layer:
+          // - Meriden, Cheshire, Wolcott, East Hampton, Prospect
+          // - West Hartford (MapGeo API - different format)
+          // - Cromwell (server offline)
+          // All 169 CT towns are covered by the CT CAMA fallback layer with 50m buffer
         ];
 
         // Check each town in order (specific names first)
@@ -208,20 +221,21 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
       if (townGis) {
         console.log(`Address is in ${townGis.name}, querying town GIS...`);
         try {
+          // Strategy 1: Try "contains" query first (most accurate - finds parcel that contains the point)
+          const pointGeom = `${coords[0]},${coords[1]}`;
+
           const params = new URLSearchParams({
             f: 'json',
             returnGeometry: 'true',
-            spatialRel: 'esriSpatialRelIntersects',
-            geometry: JSON.stringify({
-              x: coords[0],
-              y: coords[1],
-              spatialReference: { wkid: 4326 }
-            }),
+            spatialRel: 'esriSpatialRelContains',  // CRITICAL: Only parcels containing the point
+            geometry: pointGeom,
             geometryType: 'esriGeometryPoint',
             inSR: '4326',
             outFields: '*',
             outSR: '4326'
           });
+
+          console.log(`Using "contains" query: point ${pointGeom}`);
 
           // Use proxy for CORS-blocked towns, direct fetch for others
           let fetchUrl;
@@ -244,6 +258,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
             const data = await response.json();
 
             if (data.features && data.features.length > 0) {
+              console.log(`✓ "Contains" query found ${data.features.length} parcel(s)`);
               const feature = data.features[0];
               console.log(`Found ${townGis.name} parcel:`, feature);
 
@@ -286,6 +301,92 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
                 drawPropertyPolygon(polygonCoords, coords);
                 return;
               }
+            } else {
+              // Fallback: If "contains" returns 0 results, try distance-based query
+              console.warn(`⚠️ "Contains" query returned 0 results - point may be on road/boundary`);
+              console.log(`Falling back to distance-based query (50m radius)...`);
+
+              const distanceParams = new URLSearchParams({
+                f: 'json',
+                returnGeometry: 'true',
+                spatialRel: 'esriSpatialRelIntersects',
+                geometry: pointGeom,
+                geometryType: 'esriGeometryPoint',
+                distance: '50',  // 50 meters
+                units: 'esriSRUnit_Meter',
+                inSR: '4326',
+                outFields: '*',
+                outSR: '4326'
+              });
+
+              const fallbackUrl = townGis.useProxy
+                ? `/api/gis-proxy?url=${encodeURIComponent(`${townGis.url}?${distanceParams}`)}`
+                : `${townGis.url}?${distanceParams}`;
+
+              const fallbackResponse = await fetch(fallbackUrl, { headers: { 'Accept': 'application/json' } });
+
+              if (fallbackResponse.ok) {
+                const fallbackData = await fallbackResponse.json();
+
+                if (fallbackData.features && fallbackData.features.length > 0) {
+                  console.log(`✓ Distance fallback found ${fallbackData.features.length} parcel(s)`);
+
+                  // Use our existing point-in-polygon check to find the right one
+                  const isPointInPolygon = (point, polygon) => {
+                    let inside = false;
+                    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+                      const xi = polygon[i][0], yi = polygon[i][1];
+                      const xj = polygon[j][0], yj = polygon[j][1];
+                      const intersect = ((yi > point[1]) !== (yj > point[1]))
+                        && (point[0] < (xj - xi) * (point[1] - yi) / (yj - yi) + xi);
+                      if (intersect) inside = !inside;
+                    }
+                    return inside;
+                  };
+
+                  // Find parcel containing the point
+                  let selectedFeature = fallbackData.features.find(f =>
+                    f.geometry?.rings?.[0] && isPointInPolygon(coords, f.geometry.rings[0])
+                  );
+
+                  // If none contain the point, use closest by centroid
+                  if (!selectedFeature) {
+                    selectedFeature = fallbackData.features[0];  // Closest (already sorted by distance typically)
+                    console.log(`Using closest parcel (point not inside any)`);
+                  } else {
+                    console.log(`✓ Found parcel containing point`);
+                  }
+
+                  if (selectedFeature?.geometry?.rings) {
+                    const polygonCoords = selectedFeature.geometry.rings[0].map(ring => [ring[0], ring[1]]);
+                    console.log(`Drawing official ${townGis.name} CT parcel boundary (via fallback)`);
+                    setDataSource('cadastre');
+
+                    // Extract acres (same logic as above)
+                    if (selectedFeature.attributes) {
+                      const hartfordSqFt = selectedFeature.attributes['GISADMIN.CAMAGIS_Property_Details_w_ObjectID.TotAcreage'];
+                      if (hartfordSqFt && townGis.name === 'Hartford') {
+                        const sqFt = Math.round(parseFloat(hartfordSqFt));
+                        const acres = (sqFt / 43560).toFixed(2);
+                        setPropertySize({ sqFt, acres });
+                      } else {
+                        const acres = selectedFeature.attributes.ACRES || selectedFeature.attributes.Acres ||
+                                     selectedFeature.attributes.acres || selectedFeature.attributes.ACREAGE ||
+                                     selectedFeature.attributes.Acreage || selectedFeature.attributes.CALC_ACRES ||
+                                     selectedFeature.attributes.GIS_ACRES;
+                        if (acres) {
+                          const acresNum = parseFloat(acres);
+                          const sqFt = Math.round(acresNum * 43560);
+                          setPropertySize({ sqFt, acres: acresNum.toFixed(2) });
+                        }
+                      }
+                    }
+
+                    drawPropertyPolygon(polygonCoords, coords);
+                    return;
+                  }
+                }
+              }
             }
           } else {
             console.log(`${townGis.name} GIS returned error:`, response.status);
@@ -297,7 +398,372 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
         console.log('Address not in a supported CT town with GIS, skipping town lookups');
       }
 
-      console.log('No CT town GIS data found, trying Regrid...');
+      // Try Connecticut CAMA and Parcel Layer (free, covers all CT towns)
+      console.log('Trying Connecticut CAMA Parcel Layer...');
+      try {
+        // CT village names → assessor town mapping
+        // Geocoders return village/locality names, but CAMA uses official assessor towns
+        const townAliases = {
+          'broad brook': 'east windsor',
+          'tariffville': 'simsbury',
+          'weatogue': 'simsbury',
+          'plantsville': 'southington',
+          'unionville': 'farmington',
+          'terryville': 'plymouth',
+          'pequabuck': 'plymouth',
+          'kensington': 'berlin',
+          'rockfall': 'middlefield',
+          'higganum': 'haddam',
+          'versailles': 'sprague',
+          'hanover': 'sprague',
+          'baltic': 'sprague',
+          'quinebaug': 'thompson',
+          'east thompson': 'thompson',
+          'north grosvenordale': 'thompson',
+          'grosvenordale': 'thompson'
+          // Note: Cromwell is listed below but server is offline, so it uses CT CAMA fallback
+        };
+
+        // Map geocoded town to assessor town
+        const addressLower = address.toLowerCase();
+        let normalizedAddress = address;
+        for (const [village, town] of Object.entries(townAliases)) {
+          if (addressLower.includes(village)) {
+            // Replace village name with official town name
+            const regex = new RegExp(village, 'gi');
+            normalizedAddress = normalizedAddress.replace(regex, town);
+            console.log(`Mapped village "${village}" → town "${town}"`);
+            break;
+          }
+        }
+
+        // Strategy 1: Try "contains" query first (most accurate)
+        // FIXED: Correct URL is /arcgis/rest/services/ (lowercase) and 4LvwA2Kb (with 'v')
+        const baseUrl = 'https://services3.arcgis.com/3FL1kr7L4LvwA2Kb/arcgis/rest/services/Connecticut_CAMA_and_Parcel_Layer/FeatureServer/0/query';
+
+        // Use simple point geometry - ArcGIS requires "lon,lat" format (NOT JSON)
+        const pointGeom = `${coords[0]},${coords[1]}`; // Simple x,y format
+
+        // Try "contains" first (only returns parcel containing the point)
+        const containsParams = new URLSearchParams({
+          f: 'json',
+          returnGeometry: 'true',
+          spatialRel: 'esriSpatialRelContains',  // Only parcels containing the point
+          geometry: pointGeom,
+          geometryType: 'esriGeometryPoint',
+          inSR: '4326',
+          outFields: '*',
+          outSR: '4326',
+          where: '1=1',
+          resultRecordCount: '10'
+        });
+
+        console.log('━━━ CT CAMA "CONTAINS" QUERY ━━━');
+        console.log('Point:', pointGeom);
+
+        let ctCAMAResponse = await fetch(`${baseUrl}?${containsParams.toString()}`);
+        let ctCAMAData = null;
+        let queryType = 'contains';
+
+        if (ctCAMAResponse.ok) {
+          ctCAMAData = await ctCAMAResponse.json();
+
+          console.log('CT CAMA "contains" response:', {
+            totalFeatures: ctCAMAData.features?.length || 0,
+            error: ctCAMAData.error
+          });
+
+          if (ctCAMAData.error) {
+            console.error('CT CAMA API error:', ctCAMAData.error);
+          }
+
+          // If "contains" returns 0 results, fallback to distance query
+          if (!ctCAMAData.features || ctCAMAData.features.length === 0) {
+            console.warn(`⚠️ "Contains" returned 0 results - falling back to 200m distance query`);
+            queryType = 'distance';
+
+            const distanceParams = new URLSearchParams({
+              f: 'json',
+              returnGeometry: 'true',
+              spatialRel: 'esriSpatialRelIntersects',
+              geometry: pointGeom,
+              geometryType: 'esriGeometryPoint',
+              inSR: '4326',
+              distance: '200',
+              units: 'esriSRUnit_Meter',
+              outFields: '*',
+              outSR: '4326',
+              where: '1=1',
+              resultRecordCount: '50'
+            });
+
+            ctCAMAResponse = await fetch(`${baseUrl}?${distanceParams.toString()}`);
+            if (ctCAMAResponse.ok) {
+              ctCAMAData = await ctCAMAResponse.json();
+              console.log('CT CAMA distance fallback response:', {
+                totalFeatures: ctCAMAData.features?.length || 0
+              });
+            }
+          } else {
+            console.log(`✓ "Contains" found ${ctCAMAData.features.length} parcel(s)`);
+          }
+
+          if (ctCAMAData.features && ctCAMAData.features.length > 0) {
+            console.log(`CT CAMA returned ${ctCAMAData.features.length} parcels in envelope`);
+
+            // Log all raw features for debugging
+            ctCAMAData.features.forEach((f, idx) => {
+              console.log(`CT CAMA parcel ${idx + 1}:`, {
+                town: f.attributes?.Town_Name,
+                location: f.attributes?.Location,
+                parcelType: f.attributes?.Parcel_Type,
+                useCode: f.attributes?.Use_Code_Desc,
+                calculatedAcres: f.attributes?.Calculated_Acres,
+                totalAcres: f.attributes?.Total_Acres,
+                landAcres: f.attributes?.Land_Acres,
+                shapeArea: f.attributes?.Shape__Area,
+                hasGeometry: !!f.geometry?.rings?.[0]
+              });
+            });
+
+            // Helper function: Check if a point is inside a polygon
+            const isPointInPolygon = (point, polygon) => {
+              let inside = false;
+              for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+                const xi = polygon[i][0], yi = polygon[i][1];
+                const xj = polygon[j][0], yj = polygon[j][1];
+                const intersect = ((yi > point[1]) !== (yj > point[1]))
+                  && (point[0] < (xj - xi) * (point[1] - yi) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+              }
+              return inside;
+            };
+
+            // Filter and prioritize parcels
+            const validFeatures = ctCAMAData.features
+              .filter(f => {
+                const parcelType = f.attributes?.Parcel_Type;
+                const area = f.attributes?.Shape__Area;
+
+                // Exclude ROW (right-of-way) and utility parcels - these are not properties
+                if (parcelType === 'ROW' || parcelType === 'UTIL') {
+                  return false;
+                }
+
+                // Filter by reasonable size - increased to 10 acres to be more permissive
+                // This catches industrial/commercial lots and large estates
+                if (area) {
+                  const acres = (area * 10.7639) / 43560;
+                  if (acres > 10) {
+                    return false; // Skip very large parcels (likely farms, parks, commercial)
+                  }
+                }
+
+                return true;
+              })
+              .map(f => {
+                // Calculate distance from query point to parcel centroid for sorting
+                let centroidLon = 0, centroidLat = 0, pointCount = 0;
+                if (f.geometry?.rings?.[0]) {
+                  f.geometry.rings[0].forEach(([lon, lat]) => {
+                    centroidLon += lon;
+                    centroidLat += lat;
+                    pointCount++;
+                  });
+                  centroidLon /= pointCount;
+                  centroidLat /= pointCount;
+                }
+                const distance = Math.sqrt(
+                  Math.pow(coords[0] - centroidLon, 2) + Math.pow(coords[1] - centroidLat, 2)
+                );
+
+                // Check if the query point is actually inside this parcel
+                const containsPoint = f.geometry?.rings?.[0]
+                  ? isPointInPolygon(coords, f.geometry.rings[0])
+                  : false;
+
+                return { ...f, distance, containsPoint };
+              })
+              .sort((a, b) => {
+                // CRITICAL: First priority - Parcels that contain the query point
+                // If ANY parcel contains the point, ONLY those should be considered
+                if (a.containsPoint && !b.containsPoint) return -1;
+                if (!a.containsPoint && b.containsPoint) return 1;
+
+                // If BOTH contain point OR NEITHER contains point, compare by distance
+                // Distance is MORE important than use code to avoid selecting neighbor's house
+                const distanceDiff = a.distance - b.distance;
+
+                // Only consider use code if distances are very similar (within 0.00002 degrees ~2 meters)
+                if (Math.abs(distanceDiff) < 0.00002) {
+                  const aUseCode = (a.attributes?.Use_Code_Desc || '').toLowerCase();
+                  const bUseCode = (b.attributes?.Use_Code_Desc || '').toLowerCase();
+                  const aIsResidential = aUseCode.includes('residential');
+                  const bIsResidential = bUseCode.includes('residential');
+
+                  if (aIsResidential && !bIsResidential) return -1;
+                  if (!aIsResidential && bIsResidential) return 1;
+                }
+
+                // Final tiebreaker: Closest to query point
+                return distanceDiff;
+              });
+
+            if (validFeatures.length === 0) {
+              console.log('CT CAMA returned only large/ROW parcels, skipping...');
+              throw new Error('No valid parcels found');
+            }
+
+            // For "contains" query, result is guaranteed to be correct (point inside parcel)
+            // For "distance" query, use centroid-based selection
+            let closestParcel;
+            let selectionStatus;
+            let distanceMeters; // Declare at higher scope for use in error logging
+
+            if (queryType === 'contains') {
+              // Direct selection - parcel contains the point
+              closestParcel = validFeatures[0];
+              selectionStatus = 'perfect-contains';
+              distanceMeters = closestParcel.distance * 111000; // Calculate for logging
+              console.log(`✓ PERFECT: "Contains" query returned parcel with point inside`);
+            } else {
+              // Distance-based selection (fallback)
+              closestParcel = validFeatures[0]; // Already sorted by centroid distance
+              distanceMeters = closestParcel.distance * 111000;
+              const MAX_DISTANCE_METERS = 30;
+
+              // Simple address check
+              const extractStreetNumber = (addr) => {
+                const match = addr.match(/^\s*(\d+[A-Za-z]?)\s+/);
+                return match ? match[1].toLowerCase() : null;
+              };
+
+              const inputStreetNum = extractStreetNumber(address);
+              const parcelStreetNum = extractStreetNumber(closestParcel.attributes?.Location || '');
+
+              // Determine quality of distance-based match
+              if (distanceMeters > MAX_DISTANCE_METERS) {
+                selectionStatus = 'far';
+                console.warn(`⚠️ DISTANT MATCH: ${distanceMeters.toFixed(1)}m away (>${MAX_DISTANCE_METERS}m)`);
+              } else if (inputStreetNum && parcelStreetNum && inputStreetNum !== parcelStreetNum) {
+                selectionStatus = 'address-mismatch';
+                console.warn(`⚠️ ADDRESS MISMATCH: "${inputStreetNum}" vs "${parcelStreetNum}"`);
+              } else if (closestParcel.containsPoint) {
+                selectionStatus = 'perfect-pip';
+                console.log(`✓ PERFECT: Point-in-polygon check passed (${distanceMeters.toFixed(1)}m from centroid)`);
+              } else {
+                selectionStatus = 'good';
+                console.log(`✓ GOOD: Closest parcel (${distanceMeters.toFixed(1)}m)`);
+              }
+            }
+
+            // Log top 3 candidates for debugging
+            console.log(`━━━ PARCEL SELECTION (${selectionStatus.toUpperCase()}) ━━━`);
+            console.log(`Total: ${ctCAMAData.features.length} → Filtered: ${validFeatures.length}`);
+            console.log('Top candidates:');
+            validFeatures.slice(0, 3).forEach((f, idx) => {
+              const isSelected = idx === 0;
+              const dist = (f.distance * 111000).toFixed(1);
+              console.log(`${isSelected ? '✓ SELECTED' : `  Option ${idx + 1}`}:`, {
+                containsPoint: f.containsPoint,
+                distance: `${dist}m`,
+                location: f.attributes?.Location || 'N/A',
+                useCode: f.attributes?.Use_Code_Desc,
+                acres: f.attributes?.Calculated_Acres || f.attributes?.Total_Acres || f.attributes?.Land_Acres || 'N/A'
+              });
+            });
+            console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+
+            const feature = closestParcel;
+
+            if (feature.geometry && feature.geometry.rings) {
+              const polygonCoords = feature.geometry.rings[0].map(ring => [ring[0], ring[1]]);
+
+              console.log('Drawing official CT CAMA parcel boundary');
+              setDataSource('cadastre');
+
+              // Use acre fields from attributes (in priority order)
+              if (feature.attributes) {
+                const calculatedAcres = feature.attributes.Calculated_Acres;
+                const totalAcres = feature.attributes.Total_Acres;
+                const landAcres = feature.attributes.Land_Acres;
+
+                // Prefer Calculated_Acres, then Total_Acres, then Land_Acres
+                const acres = calculatedAcres || totalAcres || landAcres;
+                const source = calculatedAcres ? 'Calculated_Acres' : (totalAcres ? 'Total_Acres' : 'Land_Acres');
+
+                if (acres) {
+                  const acresNum = parseFloat(acres);
+                  const sqFt = Math.round(acresNum * 43560);
+                  console.log('Official CT CAMA parcel size:', {
+                    sqFt,
+                    acres: acresNum.toFixed(2),
+                    source,
+                    town: feature.attributes.Town_Name,
+                    owner: feature.attributes.Owner_Name,
+                    propertyId: feature.attributes.Property_ID
+                  });
+                  setPropertySize({ sqFt, acres: acresNum.toFixed(2) });
+                } else if (feature.attributes.Shape__Area) {
+                  // Calculate from Shape__Area as fallback (in square meters)
+                  const sqMeters = parseFloat(feature.attributes.Shape__Area);
+                  const sqFt = Math.round(sqMeters * 10.7639);
+                  const acres = (sqFt / 43560).toFixed(2);
+                  console.log('CT CAMA parcel size from Shape__Area:', { sqMeters, sqFt, acres });
+                  setPropertySize({ sqFt, acres });
+                }
+              }
+
+              // Calculate parcel centroid for visual verification
+              let centroidLon = 0, centroidLat = 0;
+              polygonCoords.forEach(([lon, lat]) => {
+                centroidLon += lon;
+                centroidLat += lat;
+              });
+              centroidLon /= polygonCoords.length;
+              centroidLat /= polygonCoords.length;
+
+              console.log('Parcel centroid:', [centroidLon, centroidLat]);
+              console.log('Geocoder point:', coords);
+              console.log(`Distance from geocoder to centroid: ${(Math.sqrt(Math.pow(coords[0] - centroidLon, 2) + Math.pow(coords[1] - centroidLat, 2)) * 111000).toFixed(1)}m`);
+
+              // Add blue marker at parcel centroid for visual sanity check
+              new mapboxgl.Marker({ color: '#0066ff', scale: 0.7 })
+                .setLngLat([centroidLon, centroidLat])
+                .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(
+                  `<strong>Parcel Center</strong><br/>` +
+                  `${feature.attributes?.Location || 'Unknown'}<br/>` +
+                  `${(feature.attributes?.Calculated_Acres || feature.attributes?.Total_Acres || feature.attributes?.Land_Acres || 0)} acres`
+                ))
+                .addTo(map.current);
+
+              drawPropertyPolygon(polygonCoords, coords);
+              return;
+            }
+          } else {
+            console.warn('CT CAMA: No parcels found in query', {
+              address,
+              coords,
+              queryType,
+              note: 'This address may not be in the CT CAMA dataset'
+            });
+          }
+        } else {
+          const errorText = await ctCAMAResponse.text();
+          console.error('CT CAMA Parcel Layer HTTP error:', {
+            status: ctCAMAResponse.status,
+            statusText: ctCAMAResponse.statusText,
+            body: errorText
+          });
+        }
+      } catch (ctCAMAError) {
+        console.error('CT CAMA Parcel Layer exception:', {
+          message: ctCAMAError.message,
+          stack: ctCAMAError.stack
+        });
+      }
+
+      console.log('No CT CAMA data found, trying Regrid...');
 
       // Second, try Regrid for accurate US parcel boundaries (CORRECT ENDPOINT)
       const regridToken = 'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyZWdyaWQuY29tIiwiaWF0IjoxNzYwNjMyNDI3LCJleHAiOjE3NjMyMjQ0MjcsInUiOjYwMzM5NSwiZyI6MjMxNTMsImNhcCI6InBhOnRzOnBzOmJmOm1hOnR5OmVvOnpvOnNiIn0.d_6PmLVJN-Sphw9NkyrXX0FoEI0yHiAu5JMywZnQa_c';
@@ -311,48 +777,83 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
 
         if (regridResponse.ok) {
           const regridData = await regridResponse.json();
-          console.log('Regrid response:', regridData);
+          console.log('Regrid full response:', JSON.stringify(regridData, null, 2));
 
-          // Regrid returns results array or single parcel
-          const parcel = regridData.results ? regridData.results[0] : regridData;
+          // Regrid API v2 can return multiple response formats:
+          // 1. { parcels: [...] } - array of parcels
+          // 2. { results: [...] } - legacy format
+          // 3. Direct parcel object
+          let parcel = null;
 
-          if (parcel && parcel.geometry && parcel.geometry.coordinates) {
+          if (regridData.parcels && regridData.parcels.length > 0) {
+            parcel = regridData.parcels[0];
+            console.log('Regrid format: parcels array');
+          } else if (regridData.results && regridData.results.length > 0) {
+            parcel = regridData.results[0];
+            console.log('Regrid format: results array');
+          } else if (regridData.parcel) {
+            parcel = regridData.parcel;
+            console.log('Regrid format: single parcel object');
+          } else if (regridData.geometry) {
+            // Direct parcel response
+            parcel = regridData;
+            console.log('Regrid format: direct parcel');
+          }
+
+          if (parcel) {
+            console.log('Regrid parcel data:', parcel);
+
+            // Extract geometry
             const geometry = parcel.geometry;
-            let polygonCoords;
+            if (geometry && geometry.coordinates) {
+              let polygonCoords;
 
-            if (geometry.type === 'Polygon') {
-              polygonCoords = geometry.coordinates[0];
-            } else if (geometry.type === 'MultiPolygon') {
-              // Use the first polygon of multipolygon
-              polygonCoords = geometry.coordinates[0][0];
-            }
-
-            if (polygonCoords && polygonCoords.length > 0) {
-              console.log('Drawing official parcel boundary from Regrid');
-              setDataSource('cadastre');
-
-              // Set accurate property size from Regrid
-              if (parcel.fields && parcel.fields.acres) {
-                const acres = parseFloat(parcel.fields.acres);
-                const sqFt = Math.round(acres * 43560);
-                console.log('Official parcel size from Regrid:', { sqFt, acres: acres.toFixed(2) });
-                setPropertySize({ sqFt, acres: acres.toFixed(2) });
-              } else if (parcel.properties && parcel.properties.acres) {
-                const acres = parseFloat(parcel.properties.acres);
-                const sqFt = Math.round(acres * 43560);
-                console.log('Official parcel size from Regrid:', { sqFt, acres: acres.toFixed(2) });
-                setPropertySize({ sqFt, acres: acres.toFixed(2) });
+              if (geometry.type === 'Polygon') {
+                polygonCoords = geometry.coordinates[0];
+              } else if (geometry.type === 'MultiPolygon') {
+                // Use the first polygon of multipolygon
+                polygonCoords = geometry.coordinates[0][0];
               }
 
-              drawPropertyPolygon(polygonCoords, coords);
-              return;
+              if (polygonCoords && polygonCoords.length > 0) {
+                console.log('Drawing official parcel boundary from Regrid');
+                setDataSource('cadastre');
+
+                // Set accurate property size from Regrid
+                // Try multiple field locations: fields.acres, properties.acres, acres
+                const acres =
+                  (parcel.fields?.acres) ||
+                  (parcel.fields?.ll_gisacre) ||
+                  (parcel.properties?.acres) ||
+                  (parcel.properties?.ll_gisacre) ||
+                  (parcel.acres);
+
+                if (acres) {
+                  const acresNum = parseFloat(acres);
+                  const sqFt = Math.round(acresNum * 43560);
+                  console.log('Official parcel size from Regrid:', { sqFt, acres: acresNum.toFixed(2) });
+                  setPropertySize({ sqFt, acres: acresNum.toFixed(2) });
+                } else {
+                  console.log('Regrid parcel has no acres field, available fields:', Object.keys(parcel.fields || {}), Object.keys(parcel.properties || {}));
+                }
+
+                drawPropertyPolygon(polygonCoords, coords);
+                return;
+              } else {
+                console.log('Regrid: No valid polygon coordinates found');
+              }
+            } else {
+              console.log('Regrid: No geometry in parcel data');
             }
+          } else {
+            console.log('Regrid: No parcel found in response');
           }
         } else {
-          console.log('Regrid failed:', regridResponse.status, await regridResponse.text());
+          const errorText = await regridResponse.text();
+          console.log('Regrid HTTP error:', regridResponse.status, errorText);
         }
       } catch (error) {
-        console.log('Regrid error:', error);
+        console.log('Regrid error:', error.message, error.stack);
       }
 
       console.log('No Regrid data, trying Geocodio...');

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useFirebase } from '../contexts/FirebaseContext';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import './QuotePage.css';
 
 const QuotePage = () => {
@@ -220,15 +221,17 @@ const QuotePage = () => {
       const booking = {
         ...bookingData,
         address,
+        coordinates,
         propertySize,
         services: selectedServices,
         totalPrice: calculateTotal(),
         status: 'pending',
-        createdAt: new Date().toISOString(),
+        source: 'Instant Quote',
+        createdAt: serverTimestamp(),
         type: 'booking'
       };
 
-      await db.collection('bookings').add(booking);
+      await addDoc(collection(db, 'bookings'), booking);
 
       setSubmitSuccess(true);
       setTimeout(() => {

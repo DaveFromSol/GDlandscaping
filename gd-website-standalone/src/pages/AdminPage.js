@@ -68,6 +68,8 @@ const AdminDashboard = ({ user, onLogout }) => {
 
   // Real-time Firebase listener for quotes
   useEffect(() => {
+    if (!db) return;
+
     const quotesRef = collection(db, 'quotes');
     const q = query(quotesRef, orderBy('createdAt', 'desc'));
 
@@ -87,18 +89,45 @@ const AdminDashboard = ({ user, onLogout }) => {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [db]);
 
-  // Update stats whenever quotes change
+  // Real-time Firebase listener for bookings
+  useEffect(() => {
+    if (!db) return;
+
+    const bookingsRef = collection(db, 'bookings');
+    const q = query(bookingsRef, orderBy('createdAt', 'desc'));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const bookingsData = [];
+      snapshot.forEach((doc) => {
+        bookingsData.push({
+          id: doc.id,
+          ...doc.data(),
+          date: doc.data().createdAt?.toDate().toISOString().split('T')[0] || new Date().toISOString().split('T')[0]
+        });
+      });
+      setBookings(bookingsData);
+      console.log('Bookings loaded:', bookingsData.length);
+    }, (error) => {
+      console.error('Error fetching bookings:', error);
+    });
+
+    return () => unsubscribe();
+  }, [db]);
+
+  // Update stats whenever quotes or bookings change
   useEffect(() => {
     const updatedStats = {
       totalQuotes: quotes.length,
       pendingQuotes: quotes.filter(q => q.status === 'Pending').length,
       completedJobs: quotes.filter(q => q.status === 'Completed').length,
-      totalRevenue: calculateRevenue(quotes)
+      totalRevenue: calculateRevenue(quotes),
+      totalBookings: bookings.length,
+      pendingBookings: bookings.filter(b => b.status === 'pending').length
     };
     setStats(updatedStats);
-  }, [quotes]);
+  }, [quotes, bookings]);
 
   const calculateRevenue = (quotes) => {
     // Basic revenue calculation - you can customize this
@@ -198,7 +227,37 @@ const AdminDashboard = ({ user, onLogout }) => {
       case 'Approved': return 'text-blue-600 bg-blue-100';
       case 'Completed': return 'text-green-600 bg-green-100';
       case 'In Progress': return 'text-orange-600 bg-orange-100';
+      case 'pending': return 'text-yellow-600 bg-yellow-100';
+      case 'confirmed': return 'text-blue-600 bg-blue-100';
+      case 'completed': return 'text-green-600 bg-green-100';
+      case 'cancelled': return 'text-red-600 bg-red-100';
       default: return 'text-gray-600 bg-gray-100';
+    }
+  };
+
+  // Booking management functions
+  const updateBookingStatus = async (id, newStatus) => {
+    try {
+      const bookingRef = doc(db, 'bookings', id);
+      await updateDoc(bookingRef, {
+        status: newStatus,
+        updatedAt: serverTimestamp(),
+        updatedBy: user.email || 'unknown'
+      });
+    } catch (error) {
+      console.error('Error updating booking:', error);
+      alert('Error updating booking. Please check your internet connection and try again.');
+    }
+  };
+
+  const deleteBooking = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this booking?')) return;
+
+    try {
+      await deleteDoc(doc(db, 'bookings', id));
+    } catch (error) {
+      console.error('Error deleting booking:', error);
+      alert('Error deleting booking. Please check your internet connection and try again.');
     }
   };
 
@@ -682,6 +741,21 @@ const AdminDashboard = ({ user, onLogout }) => {
                 🎯 Lead Pipeline
               </button>
               <button
+                onClick={() => setActiveTab('bookings')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'bookings'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                📅 Bookings
+                {stats.pendingBookings > 0 && (
+                  <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                    {stats.pendingBookings}
+                  </span>
+                )}
+              </button>
+              <button
                 onClick={() => setActiveTab('quotes')}
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
                   activeTab === 'quotes'
@@ -708,6 +782,139 @@ const AdminDashboard = ({ user, onLogout }) => {
         {/* Tab Content */}
         {activeTab === 'leads' && (
           <Leads user={user} />
+        )}
+
+        {activeTab === 'bookings' && (
+          <div className="bg-white shadow overflow-hidden sm:rounded-md">
+            <div className="px-4 py-5 sm:px-6">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
+                Customer Bookings
+              </h3>
+              <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                Manage all instant quote bookings from your website
+              </p>
+            </div>
+
+            {bookings.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-gray-500">No bookings yet. Bookings from the instant quote system will appear here!</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Customer
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Property
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Services
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Total
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Date
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {bookings.map((booking) => (
+                      <tr key={booking.id} className={booking.status === 'pending' ? 'bg-yellow-50' : ''}>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <div className="text-sm font-medium text-gray-900">{booking.name}</div>
+                              {booking.source === 'Instant Quote' && (
+                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                  ⚡ Instant
+                                </span>
+                              )}
+                            </div>
+                            {booking.email && <div className="text-sm text-gray-500">{booking.email}</div>}
+                            {booking.phone && <div className="text-sm text-gray-500">{booking.phone}</div>}
+                            {booking.preferredDate && (
+                              <div className="text-sm text-blue-600">📅 {booking.preferredDate}</div>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="text-sm text-gray-900">{booking.address}</div>
+                          {booking.propertySize && (
+                            <div className="text-sm text-gray-500">
+                              {booking.propertySize.acres} acres ({booking.propertySize.sqFt?.toLocaleString()} sq ft)
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="text-sm text-gray-900">
+                            {booking.services?.map((service, idx) => (
+                              <div key={idx} className="mb-1">
+                                <span className="font-medium">{service.name}</span>
+                                <span className="text-gray-500"> - {service.frequency}</span>
+                                {service.bushes && (
+                                  <div className="text-xs text-gray-500 ml-2">
+                                    {service.bushes.small > 0 && `Small: ${service.bushes.small}, `}
+                                    {service.bushes.medium > 0 && `Medium: ${service.bushes.medium}, `}
+                                    {service.bushes.large > 0 && `Large: ${service.bushes.large}, `}
+                                    {service.bushes.xlarge > 0 && `XL: ${service.bushes.xlarge}`}
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-medium text-green-600">
+                            ${booking.totalPrice?.toFixed(2)}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <select
+                            value={booking.status}
+                            onChange={(e) => updateBookingStatus(booking.id, e.target.value)}
+                            className={`text-xs px-2 py-1 rounded-full border-0 ${getStatusColor(booking.status)}`}
+                          >
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                          </select>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {booking.date}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                          <div className="flex flex-col">
+                            <button
+                              onClick={() => deleteBooking(booking.id)}
+                              className="text-red-600 hover:text-red-900"
+                            >
+                              Delete
+                            </button>
+                            {booking.notes && (
+                              <div className="mt-2 text-xs text-gray-500 max-w-xs">
+                                📝 {booking.notes}
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         )}
 
         {activeTab === 'quotes' && (
