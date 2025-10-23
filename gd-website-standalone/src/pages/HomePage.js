@@ -343,12 +343,11 @@ const HomePage = () => {
             
             <div className="areas-grid">
               <div className="area-section">
-                <h3>Primary Service Area - Hartford County</h3>
+                <h3>Hartford County</h3>
                 <div className="towns-grid">
                   <span className="town">Berlin</span>
-                  <span className="town">Cromwell</span>
-                  <span className="town">Middletown</span>
                   <span className="town">Hartford</span>
+                  <span className="town">New Britain</span>
                   <span className="town">West Hartford</span>
                   <span className="town">East Hartford</span>
                   <span className="town">Newington</span>
@@ -356,14 +355,26 @@ const HomePage = () => {
                   <span className="town">Rocky Hill</span>
                   <span className="town">Glastonbury</span>
                   <span className="town">Manchester</span>
+                  <span className="town">South Windsor</span>
                   <span className="town">Farmington</span>
                   <span className="town">Plainville</span>
+                  <span className="town">Bristol</span>
+                  <span className="town">Southington</span>
+                  <span className="town">Avon</span>
+                  <span className="town">Simsbury</span>
+                  <span className="town">Windsor</span>
+                  <span className="town">Bloomfield</span>
+                  <span className="town">Canton</span>
+                  <span className="town">East Windsor</span>
+                  <span className="town">Enfield</span>
                 </div>
               </div>
-              
+
               <div className="area-section">
-                <h3>Extended Coverage - Middlesex County</h3>
+                <h3>Middlesex County</h3>
                 <div className="towns-grid">
+                  <span className="town">Cromwell</span>
+                  <span className="town">Middletown</span>
                   <span className="town">Portland</span>
                   <span className="town">East Hampton</span>
                   <span className="town">Middlefield</span>
@@ -372,6 +383,41 @@ const HomePage = () => {
                   <span className="town">Deep River</span>
                   <span className="town">Essex</span>
                   <span className="town">Old Saybrook</span>
+                  <span className="town">Clinton</span>
+                  <span className="town">Westbrook</span>
+                  <span className="town">East Haddam</span>
+                  <span className="town">Haddam</span>
+                </div>
+              </div>
+
+              <div className="area-section">
+                <h3>New Haven County</h3>
+                <div className="towns-grid">
+                  <span className="town">Wallingford</span>
+                  <span className="town">Meriden</span>
+                  <span className="town">Cheshire</span>
+                  <span className="town">Durham</span>
+                  <span className="town">North Haven</span>
+                  <span className="town">Hamden</span>
+                  <span className="town">Branford</span>
+                  <span className="town">Guilford</span>
+                  <span className="town">Madison</span>
+                  <span className="town">Killingworth</span>
+                </div>
+              </div>
+
+              <div className="area-section">
+                <h3>Tolland County</h3>
+                <div className="towns-grid">
+                  <span className="town">Vernon</span>
+                  <span className="town">Tolland</span>
+                  <span className="town">Ellington</span>
+                  <span className="town">Somers</span>
+                  <span className="town">Stafford</span>
+                  <span className="town">Willington</span>
+                  <span className="town">Coventry</span>
+                  <span className="town">Andover</span>
+                  <span className="town">Bolton</span>
                 </div>
               </div>
             </div>
@@ -385,7 +431,7 @@ const HomePage = () => {
               
               <div className="areas-stats">
                 <div className="stat-box">
-                  <div className="stat-number">75+</div>
+                  <div className="stat-number">65+</div>
                   <div className="stat-label">Towns Served</div>
                 </div>
                 <div className="stat-box">
@@ -397,8 +443,8 @@ const HomePage = () => {
                   <div className="stat-label">Counties</div>
                 </div>
                 <div className="stat-box">
-                  <div className="stat-number">100%</div>
-                  <div className="stat-label">Coverage</div>
+                  <div className="stat-number">Central CT</div>
+                  <div className="stat-label">Full Coverage</div>
                 </div>
               </div>
             </div>
