@@ -1,8 +1,112 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
+import { useFirebase } from '../contexts/FirebaseContext';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const HomePage = () => {
+  const { db } = useFirebase();
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address: '',
+    services: '',
+    projectType: '',
+    budget: '',
+    message: '',
+    newsletter: false
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState('');
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('');
+
+    if (!formData.firstName || !formData.lastName || !formData.phone) {
+      setSubmitStatus('Please fill in all required fields.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      if (!db) {
+        throw new Error('Firebase database not initialized');
+      }
+
+      const serviceDisplayNames = {
+        'lawn-maintenance': 'Lawn Maintenance',
+        'landscape-design': 'Landscape Design',
+        'tree-services': 'Tree Services',
+        'hardscaping': 'Hardscaping',
+        'irrigation': 'Irrigation Systems',
+        'seasonal-cleanup': 'Seasonal Cleanup',
+        'fertilization': 'Lawn Fertilization',
+        'lighting': 'Outdoor Lighting',
+        'mulching': 'Mulching Services',
+        'pressure-washing': 'Pressure Washing',
+        'snow-removal': 'Snow Removal',
+        'fall-cleanup': 'Fall Cleanup',
+        'multiple': 'Multiple Services',
+        'other': 'Other'
+      };
+
+      const quoteData = {
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email || '',
+        phone: formData.phone,
+        address: formData.address || '',
+        service: serviceDisplayNames[formData.services] || formData.services || 'General Inquiry',
+        description: `Property Type: ${formData.projectType || 'Not specified'}
+Budget Range: ${formData.budget || 'Not specified'}
+Project Details: ${formData.message || 'No additional details provided'}
+Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}`,
+        status: 'Pending',
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        createdBy: 'website-home-form',
+        source: 'Home Page Form'
+      };
+
+      await addDoc(collection(db, 'quotes'), quoteData);
+      setSubmitStatus('success');
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        address: '',
+        services: '',
+        projectType: '',
+        budget: '',
+        message: '',
+        newsletter: false
+      });
+
+    } catch (error) {
+      console.error('Form submission error:', error);
+      if (error.code === 'permission-denied') {
+        setSubmitStatus('Database access denied. Please call us directly at (860) 526-7583 for immediate assistance.');
+      } else {
+        setSubmitStatus('An error occurred. Please call us at (860) 526-7583 for immediate assistance.');
+      }
+    }
+
+    setIsSubmitting(false);
+  };
+
   const structuredData = [
     {
       "@context": "https://schema.org",
@@ -249,11 +353,6 @@ const HomePage = () => {
                 <h3>Satisfaction Guarantee</h3>
                 <p>We stand behind our work with a 100% satisfaction guarantee.</p>
               </div>
-              <div className="feature">
-                <div className="feature-icon">📞</div>
-                <h3>24/7 Support</h3>
-                <p>Emergency services available for urgent landscaping needs.</p>
-              </div>
             </div>
 
             {/* Small showcase images integrated into features section */}
@@ -327,6 +426,236 @@ const HomePage = () => {
                 <div className="testimonial-author">
                   <strong>Lisa Martinez</strong>
                   <span>Residential Customer</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Contact Form Section */}
+        <div className="home-contact-section" style={{
+          background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+          padding: '60px 0',
+          marginTop: '60px'
+        }}>
+          <div className="container">
+            <div className="section-header" style={{ textAlign: 'center', marginBottom: '40px' }}>
+              <h2>Get Your Free Quote Today</h2>
+              <p className="section-subtitle">Choose your preferred method to request a quote - instant or detailed form</p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', maxWidth: '1200px', margin: '0 auto' }}>
+              {/* Contact Form */}
+              <div className="contact-form bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-200 w-full max-w-none">
+                <div className="form-header">
+                  <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '8px', color: '#2d5016' }}>Request Detailed Quote</h3>
+                  <p className="form-subtitle" style={{ color: '#6b7280', marginBottom: '24px' }}>Fill out the form and we'll get back to you within 24 hours</p>
+                </div>
+                <form onSubmit={handleSubmit}>
+                  <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+                    <div className="form-group">
+                      <label htmlFor="firstName" style={{ display: 'block', color: '#374151', fontWeight: '500', marginBottom: '8px', fontSize: '14px' }}>First Name *</label>
+                      <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleInputChange}
+                        style={{ width: '100%', padding: '12px 16px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '16px' }}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="lastName" style={{ display: 'block', color: '#374151', fontWeight: '500', marginBottom: '8px', fontSize: '14px' }}>Last Name *</label>
+                      <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleInputChange}
+                        style={{ width: '100%', padding: '12px 16px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '16px' }}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+                    <div className="form-group">
+                      <label htmlFor="email" style={{ display: 'block', color: '#374151', fontWeight: '500', marginBottom: '8px', fontSize: '14px' }}>Email</label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        style={{ width: '100%', padding: '12px 16px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '16px' }}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="phone" style={{ display: 'block', color: '#374151', fontWeight: '500', marginBottom: '8px', fontSize: '14px' }}>Phone *</label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        style={{ width: '100%', padding: '12px 16px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '16px' }}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: '16px' }}>
+                    <label htmlFor="address" style={{ display: 'block', color: '#374151', fontWeight: '500', marginBottom: '8px', fontSize: '14px' }}>Property Address</label>
+                    <input
+                      type="text"
+                      id="address"
+                      name="address"
+                      value={formData.address}
+                      onChange={handleInputChange}
+                      placeholder="Street address, City, State"
+                      style={{ width: '100%', padding: '12px 16px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '16px' }}
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: '16px' }}>
+                    <label htmlFor="services" style={{ display: 'block', color: '#374151', fontWeight: '500', marginBottom: '8px', fontSize: '14px' }}>Services Needed</label>
+                    <select
+                      id="services"
+                      name="services"
+                      value={formData.services}
+                      onChange={handleInputChange}
+                      style={{ width: '100%', padding: '12px 16px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '16px' }}
+                    >
+                      <option value="">Select a service</option>
+                      <option value="lawn-maintenance">Lawn Maintenance</option>
+                      <option value="landscape-design">Landscape Design</option>
+                      <option value="tree-services">Tree Services</option>
+                      <option value="hardscaping">Hardscaping</option>
+                      <option value="seasonal-cleanup">Seasonal Cleanup</option>
+                      <option value="snow-removal">Snow Removal</option>
+                      <option value="multiple">Multiple Services</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: '16px' }}>
+                    <label htmlFor="message" style={{ display: 'block', color: '#374151', fontWeight: '500', marginBottom: '8px', fontSize: '14px' }}>Project Details</label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows="4"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      placeholder="Tell us about your project..."
+                      style={{ width: '100%', padding: '12px 16px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '16px' }}
+                    ></textarea>
+                  </div>
+
+                  {submitStatus && (
+                    <div style={{
+                      padding: '12px',
+                      borderRadius: '8px',
+                      marginBottom: '16px',
+                      background: submitStatus === 'success' ? '#d1fae5' : '#fee2e2',
+                      color: submitStatus === 'success' ? '#065f46' : '#991b1b',
+                      fontSize: '14px'
+                    }}>
+                      {submitStatus === 'success'
+                        ? '✅ Thank you! We\'ll contact you within 24 hours.'
+                        : submitStatus
+                      }
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    style={{
+                      width: '100%',
+                      background: '#2d5016',
+                      color: 'white',
+                      fontWeight: '600',
+                      padding: '16px',
+                      borderRadius: '8px',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontSize: '16px',
+                      transition: 'all 0.3s'
+                    }}
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? 'Sending...' : 'Get My Free Quote'}
+                  </button>
+                </form>
+              </div>
+
+              {/* Contact Info */}
+              <div>
+                <div style={{
+                  background: 'white',
+                  padding: '32px',
+                  borderRadius: '12px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                  marginBottom: '24px'
+                }}>
+                  <h3 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '16px', color: '#2d5016' }}>Contact Information</h3>
+
+                  <div style={{ marginBottom: '24px' }}>
+                    <div style={{ display: 'flex', alignItems: 'start', gap: '16px', marginBottom: '20px' }}>
+                      <div style={{ fontSize: '24px' }}>📞</div>
+                      <div>
+                        <h4 style={{ fontWeight: '600', marginBottom: '4px' }}>Phone</h4>
+                        <p style={{ color: '#6b7280', marginBottom: '4px' }}>(860) 526-7583</p>
+                        <small style={{ color: '#9ca3af' }}>Call for immediate service</small>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'start', gap: '16px', marginBottom: '20px' }}>
+                      <div style={{ fontSize: '24px' }}>✉️</div>
+                      <div>
+                        <h4 style={{ fontWeight: '600', marginBottom: '4px' }}>Email</h4>
+                        <p style={{ color: '#6b7280', marginBottom: '4px' }}>contact@gdlandscaping.com</p>
+                        <small style={{ color: '#9ca3af' }}>We'll respond within 24 hours</small>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'start', gap: '16px' }}>
+                      <div style={{ fontSize: '24px' }}>⏰</div>
+                      <div>
+                        <h4 style={{ fontWeight: '600', marginBottom: '4px' }}>Business Hours</h4>
+                        <p style={{ color: '#6b7280', fontSize: '14px', marginBottom: '2px' }}>Monday - Friday: 7:00 AM - 6:00 PM</p>
+                        <p style={{ color: '#6b7280', fontSize: '14px', marginBottom: '2px' }}>Saturday: 8:00 AM - 5:00 PM</p>
+                        <p style={{ color: '#6b7280', fontSize: '14px' }}>Sunday: Emergency calls only</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{
+                  background: 'linear-gradient(135deg, #2d5016 0%, #1f3810 100%)',
+                  padding: '32px',
+                  borderRadius: '12px',
+                  color: 'white'
+                }}>
+                  <h3 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '12px' }}>Why Choose GD Landscaping?</h3>
+                  <ul style={{ listStyle: 'none', padding: 0 }}>
+                    <li style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <span style={{ fontSize: '20px' }}>✓</span>
+                      <span>Licensed & Insured</span>
+                    </li>
+                    <li style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <span style={{ fontSize: '20px' }}>✓</span>
+                      <span>Free Estimates</span>
+                    </li>
+                    <li style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <span style={{ fontSize: '20px' }}>✓</span>
+                      <span>Same-Day Response</span>
+                    </li>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <span style={{ fontSize: '20px' }}>✓</span>
+                      <span>100% Satisfaction Guarantee</span>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>

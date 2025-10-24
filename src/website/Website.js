@@ -226,11 +226,6 @@ const Website = () => {
               <h3>Satisfaction Guarantee</h3>
               <p>We stand behind our work with a 100% satisfaction guarantee.</p>
             </div>
-            <div className="feature">
-              <div className="feature-icon">📞</div>
-              <h3>24/7 Support</h3>
-              <p>Emergency services available for urgent landscaping needs.</p>
-            </div>
           </div>
         </div>
       </div>
