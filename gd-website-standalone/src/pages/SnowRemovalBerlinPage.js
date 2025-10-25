@@ -131,6 +131,8 @@ const SnowRemovalBerlinPage = () => {
     "@type": "LocalBusiness",
     "name": "Snow Removal Service Berlin CT - GD Landscaping",
     "description": "Professional snow removal services in Berlin, Connecticut. Reliable snow plowing, ice management, and winter maintenance for homes and businesses.",
+    "logo": "https://gdlandscapingllc.com/GD.png",
+    "image": "https://gdlandscapingllc.com/GD.png",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Berlin",

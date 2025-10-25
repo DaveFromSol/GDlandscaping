@@ -66,6 +66,8 @@ const SnowRemovalNewBritainPage = () => {
     "@type": "LocalBusiness",
     "name": "Snow Removal Service New Britain CT - GD Landscaping",
     "description": "Professional snow removal services in New Britain, Connecticut. Reliable snow plowing, ice management, and winter maintenance for homes and businesses.",
+    "logo": "https://gdlandscapingllc.com/GD.png",
+    "image": "https://gdlandscapingllc.com/GD.png",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "New Britain",

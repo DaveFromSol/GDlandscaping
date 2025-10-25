@@ -92,6 +92,8 @@ const SnowRemovalPage = () => {
     "provider": {
       "@type": "LocalBusiness",
       "name": "GD Landscaping",
+      "logo": "https://gdlandscapingllc.com/GD.png",
+      "image": "https://gdlandscapingllc.com/GD.png",
       "telephone": "(860) 526-7583",
       "address": {
         "@type": "PostalAddress",

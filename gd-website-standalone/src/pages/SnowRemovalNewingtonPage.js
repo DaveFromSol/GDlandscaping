@@ -55,6 +55,8 @@ const SnowRemovalNewingtonPage = () => {
     "@type": "LocalBusiness",
     "name": "Snow Removal Service Newington CT - GD Landscaping",
     "description": "Professional snow removal services in Newington, Connecticut. Reliable snow plowing, ice management, and winter maintenance for homes and businesses.",
+    "logo": "https://gdlandscapingllc.com/GD.png",
+    "image": "https://gdlandscapingllc.com/GD.png",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Newington",
