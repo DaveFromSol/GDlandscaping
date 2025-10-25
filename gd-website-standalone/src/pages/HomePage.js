@@ -287,7 +287,65 @@ Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}`,
         ogType="website"
         structuredData={structuredData}
       />
-      
+
+      <style>{`
+        @media (max-width: 768px) {
+          .contact-form-grid {
+            grid-template-columns: 1fr !important;
+            gap: 24px !important;
+          }
+
+          .form-row {
+            grid-template-columns: 1fr !important;
+          }
+
+          .home-contact-section {
+            padding: 30px 15px !important;
+          }
+
+          .home-contact-section h2 {
+            font-size: 28px !important;
+          }
+
+          .home-contact-section .section-subtitle {
+            font-size: 14px !important;
+          }
+
+          .contact-form {
+            padding: 24px !important;
+          }
+
+          .contact-form h3 {
+            font-size: 20px !important;
+          }
+
+          .form-subtitle {
+            font-size: 14px !important;
+          }
+
+          .contact-form input,
+          .contact-form select,
+          .contact-form textarea {
+            font-size: 16px !important;
+          }
+
+          .contact-form button {
+            font-size: 16px !important;
+            padding: 14px !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .home-contact-section h2 {
+            font-size: 24px !important;
+          }
+
+          .contact-form h3 {
+            font-size: 18px !important;
+          }
+        }
+      `}</style>
+
       <div className="home-section">
         <div className="hero">
           <div className="hero-video-background">
@@ -435,7 +493,7 @@ Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}`,
         {/* Contact Form Section */}
         <div className="home-contact-section" style={{
           background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
-          padding: '60px 0',
+          padding: '40px 20px',
           marginTop: '60px'
         }}>
           <div className="container">
@@ -444,7 +502,15 @@ Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}`,
               <p className="section-subtitle">Choose your preferred method to request a quote - instant or detailed form</p>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', maxWidth: '1200px', margin: '0 auto' }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '40px',
+              maxWidth: '1200px',
+              margin: '0 auto',
+            }}
+            className="contact-form-grid"
+            >
               {/* Contact Form */}
               <div className="contact-form bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-200 w-full max-w-none">
                 <div className="form-header">

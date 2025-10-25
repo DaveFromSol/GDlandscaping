@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import AddressAutocomplete from '../components/AddressAutocomplete';
 
 const LawnCareNewBritainPage = () => {
   const packages = [
@@ -106,6 +107,23 @@ const LawnCareNewBritainPage = () => {
               </div>
               <h1>Lawn Care Service New Britain CT</h1>
               <p className="hero-subtitle">Professional lawn maintenance for New Britain residents and businesses. Keep your Hardware City property looking its best year-round with GD Landscaping's expert lawn care services.</p>
+
+              <div style={{
+                margin: '30px 0',
+                padding: '0 20px'
+              }}>
+                <h2 style={{
+                  color: 'black',
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  marginBottom: '15px',
+                  textShadow: '1px 1px 2px rgba(255,255,255,0.5)'
+                }}>
+                  Type Your New Britain Address for Instant Lawn Care Quote
+                </h2>
+                <AddressAutocomplete />
+              </div>
+
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get New Britain Quote

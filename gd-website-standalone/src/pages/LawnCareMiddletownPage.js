@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import AddressAutocomplete from '../components/AddressAutocomplete';
 
 const LawnCareMiddletownPage = () => {
   const packages = [
@@ -85,6 +86,23 @@ const LawnCareMiddletownPage = () => {
               </div>
               <h1>Lawn Care Service Middletown CT</h1>
               <p className="hero-subtitle">Professional lawn maintenance for Middletown residents and businesses. Keep your university town property looking exceptional with expert lawn care services.</p>
+
+              <div style={{
+                margin: '30px 0',
+                padding: '0 20px'
+              }}>
+                <h2 style={{
+                  color: 'black',
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  marginBottom: '15px',
+                  textShadow: '1px 1px 2px rgba(255,255,255,0.5)'
+                }}>
+                  Type Your Middletown Address for Instant Lawn Care Quote
+                </h2>
+                <AddressAutocomplete />
+              </div>
+
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Middletown Quote

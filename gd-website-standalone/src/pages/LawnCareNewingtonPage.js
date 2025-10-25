@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import AddressAutocomplete from '../components/AddressAutocomplete';
 
 const LawnCareNewingtonPage = () => {
   const packages = [
@@ -84,6 +85,23 @@ const LawnCareNewingtonPage = () => {
               </div>
               <h1>Lawn Care Service Newington CT</h1>
               <p className="hero-subtitle">Professional lawn maintenance for Newington residents and businesses. Keep your community property looking pristine with expert lawn care services.</p>
+
+              <div style={{
+                margin: '30px 0',
+                padding: '0 20px'
+              }}>
+                <h2 style={{
+                  color: 'black',
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  marginBottom: '15px',
+                  textShadow: '1px 1px 2px rgba(255,255,255,0.5)'
+                }}>
+                  Type Your Newington Address for Instant Lawn Care Quote
+                </h2>
+                <AddressAutocomplete />
+              </div>
+
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Newington Quote

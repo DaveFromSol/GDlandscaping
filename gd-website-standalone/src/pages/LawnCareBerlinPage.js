@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import AddressAutocomplete from '../components/AddressAutocomplete';
 
 const LawnCareBerlinPage = () => {
   const packages = [
@@ -106,6 +107,23 @@ const LawnCareBerlinPage = () => {
               </div>
               <h1>Lawn Care Service Berlin CT</h1>
               <p className="hero-subtitle">Professional lawn maintenance for Berlin residents and businesses. Your local Berlin landscaping experts dedicated to keeping your property beautiful year-round.</p>
+
+              <div style={{
+                margin: '30px 0',
+                padding: '0 20px'
+              }}>
+                <h2 style={{
+                  color: 'black',
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  marginBottom: '15px',
+                  textShadow: '1px 1px 2px rgba(255,255,255,0.5)'
+                }}>
+                  Type Your Berlin Address for Instant Lawn Care Quote
+                </h2>
+                <AddressAutocomplete />
+              </div>
+
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Berlin Quote
