@@ -62,7 +62,7 @@ const LawnCareRockyHillPage = () => {
       "addressCountry": "US"
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscaping.com/lawn-care-rocky-hill-ct"
+    "url": "https://gdlandscapingllc.com/lawn-care-rocky-hill-ct"
   };
 
   return (
@@ -71,7 +71,7 @@ const LawnCareRockyHillPage = () => {
         title="Lawn Care Rocky Hill CT | Professional Lawn Maintenance Services | GD Landscaping"
         description="Professional lawn care services in Rocky Hill, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for Rocky Hill properties."
         keywords="lawn care Rocky Hill CT, lawn mowing Rocky Hill Connecticut, landscaping Rocky Hill, yard maintenance Rocky Hill CT, fertilization Rocky Hill"
-        canonicalUrl="https://gdlandscaping.com/lawn-care-rocky-hill-ct"
+        canonicalUrl="https://gdlandscapingllc.com/lawn-care-rocky-hill-ct"
         structuredData={structuredData}
       />
 

@@ -63,7 +63,7 @@ const LawnCareCromwellPage = () => {
       "addressCountry": "US"
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscaping.com/lawn-care-cromwell-ct"
+    "url": "https://gdlandscapingllc.com/lawn-care-cromwell-ct"
   };
 
   return (
@@ -72,7 +72,7 @@ const LawnCareCromwellPage = () => {
         title="Lawn Care Cromwell CT | Professional Lawn Maintenance Services | GD Landscaping"
         description="Professional lawn care services in Cromwell, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for all Cromwell neighborhoods."
         keywords="lawn care Cromwell CT, lawn mowing Cromwell Connecticut, landscaping Cromwell, yard maintenance Cromwell CT, fertilization Cromwell, weed control Cromwell"
-        canonicalUrl="https://gdlandscaping.com/lawn-care-cromwell-ct"
+        canonicalUrl="https://gdlandscapingllc.com/lawn-care-cromwell-ct"
         structuredData={structuredData}
       />
 

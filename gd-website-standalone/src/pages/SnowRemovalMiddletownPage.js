@@ -80,7 +80,7 @@ const SnowRemovalMiddletownPage = () => {
       "longitude": -72.6506
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscaping.com/snow-removal-middletown-ct",
+    "url": "https://gdlandscapingllc.com/snow-removal-middletown-ct",
     "serviceArea": {
       "@type": "City",
       "name": "Middletown, Connecticut"
@@ -93,7 +93,7 @@ const SnowRemovalMiddletownPage = () => {
         title="Snow Removal Middletown CT | Professional Winter Services | GD Landscaping"
         description="Reliable snow removal services in Middletown, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Middletown CT, snow plowing Middletown Connecticut, winter services Middletown, ice management Middletown CT, residential snow removal Middletown, commercial snow plowing Middletown"
-        canonicalUrl="https://gdlandscaping.com/snow-removal-middletown-ct"
+        canonicalUrl="https://gdlandscapingllc.com/snow-removal-middletown-ct"
         structuredData={structuredData}
       />
 

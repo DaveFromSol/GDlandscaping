@@ -64,7 +64,7 @@ const SnowRemovalRockyHillPage = () => {
       "addressCountry": "US"
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscaping.com/snow-removal-rocky-hill-ct"
+    "url": "https://gdlandscapingllc.com/snow-removal-rocky-hill-ct"
   };
 
   return (
@@ -73,7 +73,7 @@ const SnowRemovalRockyHillPage = () => {
         title="Snow Removal Rocky Hill CT | Professional Winter Services | GD Landscaping"
         description="Reliable snow removal services in Rocky Hill, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Rocky Hill CT, snow plowing Rocky Hill Connecticut, winter services Rocky Hill, ice management Rocky Hill CT, residential snow removal Rocky Hill"
-        canonicalUrl="https://gdlandscaping.com/snow-removal-rocky-hill-ct"
+        canonicalUrl="https://gdlandscapingllc.com/snow-removal-rocky-hill-ct"
         structuredData={structuredData}
       />
 

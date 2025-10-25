@@ -79,7 +79,7 @@ const LawnCareNewBritainPage = () => {
       "longitude": -72.7795
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscaping.com/lawn-care-new-britain-ct",
+    "url": "https://gdlandscapingllc.com/lawn-care-new-britain-ct",
     "serviceArea": {
       "@type": "City",
       "name": "New Britain, Connecticut"
@@ -92,7 +92,7 @@ const LawnCareNewBritainPage = () => {
         title="Lawn Care New Britain CT | Professional Lawn Maintenance Services | GD Landscaping"
         description="Professional lawn care services in New Britain, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance. Serving all New Britain neighborhoods."
         keywords="lawn care New Britain CT, lawn mowing New Britain Connecticut, landscaping New Britain, yard maintenance New Britain CT, fertilization New Britain, weed control New Britain"
-        canonicalUrl="https://gdlandscaping.com/lawn-care-new-britain-ct"
+        canonicalUrl="https://gdlandscapingllc.com/lawn-care-new-britain-ct"
         structuredData={structuredData}
       />
 

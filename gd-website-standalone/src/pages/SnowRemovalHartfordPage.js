@@ -84,7 +84,7 @@ const SnowRemovalHartfordPage = () => {
       "longitude": -72.6734
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscaping.com/snow-removal-hartford-ct",
+    "url": "https://gdlandscapingllc.com/snow-removal-hartford-ct",
     "serviceArea": {
       "@type": "City",
       "name": "Hartford, Connecticut"
@@ -97,7 +97,7 @@ const SnowRemovalHartfordPage = () => {
         title="Snow Removal Hartford CT | Professional Winter Services | GD Landscaping"
         description="Reliable snow removal services in Hartford, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Hartford CT, snow plowing Hartford Connecticut, winter services Hartford, ice management Hartford CT, residential snow removal Hartford, commercial snow plowing Hartford"
-        canonicalUrl="https://gdlandscaping.com/snow-removal-hartford-ct"
+        canonicalUrl="https://gdlandscapingllc.com/snow-removal-hartford-ct"
         structuredData={structuredData}
       />
 

@@ -119,7 +119,7 @@ const SnowRemovalPage = () => {
         title="Professional Snow Removal Services Berlin CT | Winter Maintenance | GD Landscaping"
         description="Reliable snow removal services in Berlin CT. Seasonal packages for residential and commercial properties. 24/7 emergency service, ice management, and winter maintenance."
         keywords="snow removal Berlin CT, winter maintenance Connecticut, snow plowing Hartford County, seasonal snow packages, commercial snow removal, ice management Berlin CT"
-        canonicalUrl="https://gdlandscaping.com/snow-removal"
+        canonicalUrl="https://gdlandscapingllc.com/snow-removal"
         structuredData={structuredData}
       />
 

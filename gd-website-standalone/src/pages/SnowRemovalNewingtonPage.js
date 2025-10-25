@@ -64,7 +64,7 @@ const SnowRemovalNewingtonPage = () => {
       "addressCountry": "US"
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscaping.com/snow-removal-newington-ct"
+    "url": "https://gdlandscapingllc.com/snow-removal-newington-ct"
   };
 
   return (
@@ -73,7 +73,7 @@ const SnowRemovalNewingtonPage = () => {
         title="Snow Removal Newington CT | Professional Winter Services | GD Landscaping"
         description="Reliable snow removal services in Newington, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Newington CT, snow plowing Newington Connecticut, winter services Newington, ice management Newington CT, residential snow removal Newington"
-        canonicalUrl="https://gdlandscaping.com/snow-removal-newington-ct"
+        canonicalUrl="https://gdlandscapingllc.com/snow-removal-newington-ct"
         structuredData={structuredData}
       />
 

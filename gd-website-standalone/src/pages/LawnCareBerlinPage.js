@@ -79,7 +79,7 @@ const LawnCareBerlinPage = () => {
       "longitude": -72.7551
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscaping.com/lawn-care-berlin-ct",
+    "url": "https://gdlandscapingllc.com/lawn-care-berlin-ct",
     "serviceArea": {
       "@type": "City",
       "name": "Berlin, Connecticut"
@@ -92,7 +92,7 @@ const LawnCareBerlinPage = () => {
         title="Lawn Care Berlin CT | Professional Lawn Maintenance Services | GD Landscaping"
         description="Professional lawn care services in Berlin, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance. Serving all Berlin neighborhoods."
         keywords="lawn care Berlin CT, lawn mowing Berlin Connecticut, landscaping Berlin, yard maintenance Berlin CT, fertilization Berlin, weed control Berlin"
-        canonicalUrl="https://gdlandscaping.com/lawn-care-berlin-ct"
+        canonicalUrl="https://gdlandscapingllc.com/lawn-care-berlin-ct"
         structuredData={structuredData}
       />
 
