@@ -4,36 +4,36 @@ import AddressAutocomplete from '../components/AddressAutocomplete';
 import LocationGallery from '../components/LocationGallery';
 import QuoteSection from '../components/QuoteSection';
 
-const LawnCareBristolPage = () => {
+const LawnCareWestHartfordPage = () => {
   const structuredData = [
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      "name": "GD Landscaping - Lawn Care Bristol CT",
-      "description": "Professional lawn care and landscaping services in Bristol CT - lawn mowing, maintenance, and complete yard care. Serving Bristol, Forestville, and surrounding areas.",
+      "name": "GD Landscaping - Lawn Care West Hartford CT",
+      "description": "Professional lawn care and landscaping services in West Hartford CT - lawn mowing, maintenance, and complete yard care. Serving West Hartford Center, Elmwood, and surrounding areas.",
       "logo": "https://gdlandscapingllc.com/GD.png",
       "image": "https://gdlandscapingllc.com/GD.png",
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": "Bristol",
+        "addressLocality": "West Hartford",
         "addressRegion": "CT",
-        "postalCode": "06010",
+        "postalCode": "06107",
         "addressCountry": "US"
       },
       "geo": {
         "@type": "GeoCoordinates",
-        "latitude": "41.6718",
-        "longitude": "-72.9493"
+        "latitude": "41.7620",
+        "longitude": "-72.7420"
       },
       "telephone": "(860) 526-7583",
       "email": "contact@gdlandscaping.com",
-      "url": "https://gdlandscapingllc.com/lawn-care-bristol-ct",
+      "url": "https://gdlandscapingllc.com/lawn-care-west-hartford-ct",
       "sameAs": [
         "https://www.gdlandscapingllc.com"
       ],
       "areaServed": {
         "@type": "City",
-        "name": "Bristol",
+        "name": "West Hartford",
         "containedInPlace": {
           "@type": "State",
           "name": "Connecticut"
@@ -48,7 +48,7 @@ const LawnCareBristolPage = () => {
             "itemOffered": {
               "@type": "Service",
               "name": "Lawn Maintenance",
-              "description": "Professional lawn mowing, trimming, and edging services in Bristol CT"
+              "description": "Professional lawn mowing, trimming, and edging services in West Hartford CT"
             }
           },
           {
@@ -56,7 +56,7 @@ const LawnCareBristolPage = () => {
             "itemOffered": {
               "@type": "Service",
               "name": "Fertilization",
-              "description": "Lawn fertilization and treatment services for Bristol properties"
+              "description": "Lawn fertilization and treatment services for West Hartford properties"
             }
           },
           {
@@ -64,7 +64,7 @@ const LawnCareBristolPage = () => {
             "itemOffered": {
               "@type": "Service",
               "name": "Bush Trimming",
-              "description": "Professional bush and shrub trimming services in Bristol"
+              "description": "Professional bush and shrub trimming services in West Hartford"
             }
           },
           {
@@ -72,7 +72,7 @@ const LawnCareBristolPage = () => {
             "itemOffered": {
               "@type": "Service",
               "name": "Leaf Cleanup",
-              "description": "Seasonal leaf removal and cleanup in Bristol CT"
+              "description": "Seasonal leaf removal and cleanup in West Hartford CT"
             }
           }
         ]
@@ -93,10 +93,10 @@ const LawnCareBristolPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care Bristol CT | Professional Lawn Maintenance Services | GD Landscaping"
-        description="Professional lawn care services in Bristol, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for Bristol homes and businesses."
-        keywords="lawn care Bristol CT, lawn mowing Bristol Connecticut, landscaping Bristol, yard maintenance Bristol CT, fertilization Bristol, weed control Bristol, Forestville lawn care, Edgewood landscaping"
-        canonicalUrl="https://gdlandscapingllc.com/lawn-care-bristol-ct"
+        title="Lawn Care West Hartford CT | Professional Lawn Maintenance Services | GD Landscaping"
+        description="Professional lawn care services in West Hartford, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for West Hartford homes and businesses."
+        keywords="lawn care West Hartford CT, lawn mowing West Hartford Connecticut, landscaping West Hartford, yard maintenance West Hartford CT, fertilization West Hartford, weed control West Hartford, West Hartford Center lawn care, Elmwood landscaping"
+        canonicalUrl="https://gdlandscapingllc.com/lawn-care-west-hartford-ct"
         ogImage="/GD.png"
         ogType="website"
         structuredData={structuredData}
@@ -119,9 +119,9 @@ const LawnCareBristolPage = () => {
           <div className="hero-overlay"></div>
           <div className="hero-content">
             <div>
-              <img src="/GD.png" alt="GD Landscaping - Professional Lawn Care Services in Bristol Connecticut" style={{height: '200px', marginBottom: '2rem'}} />
-              <h1>Professional Lawn Care in Bristol, CT</h1>
-              <p>GD Landscaping provides expert lawn maintenance and landscaping services throughout Bristol, Forestville, Edgewood, and Federal Hill. Beautiful, healthy lawns for Bristol homes and businesses.</p>
+              <img src="/GD.png" alt="GD Landscaping - Professional Lawn Care Services in West Hartford Connecticut" style={{height: '200px', marginBottom: '2rem'}} />
+              <h1>Professional Lawn Care in West Hartford, CT</h1>
+              <p>GD Landscaping provides expert lawn maintenance and landscaping services throughout West Hartford Center, Elmwood, Bishop's Corner, and all West Hartford neighborhoods. Beautiful, healthy lawns for West Hartford homes and businesses.</p>
 
               <div style={{
                 margin: '30px 0',
@@ -134,7 +134,7 @@ const LawnCareBristolPage = () => {
                   marginBottom: '15px',
                   textShadow: '1px 1px 2px rgba(255,255,255,0.5)'
                 }}>
-                  Type Your Bristol Address for Instant Lawn Care Quote
+                  Type Your West Hartford Address for Instant Lawn Care Quote
                 </h2>
                 <AddressAutocomplete />
               </div>
@@ -144,22 +144,22 @@ const LawnCareBristolPage = () => {
 
         <div className="features">
           <div className="container">
-            <h2>Why Bristol Chooses GD Landscaping</h2>
+            <h2>Why West Hartford Chooses GD Landscaping</h2>
             <div className="features-grid">
               <div className="feature">
                 <div className="feature-icon">⭐</div>
                 <h3>Expert Team</h3>
-                <p>Licensed professionals with years of experience serving Bristol properties with expert lawn care and landscape maintenance.</p>
+                <p>Licensed professionals with years of experience serving West Hartford properties with expert lawn care and landscape maintenance.</p>
               </div>
               <div className="feature">
                 <div className="feature-icon">🛡️</div>
                 <h3>Fully Insured</h3>
-                <p>Complete insurance coverage for your peace of mind on every Bristol lawn care project.</p>
+                <p>Complete insurance coverage for your peace of mind on every West Hartford lawn care project.</p>
               </div>
               <div className="feature">
                 <div className="feature-icon">💯</div>
                 <h3>Satisfaction Guarantee</h3>
-                <p>We stand behind our work with a 100% satisfaction guarantee for all Bristol customers.</p>
+                <p>We stand behind our work with a 100% satisfaction guarantee for all West Hartford customers.</p>
               </div>
             </div>
 
@@ -167,23 +167,23 @@ const LawnCareBristolPage = () => {
         </div>
 
         <LocationGallery
-          townName="Bristol, CT"
-          subtitle="Trusted crews delivering sharp cuts throughout Forestville, Edgewood, and Federal Hill."
+          townName="West Hartford, CT"
+          subtitle="Trusted crews delivering sharp cuts throughout West Hartford Center, Elmwood, and Bishop's Corner."
         />
 
         {/* Customer Testimonials */}
         <div className="testimonials-section">
           <div className="container">
-            <h2>What Bristol Customers Say</h2>
-            <p className="section-subtitle">Trusted by homeowners and businesses throughout Bristol, Connecticut</p>
+            <h2>What West Hartford Customers Say</h2>
+            <p className="section-subtitle">Trusted by homeowners and businesses throughout West Hartford, Connecticut</p>
 
             <div className="testimonials-grid">
               <div className="testimonial">
                 <div className="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p>"GD Landscaping transformed our Bristol backyard into a beautiful oasis. Professional, reliable, and fantastic results!"</p>
+                <p>"GD Landscaping transformed our West Hartford backyard into a beautiful oasis. Professional, reliable, and fantastic results!"</p>
                 <div className="testimonial-author">
                   <strong>Sarah Johnson</strong>
-                  <span>Bristol Homeowner</span>
+                  <span>West Hartford Homeowner</span>
                 </div>
               </div>
               <div className="testimonial">
@@ -207,32 +207,32 @@ const LawnCareBristolPage = () => {
         </div>
 
         <QuoteSection
-          title="Need a Detailed Bristol Quote?"
-          subtitle="Share a few details about your Bristol property and we’ll follow up with pricing the same day."
-          locationName="Bristol"
-          source="Bristol Lawn Page"
+          title="Need a Detailed West Hartford Quote?"
+          subtitle="Share a few details about your West Hartford property and we'll follow up with pricing the same day."
+          locationName="West Hartford"
+          source="West Hartford Lawn Page"
         />
 
         {/* Service Areas */}
         <div className="service-areas">
           <div className="container">
             <div className="areas-header">
-              <h2>Serving Bristol and Surrounding Areas</h2>
-              <p>GD Landscaping proudly serves Bristol, CT and all surrounding neighborhoods. Professional lawn care services for residential and commercial properties throughout Bristol and Central Connecticut.</p>
+              <h2>Serving West Hartford and Surrounding Areas</h2>
+              <p>GD Landscaping proudly serves West Hartford, CT and all surrounding neighborhoods. Professional lawn care services for residential and commercial properties throughout West Hartford and Central Connecticut.</p>
             </div>
 
             <div className="areas-grid">
               <div className="area-section">
-                <h3>Bristol Neighborhoods</h3>
+                <h3>West Hartford Neighborhoods</h3>
                 <div className="towns-grid">
-                  <span className="town">Downtown Bristol</span>
-                  <span className="town">Forestville</span>
-                  <span className="town">Edgewood</span>
-                  <span className="town">Federal Hill</span>
-                  <span className="town">Bristol Center</span>
-                  <span className="town">Stafford Avenue</span>
-                  <span className="town">Farmington Avenue</span>
-                  <span className="town">Lake Avenue</span>
+                  <span className="town">West Hartford Center</span>
+                  <span className="town">Elmwood</span>
+                  <span className="town">Bishop's Corner</span>
+                  <span className="town">Blue Back Square</span>
+                  <span className="town">Prospect Hill</span>
+                  <span className="town">Sunset Ridge</span>
+                  <span className="town">Fern Street</span>
+                  <span className="town">Conard</span>
                 </div>
               </div>
 
@@ -242,7 +242,7 @@ const LawnCareBristolPage = () => {
                   <span className="town">Berlin</span>
                   <span className="town">Hartford</span>
                   <span className="town">New Britain</span>
-                  <span className="town">West Hartford</span>
+                  <span className="town">Bristol</span>
                   <span className="town">Newington</span>
                   <span className="town">Wethersfield</span>
                   <span className="town">Rocky Hill</span>
@@ -280,14 +280,14 @@ const LawnCareBristolPage = () => {
 
             <div className="service-radius">
               <div className="radius-info">
-                <h4>🎯 Complete Lawn Care for Bristol</h4>
-                <p>We provide full lawn care services including weekly mowing, fertilization, weed control, bush trimming, leaf cleanup, and seasonal maintenance throughout Bristol and surrounding areas.</p>
-                <p className="coverage-note">Don't see your Bristol neighborhood listed? <a href="/contact">Contact us</a> - we serve all of Bristol!</p>
+                <h4>🎯 Complete Lawn Care for West Hartford</h4>
+                <p>We provide full lawn care services including weekly mowing, fertilization, weed control, bush trimming, leaf cleanup, and seasonal maintenance throughout West Hartford and surrounding areas.</p>
+                <p className="coverage-note">Don't see your West Hartford neighborhood listed? <a href="/contact">Contact us</a> - we serve all of West Hartford!</p>
               </div>
 
               <div className="areas-stats">
                 <div className="stat-box">
-                  <div className="stat-number">Bristol</div>
+                  <div className="stat-number">West Hartford</div>
                   <div className="stat-label">Primary Service Area</div>
                 </div>
                 <div className="stat-box">
@@ -311,4 +311,4 @@ const LawnCareBristolPage = () => {
   );
 };
 
-export default LawnCareBristolPage;
+export default LawnCareWestHartfordPage;

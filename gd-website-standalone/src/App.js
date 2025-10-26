@@ -25,6 +25,8 @@ import LawnCareNewingtonPage from './pages/LawnCareNewingtonPage';
 import LawnCareBerlinPage from './pages/LawnCareBerlinPage';
 import LawnCareBristolPage from './pages/LawnCareBristolPage';
 import SnowRemovalBristolPage from './pages/SnowRemovalBristolPage';
+import LawnCareWestHartfordPage from './pages/LawnCareWestHartfordPage';
+import SnowRemovalWestHartfordPage from './pages/SnowRemovalWestHartfordPage';
 import InstantQuotePage from './pages/InstantQuotePage';
 
 const Navigation = () => {
@@ -175,6 +177,8 @@ function App() {
               <Route path="/snow-removal-berlin-ct" element={<SnowRemovalBerlinPage />} />
               <Route path="/lawn-care-bristol-ct" element={<LawnCareBristolPage />} />
               <Route path="/snow-removal-bristol-ct" element={<SnowRemovalBristolPage />} />
+              <Route path="/lawn-care-west-hartford-ct" element={<LawnCareWestHartfordPage />} />
+              <Route path="/snow-removal-west-hartford-ct" element={<SnowRemovalWestHartfordPage />} />
               <Route path="/admin" element={<AdminPage />} />
             </Routes>
           </main>

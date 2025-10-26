@@ -102,6 +102,12 @@
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
+  <url>
+    <loc>https://gdlandscapingllc.com/snow-removal-west-hartford-ct</loc>
+    <lastmod>2025-01-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
 
   <!-- Lawn Care Pages (Location-Specific) -->
   <url>
@@ -148,6 +154,12 @@
   </url>
   <url>
     <loc>https://gdlandscapingllc.com/lawn-care-bristol-ct</loc>
+    <lastmod>2025-01-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://gdlandscapingllc.com/lawn-care-west-hartford-ct</loc>
     <lastmod>2025-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>

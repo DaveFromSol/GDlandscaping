@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
+import LocationGallery from '../components/LocationGallery';
+import QuoteSection from '../components/QuoteSection';
 
 const LawnCareNewBritainPage = () => {
   const packages = [
@@ -99,6 +101,12 @@ const LawnCareNewBritainPage = () => {
       <div className="lawn-care-section">
         {/* New Britain Hero Section */}
         <div className="lawn-hero">
+          <div className="lawn-hero-video">
+            <video autoPlay muted loop playsInline preload="auto" poster="/IMG_5407.jpeg">
+              <source src="/AdobeStock_657294798.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
           <div className="lawn-hero-overlay"></div>
           <div className="lawn-hero-content">
             <div className="container">
@@ -135,6 +143,11 @@ const LawnCareNewBritainPage = () => {
             </div>
           </div>
         </div>
+
+        <LocationGallery
+          townName="New Britain, CT"
+          subtitle="See our crews polishing lawns across Little Poland, Belvedere, and the East Side."
+        />
 
         <div className="container">
           {/* New Britain Specific Benefits */}
@@ -257,6 +270,13 @@ const LawnCareNewBritainPage = () => {
               </div>
             </div>
           </section>
+
+          <QuoteSection
+            title="Need a Detailed New Britain Quote?"
+            subtitle="Share a few details about your Hardware City property and we’ll send pricing within a business day."
+            locationName="New Britain"
+            source="New Britain Lawn Page"
+          />
 
           {/* Contact CTA */}
           <section className="lawn-cta">

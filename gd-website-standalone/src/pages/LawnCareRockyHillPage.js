@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
+import LocationGallery from '../components/LocationGallery';
+import QuoteSection from '../components/QuoteSection';
 
 const LawnCareRockyHillPage = () => {
   const packages = [
@@ -77,6 +79,12 @@ const LawnCareRockyHillPage = () => {
 
       <div className="lawn-care-section">
         <div className="lawn-hero">
+          <div className="lawn-hero-video">
+            <video autoPlay muted loop playsInline preload="auto" poster="/IMG_5407.jpeg">
+              <source src="/AdobeStock_657294798.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
           <div className="lawn-hero-overlay"></div>
           <div className="lawn-hero-content">
             <div className="container">
@@ -114,6 +122,11 @@ const LawnCareRockyHillPage = () => {
           </div>
         </div>
 
+        <LocationGallery
+          townName="Rocky Hill, CT"
+          subtitle="Trimmed lawns and riverfront edging from Dividend to West Rocky Hill."
+        />
+
         <div className="container">
           <section className="packages-section">
             <div className="section-header">
@@ -149,6 +162,13 @@ const LawnCareRockyHillPage = () => {
               ))}
             </div>
           </section>
+
+          <QuoteSection
+            title="Request Your Rocky Hill Quote"
+            subtitle="Share quick property details and we’ll respond with a custom maintenance plan."
+            locationName="Rocky Hill"
+            source="Rocky Hill Lawn Page"
+          />
 
           <section className="lawn-cta">
             <div className="cta-content">

@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
+import LocationGallery from '../components/LocationGallery';
+import QuoteSection from '../components/QuoteSection';
 
 const LawnCareHartfordPage = () => {
   const packages = [
@@ -102,6 +104,12 @@ const LawnCareHartfordPage = () => {
 
       <div className="lawn-care-section">
         <div className="lawn-hero">
+          <div className="lawn-hero-video">
+            <video autoPlay muted loop playsInline preload="auto" poster="/IMG_5407.jpeg">
+              <source src="/AdobeStock_657294798.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
           <div className="lawn-hero-overlay"></div>
           <div className="lawn-hero-content">
             <div className="container">
@@ -138,6 +146,11 @@ const LawnCareHartfordPage = () => {
             </div>
           </div>
         </div>
+
+        <LocationGallery
+          townName="Hartford, CT"
+          subtitle="Fresh cuts and bed edging from Asylum Hill to the South End."
+        />
 
         <div className="container">
           <section className="location-benefits">
@@ -256,6 +269,13 @@ const LawnCareHartfordPage = () => {
               </div>
             </div>
           </section>
+
+          <QuoteSection
+            title="Get a Detailed Hartford Estimate"
+            subtitle="Fill out the request form and our Hartford account manager will deliver a tailored quote."
+            locationName="Hartford"
+            source="Hartford Lawn Page"
+          />
 
           <section className="lawn-cta">
             <div className="cta-content">

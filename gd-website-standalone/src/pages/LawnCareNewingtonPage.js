@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
+import LocationGallery from '../components/LocationGallery';
+import QuoteSection from '../components/QuoteSection';
 
 const LawnCareNewingtonPage = () => {
   const packages = [
@@ -77,6 +79,12 @@ const LawnCareNewingtonPage = () => {
 
       <div className="lawn-care-section">
         <div className="lawn-hero">
+          <div className="lawn-hero-video">
+            <video autoPlay muted loop playsInline preload="auto" poster="/IMG_5407.jpeg">
+              <source src="/AdobeStock_657294798.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
           <div className="lawn-hero-overlay"></div>
           <div className="lawn-hero-content">
             <div className="container">
@@ -114,6 +122,11 @@ const LawnCareNewingtonPage = () => {
           </div>
         </div>
 
+        <LocationGallery
+          townName="Newington, CT"
+          subtitle="Weekly cuts and detailing completed throughout Newington Center, Willard, and Maple Hill."
+        />
+
         <div className="container">
           <section className="packages-section">
             <div className="section-header">
@@ -149,6 +162,13 @@ const LawnCareNewingtonPage = () => {
               ))}
             </div>
           </section>
+
+          <QuoteSection
+            title="Need a Newington Quote?"
+            subtitle="Provide details about your property and we'll deliver a personalized lawn care estimate fast."
+            locationName="Newington"
+            source="Newington Lawn Page"
+          />
 
           <section className="lawn-cta">
             <div className="cta-content">

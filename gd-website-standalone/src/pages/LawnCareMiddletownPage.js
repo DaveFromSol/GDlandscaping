@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
+import LocationGallery from '../components/LocationGallery';
+import QuoteSection from '../components/QuoteSection';
 
 const LawnCareMiddletownPage = () => {
   const packages = [
@@ -78,6 +80,12 @@ const LawnCareMiddletownPage = () => {
 
       <div className="lawn-care-section">
         <div className="lawn-hero">
+          <div className="lawn-hero-video">
+            <video autoPlay muted loop playsInline preload="auto" poster="/IMG_5407.jpeg">
+              <source src="/AdobeStock_657294798.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
           <div className="lawn-hero-overlay"></div>
           <div className="lawn-hero-content">
             <div className="container">
@@ -115,6 +123,11 @@ const LawnCareMiddletownPage = () => {
           </div>
         </div>
 
+        <LocationGallery
+          townName="Middletown, CT"
+          subtitle="Maintenance highlights from Wesleyan Hill to the Highlands and Westfield districts."
+        />
+
         <div className="container">
           <section className="packages-section">
             <div className="section-header">
@@ -150,6 +163,13 @@ const LawnCareMiddletownPage = () => {
               ))}
             </div>
           </section>
+
+          <QuoteSection
+            title="Tell Us About Your Middletown Property"
+            subtitle="Prefer the traditional route? Share your details and we’ll send a custom lawn care estimate shortly."
+            locationName="Middletown"
+            source="Middletown Lawn Page"
+          />
 
           <section className="lawn-cta">
             <div className="cta-content">

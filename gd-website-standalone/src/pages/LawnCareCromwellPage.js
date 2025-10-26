@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
+import LocationGallery from '../components/LocationGallery';
+import QuoteSection from '../components/QuoteSection';
 
 const LawnCareCromwellPage = () => {
   const packages = [
@@ -78,6 +80,12 @@ const LawnCareCromwellPage = () => {
 
       <div className="lawn-care-section">
         <div className="lawn-hero">
+          <div className="lawn-hero-video">
+            <video autoPlay muted loop playsInline preload="auto" poster="/IMG_5407.jpeg">
+              <source src="/AdobeStock_657294798.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
           <div className="lawn-hero-overlay"></div>
           <div className="lawn-hero-content">
             <div className="container">
@@ -114,6 +122,11 @@ const LawnCareCromwellPage = () => {
             </div>
           </div>
         </div>
+
+        <LocationGallery
+          townName="Cromwell, CT"
+          subtitle="Real project snapshots from Riverport, Nooks Hill, and the neighborhoods flanking Main Street."
+        />
 
         <div className="container">
           <section className="location-benefits">
@@ -180,6 +193,13 @@ const LawnCareCromwellPage = () => {
               ))}
             </div>
           </section>
+
+          <QuoteSection
+            title="Ready for a Cromwell Quote?"
+            subtitle="Send us the basics about your Connecticut River property and we’ll reply with a detailed estimate ASAP."
+            locationName="Cromwell"
+            source="Cromwell Lawn Page"
+          />
 
           <section className="lawn-cta">
             <div className="cta-content">

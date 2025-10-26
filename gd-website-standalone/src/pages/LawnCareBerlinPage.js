@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
+import LocationGallery from '../components/LocationGallery';
+import QuoteSection from '../components/QuoteSection';
 
 const LawnCareBerlinPage = () => {
   const packages = [
@@ -99,6 +101,12 @@ const LawnCareBerlinPage = () => {
       <div className="lawn-care-section">
         {/* Berlin Hero Section */}
         <div className="lawn-hero">
+          <div className="lawn-hero-video">
+            <video autoPlay muted loop playsInline preload="auto" poster="/IMG_5407.jpeg">
+              <source src="/AdobeStock_657294798.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
           <div className="lawn-hero-overlay"></div>
           <div className="lawn-hero-content">
             <div className="container">
@@ -135,6 +143,11 @@ const LawnCareBerlinPage = () => {
             </div>
           </div>
         </div>
+
+        <LocationGallery
+          townName="Berlin, CT"
+          subtitle="A quick look at the weekly mowing, edging, and bed care we provide around Kensington, East Berlin, and Worthington Ridge."
+        />
 
         <div className="container">
           {/* Berlin Specific Benefits */}
@@ -257,6 +270,14 @@ const LawnCareBerlinPage = () => {
               </div>
             </div>
           </section>
+
+          {/* Contact CTA */}
+          <QuoteSection
+            title="Need a Detailed Berlin Quote?"
+            subtitle="Send us a few property details and our Berlin team will follow up with personalized pricing."
+            locationName="Berlin"
+            source="Berlin Lawn Page"
+          />
 
           {/* Contact CTA */}
           <section className="lawn-cta">
