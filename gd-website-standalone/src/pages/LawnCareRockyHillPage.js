@@ -130,7 +130,7 @@ const LawnCareRockyHillPage = () => {
         <div className="container">
           <section className="packages-section">
             <div className="section-header">
-              <h2>Rocky Hill Lawn Care Packages</h2>
+              <h2>Professional Lawn Care Services</h2>
               <p className="section-subtitle">Professional lawn maintenance for Rocky Hill properties</p>
             </div>
 

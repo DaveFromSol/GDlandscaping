@@ -161,7 +161,7 @@ const LawnCareCromwellPage = () => {
 
           <section className="packages-section">
             <div className="section-header">
-              <h2>Cromwell Lawn Care Packages</h2>
+              <h2>Professional Lawn Care Services</h2>
               <p className="section-subtitle">Tailored lawn maintenance solutions for Cromwell properties</p>
             </div>
 

@@ -130,7 +130,7 @@ const LawnCareNewingtonPage = () => {
         <div className="container">
           <section className="packages-section">
             <div className="section-header">
-              <h2>Newington Lawn Care Packages</h2>
+              <h2>Professional Lawn Care Services</h2>
               <p className="section-subtitle">Professional lawn maintenance for Newington properties</p>
             </div>
 

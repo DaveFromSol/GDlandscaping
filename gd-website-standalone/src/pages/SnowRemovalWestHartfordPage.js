@@ -165,7 +165,7 @@ const SnowRemovalWestHartfordPage = () => {
           {/* Seasonal Packages */}
           <section className="packages-section">
             <div className="section-header">
-              <h2>West Hartford Snow Removal Packages</h2>
+              <h2>Seasonal Snow Removal Packages</h2>
               <p className="section-subtitle">Choose the perfect winter maintenance package for your West Hartford property</p>
             </div>
 

@@ -185,7 +185,7 @@ const LawnCareHartfordPage = () => {
 
           <section className="packages-section">
             <div className="section-header">
-              <h2>Hartford Lawn Care Packages</h2>
+              <h2>Professional Lawn Care Services</h2>
               <p className="section-subtitle">Professional lawn maintenance plans tailored for Hartford properties</p>
             </div>
 

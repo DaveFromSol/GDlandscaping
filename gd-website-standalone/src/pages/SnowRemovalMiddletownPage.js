@@ -155,7 +155,7 @@ const SnowRemovalMiddletownPage = () => {
           {/* Middletown Packages */}
           <section className="packages-section">
             <div className="section-header">
-              <h2>Middletown Snow Removal Packages</h2>
+              <h2>Seasonal Snow Removal Packages</h2>
               <p className="section-subtitle">Winter maintenance solutions designed for Middletown properties</p>
             </div>
 

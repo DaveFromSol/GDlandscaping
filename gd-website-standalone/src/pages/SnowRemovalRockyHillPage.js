@@ -102,7 +102,7 @@ const SnowRemovalRockyHillPage = () => {
         <div className="container">
           <section className="packages-section">
             <div className="section-header">
-              <h2>Rocky Hill Snow Removal Packages</h2>
+              <h2>Seasonal Snow Removal Packages</h2>
               <p className="section-subtitle">Winter maintenance solutions for Rocky Hill properties</p>
             </div>
 
