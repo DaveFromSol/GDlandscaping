@@ -4,13 +4,7 @@ import BushTrimmingTemplate from './BushTrimmingTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const BushTrimmingBristolPage = () => {
-  const services = [
-    { icon: '✂️', title: 'Precision Hedge Trimming', description: 'Clean, level cuts for hedges in Forestville, Edgewood, and Federal Hill.' },
-    { icon: '🌸', title: 'Shrub & Ornamental Care', description: 'Shaping, thinning, and bloom-specific pruning for ornamental shrubs.' },
-    { icon: '🧹', title: 'Debris Removal', description: 'All clippings removed or bagged so walkways, decks, and beds stay spotless.' }
-  ];
-
-  const overviewHighlights = [
+    const overviewHighlights = [
     'Forestville and Edgewood routes keep boxwoods and privet hedges tight all season.',
     'Federal Hill estates receive custom shaping for formal hedges, topiary, and ornamental shrubs.',
     'Commercial trim packages keep downtown storefront plantings sharp before weekend traffic.'
@@ -70,7 +64,6 @@ const BushTrimmingBristolPage = () => {
           'Bristol lawns range from downtown lots to steep Chippens Hill corners. We tailor trimming schedules and equipment for every property.',
         snapshotCopy: 'Crews provide precise cuts and full cleanup, leaving hedges sharp and beds debris-free.'
       }}
-      services={services}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}

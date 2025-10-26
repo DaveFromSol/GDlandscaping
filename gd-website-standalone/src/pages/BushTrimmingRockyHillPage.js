@@ -4,13 +4,7 @@ import BushTrimmingTemplate from './BushTrimmingTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const BushTrimmingRockyHillPage = () => {
-  const services = [
-    { icon: '✂️', title: 'Hedge Shaping', description: 'Precision cuts for Dividend, Ferry Landing, and West Rocky Hill hedges.' },
-    { icon: '🌳', title: 'Shrub Sculpting', description: 'Selective thinning and contouring for foundation shrubs and screens.' },
-    { icon: '🧺', title: 'Cleanup & Haul-Away', description: 'Clippings removed or bagged; walks, decks, and driveways left spotless.' }
-  ];
-
-  const overviewHighlights = [
+    const overviewHighlights = [
     'River breezes and clay soils require flexible trimming schedules across Rocky Hill.',
     'Corporate Ridge clients receive off-hour trims to keep signage and entrances sharp.',
     'Seasonal plans integrate trimming with fertilization for lush, green hedges year-round.'
@@ -70,7 +64,6 @@ const BushTrimmingRockyHillPage = () => {
           'River humidity + upland winds demand an adaptable trimming plan. Our crews monitor growth and schedule accordingly.',
         snapshotCopy: 'Trimming visits include full cleanup, so sidewalks and entries stay guest-ready.'
       }}
-      services={services}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}

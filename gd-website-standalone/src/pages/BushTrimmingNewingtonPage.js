@@ -4,13 +4,7 @@ import BushTrimmingTemplate from './BushTrimmingTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const BushTrimmingNewingtonPage = () => {
-  const services = [
-    { icon: '✂️', title: 'Hedge Shaping', description: 'Crisp, even cuts for Newington Center, Maple Hill, and Willard hedges.' },
-    { icon: '🌳', title: 'Shrub Resets', description: 'Seasonal thinning and renewal pruning for overgrown shrubs and screens.' },
-    { icon: '🧹', title: 'Debris Removal', description: 'All clippings cleared from beds, walks, and driveways at every visit.' }
-  ];
-
-  const overviewHighlights = [
+    const overviewHighlights = [
     'Crews service Maple Hill, Willard, and Cedar Mountain on consistent loops with sharp equipment.',
     'Berlin Turnpike businesses receive off-hour trimming for storefronts, entry beds, and signage.',
     'Subscription programs combine trimming with fertilization and pest monitoring for healthy shrubs.'
@@ -70,7 +64,6 @@ const BushTrimmingNewingtonPage = () => {
           'Newington hedges range from tight foundation plantings to tall privacy rows. We match crews and tools for every style.',
         snapshotCopy: 'Subscription plans keep hedges tidy all season with easy reminders and updates.'
       }}
-      services={services}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}

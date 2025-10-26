@@ -4,13 +4,7 @@ import BushTrimmingTemplate from './BushTrimmingTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const BushTrimmingNewBritainPage = () => {
-  const services = [
-    { icon: '✂️', title: 'Hedge Shaping', description: 'Level lines for Little Poland, Belvedere, and downtown hedges.' },
-    { icon: '🌿', title: 'Shrub Pruning', description: 'Health-focused pruning for ornamental shrubs and privacy screens.' },
-    { icon: '🧹', title: 'Debris Cleanup', description: 'Clippings removed from sidewalks, porches, and yards after every visit.' }
-  ];
-
-  const overviewHighlights = [
+    const overviewHighlights = [
     'Route-based crews handle tight downtown alleys and larger suburban lots.',
     'Belvedere and Sloper neighborhoods get seasonal shaping plus deep pruning for mature hedges.',
     'Commercial corridors along Broad Street and Stanley Street receive storefront-ready trims.'
@@ -70,7 +64,6 @@ const BushTrimmingNewBritainPage = () => {
           'From downtown townhomes to Belvedere colonials, we tailor trimming techniques for every property style.',
         snapshotCopy: 'Crews provide precise cuts, cleanup, and haul-away so curb appeal stays high.'
       }}
-      services={services}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}

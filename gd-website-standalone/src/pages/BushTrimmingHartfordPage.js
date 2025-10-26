@@ -4,13 +4,7 @@ import BushTrimmingTemplate from './BushTrimmingTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const BushTrimmingHartfordPage = () => {
-  const services = [
-    { icon: '✂️', title: 'Urban Hedge Shaping', description: 'Clean, level cuts for Parkville, Asylum Hill, and South End hedges.' },
-    { icon: '🏙️', title: 'Commercial Shrub Care', description: 'Professional pruning for downtown storefronts, institutions, and apartments.' },
-    { icon: '🧹', title: 'Detail Cleanup', description: 'Sidewalks, steps, and planters cleared of all clippings after each visit.' }
-  ];
-
-  const overviewHighlights = [
+    const overviewHighlights = [
     'Crews coordinate around city parking bans and sidewalk regulations to keep hedges trimmed without disruption.',
     'West End and South End neighborhoods receive seasonal shape-ups plus health pruning for ornamentals.',
     'Commercial and multi-family clients get scheduled trims to maintain curb appeal and compliance.'
@@ -70,7 +64,6 @@ const BushTrimmingHartfordPage = () => {
           'Busy city streets demand flexible schedules. We trim early, work around events, and keep every property photo-ready.',
         snapshotCopy: 'Clients receive live updates plus before/after photos for each visit.'
       }}
-      services={services}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}

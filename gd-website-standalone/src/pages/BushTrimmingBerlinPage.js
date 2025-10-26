@@ -4,25 +4,7 @@ import BushTrimmingTemplate from './BushTrimmingTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const BushTrimmingBerlinPage = () => {
-  const services = [
-    {
-      icon: '✂️',
-      title: 'Precision Hedge Shaping',
-      description: 'Tight, level cuts for front hedges, foundation shrubs, and property borders.'
-    },
-    {
-      icon: '🌳',
-      title: 'Shrub Health Pruning',
-      description: 'Seasonal thinning to improve airflow and keep evergreen shrubs dense and green.'
-    },
-    {
-      icon: '🧹',
-      title: 'Debris & Cleanup',
-      description: 'All clippings and debris are hauled away or neatly bagged for pickup.'
-    }
-  ];
-
-  const overviewHighlights = [
+    const overviewHighlights = [
     'Route-based crews trim Kensington, East Berlin, and Worthington Ridge hedges on consistent schedules.',
     'Seasonal programs combine trimming with fertilization and pest monitoring for healthy shrubs.',
     'Every visit ends with a full cleanup: beds blown clean, walkways swept, and debris removed.'
@@ -82,7 +64,6 @@ const BushTrimmingBerlinPage = () => {
           'Berlin landscapes mix manicured hedges, privacy plantings, and historic shrubs. We trim each property based on growth habits and neighborhood guidelines.',
         snapshotCopy: 'Dedicated Berlin crews keep blades sharp and routes consistent, so your hedges never overgrow.'
       }}
-      services={services}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}

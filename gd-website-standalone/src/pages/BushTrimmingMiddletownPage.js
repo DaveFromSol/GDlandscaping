@@ -4,13 +4,7 @@ import BushTrimmingTemplate from './BushTrimmingTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const BushTrimmingMiddletownPage = () => {
-  const services = [
-    { icon: '✂️', title: 'Precision Hedge Trimming', description: 'Clean lines for Wesleyan-area hedges, South Farms estates, and Highland streets.' },
-    { icon: '🌼', title: 'Shrub Rejuvenation', description: 'Selective thinning and seasonal pruning for ornamentals and privacy shrubs.' },
-    { icon: '🧹', title: 'Full Cleanup', description: 'Walkways, decks, and driveways cleared with debris hauled away or bagged neatly.' }
-  ];
-
-  const overviewHighlights = [
+    const overviewHighlights = [
     'University-area schedules coordinate around events and on-street parking windows.',
     'Riverfront and South Farms properties receive humidity-aware trimming to prevent disease.',
     'Commercial corridors along Main Street and Saybrook Road stay sharp with off-hour trims.'
@@ -70,7 +64,6 @@ const BushTrimmingMiddletownPage = () => {
           'Middletown mixes historic streets, university housing, and riverfront estates. We tailor trimming strategies for each property type.',
         snapshotCopy: 'Crews stage minutes from Main Street for dependable schedules and quick follow-ups.'
       }}
-      services={services}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}

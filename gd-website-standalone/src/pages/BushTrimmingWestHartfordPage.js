@@ -4,13 +4,7 @@ import BushTrimmingTemplate from './BushTrimmingTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const BushTrimmingWestHartfordPage = () => {
-  const services = [
-    { icon: '✂️', title: 'Formal Hedge Shaping', description: 'Sharp lines for West Hartford Center, Blue Back Square, and Bishop’s Corner estates.' },
-    { icon: '🌺', title: 'Ornamental Shrub Care', description: 'Seasonal pruning for hydrangeas, yews, boxwood, and specialty plantings.' },
-    { icon: '🧹', title: 'Premium Cleanup', description: 'Decks, patios, and sidewalks blown clean; debris removed or bagged neatly.' }
-  ];
-
-  const overviewHighlights = [
+    const overviewHighlights = [
     'High-end neighborhoods receive white-glove service with attention to symmetry and detail.',
     'Retail + dining corridors get overnight trims so storefronts stay welcoming for shoppers.',
     'Subscription programs keep hedges camera-ready throughout the growing season.'
@@ -70,7 +64,6 @@ const BushTrimmingWestHartfordPage = () => {
           'West Hartford landscapes demand polish. We deliver precise shaping, plant health care, and meticulous cleanup every visit.',
         snapshotCopy: 'Clients enjoy concierge-level communication and consistent crews.'
       }}
-      services={services}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}

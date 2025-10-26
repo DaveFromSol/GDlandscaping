@@ -4,13 +4,7 @@ import BushTrimmingTemplate from './BushTrimmingTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const BushTrimmingCromwellPage = () => {
-  const services = [
-    { icon: '✂️', title: 'Formal Hedge Shaping', description: 'Precise cuts for Main Street, Skyview, and River Highlands hedges.' },
-    { icon: '🌿', title: 'Shrub Health Pruning', description: 'Seasonal thinning and rejuvenation pruning for ornamental shrubs.' },
-    { icon: '🧹', title: 'Cleanup & Disposal', description: 'Beds blown clean and all clippings removed or bagged every visit.' }
-  ];
-
-  const overviewHighlights = [
+    const overviewHighlights = [
     'Riverfront humidity and wind patterns inform our trimming schedule along Main Street and Riverport.',
     'Golf-adjacent neighborhoods get detailed cuts for privet, boxwood, and formal plantings.',
     'Commercial accounts on Route 372 receive after-hours trimming to keep storefronts spotless.'
@@ -68,7 +62,6 @@ const BushTrimmingCromwellPage = () => {
         overviewIntro: 'River town landscapes demand flexible trimming schedules. We match crews to each neighborhood’s plant palette.',
         snapshotCopy: 'Berlin-based crews travel minutes to Cromwell for reliable, polished results.'
       }}
-      services={services}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}

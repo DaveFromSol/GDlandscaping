@@ -9,7 +9,6 @@ const BushTrimmingTemplate = ({
   townName,
   seo,
   hero,
-  services,
   overviewHighlights,
   serviceStats,
   serviceHighlights,
@@ -72,8 +71,6 @@ const BushTrimmingTemplate = ({
           </div>
         </div>
 
-        <LocationGallery townName={townName} subtitle={gallerySubtitle} />
-
         <section className="town-overview">
           <div className="container">
             <div className="town-overview-grid">
@@ -106,22 +103,6 @@ const BushTrimmingTemplate = ({
         </section>
 
         <div className="container">
-          <section className="services-grid-section">
-            <div className="section-header">
-              <h2>{townName} Bush & Shrub Services</h2>
-              <p className="section-subtitle">Maintenance plans tailored for foundation shrubs, privacy hedges, and ornamental plantings.</p>
-            </div>
-            <div className="services-grid">
-              {services.map((service, index) => (
-                <div key={`${townName}-service-${index}`} className="service-card">
-                  <div className="service-icon">{service.icon}</div>
-                  <h3>{service.title}</h3>
-                  <p>{service.description}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
           <section className="before-after-section">
             <div className="section-header">
               <h2>Real Results from {townName.split(',')[0]}</h2>
@@ -138,6 +119,8 @@ const BushTrimmingTemplate = ({
               </div>
             </div>
           </section>
+
+          <LocationGallery townName={townName} subtitle={gallerySubtitle} />
 
           <section className="location-benefits">
             <div className="section-header">
