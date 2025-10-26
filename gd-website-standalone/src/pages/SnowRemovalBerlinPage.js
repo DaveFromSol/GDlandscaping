@@ -1,73 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
-import { useFirebase } from '../contexts/FirebaseContext';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import QuoteSection from '../components/QuoteSection';
 
 const SnowRemovalBerlinPage = () => {
-  const { db } = useFirebase();
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    address: '',
-    services: 'snow-removal',
-    message: ''
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState('');
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus('');
-
-    if (!formData.firstName || !formData.lastName || !formData.phone) {
-      setSubmitStatus('Please fill in all required fields.');
-      setIsSubmitting(false);
-      return;
-    }
-
-    try {
-      if (!db) {
-        throw new Error('Firebase database not initialized');
-      }
-
-      await addDoc(collection(db, 'quotes'), {
-        ...formData,
-        location: 'Berlin',
-        pageType: 'snow-removal',
-        timestamp: serverTimestamp(),
-        status: 'new'
-      });
-
-      setSubmitStatus('success');
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        address: '',
-        services: 'snow-removal',
-        message: ''
-      });
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      setSubmitStatus('error');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
   const packages = [
     {
       id: 1,
@@ -126,6 +62,18 @@ const SnowRemovalBerlinPage = () => {
     'Christian Lane area'
   ];
 
+  const overviewHighlights = [
+    'Crew leaders live in Berlin, so plows roll out before 4:30 AM to keep Kensington and East Berlin driveways open ahead of the commute.',
+    'Sidewalk crews clear front walks, stoops, and mailbox paths while plow trucks finish the driveway pass to limit refreeze.',
+    'Post-storm inspections verify drains along Worthington Ridge stay open so meltwater doesn’t re-freeze across aprons.'
+  ];
+
+  const serviceStats = [
+    { value: '4:30 AM', label: 'First pass starts' },
+    { value: '20+', label: 'Local storm routes' },
+    { value: '24/7', label: 'Weather monitoring' }
+  ];
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -172,7 +120,7 @@ const SnowRemovalBerlinPage = () => {
                 <span>❄️ Serving Berlin, CT</span>
               </div>
               <h1>Snow Removal Service Berlin CT</h1>
-              <p className="hero-subtitle">Professional winter maintenance for Berlin residents and businesses. Your local Berlin snow removal experts keeping properties safe and accessible all season long.</p>
+              <p className="hero-subtitle">Storm-tracking crews clear Berlin driveways, sidewalks, and entrances before the morning rush, then return for follow-up service to keep everything open while temperatures swing.</p>
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Berlin Quote
@@ -184,6 +132,37 @@ const SnowRemovalBerlinPage = () => {
             </div>
           </div>
         </div>
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Berlin Winter Readiness</h2>
+                <p>Berlin storms stack up quickly on Worthington Ridge and sweep across Kensington. We pre-salt, plow, and return for cleanup so your property never falls behind the weather.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`berlin-snow-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Berlin Snow Stats</h3>
+                <p>Dedicated plow trucks, sidewalk crews, and loaders are staged inside town limits all winter.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           {/* Berlin Specific Benefits */}
@@ -307,167 +286,12 @@ const SnowRemovalBerlinPage = () => {
             </div>
           </section>
 
-          {/* Contact Form Section */}
-          <section style={{
-            background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
-            padding: '60px 20px',
-            marginTop: '60px'
-          }}>
-            <div className="section-header" style={{ textAlign: 'center', marginBottom: '40px' }}>
-              <h2>Request Your Free Snow Removal Quote</h2>
-              <p className="section-subtitle">Get a personalized quote for Berlin snow removal services</p>
-            </div>
-
-            <div style={{
-              maxWidth: '600px',
-              margin: '0 auto',
-              background: 'white',
-              padding: '32px',
-              borderRadius: '12px',
-              boxShadow: '0 4px 16px rgba(0,0,0,0.1)'
-            }}>
-              {submitStatus === 'success' && (
-                <div style={{
-                  padding: '16px',
-                  marginBottom: '24px',
-                  background: '#d4edda',
-                  border: '1px solid #c3e6cb',
-                  borderRadius: '8px',
-                  color: '#155724'
-                }}>
-                  Thank you! We'll contact you within 24 hours.
-                </div>
-              )}
-
-              {submitStatus === 'error' && (
-                <div style={{
-                  padding: '16px',
-                  marginBottom: '24px',
-                  background: '#f8d7da',
-                  border: '1px solid #f5c6cb',
-                  borderRadius: '8px',
-                  color: '#721c24'
-                }}>
-                  There was an error submitting your request. Please try again or call us.
-                </div>
-              )}
-
-              {typeof submitStatus === 'string' && submitStatus !== 'success' && submitStatus !== 'error' && submitStatus !== '' && (
-                <div style={{
-                  padding: '16px',
-                  marginBottom: '24px',
-                  background: '#fff3cd',
-                  border: '1px solid #ffeeba',
-                  borderRadius: '8px',
-                  color: '#856404'
-                }}>
-                  {submitStatus}
-                </div>
-              )}
-
-              <form onSubmit={handleSubmit}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
-                  <div>
-                    <label htmlFor="firstName" style={{ display: 'block', color: '#374151', fontWeight: '500', marginBottom: '8px', fontSize: '14px' }}>First Name *</label>
-                    <input
-                      type="text"
-                      id="firstName"
-                      name="firstName"
-                      value={formData.firstName}
-                      onChange={handleInputChange}
-                      style={{ width: '100%', padding: '12px 16px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '16px' }}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="lastName" style={{ display: 'block', color: '#374151', fontWeight: '500', marginBottom: '8px', fontSize: '14px' }}>Last Name *</label>
-                    <input
-                      type="text"
-                      id="lastName"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleInputChange}
-                      style={{ width: '100%', padding: '12px 16px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '16px' }}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
-                  <div>
-                    <label htmlFor="email" style={{ display: 'block', color: '#374151', fontWeight: '500', marginBottom: '8px', fontSize: '14px' }}>Email</label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      style={{ width: '100%', padding: '12px 16px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '16px' }}
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="phone" style={{ display: 'block', color: '#374151', fontWeight: '500', marginBottom: '8px', fontSize: '14px' }}>Phone *</label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      style={{ width: '100%', padding: '12px 16px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '16px' }}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div style={{ marginBottom: '16px' }}>
-                  <label htmlFor="address" style={{ display: 'block', color: '#374151', fontWeight: '500', marginBottom: '8px', fontSize: '14px' }}>Property Address</label>
-                  <input
-                    type="text"
-                    id="address"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleInputChange}
-                    placeholder="Street address, City, State"
-                    style={{ width: '100%', padding: '12px 16px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '16px' }}
-                  />
-                </div>
-
-                <div style={{ marginBottom: '16px' }}>
-                  <label htmlFor="message" style={{ display: 'block', color: '#374151', fontWeight: '500', marginBottom: '8px', fontSize: '14px' }}>Additional Details</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    rows="4"
-                    placeholder="Tell us about your snow removal needs..."
-                    style={{ width: '100%', padding: '12px 16px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '16px', fontFamily: 'inherit' }}
-                  ></textarea>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  style={{
-                    width: '100%',
-                    padding: '16px',
-                    background: isSubmitting ? '#9ca3af' : '#2d5016',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '8px',
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    cursor: isSubmitting ? 'not-allowed' : 'pointer',
-                    transition: 'background 0.3s'
-                  }}
-                  onMouseOver={(e) => !isSubmitting && (e.target.style.background = '#3d6b1f')}
-                  onMouseOut={(e) => !isSubmitting && (e.target.style.background = '#2d5016')}
-                >
-                  {isSubmitting ? 'Submitting...' : 'Request Quote'}
-                </button>
-              </form>
-            </div>
-          </section>
+          <QuoteSection
+            title="Request Berlin Snow Removal"
+            subtitle="Prefer the traditional form? Share property details and we’ll confirm your route time right away."
+            locationName="Berlin Snow"
+            source="Berlin Snow Page"
+          />
 
           {/* Contact CTA */}
           <section className="snow-cta">

@@ -68,6 +68,18 @@ const LawnCareCromwellPage = () => {
     "url": "https://gdlandscapingllc.com/lawn-care-cromwell-ct"
   };
 
+  const overviewHighlights = [
+    'Irrigation-friendly mowing schedules for River Highlands and Court Street slopes where drainage runs toward the Connecticut River.',
+    'Detail-focused crews that handle bed edging, walkway trimming, and seasonal color change-outs for Main Street store fronts.',
+    'Flexible service windows for TPC River Highlands-adjacent neighborhoods where commuter traffic peaks early.'
+  ];
+
+  const serviceStats = [
+    { value: '15', label: 'Cromwell crews on call' },
+    { value: '20 min', label: 'Average dispatch ETA' },
+    { value: '100%', label: 'Storm follow-up checks' }
+  ];
+
   return (
     <>
       <SEOHead
@@ -127,6 +139,37 @@ const LawnCareCromwellPage = () => {
           townName="Cromwell, CT"
           subtitle="Real project snapshots from Riverport, Nooks Hill, and the neighborhoods flanking Main Street."
         />
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Cromwell Lawn Intelligence</h2>
+                <p>Riverfront moisture, clay-heavy soil, and mature shade trees require different approaches across Cromwell. We tighten up mower decks near the bluffs, leave longer blades in river bottoms, and schedule aeration right after fall tournaments.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`cromwell-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Cromwell Service Snapshot</h3>
+                <p>Every route is backed by on-call supervisors who inspect after storms or large events.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           <section className="location-benefits">

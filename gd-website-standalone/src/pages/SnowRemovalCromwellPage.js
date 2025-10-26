@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import QuoteSection from '../components/QuoteSection';
 
 const SnowRemovalCromwellPage = () => {
   const packages = [
@@ -61,6 +62,18 @@ const SnowRemovalCromwellPage = () => {
     'Riverfront Area'
   ];
 
+  const overviewHighlights = [
+    'River-hardened crews pretreat Main Street, Nooks Hill, and Skyview Estates before Route 9 traffic starts.',
+    'Sidewalk teams scrape storefronts, townhome steps, and municipal facilities while plow trucks finish the lots.',
+    'Bridge and bluff monitoring lets us return with calcium treatments before overnight refreeze.'
+  ];
+
+  const serviceStats = [
+    { value: '4:15 AM', label: 'First dispatch' },
+    { value: '12', label: 'Dedicated loops' },
+    { value: '45 min', label: 'Average return' }
+  ];
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -107,7 +120,7 @@ const SnowRemovalCromwellPage = () => {
                 <span>❄️ Serving Cromwell, CT</span>
               </div>
               <h1>Snow Removal Service Cromwell CT</h1>
-              <p className="hero-subtitle">Professional winter maintenance for Cromwell residents and businesses. Keep your Connecticut River town property safe and accessible all season long with GD Landscaping's reliable snow removal services.</p>
+              <p className="hero-subtitle">Riverfront squalls, steep drives, and city sidewalks get cleared on precise routes so Cromwell homeowners and storefronts stay open during every storm.</p>
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Cromwell Quote
@@ -119,6 +132,37 @@ const SnowRemovalCromwellPage = () => {
             </div>
           </div>
         </div>
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Cromwell Winter Strategy</h2>
+                <p>Connecticut River moisture creates heavy, fast accumulations. We stage equipment around town to pre-salt, plow, and return before ice rebuilds.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`cromwell-snow-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Cromwell Service Snapshot</h3>
+                <p>Communication stays tight with text alerts and crew tracking during every storm.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           {/* Cromwell Specific Benefits */}
@@ -241,6 +285,13 @@ const SnowRemovalCromwellPage = () => {
               </div>
             </div>
           </section>
+
+          <QuoteSection
+            title="Reserve Cromwell Snow Service"
+            subtitle="Tell us about your driveway, parking lot, or facility access and we’ll send a tailored snow plan."
+            locationName="Cromwell Snow"
+            source="Cromwell Snow Page"
+          />
 
           {/* Contact CTA */}
           <section className="snow-cta">

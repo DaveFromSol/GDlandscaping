@@ -67,6 +67,18 @@ const LawnCareNewingtonPage = () => {
     "url": "https://gdlandscapingllc.com/lawn-care-newington-ct"
   };
 
+  const overviewHighlights = [
+    'Customized mowing stripes for Newington Center colonials, Maple Hill cul-de-sacs, and the larger Willard School neighborhoods.',
+    'Blade sharpening schedule adjusted for Newington’s thicker cool-season turf so cuts stay clean even during humid weeks.',
+    'Optional shrub trimming, mulch, and seasonal color that keep Cedar Mountain and Church Street properties camera-ready.'
+  ];
+
+  const serviceStats = [
+    { value: '4.9/5', label: 'Local review score' },
+    { value: '16', label: 'Weekly route loops' },
+    { value: '2 hr', label: 'Weather alerts' }
+  ];
+
   return (
     <>
       <SEOHead
@@ -126,6 +138,37 @@ const LawnCareNewingtonPage = () => {
           townName="Newington, CT"
           subtitle="Weekly cuts and detailing completed throughout Newington Center, Willard, and Maple Hill."
         />
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Newington Lawn Insight</h2>
+                <p>Newington lawns range from wide corner lots to cozy ranch yards shaded by mature oaks. We match deck sizes, clippings strategy, and trim order so every property gets a boutique finish without slowing the schedule.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`newington-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Newington Service Snapshot</h3>
+                <p>We keep the same crew leaders on each street every week for consistent quality.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           <section className="packages-section">

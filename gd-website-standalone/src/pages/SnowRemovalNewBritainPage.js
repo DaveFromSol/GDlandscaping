@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import QuoteSection from '../components/QuoteSection';
 
 const SnowRemovalNewBritainPage = () => {
   const packages = [
@@ -59,6 +60,18 @@ const SnowRemovalNewBritainPage = () => {
     'Sloper',
     'Little Poland',
     'Hardware City area'
+  ];
+
+  const overviewHighlights = [
+    'Little Poland, Belvedere, and downtown neighborhoods get cleared on precise loops so narrow streets stay open.',
+    'Sidewalk crews follow the plows to keep storefronts and multifamily entrances shoveled and salted.',
+    'Commercial lots along Farmington Avenue and Stanley Street receive overnight service with loader support.'
+  ];
+
+  const serviceStats = [
+    { value: '4 AM', label: 'Route kickoff' },
+    { value: '20', label: 'Neighborhood loops' },
+    { value: '2', label: 'Return visits per storm' }
   ];
 
   const structuredData = {
@@ -120,7 +133,7 @@ const SnowRemovalNewBritainPage = () => {
                 <span>❄️ Serving New Britain, CT</span>
               </div>
               <h1>Snow Removal Service New Britain CT</h1>
-              <p className="hero-subtitle">Professional winter maintenance for New Britain residents and businesses. Keep your Hardware City property safe and accessible all season long with GD Landscaping's reliable snow removal services.</p>
+              <p className="hero-subtitle">Hardware City storms pile up quickly. We plow, shovel, and de-ice Little Poland, Belvedere, the East Side, and commercial corridors before the city wakes up.</p>
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get New Britain Quote
@@ -133,6 +146,36 @@ const SnowRemovalNewBritainPage = () => {
           </div>
         </div>
 
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>New Britain Storm Coverage</h2>
+                <p>Tight downtown lots, hilly neighborhoods, and industrial corridors get tailored passes so every property stays open.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`newbritain-snow-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>New Britain Service Snapshot</h3>
+                <p>Crews reside in town, so return visits happen fast as weather changes.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
         <div className="container">
           {/* New Britain Specific Benefits */}
           <section className="location-benefits">
@@ -254,6 +297,13 @@ const SnowRemovalNewBritainPage = () => {
               </div>
             </div>
           </section>
+
+          <QuoteSection
+            title="Reserve New Britain Snow Service"
+            subtitle="Tell us about your driveway, sidewalks, and business hours so we can assign the perfect route."
+            locationName="New Britain Snow"
+            source="New Britain Snow Page"
+          />
 
           {/* Contact CTA */}
           <section className="snow-cta">

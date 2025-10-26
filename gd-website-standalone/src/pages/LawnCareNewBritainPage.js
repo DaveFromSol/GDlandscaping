@@ -88,6 +88,18 @@ const LawnCareNewBritainPage = () => {
     }
   };
 
+  const overviewHighlights = [
+    'Little Poland storefronts, Belvedere hills, and West Side neighborhoods all receive trims tuned to their lot sizes and sun exposure.',
+    'Our Hardware City crews bag clippings during peak seed drop to keep sidewalks spotless and storm drains clear.',
+    'Commercial accounts receive after-hours mowing so parking lots along Broad Street stay open for customers.'
+  ];
+
+  const serviceStats = [
+    { value: '5', label: 'Dedicated crews in town' },
+    { value: '22', label: 'Neighborhood routes' },
+    { value: '365', label: 'Support days' }
+  ];
+
   return (
     <>
       <SEOHead
@@ -148,6 +160,37 @@ const LawnCareNewBritainPage = () => {
           townName="New Britain, CT"
           subtitle="See our crews polishing lawns across Little Poland, Belvedere, and the East Side."
         />
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Dialed-In for New Britain Yards</h2>
+                <p>New Britain mixes city blocks, condo associations, and classic neighborhoods with mature maples. We manage traffic, slope, and shade by pairing the right equipment with each route so lawns stay consistent across town.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`new-britain-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>New Britain Service Snapshot</h3>
+                <p>Supervisors live nearby for true neighborhood-level accountability.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           {/* New Britain Specific Benefits */}

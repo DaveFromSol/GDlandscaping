@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import QuoteSection from '../components/QuoteSection';
 
 const SnowRemovalBristolPage = () => {
   const packages = [
@@ -94,6 +95,18 @@ const SnowRemovalBristolPage = () => {
     'Lake Avenue area'
   ];
 
+  const overviewHighlights = [
+    'Dedicated Forestville and Federal Hill routes keep driveways open before the morning commute.',
+    'Sidewalk and entry crews return after the plow pass to remove lingering ice and windrows.',
+    'Commercial lots along Route 6 receive overnight service so parking stalls are clear before opening.'
+  ];
+
+  const serviceStats = [
+    { value: '4 AM', label: 'First route dispatch' },
+    { value: '18', label: 'Dedicated plow loops' },
+    { value: '24/7', label: 'Storm monitoring' }
+  ];
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -148,7 +161,7 @@ const SnowRemovalBristolPage = () => {
                 <span>❄️ Serving Bristol, CT</span>
               </div>
               <h1>Professional Snow Removal in Bristol, CT</h1>
-              <p className="hero-subtitle">Reliable winter maintenance for Bristol residents and businesses. Keep your Bristol property safe and accessible all season long with professional snow removal services throughout Forestville, Edgewood, Federal Hill, and all Bristol neighborhoods.</p>
+              <p className="hero-subtitle">Route-based crews plow, shovel, and de-ice Forestville, Edgewood, Federal Hill, and downtown properties before sunrise, then loop back for cleanups so windrows never block you in.</p>
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Bristol Winter Quote
@@ -160,6 +173,37 @@ const SnowRemovalBristolPage = () => {
             </div>
           </div>
         </div>
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Bristol Storm Strategy</h2>
+                <p>Snow squalls hit different parts of the city at different times. Our staggered routes and sidewalk teams keep your property clear no matter where you are in Bristol.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`bristol-snow-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Bristol Service Snapshot</h3>
+                <p>Equipment, salt, and crews are staged across the city for rapid redeployment.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           {/* Seasonal Packages */}
@@ -301,6 +345,13 @@ const SnowRemovalBristolPage = () => {
               </div>
             </div>
           </section>
+
+          <QuoteSection
+            title="Reserve Your Bristol Snow Route"
+            subtitle="Send the address, priorities, and any trouble spots—we’ll reply with the best-fit plan for your property."
+            locationName="Bristol Snow"
+            source="Bristol Snow Page"
+          />
 
           {/* Contact CTA */}
           <section className="snow-cta">

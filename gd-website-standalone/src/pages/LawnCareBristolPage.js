@@ -90,6 +90,18 @@ const LawnCareBristolPage = () => {
     }
   ];
 
+  const overviewHighlights = [
+    'Dedicated mowing crews circulate through Forestville, Edgewood, and Federal Hill daily for consistent cut windows.',
+    'Seasonal deep edging, mulch refreshes, and pruning packages keep Bristol’s mature landscapes tidy between service visits.',
+    'Commercial-grade equipment sized for tight city lots and larger suburban lawns so stripes stay clean everywhere.'
+  ];
+
+  const serviceStats = [
+    { value: '18', label: 'Bristol routes per week' },
+    { value: '30 min', label: 'Average dispatch ETA' },
+    { value: '4.9/5', label: 'Verified rating' }
+  ];
+
   return (
     <>
       <SEOHead
@@ -170,6 +182,37 @@ const LawnCareBristolPage = () => {
           townName="Bristol, CT"
           subtitle="Trusted crews delivering sharp cuts throughout Forestville, Edgewood, and Federal Hill."
         />
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Built for Bristol Properties</h2>
+                <p>From the slopes around Federal Hill to the compact downtown lots near Riverside Avenue, Bristol yards need flexible crews that can maneuver on every terrain. We tailor deck heights, trimming order, and cleanup to match each street’s character.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`bristol-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Bristol Service Snapshot</h3>
+                <p>Our dispatch hub is 10 minutes away, keeping responses fast when weather shifts.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Customer Testimonials */}
         <div className="testimonials-section">

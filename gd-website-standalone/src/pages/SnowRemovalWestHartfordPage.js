@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import QuoteSection from '../components/QuoteSection';
 
 const SnowRemovalWestHartfordPage = () => {
   const packages = [
@@ -94,6 +95,18 @@ const SnowRemovalWestHartfordPage = () => {
     'Conard'
   ];
 
+  const overviewHighlights = [
+    'Dedicated plow and sidewalk teams start in West Hartford Center and Elmwood before retail traffic ramps up.',
+    'Narrow streets in the West End receive smaller equipment to protect historic curbs and stone walls.',
+    'Commercial plazas along New Britain Avenue and Park Road are cleared overnight for early shoppers and diners.'
+  ];
+
+  const serviceStats = [
+    { value: '3:30 AM', label: 'First dispatch' },
+    { value: '20+', label: 'Neighborhood loops' },
+    { value: '2', label: 'Average passes/storm' }
+  ];
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -148,7 +161,7 @@ const SnowRemovalWestHartfordPage = () => {
                 <span>❄️ Serving West Hartford, CT</span>
               </div>
               <h1>Professional Snow Removal in West Hartford, CT</h1>
-              <p className="hero-subtitle">Reliable winter maintenance for West Hartford residents and businesses. Keep your West Hartford property safe and accessible all season long with professional snow removal services throughout West Hartford Center, Elmwood, Bishop's Corner, and all West Hartford neighborhoods.</p>
+              <p className="hero-subtitle">We plow, shovel, and de-ice West Hartford Center, Elmwood, Bishop's Corner, and Blue Back Square so retail, residential, and school properties stay open even during back-to-back storms.</p>
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get West Hartford Winter Quote
@@ -160,6 +173,37 @@ const SnowRemovalWestHartfordPage = () => {
             </div>
           </div>
         </div>
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>West Hartford Storm Coverage</h2>
+                <p>Upscale neighborhoods, busy retail corridors, and historic streets all receive dedicated care. We tailor equipment sizes, salting strategies, and pass frequency to match each district.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`wh-snow-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>West Hartford Service Snapshot</h3>
+                <p>Supervisors coordinate with local parking bans and HOA requirements to keep everything compliant.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           {/* Seasonal Packages */}
@@ -301,6 +345,13 @@ const SnowRemovalWestHartfordPage = () => {
               </div>
             </div>
           </section>
+
+          <QuoteSection
+            title="Get a West Hartford Snow Plan"
+            subtitle="Share your address and priorities so we can confirm the best route and response level."
+            locationName="West Hartford Snow"
+            source="West Hartford Snow Page"
+          />
 
           {/* Contact CTA */}
           <section className="snow-cta">

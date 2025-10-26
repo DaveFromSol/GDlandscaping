@@ -92,6 +92,18 @@ const LawnCareHartfordPage = () => {
     }
   };
 
+  const overviewHighlights = [
+    'Crew leads familiar with Parkville’s compact lots and the wide estates off Blue Hills Avenue calibrate deck sizes and approach patterns per street.',
+    'Integrated turf care—fertilization, weed control, and overseeding—keeps city lots lush even with heavy foot traffic and pets.',
+    'Night-before route planning means downtown, Asylum Hill, and South End clients receive service windows before rush-hour parking fills curb lanes.'
+  ];
+
+  const serviceStats = [
+    { value: '6', label: 'Dedicated Hartford crews' },
+    { value: '20+', label: 'Neighborhoods covered' },
+    { value: '2 hrs', label: 'Storm follow-up max' }
+  ];
+
   return (
     <>
       <SEOHead
@@ -151,6 +163,37 @@ const LawnCareHartfordPage = () => {
           townName="Hartford, CT"
           subtitle="Fresh cuts and bed edging from Asylum Hill to the South End."
         />
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Urban Lawn Care That Fits Hartford</h2>
+                <p>Between historic brownstones, riverfront businesses, and new apartment communities, Hartford lawns demand flexible equipment and careful timing. We protect delicate irrigation, coordinate around on-street parking, and keep clippings off city drains.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`hartford-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Hartford Service Snapshot</h3>
+                <p>Supervisors stage in Downtown, Parkville, and Wethersfield Avenue for rapid deployment.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           <section className="location-benefits">

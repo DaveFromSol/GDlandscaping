@@ -68,6 +68,18 @@ const LawnCareMiddletownPage = () => {
     "url": "https://gdlandscapingllc.com/lawn-care-middletown-ct"
   };
 
+  const overviewHighlights = [
+    'Weekly schedules built around university traffic keep Wesleyan-area clients serviced before campus crowds fill the streets.',
+    'Higher-cut programs for the Highlands and Laurel Grove protect turf health on rocky soil while maintaining crisp stripes.',
+    'Add-on pruning, mulch refresh, and seasonal cleanup keep Middlefield Street and Westfield neighborhoods show-ready year-round.'
+  ];
+
+  const serviceStats = [
+    { value: '14', label: 'Middletown routes' },
+    { value: '25 min', label: 'Average dispatch' },
+    { value: '120+', label: 'Acres maintained' }
+  ];
+
   return (
     <>
       <SEOHead
@@ -127,6 +139,37 @@ const LawnCareMiddletownPage = () => {
           townName="Middletown, CT"
           subtitle="Maintenance highlights from Wesleyan Hill to the Highlands and Westfield districts."
         />
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Middletown Insight, Professional Finish</h2>
+                <p>College-town lawns see constant activity, shade, and irrigation challenges. We blend university-area expectations with quieter suburban neighborhoods to deliver the same neat, upscale curb appeal across Middletown.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`middletown-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Middletown Service Snapshot</h3>
+                <p>Crews stage minutes from Main Street for rapid deployment when weather shifts.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           <section className="packages-section">

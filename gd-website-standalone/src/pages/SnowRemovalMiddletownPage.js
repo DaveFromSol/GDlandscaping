@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import QuoteSection from '../components/QuoteSection';
 
 const SnowRemovalMiddletownPage = () => {
   const packages = [
@@ -61,6 +62,18 @@ const SnowRemovalMiddletownPage = () => {
     'Industrial Park'
   ];
 
+  const overviewHighlights = [
+    'Campus-adjacent crews clear Wesleyan neighborhoods before students and staff head out.',
+    'South Farms, Highland, and East Side drives receive pre-treatment to offset drifting snow.',
+    'Commercial and medical corridors along Main Street and Saybrook Road get overnight service so parking spots are open by dawn.'
+  ];
+
+  const serviceStats = [
+    { value: '4 AM', label: 'Route kickoff' },
+    { value: '14', label: 'Middletown loops' },
+    { value: '30 min', label: 'Average follow-up' }
+  ];
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -107,7 +120,7 @@ const SnowRemovalMiddletownPage = () => {
                 <span>❄️ Serving Middletown, CT</span>
               </div>
               <h1>Snow Removal Service Middletown CT</h1>
-              <p className="hero-subtitle">Professional winter maintenance for Middletown residents and businesses. Keep your university town property safe and accessible all season long with GD Landscaping's reliable snow removal services.</p>
+              <p className="hero-subtitle">Campus traffic, riverfront wind, and steep neighborhoods demand precise winter care. Our crews plow, shovel, and de-ice every corner of Middletown on schedule.</p>
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Middletown Quote
@@ -119,6 +132,37 @@ const SnowRemovalMiddletownPage = () => {
             </div>
           </div>
         </div>
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Middletown Storm Coverage</h2>
+                <p>University blocks, downtown storefronts, and hillside neighborhoods each have unique winter demands. We tailor equipment and timing for every zone.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`middletown-snow-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Middletown Service Snapshot</h3>
+                <p>Seasonal contracts include proactive check-ins during back-to-back storms.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           {/* Middletown Specific Benefits */}
@@ -241,6 +285,13 @@ const SnowRemovalMiddletownPage = () => {
               </div>
             </div>
           </section>
+
+          <QuoteSection
+            title="Request Middletown Snow Service"
+            subtitle="Share your address plus priority areas and we’ll finalize a route spot for your property."
+            locationName="Middletown Snow"
+            source="Middletown Snow Page"
+          />
 
           {/* Contact CTA */}
           <section className="snow-cta">

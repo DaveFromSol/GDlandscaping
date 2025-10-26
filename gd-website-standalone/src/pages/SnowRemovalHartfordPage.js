@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import QuoteSection from '../components/QuoteSection';
 
 const SnowRemovalHartfordPage = () => {
   const packages = [
@@ -65,6 +66,18 @@ const SnowRemovalHartfordPage = () => {
     'Sheldon Charter Oak'
   ];
 
+  const overviewHighlights = [
+    'Pre-dawn runs through Asylum Hill, Frog Hollow, and Parkville move cars before parking bans lift.',
+    'Sidewalk teams coordinate with building managers to keep ADA routes, storefronts, and apartment entrances clear.',
+    'Dedicated calcium routes treat steep West End drives and river-adjacent lots before temperatures crash.'
+  ];
+
+  const serviceStats = [
+    { value: '3:45 AM', label: 'Downtown dispatch' },
+    { value: '25+', label: 'Neighborhood loops' },
+    { value: '15 min', label: 'Status updates' }
+  ];
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -110,7 +123,7 @@ const SnowRemovalHartfordPage = () => {
                 <span>❄️ Serving Hartford, CT</span>
               </div>
               <h1>Snow Removal Service Hartford CT</h1>
-              <p className="hero-subtitle">Professional winter maintenance for Hartford residents and businesses. Keep Connecticut's capital city properties safe and accessible all season long with GD Landscaping's reliable snow removal services.</p>
+              <p className="hero-subtitle">City-tested crews plow cramped drives, condo lots, and busy storefronts across Hartford while sidewalk teams keep entrances dry and ADA routes compliant.</p>
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Hartford Quote
@@ -122,6 +135,37 @@ const SnowRemovalHartfordPage = () => {
             </div>
           </div>
         </div>
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Hartford Storm Strategy</h2>
+                <p>Historic streets, on-street parking, and tight alleys require a different approach. We stage compact equipment and sidewalk teams in every quadrant of the city.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`hartford-snow-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Hartford Service Snapshot</h3>
+                <p>Live dispatch updates keep property managers aware of each pass.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           <section className="location-benefits">
@@ -240,6 +284,13 @@ const SnowRemovalHartfordPage = () => {
               </div>
             </div>
           </section>
+
+          <QuoteSection
+            title="Schedule Hartford Snow Service"
+            subtitle="Send your property layout and winter priorities—we’ll match you with the right crew and route time."
+            locationName="Hartford Snow"
+            source="Hartford Snow Page"
+          />
 
           <section className="snow-cta">
             <div className="cta-content">

@@ -64,6 +64,18 @@ const LawnCareBerlinPage = () => {
     'Christian Lane area'
   ];
 
+  const overviewHighlights = [
+    'Route-optimized crews that service Kensington, East Berlin, and Worthington Ridge multiple times per week for dependable scheduling.',
+    'Seasonal programs that pair mowing with fertilization, spot-spraying, and clean bed edges so Berlin lawns hold rich color through August.',
+    'On-call quality checks after heavy rain to make sure slopes off Chamberlain Highway stay safe and ruts-free.'
+  ];
+
+  const serviceStats = [
+    { value: '24 hrs', label: 'Average callback' },
+    { value: '12+', label: 'Berlin neighborhoods' },
+    { value: '4.9/5', label: 'Client rating' }
+  ];
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -148,6 +160,37 @@ const LawnCareBerlinPage = () => {
           townName="Berlin, CT"
           subtitle="A quick look at the weekly mowing, edging, and bed care we provide around Kensington, East Berlin, and Worthington Ridge."
         />
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Hyper-Local Berlin Lawn Care</h2>
+                <p>Berlin properties span hilly Worthington Ridge estates, Kensington cul-de-sacs, and compact downtown lots. We tailor cut heights, striping patterns, and clean-up routines for each micro area so every yard keeps a consistent, high-end finish.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`berlin-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Berlin Service Snapshot</h3>
+                <p>We keep a dedicated crew, trailer, and standby equipment in town all season.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           {/* Berlin Specific Benefits */}

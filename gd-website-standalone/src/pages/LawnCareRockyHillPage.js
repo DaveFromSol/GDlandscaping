@@ -67,6 +67,18 @@ const LawnCareRockyHillPage = () => {
     "url": "https://gdlandscapingllc.com/lawn-care-rocky-hill-ct"
   };
 
+  const overviewHighlights = [
+    'Moisture-aware mowing patterns keep riverfront lawns near Dividend Brook from matting while upland neighborhoods retain a lush finish.',
+    'Bed maintenance and mulch refreshes for corporate corridors along Cromwell Avenue keep signage sharp for passing traffic.',
+    'Optional organic programs for Ferry Landing and West Rocky Hill residents who prefer low-chemical care near the river.'
+  ];
+
+  const serviceStats = [
+    { value: '10', label: 'River Valley crews' },
+    { value: '5 am', label: 'Earliest dispatch' },
+    { value: '98%', label: 'On-time visits' }
+  ];
+
   return (
     <>
       <SEOHead
@@ -126,6 +138,37 @@ const LawnCareRockyHillPage = () => {
           townName="Rocky Hill, CT"
           subtitle="Trimmed lawns and riverfront edging from Dividend to West Rocky Hill."
         />
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Rocky Hill Lawn Expertise</h2>
+                <p>Rocky Hill lawns see river humidity, heavy clay, and steep cul-de-sacs. We rotate equipment, notch deck heights, and plan edging passes for each section of town so the finish stays high-end without scalping or clumping.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`rocky-hill-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Rocky Hill Service Snapshot</h3>
+                <p>Staged trailers along Route 3 keep response time low even during River Road congestion.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           <section className="packages-section">
