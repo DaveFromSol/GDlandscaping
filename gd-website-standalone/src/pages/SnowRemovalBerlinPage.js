@@ -220,7 +220,7 @@ const SnowRemovalBerlinPage = () => {
           {/* Berlin Packages */}
           <section className="packages-section">
             <div className="section-header">
-              <h2>Seasonal Snow Removal Packages</h2>
+              <h2>Berlin Snow Removal Packages</h2>
               <p className="section-subtitle">Choose the perfect winter maintenance package for your Berlin property</p>
             </div>
 

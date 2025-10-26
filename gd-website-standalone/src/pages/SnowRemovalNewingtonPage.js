@@ -102,7 +102,7 @@ const SnowRemovalNewingtonPage = () => {
         <div className="container">
           <section className="packages-section">
             <div className="section-header">
-              <h2>Seasonal Snow Removal Packages</h2>
+              <h2>Newington Snow Removal Packages</h2>
               <p className="section-subtitle">Winter maintenance solutions for Newington properties</p>
             </div>
 

@@ -155,7 +155,7 @@ const SnowRemovalCromwellPage = () => {
           {/* Cromwell Packages */}
           <section className="packages-section">
             <div className="section-header">
-              <h2>Seasonal Snow Removal Packages</h2>
+              <h2>Cromwell Snow Removal Packages</h2>
               <p className="section-subtitle">Tailored winter maintenance solutions for Cromwell properties</p>
             </div>
 

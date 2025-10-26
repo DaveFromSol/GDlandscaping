@@ -165,7 +165,7 @@ const SnowRemovalBristolPage = () => {
           {/* Seasonal Packages */}
           <section className="packages-section">
             <div className="section-header">
-              <h2>Seasonal Snow Removal Packages</h2>
+              <h2>Bristol Snow Removal Packages</h2>
               <p className="section-subtitle">Choose the perfect winter maintenance package for your Bristol property</p>
             </div>
 
