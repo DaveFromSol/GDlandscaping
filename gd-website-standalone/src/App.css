@@ -3703,6 +3703,231 @@
   margin-top: 60px;
 }
 
+.fall-cleanup-section {
+  min-height: 100vh;
+}
+
+.fall-hero {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%);
+  color: #fff7ed;
+  padding: 7rem 0 5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.fall-hero::before,
+.fall-hero::after {
+  content: '🍁 🍂 🍃';
+  position: absolute;
+  font-size: 2.25rem;
+  opacity: 0.12;
+  animation: float 12s ease-in-out infinite;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.fall-hero::before {
+  top: 15%;
+  left: 8%;
+}
+
+.fall-hero::after {
+  bottom: 10%;
+  right: 12%;
+  animation-delay: -4s;
+}
+
+.fall-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.2);
+}
+
+.fall-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.fall-hero h1 {
+  font-size: 3.25rem;
+  font-weight: 800;
+  margin-bottom: 1.25rem;
+  color: #fff7ed;
+}
+
+.fall-hero .hero-subtitle {
+  color: #ffedd5;
+  font-size: 1.2rem;
+}
+
+.fall-cta {
+  padding: 4rem 1rem;
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: #fff7ed;
+  border-radius: 24px;
+  text-align: center;
+  margin-top: 4rem;
+  box-shadow: 0 20px 40px rgba(234, 88, 12, 0.25);
+}
+
+.fall-cta .cta-buttons .cta-primary {
+  background: #fff;
+  color: #b45309;
+}
+
+.fall-cta .cta-buttons .cta-secondary {
+  border-color: #fff;
+  color: #fff;
+}
+
+.bush-trimming-section {
+  min-height: 100vh;
+}
+
+.trim-hero {
+  background: linear-gradient(135deg, #0f766e 0%, #0d9488 50%, #14b8a6 100%);
+  color: #ecfdf5;
+  padding: 7rem 0 5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.trim-hero::before,
+.trim-hero::after {
+  content: '✂️ 🌿 ✂️';
+  position: absolute;
+  font-size: 2rem;
+  opacity: 0.15;
+  animation: float 10s ease-in-out infinite;
+  color: rgba(236, 253, 245, 0.7);
+}
+
+.trim-hero::before {
+  top: 20%;
+  left: 12%;
+}
+
+.trim-hero::after {
+  bottom: 15%;
+  right: 18%;
+  animation-delay: -3s;
+}
+
+.trim-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.2);
+}
+
+.trim-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.trim-hero h1 {
+  font-size: 3.2rem;
+  color: #ecfdf5;
+}
+
+.trim-cta {
+  margin-top: 4rem;
+  padding: 4rem 1rem;
+  background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+  border-radius: 24px;
+  color: #ecfdf5;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(13, 148, 136, 0.3);
+}
+
+.trim-cta .cta-buttons .cta-primary {
+  background: #ecfdf5;
+  color: #0f766e;
+}
+
+.trim-cta .cta-buttons .cta-secondary {
+  border-color: #ecfdf5;
+  color: #ecfdf5;
+}
+
+/* Before/After Section for Bush Trimming */
+.before-after-section {
+  margin: 4rem 0;
+  padding: 3rem 0;
+}
+
+.before-after-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.before-after-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.before-after-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+.before-after-card img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  display: block;
+}
+
+.before-after-label {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.before-after-label.before {
+  background: #ef4444;
+  color: white;
+}
+
+.before-after-label.after {
+  background: #10b981;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .before-after-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .before-after-card img {
+    height: 300px;
+  }
+
+  .before-after-label {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+}
+
 .contact-form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -3910,6 +4135,24 @@
 
   .town-overview-card {
     padding: 2rem;
+  }
+
+  .fall-hero h1 {
+    font-size: 2.4rem;
+  }
+
+  .fall-cta {
+    border-radius: 18px;
+    padding: 3rem 1.5rem;
+  }
+
+  .trim-hero h1 {
+    font-size: 2.4rem;
+  }
+
+  .trim-cta {
+    border-radius: 18px;
+    padding: 3rem 1.5rem;
   }
 }
 
