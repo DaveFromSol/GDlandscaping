@@ -394,6 +394,25 @@ const HomePage = () => {
           source="Home Page Form"
         />
 
+
+
+        <section className="before-after-gallery">
+          <div className="container">
+            <h2>Before & After: Bush Trimming in Newington</h2>
+            <p className="section-subtitle">Precision hedge shaping and debris cleanup gave this Newington property instant curb appeal.</p>
+            <div className="before-after-grid">
+              <figure className="before-card">
+                <span className="badge">Before</span>
+                <img src="/images/before-farmington.jpg" alt="Before GD Landscaping bush trimming in Newington CT" />
+              </figure>
+              <figure className="after-card">
+                <span className="badge badge-success">After</span>
+                <img src="/images/after-farmington.jpg" alt="After GD Landscaping bush trimming in Newington CT" />
+              </figure>
+            </div>
+          </div>
+        </section>
+
         {/* Service Areas */}
         <div className="service-areas">
           <div className="container">
