@@ -115,8 +115,8 @@ const SnowRemovalWestHartfordPage = () => {
     "provider": {
       "@type": "LocalBusiness",
       "name": "GD Landscaping",
-      "logo": "https://gdlandscapingllc.com/GD.png",
-      "image": "https://gdlandscapingllc.com/GD.png",
+      "logo": "https://www.gdlandscapingllc.com/GD.png",
+      "image": "https://www.gdlandscapingllc.com/GD.png",
       "telephone": "(860) 526-7583",
       "address": {
         "@type": "PostalAddress",
@@ -147,7 +147,7 @@ const SnowRemovalWestHartfordPage = () => {
         title="Snow Removal West Hartford CT | Professional Winter Services | GD Landscaping"
         description="Reliable snow removal services in West Hartford, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal West Hartford CT, snow plowing West Hartford Connecticut, winter services West Hartford, ice management West Hartford CT, residential snow removal West Hartford, commercial snow plowing West Hartford, West Hartford Center snow removal, Elmwood winter services"
-        canonicalUrl="https://gdlandscapingllc.com/snow-removal-west-hartford-ct"
+        canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-west-hartford-ct"
         structuredData={structuredData}
       />
 

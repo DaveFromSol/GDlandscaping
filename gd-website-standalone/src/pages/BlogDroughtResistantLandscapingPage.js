@@ -42,7 +42,7 @@ const BlogDroughtResistantLandscapingPage = () => (
   <BlogPostTemplate
     title={meta.title}
     description={meta.excerpt}
-    canonicalUrl={`https://gdlandscapingllc.com/blog/${meta.slug}`}
+    canonicalUrl={`https://www.gdlandscapingllc.com/blog/${meta.slug}`}
     keywords="drought resistant landscaping CT, xeriscape ideas, low water plants"
     publishDate={meta.publishDate}
     readingTime={meta.readingTime}

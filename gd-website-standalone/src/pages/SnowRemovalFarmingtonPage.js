@@ -96,8 +96,8 @@ const SnowRemovalFarmingtonPage = () => {
     name: 'Snow Removal Service Farmington CT - GD Landscaping',
     description:
       'Professional snow removal services in Farmington, Connecticut. Reliable plowing, shoveling, and ice management for homes, HOAs, and businesses.',
-    logo: 'https://gdlandscapingllc.com/GD.png',
-    image: 'https://gdlandscapingllc.com/GD.png',
+    logo: 'https://www.gdlandscapingllc.com/GD.png',
+    image: 'https://www.gdlandscapingllc.com/GD.png',
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Farmington',
@@ -105,7 +105,7 @@ const SnowRemovalFarmingtonPage = () => {
       addressCountry: 'US'
     },
     telephone: '(860) 526-7583',
-    url: 'https://gdlandscapingllc.com/snow-removal-farmington-ct'
+    url: 'https://www.gdlandscapingllc.com/snow-removal-farmington-ct'
   };
 
   return (
@@ -114,7 +114,7 @@ const SnowRemovalFarmingtonPage = () => {
         title="Snow Removal Farmington CT | Professional Winter Services | GD Landscaping"
         description="Reliable snow removal services in Farmington, Connecticut. Seasonal packages for homes and businesses across Unionville, Devonwood, and Talcott Mountain."
         keywords="snow removal Farmington CT, snow plowing Farmington Connecticut, winter services Farmington, ice management Farmington CT"
-        canonicalUrl="https://gdlandscapingllc.com/snow-removal-farmington-ct"
+        canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-farmington-ct"
         structuredData={structuredData}
       />
 

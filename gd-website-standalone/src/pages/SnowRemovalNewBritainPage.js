@@ -79,8 +79,8 @@ const SnowRemovalNewBritainPage = () => {
     "@type": "LocalBusiness",
     "name": "Snow Removal Service New Britain CT - GD Landscaping",
     "description": "Professional snow removal services in New Britain, Connecticut. Reliable snow plowing, ice management, and winter maintenance for homes and businesses.",
-    "logo": "https://gdlandscapingllc.com/GD.png",
-    "image": "https://gdlandscapingllc.com/GD.png",
+    "logo": "https://www.gdlandscapingllc.com/GD.png",
+    "image": "https://www.gdlandscapingllc.com/GD.png",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "New Britain",
@@ -93,7 +93,7 @@ const SnowRemovalNewBritainPage = () => {
       "longitude": -72.7795
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscapingllc.com/snow-removal-new-britain-ct",
+    "url": "https://www.gdlandscapingllc.com/snow-removal-new-britain-ct",
     "serviceArea": {
       "@type": "City",
       "name": "New Britain, Connecticut"
@@ -119,7 +119,7 @@ const SnowRemovalNewBritainPage = () => {
         title="Snow Removal New Britain CT | Professional Winter Services | GD Landscaping"
         description="Reliable snow removal services in New Britain, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal New Britain CT, snow plowing New Britain Connecticut, winter services New Britain, ice management New Britain CT, residential snow removal New Britain, commercial snow plowing New Britain"
-        canonicalUrl="https://gdlandscapingllc.com/snow-removal-new-britain-ct"
+        canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-new-britain-ct"
         structuredData={structuredData}
       />
 

@@ -41,7 +41,7 @@ const BushTrimmingWestHartfordPage = () => {
         description:
           'Premium bush trimming and hedge shaping in West Hartford, CT. Serving West Hartford Center, Elmwood, Bishop’s Corner, and beyond.',
         keywords: 'bush trimming West Hartford CT, hedge trimming West Hartford, shrub pruning West Hartford Connecticut',
-        canonicalUrl: 'https://gdlandscapingllc.com/bush-trimming-west-hartford-ct',
+        canonicalUrl: 'https://www.gdlandscapingllc.com/bush-trimming-west-hartford-ct',
         structuredData: {
           '@context': 'https://schema.org',
           '@type': 'Service',

@@ -84,7 +84,7 @@ const FallCleanupWestHartfordPage = () => {
       seoTitle="Fall Cleanup West Hartford CT | Leaf Removal & Yard Cleanups | GD Landscaping"
       seoDescription="Leaf removal, pruning, and seasonal cleanup for West Hartford Center, Elmwood, Bishop's Corner, and Blue Back Square neighborhoods."
       seoKeywords="fall cleanup West Hartford CT, leaf removal West Hartford, West Hartford yard cleanup"
-      canonicalUrl="https://gdlandscapingllc.com/fall-cleanup-west-hartford-ct"
+      canonicalUrl="https://www.gdlandscapingllc.com/fall-cleanup-west-hartford-ct"
       structuredData={{
         '@context': 'https://schema.org',
         '@type': 'Service',

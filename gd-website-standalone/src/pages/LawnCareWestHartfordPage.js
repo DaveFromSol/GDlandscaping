@@ -11,8 +11,8 @@ const LawnCareWestHartfordPage = () => {
       "@type": "LocalBusiness",
       "name": "GD Landscaping - Lawn Care West Hartford CT",
       "description": "Professional lawn care and landscaping services in West Hartford CT - lawn mowing, maintenance, and complete yard care. Serving West Hartford Center, Elmwood, and surrounding areas.",
-      "logo": "https://gdlandscapingllc.com/GD.png",
-      "image": "https://gdlandscapingllc.com/GD.png",
+      "logo": "https://www.gdlandscapingllc.com/GD.png",
+      "image": "https://www.gdlandscapingllc.com/GD.png",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "West Hartford",
@@ -27,7 +27,7 @@ const LawnCareWestHartfordPage = () => {
       },
       "telephone": "(860) 526-7583",
       "email": "contact@gdlandscaping.com",
-      "url": "https://gdlandscapingllc.com/lawn-care-west-hartford-ct",
+      "url": "https://www.gdlandscapingllc.com/lawn-care-west-hartford-ct",
       "sameAs": [
         "https://www.gdlandscapingllc.com"
       ],
@@ -96,7 +96,7 @@ const LawnCareWestHartfordPage = () => {
         title="Lawn Care West Hartford CT | Professional Lawn Maintenance Services | GD Landscaping"
         description="Professional lawn care services in West Hartford, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for West Hartford homes and businesses."
         keywords="lawn care West Hartford CT, lawn mowing West Hartford Connecticut, landscaping West Hartford, yard maintenance West Hartford CT, fertilization West Hartford, weed control West Hartford, West Hartford Center lawn care, Elmwood landscaping"
-        canonicalUrl="https://gdlandscapingllc.com/lawn-care-west-hartford-ct"
+        canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-west-hartford-ct"
         ogImage="/GD.png"
         ogType="website"
         structuredData={structuredData}

@@ -79,8 +79,8 @@ const SnowRemovalBerlinPage = () => {
     "@type": "LocalBusiness",
     "name": "Snow Removal Service Berlin CT - GD Landscaping",
     "description": "Professional snow removal services in Berlin, Connecticut. Reliable snow plowing, ice management, and winter maintenance for homes and businesses.",
-    "logo": "https://gdlandscapingllc.com/GD.png",
-    "image": "https://gdlandscapingllc.com/GD.png",
+    "logo": "https://www.gdlandscapingllc.com/GD.png",
+    "image": "https://www.gdlandscapingllc.com/GD.png",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Berlin",
@@ -93,7 +93,7 @@ const SnowRemovalBerlinPage = () => {
       "longitude": -72.7551
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscapingllc.com/snow-removal-berlin-ct",
+    "url": "https://www.gdlandscapingllc.com/snow-removal-berlin-ct",
     "serviceArea": {
       "@type": "City",
       "name": "Berlin, Connecticut"
@@ -106,7 +106,7 @@ const SnowRemovalBerlinPage = () => {
         title="Snow Removal Berlin CT | Professional Winter Services | GD Landscaping"
         description="Reliable snow removal services in Berlin, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Berlin CT, snow plowing Berlin Connecticut, winter services Berlin, ice management Berlin CT, residential snow removal Berlin, commercial snow plowing Berlin"
-        canonicalUrl="https://gdlandscapingllc.com/snow-removal-berlin-ct"
+        canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-berlin-ct"
         structuredData={structuredData}
       />
 

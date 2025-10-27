@@ -10,8 +10,8 @@ const HomePage = () => {
       "@type": "LocalBusiness",
       "name": "GD Landscaping",
       "description": "Professional year-round landscaping services in Berlin CT - lawn care in summer, snow removal in winter. Serving Hartford County and surrounding Connecticut communities.",
-      "logo": "https://gdlandscapingllc.com/GD.png",
-      "image": "https://gdlandscapingllc.com/GD.png",
+      "logo": "https://www.gdlandscapingllc.com/GD.png",
+      "image": "https://www.gdlandscapingllc.com/GD.png",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Berlin",
@@ -26,7 +26,7 @@ const HomePage = () => {
       },
       "telephone": "(860) 526-7583",
       "email": "contact@gdlandscaping.com",
-      "url": "https://gdlandscapingllc.com",
+      "url": "https://www.gdlandscapingllc.com",
       "sameAs": [
         "https://www.gdlandscapingllc.com"
       ],
@@ -157,8 +157,8 @@ const HomePage = () => {
       "@type": "Organization",
       "name": "GD Landscaping",
       "alternateName": "GD Landscaping LLC",
-      "logo": "https://gdlandscapingllc.com/GD.png",
-      "url": "https://gdlandscapingllc.com",
+      "logo": "https://www.gdlandscapingllc.com/GD.png",
+      "url": "https://www.gdlandscapingllc.com",
       "sameAs": [
         "https://www.gdlandscapingllc.com"
       ],
@@ -179,7 +179,7 @@ const HomePage = () => {
         title="Professional Landscaping in Berlin CT | GD Landscaping - Lawn Care & Snow Removal"
         description="Beautiful lawns in summer, clear driveways in winter. GD Landscaping provides year-round landscaping and snow removal services in Berlin, Hartford County CT."
         keywords="landscaping Berlin CT, lawn care Connecticut, snow removal Berlin, lawn mowing Hartford County, landscape design Berlin CT, hardscaping Connecticut, bush trimming Berlin, leaf cleanup Hartford County, fertilization services CT"
-        canonicalUrl="https://gdlandscapingllc.com/"
+        canonicalUrl="https://www.gdlandscapingllc.com/"
         ogImage="/GD.png"
         ogType="website"
         structuredData={structuredData}

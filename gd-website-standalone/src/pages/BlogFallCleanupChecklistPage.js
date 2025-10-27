@@ -47,7 +47,7 @@ const BlogFallCleanupChecklistPage = () => (
   <BlogPostTemplate
     title={meta.title}
     description={meta.excerpt}
-    canonicalUrl={`https://gdlandscapingllc.com/blog/${meta.slug}`}
+    canonicalUrl={`https://www.gdlandscapingllc.com/blog/${meta.slug}`}
     keywords="fall cleanup checklist, Hartford fall cleanup, leaf removal tips"
     publishDate={meta.publishDate}
     readingTime={meta.readingTime}

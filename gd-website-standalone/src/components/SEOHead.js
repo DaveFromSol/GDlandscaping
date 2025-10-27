@@ -60,7 +60,7 @@ const SEOHead = ({
     canonical.href = canonicalUrl;
     
     // Update Open Graph tags (complete set)
-    const fullOgImage = ogImage.startsWith('http') ? ogImage : `https://gdlandscapingllc.com${ogImage}`;
+    const fullOgImage = ogImage.startsWith('http') ? ogImage : `https://www.gdlandscapingllc.com${ogImage}`;
 
     updateMetaTag('property', 'og:title', title);
     updateMetaTag('property', 'og:description', description);

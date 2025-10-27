@@ -65,7 +65,7 @@ const LawnCareFarmingtonPage = () => {
       "addressCountry": "US"
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscapingllc.com/lawn-care-farmington-ct"
+    "url": "https://www.gdlandscapingllc.com/lawn-care-farmington-ct"
   };
 
   const overviewHighlights = [
@@ -86,7 +86,7 @@ const LawnCareFarmingtonPage = () => {
         title="Lawn Care Farmington CT | Professional Lawn Maintenance Services | GD Landscaping"
         description="Professional lawn care services in Farmington, CT. Weekly mowing, fertilization, weed control, and complete yard maintenance for Unionville, Devonwood, and surrounding neighborhoods."
         keywords="lawn care Farmington CT, lawn mowing Farmington Connecticut, landscaping Farmington, yard maintenance Farmington CT"
-        canonicalUrl="https://gdlandscapingllc.com/lawn-care-farmington-ct"
+        canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-farmington-ct"
         structuredData={structuredData}
       />
 

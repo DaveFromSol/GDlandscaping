@@ -96,7 +96,7 @@ const FallCleanupBristolPage = () => {
       seoTitle="Fall Cleanup Bristol CT | Leaf Removal & Yard Cleanups | GD Landscaping"
       seoDescription="Bristol CT fall cleanup services: leaf removal, gutter policing, shrub cutbacks, and haul-away for Forestville, Edgewood, and Federal Hill properties."
       seoKeywords="fall cleanup Bristol CT, leaf removal Bristol, yard cleanups Bristol Connecticut, fall landscaping Bristol"
-      canonicalUrl="https://gdlandscapingllc.com/fall-cleanup-bristol-ct"
+      canonicalUrl="https://www.gdlandscapingllc.com/fall-cleanup-bristol-ct"
       structuredData={{
         '@context': 'https://schema.org',
         '@type': 'Service',

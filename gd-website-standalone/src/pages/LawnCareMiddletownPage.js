@@ -65,7 +65,7 @@ const LawnCareMiddletownPage = () => {
       "addressCountry": "US"
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscapingllc.com/lawn-care-middletown-ct"
+    "url": "https://www.gdlandscapingllc.com/lawn-care-middletown-ct"
   };
 
   const overviewHighlights = [
@@ -86,7 +86,7 @@ const LawnCareMiddletownPage = () => {
         title="Lawn Care Middletown CT | Professional Lawn Maintenance Services | GD Landscaping"
         description="Professional lawn care services in Middletown, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for all Middletown areas."
         keywords="lawn care Middletown CT, lawn mowing Middletown Connecticut, landscaping Middletown, yard maintenance Middletown CT, fertilization Middletown, weed control Middletown"
-        canonicalUrl="https://gdlandscapingllc.com/lawn-care-middletown-ct"
+        canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-middletown-ct"
         structuredData={structuredData}
       />
 

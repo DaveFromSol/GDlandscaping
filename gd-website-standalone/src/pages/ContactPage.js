@@ -163,7 +163,7 @@ Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}`,
       },
       "telephone": "(860) 526-7583",
       "email": "contact@gdlandscaping.com",
-      "url": "https://gdlandscaping.com"
+      "url": "https://www.gdlandscapingllc.com"
     }
   };
 
@@ -173,7 +173,7 @@ Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}`,
         title="Contact GD Landscaping | Free Quotes - Berlin CT Lawn Care & Snow Removal Services"
         description="Get your free landscaping quote today! Contact GD Landscaping in Berlin CT for lawn care, snow removal, and landscaping services. Same-day response guaranteed."
         keywords="contact GD Landscaping Berlin CT, free landscaping quote Connecticut, lawn care estimate Hartford County, snow removal quote Berlin, landscaping consultation CT, instant lawn quote Berlin"
-        canonicalUrl="https://gdlandscapingllc.com/contact"
+        canonicalUrl="https://www.gdlandscapingllc.com/contact"
         ogImage="/GD.png"
         ogType="website"
         structuredData={structuredData}

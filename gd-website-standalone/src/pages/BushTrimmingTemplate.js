@@ -5,6 +5,8 @@ import AddressAutocomplete from '../components/AddressAutocomplete';
 import LocationGallery from '../components/LocationGallery';
 import QuoteSection from '../components/QuoteSection';
 
+const defaultPhoneNumber = '(860) 526-7583';
+
 const BushTrimmingTemplate = ({
   townName,
   seo,
@@ -31,6 +33,27 @@ const BushTrimmingTemplate = ({
     secondaryText: 'Call (860) 526-7583'
   };
 
+  const cityName = townName.split(',')[0].trim();
+  const localBusinessSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: 'GD Landscaping LLC',
+    url: seo.canonicalUrl,
+    telephone: hero?.ctaSecondaryText?.replace('Call ', '') || defaultPhoneNumber,
+    serviceType: hero?.title || `Bush Trimming ${townName}`,
+    areaServed: townName,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: cityName,
+      addressRegion: 'CT'
+    }
+  };
+
+  const structuredDataEntries = [
+    ...(Array.isArray(seo.structuredData) ? seo.structuredData : seo.structuredData ? [seo.structuredData] : []),
+    localBusinessSchema
+  ];
+
   return (
     <>
       <SEOHead
@@ -38,7 +61,7 @@ const BushTrimmingTemplate = ({
         description={seo.description}
         keywords={seo.keywords}
         canonicalUrl={seo.canonicalUrl}
-        structuredData={seo.structuredData}
+        structuredData={structuredDataEntries}
       />
 
       <div className="bush-trimming-section">

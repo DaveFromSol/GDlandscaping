@@ -41,7 +41,7 @@ const BushTrimmingMiddletownPage = () => {
         description:
           'Professional bush trimming, hedge shaping, and shrub care in Middletown, CT. Serving Wesleyan, South Farms, Highland, and more.',
         keywords: 'bush trimming Middletown CT, hedge trimming Middletown, shrub pruning Middletown Connecticut',
-        canonicalUrl: 'https://gdlandscapingllc.com/bush-trimming-middletown-ct',
+        canonicalUrl: 'https://www.gdlandscapingllc.com/bush-trimming-middletown-ct',
         structuredData: {
           '@context': 'https://schema.org',
           '@type': 'Service',

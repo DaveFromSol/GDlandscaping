@@ -41,7 +41,7 @@ const AboutPage = () => {
         title="About GD Landscaping - Professional Landscaping Team | Berlin CT Lawn Care Experts"
         description="Learn about GD Landscaping's team of professional landscapers serving Berlin CT and Hartford County. Expert lawn care, landscape design, and tree services since 2024."
         keywords="about GD Landscaping, professional landscapers Berlin CT, landscaping company Hartford County, lawn care experts Connecticut, licensed landscaping Berlin CT"
-        canonicalUrl="https://gdlandscaping.com/about"
+        canonicalUrl="https://www.gdlandscapingllc.com/about"
         structuredData={structuredData}
       />
       

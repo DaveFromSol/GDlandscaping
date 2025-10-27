@@ -96,7 +96,7 @@ const FallCleanupCromwellPage = () => {
       seoTitle="Fall Cleanup Cromwell CT | Leaf Removal & Yard Cleanups | GD Landscaping"
       seoDescription="Cromwell fall cleanup pros. Leaf removal, bed cutbacks, and disposal for River Highlands, Nooks Hill, and Cromwell Center properties."
       seoKeywords="fall cleanup Cromwell CT, leaf removal Cromwell, yard cleanup Cromwell Connecticut, fall landscaping Cromwell"
-      canonicalUrl="https://gdlandscapingllc.com/fall-cleanup-cromwell-ct"
+      canonicalUrl="https://www.gdlandscapingllc.com/fall-cleanup-cromwell-ct"
       structuredData={{
         '@context': 'https://schema.org',
         '@type': 'Service',

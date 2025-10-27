@@ -37,7 +37,7 @@ const BlogHedgeTrimmingSecretsPage = () => (
   <BlogPostTemplate
     title={meta.title}
     description={meta.excerpt}
-    canonicalUrl={`https://gdlandscapingllc.com/blog/${meta.slug}`}
+    canonicalUrl={`https://www.gdlandscapingllc.com/blog/${meta.slug}`}
     keywords="hedge trimming tips, shrub trimming secrets, evergreen pruning"
     publishDate={meta.publishDate}
     readingTime={meta.readingTime}

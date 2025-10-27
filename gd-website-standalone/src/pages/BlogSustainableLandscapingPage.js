@@ -42,7 +42,7 @@ const BlogSustainableLandscapingPage = () => (
   <BlogPostTemplate
     title={meta.title}
     description={meta.excerpt}
-    canonicalUrl={`https://gdlandscapingllc.com/blog/${meta.slug}`}
+    canonicalUrl={`https://www.gdlandscapingllc.com/blog/${meta.slug}`}
     keywords="sustainable landscaping CT, pollinator gardens Connecticut, electric lawn equipment"
     publishDate={meta.publishDate}
     readingTime={meta.readingTime}

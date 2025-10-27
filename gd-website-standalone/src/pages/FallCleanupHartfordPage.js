@@ -96,7 +96,7 @@ const FallCleanupHartfordPage = () => {
       seoTitle="Fall Cleanup Hartford CT | Leaf Removal & Seasonal Cleanup | GD Landscaping"
       seoDescription="Full-service fall cleanup in Hartford, CT. Leaf removal, pruning, and cleanup for downtown, Asylum Hill, Parkville, and West End properties."
       seoKeywords="fall cleanup Hartford CT, leaf removal Hartford, Hartford yard cleanup, fall landscaping Hartford"
-      canonicalUrl="https://gdlandscapingllc.com/fall-cleanup-hartford-ct"
+      canonicalUrl="https://www.gdlandscapingllc.com/fall-cleanup-hartford-ct"
       structuredData={{
         '@context': 'https://schema.org',
         '@type': 'Service',

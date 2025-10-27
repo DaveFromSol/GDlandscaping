@@ -41,7 +41,7 @@ const BushTrimmingFarmingtonPage = () => {
         description:
           'Professional bush trimming and hedge shaping in Farmington, CT. Serving Unionville, Devonwood, Talcott Mountain, and surrounding neighborhoods.',
         keywords: 'bush trimming Farmington CT, hedge trimming Farmington, shrub pruning Farmington Connecticut',
-        canonicalUrl: 'https://gdlandscapingllc.com/bush-trimming-farmington-ct',
+        canonicalUrl: 'https://www.gdlandscapingllc.com/bush-trimming-farmington-ct',
         structuredData: {
           '@context': 'https://schema.org',
           '@type': 'Service',

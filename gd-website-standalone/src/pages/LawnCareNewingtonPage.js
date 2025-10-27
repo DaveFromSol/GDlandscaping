@@ -64,7 +64,7 @@ const LawnCareNewingtonPage = () => {
       "addressCountry": "US"
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscapingllc.com/lawn-care-newington-ct"
+    "url": "https://www.gdlandscapingllc.com/lawn-care-newington-ct"
   };
 
   const overviewHighlights = [
@@ -85,7 +85,7 @@ const LawnCareNewingtonPage = () => {
         title="Lawn Care Newington CT | Professional Lawn Maintenance Services | GD Landscaping"
         description="Professional lawn care services in Newington, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for all Newington properties."
         keywords="lawn care Newington CT, lawn mowing Newington Connecticut, landscaping Newington, yard maintenance Newington CT, fertilization Newington"
-        canonicalUrl="https://gdlandscapingllc.com/lawn-care-newington-ct"
+        canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-newington-ct"
         structuredData={structuredData}
       />
 

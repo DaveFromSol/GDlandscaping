@@ -12,7 +12,7 @@ const InstantQuotePage = () => {
     "@type": "WebApplication",
     "name": "GD Landscaping Instant Quote System",
     "description": "Get an instant lawn care quote in 30 seconds with property boundary detection and accurate pricing for Berlin CT and surrounding areas",
-    "url": "https://gdlandscapingllc.com/instant-quote",
+    "url": "https://www.gdlandscapingllc.com/instant-quote",
     "applicationCategory": "BusinessApplication",
     "offers": {
       "@type": "Offer",
@@ -39,7 +39,7 @@ const InstantQuotePage = () => {
         title="Instant Lawn Care Quote | GD Landscaping - Free 30-Second Property Quote Berlin CT"
         description="Get your lawn care quote in 30 seconds! See your property boundary on a map + instant accurate pricing. All CT supported. No credit card required. 100% free."
         keywords="instant lawn quote, free lawn care estimate, property boundary detection, lawn mowing quote Berlin CT, instant landscaping quote Connecticut, lawn care pricing Berlin"
-        canonicalUrl="https://gdlandscapingllc.com/instant-quote"
+        canonicalUrl="https://www.gdlandscapingllc.com/instant-quote"
         ogImage="/GD.png"
         ogType="website"
         structuredData={structuredData}

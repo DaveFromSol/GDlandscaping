@@ -41,7 +41,7 @@ const BushTrimmingNewingtonPage = () => {
         description:
           'Professional bush trimming and hedge shaping in Newington, CT. Serving Newington Center, Maple Hill, Cedar Mountain, and Berlin Turnpike corridors.',
         keywords: 'bush trimming Newington CT, hedge trimming Newington, shrub pruning Newington Connecticut',
-        canonicalUrl: 'https://gdlandscapingllc.com/bush-trimming-newington-ct',
+        canonicalUrl: 'https://www.gdlandscapingllc.com/bush-trimming-newington-ct',
         structuredData: {
           '@context': 'https://schema.org',
           '@type': 'Service',

@@ -41,7 +41,7 @@ const BushTrimmingHartfordPage = () => {
         description:
           'Professional hedge and shrub trimming in Hartford, CT. Serving downtown, Parkville, Asylum Hill, West End, and South End neighborhoods.',
         keywords: 'bush trimming Hartford CT, hedge trimming Hartford, shrub trimming Hartford Connecticut',
-        canonicalUrl: 'https://gdlandscapingllc.com/bush-trimming-hartford-ct',
+        canonicalUrl: 'https://www.gdlandscapingllc.com/bush-trimming-hartford-ct',
         structuredData: {
           '@context': 'https://schema.org',
           '@type': 'Service',

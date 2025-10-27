@@ -2105,7 +2105,7 @@ const AdminPage = () => {
       <SEOHead
         title="Admin Panel - GD Landscaping"
         description="GD Landscaping Admin Dashboard"
-        canonicalUrl="https://gdlandscapingllc.com/admin"
+        canonicalUrl="https://www.gdlandscapingllc.com/admin"
       />
 
       {!user ? (

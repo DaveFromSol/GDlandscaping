@@ -37,7 +37,7 @@ const BlogSnowReadinessCommercialPage = () => (
   <BlogPostTemplate
     title={meta.title}
     description={meta.excerpt}
-    canonicalUrl={`https://gdlandscapingllc.com/blog/${meta.slug}`}
+    canonicalUrl={`https://www.gdlandscapingllc.com/blog/${meta.slug}`}
     keywords="commercial snow checklist, parking lot snow readiness, snow removal planning"
     publishDate={meta.publishDate}
     readingTime={meta.readingTime}

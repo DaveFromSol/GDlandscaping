@@ -47,7 +47,7 @@ const BlogCoreAerationBenefitsPage = () => (
   <BlogPostTemplate
     title={meta.title}
     description={meta.excerpt}
-    canonicalUrl={`https://gdlandscapingllc.com/blog/${meta.slug}`}
+    canonicalUrl={`https://www.gdlandscapingllc.com/blog/${meta.slug}`}
     keywords="core aeration Connecticut, lawn aeration benefits, overseeding tips"
     publishDate={meta.publishDate}
     readingTime={meta.readingTime}

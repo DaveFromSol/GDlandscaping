@@ -96,7 +96,7 @@ const FallCleanupMiddletownPage = () => {
       seoTitle="Fall Cleanup Middletown CT | Leaf Removal & Yard Cleanups | GD Landscaping"
       seoDescription="Middletown fall cleanup pros. Leaf removal, pruning, and disposal for downtown, Wesleyan, and riverfront properties."
       seoKeywords="fall cleanup Middletown CT, leaf removal Middletown, yard cleanup Middletown Connecticut"
-      canonicalUrl="https://gdlandscapingllc.com/fall-cleanup-middletown-ct"
+      canonicalUrl="https://www.gdlandscapingllc.com/fall-cleanup-middletown-ct"
       structuredData={{
         '@context': 'https://schema.org',
         '@type': 'Service',

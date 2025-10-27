@@ -41,7 +41,7 @@ const BushTrimmingNewBritainPage = () => {
         description:
           'Professional bush trimming and shrub care in New Britain, CT. Serving Little Poland, Belvedere, Sloper, and surrounding neighborhoods.',
         keywords: 'bush trimming New Britain CT, hedge trimming New Britain, shrub pruning New Britain Connecticut',
-        canonicalUrl: 'https://gdlandscapingllc.com/bush-trimming-new-britain-ct',
+        canonicalUrl: 'https://www.gdlandscapingllc.com/bush-trimming-new-britain-ct',
         structuredData: {
           '@context': 'https://schema.org',
           '@type': 'Service',

@@ -79,8 +79,8 @@ const SnowRemovalCromwellPage = () => {
     "@type": "LocalBusiness",
     "name": "Snow Removal Service Cromwell CT - GD Landscaping",
     "description": "Professional snow removal services in Cromwell, Connecticut. Reliable snow plowing, ice management, and winter maintenance for homes and businesses.",
-    "logo": "https://gdlandscapingllc.com/GD.png",
-    "image": "https://gdlandscapingllc.com/GD.png",
+    "logo": "https://www.gdlandscapingllc.com/GD.png",
+    "image": "https://www.gdlandscapingllc.com/GD.png",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Cromwell",
@@ -93,7 +93,7 @@ const SnowRemovalCromwellPage = () => {
       "longitude": -72.6581
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscapingllc.com/snow-removal-cromwell-ct",
+    "url": "https://www.gdlandscapingllc.com/snow-removal-cromwell-ct",
     "serviceArea": {
       "@type": "City",
       "name": "Cromwell, Connecticut"
@@ -106,7 +106,7 @@ const SnowRemovalCromwellPage = () => {
         title="Snow Removal Cromwell CT | Professional Winter Services | GD Landscaping"
         description="Reliable snow removal services in Cromwell, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Cromwell CT, snow plowing Cromwell Connecticut, winter services Cromwell, ice management Cromwell CT, residential snow removal Cromwell, commercial snow plowing Cromwell"
-        canonicalUrl="https://gdlandscapingllc.com/snow-removal-cromwell-ct"
+        canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-cromwell-ct"
         structuredData={structuredData}
       />
 

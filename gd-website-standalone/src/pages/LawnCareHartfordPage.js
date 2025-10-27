@@ -85,7 +85,7 @@ const LawnCareHartfordPage = () => {
       "longitude": -72.6734
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscapingllc.com/lawn-care-hartford-ct",
+    "url": "https://www.gdlandscapingllc.com/lawn-care-hartford-ct",
     "serviceArea": {
       "@type": "City",
       "name": "Hartford, Connecticut"
@@ -110,7 +110,7 @@ const LawnCareHartfordPage = () => {
         title="Lawn Care Hartford CT | Professional Lawn Maintenance Services | GD Landscaping"
         description="Professional lawn care services in Hartford, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance. Serving all Hartford neighborhoods."
         keywords="lawn care Hartford CT, lawn mowing Hartford Connecticut, landscaping Hartford, yard maintenance Hartford CT, fertilization Hartford, weed control Hartford"
-        canonicalUrl="https://gdlandscapingllc.com/lawn-care-hartford-ct"
+        canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-hartford-ct"
         structuredData={structuredData}
       />
 

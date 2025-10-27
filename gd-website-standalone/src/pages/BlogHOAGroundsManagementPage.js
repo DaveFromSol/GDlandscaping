@@ -37,7 +37,7 @@ const BlogHOAGroundsManagementPage = () => (
   <BlogPostTemplate
     title={meta.title}
     description={meta.excerpt}
-    canonicalUrl={`https://gdlandscapingllc.com/blog/${meta.slug}`}
+    canonicalUrl={`https://www.gdlandscapingllc.com/blog/${meta.slug}`}
     keywords="HOA grounds management, HOA landscaping tips, community landscaping"
     publishDate={meta.publishDate}
     readingTime={meta.readingTime}

@@ -84,7 +84,7 @@ const FallCleanupRockyHillPage = () => {
       seoTitle="Fall Cleanup Rocky Hill CT | Leaf Removal & Yard Cleanups | GD Landscaping"
       seoDescription="Leaf removal, pruning, and seasonal cleanup services for Rocky Hill neighborhoods including Dividend, Ferry Landing, and Cromwell Avenue districts."
       seoKeywords="fall cleanup Rocky Hill CT, leaf removal Rocky Hill, yard cleanup Rocky Hill Connecticut"
-      canonicalUrl="https://gdlandscapingllc.com/fall-cleanup-rocky-hill-ct"
+      canonicalUrl="https://www.gdlandscapingllc.com/fall-cleanup-rocky-hill-ct"
       structuredData={{
         '@context': 'https://schema.org',
         '@type': 'Service',

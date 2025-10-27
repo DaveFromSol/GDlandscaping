@@ -96,7 +96,7 @@ const FallCleanupFarmingtonPage = () => {
       seoTitle="Fall Cleanup Farmington CT | Leaf Removal & Yard Cleanups | GD Landscaping"
       seoDescription="Professional fall cleanup in Farmington, CT. Leaf removal, gutter policing, and haul-away service for Unionville, Devonwood, and Talcott Mountain."
       seoKeywords="fall cleanup Farmington CT, leaf removal Farmington, fall yard cleanup Farmington Connecticut"
-      canonicalUrl="https://gdlandscapingllc.com/fall-cleanup-farmington-ct"
+      canonicalUrl="https://www.gdlandscapingllc.com/fall-cleanup-farmington-ct"
       structuredData={{
         '@context': 'https://schema.org',
         '@type': 'Service',

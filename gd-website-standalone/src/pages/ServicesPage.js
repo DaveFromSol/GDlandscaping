@@ -137,7 +137,7 @@ const ServicesPage = () => {
         title="Landscaping Services Berlin CT | GD Landscaping - Lawn Care, Snow Removal, Hardscaping"
         description="Complete landscaping services in Berlin CT: lawn maintenance, snow removal, tree services, hardscaping & more. Serving Hartford County. Free estimates available."
         keywords="landscaping services Berlin CT, lawn maintenance Berlin, snow removal Hartford County, tree services Connecticut, hardscaping Berlin CT, irrigation systems Connecticut, seasonal cleanup Berlin, lawn fertilization CT, mulching services Berlin"
-        canonicalUrl="https://gdlandscapingllc.com/services"
+        canonicalUrl="https://www.gdlandscapingllc.com/services"
         ogImage="/GD.png"
         ogType="website"
         structuredData={structuredData}

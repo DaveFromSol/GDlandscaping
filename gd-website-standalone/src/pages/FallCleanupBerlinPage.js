@@ -96,7 +96,7 @@ const FallCleanupBerlinPage = () => {
       seoTitle="Fall Cleanup Berlin CT | Leaf Removal & Yard Cleanups | GD Landscaping"
       seoDescription="Professional fall cleanup in Berlin, CT. Leaf removal, gutter policing, perennial cutbacks, and haul-away service for Kensington, East Berlin, and Worthington Ridge."
       seoKeywords="fall cleanup Berlin CT, leaf removal Berlin, fall yard cleanup Berlin Connecticut, gutter cleaning Berlin CT"
-      canonicalUrl="https://gdlandscapingllc.com/fall-cleanup-berlin-ct"
+      canonicalUrl="https://www.gdlandscapingllc.com/fall-cleanup-berlin-ct"
       structuredData={{
         '@context': 'https://schema.org',
         '@type': 'Service',

@@ -41,7 +41,7 @@ const BushTrimmingBristolPage = () => {
         description:
           'Professional bush trimming and hedge shaping in Bristol, CT. Serving Forestville, Edgewood, Federal Hill, and surrounding neighborhoods.',
         keywords: 'bush trimming Bristol CT, hedge trimming Bristol, shrub trimming Bristol Connecticut',
-        canonicalUrl: 'https://gdlandscapingllc.com/bush-trimming-bristol-ct',
+        canonicalUrl: 'https://www.gdlandscapingllc.com/bush-trimming-bristol-ct',
         structuredData: {
           '@context': 'https://schema.org',
           '@type': 'Service',

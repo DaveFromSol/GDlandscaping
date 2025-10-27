@@ -41,7 +41,7 @@ const BushTrimmingRockyHillPage = () => {
         description:
           'Professional hedge and shrub trimming in Rocky Hill, CT. Serving Dividend, Ferry Landing, West Rocky Hill, and Cromwell Avenue districts.',
         keywords: 'bush trimming Rocky Hill CT, hedge trimming Rocky Hill, shrub pruning Rocky Hill Connecticut',
-        canonicalUrl: 'https://gdlandscapingllc.com/bush-trimming-rocky-hill-ct',
+        canonicalUrl: 'https://www.gdlandscapingllc.com/bush-trimming-rocky-hill-ct',
         structuredData: {
           '@context': 'https://schema.org',
           '@type': 'Service',

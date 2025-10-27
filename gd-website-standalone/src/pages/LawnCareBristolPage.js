@@ -11,8 +11,8 @@ const LawnCareBristolPage = () => {
       "@type": "LocalBusiness",
       "name": "GD Landscaping - Lawn Care Bristol CT",
       "description": "Professional lawn care and landscaping services in Bristol CT - lawn mowing, maintenance, and complete yard care. Serving Bristol, Forestville, and surrounding areas.",
-      "logo": "https://gdlandscapingllc.com/GD.png",
-      "image": "https://gdlandscapingllc.com/GD.png",
+      "logo": "https://www.gdlandscapingllc.com/GD.png",
+      "image": "https://www.gdlandscapingllc.com/GD.png",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Bristol",
@@ -27,7 +27,7 @@ const LawnCareBristolPage = () => {
       },
       "telephone": "(860) 526-7583",
       "email": "contact@gdlandscaping.com",
-      "url": "https://gdlandscapingllc.com/lawn-care-bristol-ct",
+      "url": "https://www.gdlandscapingllc.com/lawn-care-bristol-ct",
       "sameAs": [
         "https://www.gdlandscapingllc.com"
       ],
@@ -108,7 +108,7 @@ const LawnCareBristolPage = () => {
         title="Lawn Care Bristol CT | Professional Lawn Maintenance Services | GD Landscaping"
         description="Professional lawn care services in Bristol, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for Bristol homes and businesses."
         keywords="lawn care Bristol CT, lawn mowing Bristol Connecticut, landscaping Bristol, yard maintenance Bristol CT, fertilization Bristol, weed control Bristol, Forestville lawn care, Edgewood landscaping"
-        canonicalUrl="https://gdlandscapingllc.com/lawn-care-bristol-ct"
+        canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-bristol-ct"
         ogImage="/GD.png"
         ogType="website"
         structuredData={structuredData}

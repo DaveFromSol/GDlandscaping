@@ -5,6 +5,8 @@ import AddressAutocomplete from '../components/AddressAutocomplete';
 import LocationGallery from '../components/LocationGallery';
 import QuoteSection from '../components/QuoteSection';
 
+const phoneNumber = '(860) 526-7583';
+
 const FallCleanupTemplate = ({
   townName,
   seoTitle,
@@ -36,6 +38,27 @@ const FallCleanupTemplate = ({
     secondaryText: 'Call (860) 526-7583'
   };
 
+  const cityName = townName.split(',')[0].trim();
+  const localBusinessSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: 'GD Landscaping LLC',
+    url: canonicalUrl,
+    telephone: phoneNumber,
+    serviceType: hero?.title || `Fall Cleanup ${townName}`,
+    areaServed: townName,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: cityName,
+      addressRegion: 'CT'
+    }
+  };
+
+  const structuredDataEntries = [
+    ...(Array.isArray(structuredData) ? structuredData : structuredData ? [structuredData] : []),
+    localBusinessSchema
+  ];
+
   return (
     <>
       <SEOHead
@@ -43,7 +66,7 @@ const FallCleanupTemplate = ({
         description={seoDescription}
         keywords={seoKeywords}
         canonicalUrl={canonicalUrl}
-        structuredData={structuredData}
+        structuredData={structuredDataEntries}
       />
 
       <div className="fall-cleanup-section">

@@ -42,7 +42,7 @@ const BlogMulchEdgingCurbAppealPage = () => (
   <BlogPostTemplate
     title={meta.title}
     description={meta.excerpt}
-    canonicalUrl={`https://gdlandscapingllc.com/blog/${meta.slug}`}
+    canonicalUrl={`https://www.gdlandscapingllc.com/blog/${meta.slug}`}
     keywords="mulch edging tips, curb appeal landscaping, bed edging guide"
     publishDate={meta.publishDate}
     readingTime={meta.readingTime}

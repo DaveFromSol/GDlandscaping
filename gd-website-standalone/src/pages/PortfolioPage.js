@@ -91,7 +91,7 @@ const PortfolioPage = () => {
         title="GD Landscaping Portfolio - Before & After Photos | Berlin CT Landscaping Projects"
         description="View our landscaping portfolio featuring residential and commercial projects in Berlin CT and Hartford County. See lawn maintenance, landscape design, and hardscaping transformations."
         keywords="landscaping portfolio Berlin CT, before after landscaping photos Hartford County, residential landscape design Connecticut, hardscaping projects Berlin CT, lawn transformation photos"
-        canonicalUrl="https://gdlandscaping.com/portfolio"
+        canonicalUrl="https://www.gdlandscapingllc.com/portfolio"
         structuredData={structuredData}
       />
 

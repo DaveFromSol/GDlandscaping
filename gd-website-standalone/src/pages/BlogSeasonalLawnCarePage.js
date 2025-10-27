@@ -47,7 +47,7 @@ const BlogSeasonalLawnCarePage = () => (
   <BlogPostTemplate
     title={meta.title}
     description={meta.excerpt}
-    canonicalUrl={`https://gdlandscapingllc.com/blog/${meta.slug}`}
+    canonicalUrl={`https://www.gdlandscapingllc.com/blog/${meta.slug}`}
     keywords="seasonal lawn care CT, spring lawn schedule, summer mowing tips"
     publishDate={meta.publishDate}
     readingTime={meta.readingTime}

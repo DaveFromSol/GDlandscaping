@@ -115,8 +115,8 @@ const SnowRemovalBristolPage = () => {
     "provider": {
       "@type": "LocalBusiness",
       "name": "GD Landscaping",
-      "logo": "https://gdlandscapingllc.com/GD.png",
-      "image": "https://gdlandscapingllc.com/GD.png",
+      "logo": "https://www.gdlandscapingllc.com/GD.png",
+      "image": "https://www.gdlandscapingllc.com/GD.png",
       "telephone": "(860) 526-7583",
       "address": {
         "@type": "PostalAddress",
@@ -147,7 +147,7 @@ const SnowRemovalBristolPage = () => {
         title="Snow Removal Bristol CT | Professional Winter Services | GD Landscaping"
         description="Reliable snow removal services in Bristol, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Bristol CT, snow plowing Bristol Connecticut, winter services Bristol, ice management Bristol CT, residential snow removal Bristol, commercial snow plowing Bristol, Forestville snow removal, Edgewood winter services"
-        canonicalUrl="https://gdlandscapingllc.com/snow-removal-bristol-ct"
+        canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-bristol-ct"
         structuredData={structuredData}
       />
 
