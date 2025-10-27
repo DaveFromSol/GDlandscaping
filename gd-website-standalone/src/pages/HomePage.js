@@ -412,7 +412,7 @@ const HomePage = () => {
         </section>
 
         {/* Service Areas */}
-        <div className="service-areas">
+        <div id="areas-we-serve" className="service-areas">
           <div className="container">
             <div className="areas-header">
               <h2>Where We Operate</h2>

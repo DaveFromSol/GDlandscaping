@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useFirebase } from '../contexts/FirebaseContext';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './QuotePage.css';
@@ -11,7 +12,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZHJpY2h0ZXIwNiIsImEiOiJjbWd0anR3ZXEwNTUwMnNwd
 const QuotePage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { db } = useFirebase();
+  const { db, auth, user } = useFirebase();
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
 
@@ -25,10 +26,13 @@ const QuotePage = () => {
     email: '',
     phone: '',
     preferredDate: '',
-    notes: ''
+    notes: '',
+    password: '',
+    confirmPassword: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [formError, setFormError] = useState('');
 
   // Redirect to home if no property data
   useEffect(() => {
@@ -85,6 +89,17 @@ const QuotePage = () => {
       }
     }));
   }, [propertySize]);
+
+  // Auto-fill user info when logged in
+  useEffect(() => {
+    if (user) {
+      setBookingData(prev => ({
+        ...prev,
+        name: prev.name || user.displayName || '',
+        email: prev.email || user.email || ''
+      }));
+    }
+  }, [user]);
 
   // Initialize map
   useEffect(() => {
@@ -250,16 +265,68 @@ const QuotePage = () => {
     }
   };
 
-  // Handle booking submission
+  // Handle booking submission - create account and save booking
   const handleBookService = async () => {
+    setFormError('');
+
+    // Validation
     if (!bookingData.name || !bookingData.email || !bookingData.phone || !bookingData.preferredDate) {
-      alert('Please fill in all required fields');
+      setFormError('Please fill in all required fields');
       return;
+    }
+
+    // If user is not logged in, they need to create account
+    if (!user) {
+      if (!bookingData.password || !bookingData.confirmPassword) {
+        setFormError('Please create a password for your account');
+        return;
+      }
+
+      if (bookingData.password !== bookingData.confirmPassword) {
+        setFormError('Passwords do not match');
+        return;
+      }
+
+      if (bookingData.password.length < 6) {
+        setFormError('Password must be at least 6 characters');
+        return;
+      }
     }
 
     setIsSubmitting(true);
 
     try {
+      let userToSave = user;
+
+      // Create account if user is not logged in
+      if (!user) {
+        try {
+          const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            bookingData.email,
+            bookingData.password
+          );
+          userToSave = userCredential.user;
+
+          // Update profile with name
+          if (bookingData.name) {
+            await updateProfile(userToSave, {
+              displayName: bookingData.name
+            });
+          }
+        } catch (authError) {
+          if (authError.code === 'auth/email-already-in-use') {
+            setFormError('This email is already registered. Please login instead or use a different email.');
+          } else if (authError.code === 'auth/invalid-email') {
+            setFormError('Invalid email address');
+          } else {
+            setFormError('Failed to create account. Please try again.');
+          }
+          setIsSubmitting(false);
+          return;
+        }
+      }
+
       // Build service summary
       const selectedServices = Object.entries(services)
         .filter(([_, service]) => service.enabled)
@@ -270,9 +337,13 @@ const QuotePage = () => {
           ...(name === 'bushTrimming' && service.bushes ? { bushes: service.bushes } : {})
         }));
 
-      // Save booking to Firebase
+      // Save booking to Firebase (without password fields)
       const booking = {
-        ...bookingData,
+        name: bookingData.name,
+        email: bookingData.email,
+        phone: bookingData.phone,
+        preferredDate: bookingData.preferredDate,
+        notes: bookingData.notes,
         address,
         coordinates,
         propertySize,
@@ -281,18 +352,19 @@ const QuotePage = () => {
         status: 'pending',
         source: 'Instant Quote',
         createdAt: serverTimestamp(),
-        type: 'booking'
+        type: 'booking',
+        userId: userToSave?.uid
       };
 
       await addDoc(collection(db, 'bookings'), booking);
 
       setSubmitSuccess(true);
       setTimeout(() => {
-        navigate('/');
-      }, 3000);
+        navigate('/account');
+      }, 2000);
     } catch (error) {
       console.error('Error submitting booking:', error);
-      alert('Failed to submit booking. Please try again.');
+      setFormError('Failed to submit booking. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -554,12 +626,20 @@ const QuotePage = () => {
               ) : (
                 <div className="booking-form">
                   <h3>Your Information</h3>
+
+                  {formError && (
+                    <div className="form-error">
+                      {formError}
+                    </div>
+                  )}
+
                   <input
                     type="text"
                     placeholder="Full Name *"
                     value={bookingData.name}
                     onChange={(e) => setBookingData({...bookingData, name: e.target.value})}
                     required
+                    disabled={!!user}
                   />
                   <input
                     type="email"
@@ -567,6 +647,7 @@ const QuotePage = () => {
                     value={bookingData.email}
                     onChange={(e) => setBookingData({...bookingData, email: e.target.value})}
                     required
+                    disabled={!!user}
                   />
                   <input
                     type="tel"
@@ -583,6 +664,32 @@ const QuotePage = () => {
                     min={new Date().toISOString().split('T')[0]}
                     required
                   />
+
+                  {!user && (
+                    <>
+                      <div className="password-section">
+                        <h4>Create Your Account</h4>
+                        <p className="password-note">Create a password to save your booking and access it later</p>
+                      </div>
+                      <input
+                        type="password"
+                        placeholder="Create Password (min 6 characters) *"
+                        value={bookingData.password}
+                        onChange={(e) => setBookingData({...bookingData, password: e.target.value})}
+                        required
+                        minLength="6"
+                      />
+                      <input
+                        type="password"
+                        placeholder="Confirm Password *"
+                        value={bookingData.confirmPassword}
+                        onChange={(e) => setBookingData({...bookingData, confirmPassword: e.target.value})}
+                        required
+                        minLength="6"
+                      />
+                    </>
+                  )}
+
                   <textarea
                     placeholder="Additional notes or special requests (optional)"
                     value={bookingData.notes}
@@ -592,7 +699,7 @@ const QuotePage = () => {
 
                   {submitSuccess ? (
                     <div className="success-message">
-                      Booking submitted successfully! Redirecting...
+                      Booking submitted successfully! Redirecting to your account...
                     </div>
                   ) : (
                     <>
@@ -601,11 +708,14 @@ const QuotePage = () => {
                         onClick={handleBookService}
                         disabled={isSubmitting}
                       >
-                        {isSubmitting ? 'Submitting...' : 'Confirm Booking'}
+                        {isSubmitting ? 'Creating Account & Booking...' : 'Confirm Booking'}
                       </button>
                       <button
                         className="back-btn"
-                        onClick={() => setShowBookingForm(false)}
+                        onClick={() => {
+                          setShowBookingForm(false);
+                          setFormError('');
+                        }}
                         disabled={isSubmitting}
                       >
                         Back to Quote

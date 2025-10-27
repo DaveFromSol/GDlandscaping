@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import './App.css';
 import { Analytics } from '@vercel/analytics/react';
-import { FirebaseProvider } from './contexts/FirebaseContext';
+import { FirebaseProvider, useFirebase } from './contexts/FirebaseContext';
 import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
 import PortfolioPage from './pages/PortfolioPage';
@@ -63,10 +63,35 @@ import BlogSnowReadinessCommercialPage from './pages/BlogSnowReadinessCommercial
 import BlogHedgeTrimmingSecretsPage from './pages/BlogHedgeTrimmingSecretsPage';
 import BlogHOAGroundsManagementPage from './pages/BlogHOAGroundsManagementPage';
 import BlogSustainableLandscapingPage from './pages/BlogSustainableLandscapingPage';
+import LoginPage from './pages/LoginPage';
+import AccountPage from './pages/AccountPage';
+import {
+  FertilizationWeedControlBerlinPage,
+  FertilizationWeedControlHartfordPage,
+  FertilizationWeedControlNewBritainPage,
+  FertilizationWeedControlWestHartfordPage,
+  FertilizationWeedControlEastHartfordPage,
+  FertilizationWeedControlNewingtonPage,
+  FertilizationWeedControlWethersfieldPage,
+  FertilizationWeedControlRockyHillPage,
+  FertilizationWeedControlGlastonburyPage,
+  FertilizationWeedControlManchesterPage,
+  FertilizationWeedControlSouthWindsorPage,
+  FertilizationWeedControlFarmingtonPage,
+  FertilizationWeedControlPlainvillePage,
+  FertilizationWeedControlBristolPage,
+  FertilizationWeedControlSouthingtonPage,
+  FertilizationWeedControlAvonPage,
+  FertilizationWeedControlWindsorPage,
+  FertilizationWeedControlBloomfieldPage,
+  FertilizationWeedControlCantonPage,
+  FertilizationWeedControlEnfieldPage
+} from './pages/FertilizationWeedControlPages';
 
 const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { user } = useFirebase();
 
   const isActive = (path) => {
     if (path === '/' && location.pathname === '/') return true;
@@ -79,12 +104,12 @@ const Navigation = () => {
     <>
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div 
+        <div
           className="mobile-menu-overlay"
           onClick={() => setMobileMenuOpen(false)}
         ></div>
       )}
-      
+
       <nav className="website-nav">
         <div className="nav-container">
           <div className="logo">
@@ -93,9 +118,9 @@ const Navigation = () => {
               <h2>GD Landscaping</h2>
             </Link>
           </div>
-          
+
           {/* Mobile Hamburger Button */}
-          <button 
+          <button
             className={`mobile-menu-toggle ${mobileMenuOpen ? 'active' : ''}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
@@ -167,6 +192,32 @@ const Navigation = () => {
               >
                 📞 Contact
               </Link>
+            </li>
+            <li className="auth-menu-item">
+              {user ? (
+                <Link
+                  to="/account"
+                  className={`account-link ${isActive('/account') ? 'active' : ''}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span className="user-avatar-small">
+                    {user.photoURL ? (
+                      <img src={user.photoURL} alt={user.displayName || 'User'} />
+                    ) : (
+                      <span>{(user.displayName || user.email || 'U')[0].toUpperCase()}</span>
+                    )}
+                  </span>
+                  Account
+                </Link>
+              ) : (
+                <Link
+                  to="/login"
+                  className={`login-link ${isActive('/login') ? 'active' : ''}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  🔐 Login
+                </Link>
+              )}
             </li>
           </ul>
         </div>
@@ -247,6 +298,26 @@ function App() {
               <Route path="/bush-trimming-rocky-hill-ct" element={<BushTrimmingRockyHillPage />} />
               <Route path="/bush-trimming-farmington-ct" element={<BushTrimmingFarmingtonPage />} />
               <Route path="/bush-trimming-west-hartford-ct" element={<BushTrimmingWestHartfordPage />} />
+              <Route path="/fertilization-weed-control-berlin-ct" element={<FertilizationWeedControlBerlinPage />} />
+              <Route path="/fertilization-weed-control-hartford-ct" element={<FertilizationWeedControlHartfordPage />} />
+              <Route path="/fertilization-weed-control-new-britain-ct" element={<FertilizationWeedControlNewBritainPage />} />
+              <Route path="/fertilization-weed-control-west-hartford-ct" element={<FertilizationWeedControlWestHartfordPage />} />
+              <Route path="/fertilization-weed-control-east-hartford-ct" element={<FertilizationWeedControlEastHartfordPage />} />
+              <Route path="/fertilization-weed-control-newington-ct" element={<FertilizationWeedControlNewingtonPage />} />
+              <Route path="/fertilization-weed-control-wethersfield-ct" element={<FertilizationWeedControlWethersfieldPage />} />
+              <Route path="/fertilization-weed-control-rocky-hill-ct" element={<FertilizationWeedControlRockyHillPage />} />
+              <Route path="/fertilization-weed-control-glastonbury-ct" element={<FertilizationWeedControlGlastonburyPage />} />
+              <Route path="/fertilization-weed-control-manchester-ct" element={<FertilizationWeedControlManchesterPage />} />
+              <Route path="/fertilization-weed-control-south-windsor-ct" element={<FertilizationWeedControlSouthWindsorPage />} />
+              <Route path="/fertilization-weed-control-farmington-ct" element={<FertilizationWeedControlFarmingtonPage />} />
+              <Route path="/fertilization-weed-control-plainville-ct" element={<FertilizationWeedControlPlainvillePage />} />
+              <Route path="/fertilization-weed-control-bristol-ct" element={<FertilizationWeedControlBristolPage />} />
+              <Route path="/fertilization-weed-control-southington-ct" element={<FertilizationWeedControlSouthingtonPage />} />
+              <Route path="/fertilization-weed-control-avon-ct" element={<FertilizationWeedControlAvonPage />} />
+              <Route path="/fertilization-weed-control-windsor-ct" element={<FertilizationWeedControlWindsorPage />} />
+              <Route path="/fertilization-weed-control-bloomfield-ct" element={<FertilizationWeedControlBloomfieldPage />} />
+              <Route path="/fertilization-weed-control-canton-ct" element={<FertilizationWeedControlCantonPage />} />
+              <Route path="/fertilization-weed-control-enfield-ct" element={<FertilizationWeedControlEnfieldPage />} />
               <Route path="/blog" element={<BlogPage />} />
               <Route path="/blog/seasonal-lawn-care-schedule" element={<BlogSeasonalLawnCarePage />} />
               <Route path="/blog/core-aeration-benefits" element={<BlogCoreAerationBenefitsPage />} />
@@ -258,6 +329,8 @@ function App() {
               <Route path="/blog/hedge-trimming-secrets" element={<BlogHedgeTrimmingSecretsPage />} />
               <Route path="/blog/hoa-grounds-management" element={<BlogHOAGroundsManagementPage />} />
               <Route path="/blog/sustainable-landscaping-connecticut" element={<BlogSustainableLandscapingPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/account" element={<AccountPage />} />
               <Route path="/admin" element={<AdminPage />} />
             </Routes>
           </main>

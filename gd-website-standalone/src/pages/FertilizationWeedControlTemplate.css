@@ -1,0 +1,364 @@
+.fert-page {
+  background: #f7f9fb;
+  color: #1f2933;
+}
+
+.fert-hero {
+  position: relative;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+
+.fert-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(16, 94, 39, 0.82), rgba(23, 163, 116, 0.76));
+}
+
+.fert-hero-content {
+  position: relative;
+  text-align: center;
+  padding: 60px 20px;
+  max-width: 760px;
+}
+
+.fert-hero-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-bottom: 16px;
+}
+
+.fert-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.fert-hero p {
+  font-size: clamp(1rem, 2.8vw, 1.25rem);
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.fert-hero-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.fert-overview {
+  padding: 70px 0;
+  background: #fff;
+}
+
+.fert-overview-grid {
+  display: grid;
+  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: start;
+}
+
+.fert-overview-text h2 {
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+
+.fert-overview-text p {
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.fert-links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.fert-links a {
+  color: #0b8d50;
+  font-weight: 600;
+}
+
+.fert-overview-highlights {
+  background: #f1f7f2;
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid rgba(12, 101, 54, 0.12);
+}
+
+.fert-overview-highlights h3 {
+  margin-bottom: 18px;
+  font-size: 1.25rem;
+}
+
+.fert-overview-highlights ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.fert-overview-highlights li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+.fert-overview-highlights li span {
+  color: #0b8d50;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.fert-programs {
+  padding: 70px 0;
+}
+
+.fert-programs .section-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.fert-programs-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.fert-program-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 10px 28px rgba(15, 118, 110, 0.08);
+  border: 1px solid rgba(16, 94, 39, 0.12);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fert-program-card.popular {
+  border-color: #0b8d50;
+  box-shadow: 0 14px 32px rgba(12, 101, 54, 0.18);
+}
+
+.popular-badge {
+  position: absolute;
+  top: 20px;
+  right: -40px;
+  transform: rotate(45deg);
+  background: #0b8d50;
+  color: #fff;
+  padding: 6px 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.fert-program-header h3 {
+  font-size: 1.35rem;
+  margin-bottom: 6px;
+}
+
+.fert-program-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0b8d50;
+  margin-bottom: 12px;
+}
+
+.fert-program-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.fert-program-features li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.feature-check {
+  color: #0b8d50;
+  font-weight: 700;
+}
+
+.fert-benefits {
+  padding: 70px 0;
+  background: linear-gradient(135deg, #f0faf2, #f0f5ff);
+}
+
+.fert-benefits-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.fert-benefit-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid rgba(15, 118, 110, 0.12);
+  box-shadow: 0 12px 24px rgba(12, 101, 54, 0.08);
+}
+
+.fert-benefit-icon {
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+
+.fert-benefit-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+.fert-stats {
+  padding: 60px 0;
+}
+
+.fert-stats-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  text-align: center;
+}
+
+.fert-stat {
+  background: #0b8d50;
+  color: #fff;
+  padding: 24px 18px;
+  border-radius: 16px;
+  box-shadow: 0 16px 32px rgba(11, 141, 80, 0.18);
+}
+
+.fert-stat-value {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.fert-service-areas {
+  padding: 70px 0;
+  background: #fff;
+}
+
+.fert-service-grid {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.fert-service-neighborhoods {
+  background: #f1f7f2;
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid rgba(16, 94, 39, 0.14);
+}
+
+.fert-seasonal-tips {
+  background: #f8fbfe;
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid rgba(10, 132, 255, 0.15);
+}
+
+.fert-seasonal-tips ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.fert-seasonal-tips li {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 18px;
+}
+
+.fert-seasonal-tips li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #0b8d50;
+  font-weight: 700;
+}
+
+.fert-gallery {
+  padding: 70px 0;
+}
+
+.fert-gallery-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: center;
+}
+
+.fert-gallery-image img {
+  width: 100%;
+  border-radius: 18px;
+  box-shadow: 0 16px 34px rgba(15, 118, 110, 0.18);
+}
+
+.fert-gallery-text h3 {
+  font-size: 1.75rem;
+  margin-bottom: 16px;
+}
+
+.fert-gallery-text p {
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.fert-page .container {
+  width: min(1100px, 90%);
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .fert-hero {
+    min-height: 380px;
+  }
+
+  .fert-program-card {
+    padding: 24px;
+  }
+
+  .fert-links {
+    flex-direction: column;
+  }
+
+  .fert-overview {
+    padding: 50px 0;
+  }
+
+  .fert-programs,
+  .fert-benefits,
+  .fert-service-areas,
+  .fert-gallery {
+    padding: 50px 0;
+  }
+}

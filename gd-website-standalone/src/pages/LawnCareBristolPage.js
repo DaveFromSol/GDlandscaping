@@ -10,7 +10,7 @@ const LawnCareBristolPage = () => {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": "GD Landscaping - Lawn Care Bristol CT",
-      "description": "Professional lawn care and landscaping services in Bristol CT - lawn mowing, maintenance, and complete yard care. Serving Bristol, Forestville, and surrounding areas.",
+      "description": "Professional lawn care and landscaping services in Bristol CT with focused crews delivering mowing, maintenance, and full yard care.",
       "logo": "https://www.gdlandscapingllc.com/GD.png",
       "image": "https://www.gdlandscapingllc.com/GD.png",
       "address": {
@@ -91,7 +91,7 @@ const LawnCareBristolPage = () => {
   ];
 
   const overviewHighlights = [
-    'Dedicated mowing crews circulate through Forestville, Edgewood, and Federal Hill daily for consistent cut windows.',
+    'Dedicated Bristol crews deliver consistent mow windows with crisp trim and cleanup every visit.',
     'Seasonal deep edging, mulch refreshes, and pruning packages keep Bristol’s mature landscapes tidy between service visits.',
     'Commercial-grade equipment sized for tight city lots and larger suburban lawns so stripes stay clean everywhere.'
   ];
@@ -106,8 +106,8 @@ const LawnCareBristolPage = () => {
     <>
       <SEOHead
         title="Lawn Care Bristol CT | Professional Lawn Maintenance Services | GD Landscaping"
-        description="Professional lawn care services in Bristol, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for Bristol homes and businesses."
-        keywords="lawn care Bristol CT, lawn mowing Bristol Connecticut, landscaping Bristol, yard maintenance Bristol CT, fertilization Bristol, weed control Bristol, Forestville lawn care, Edgewood landscaping"
+        description="Professional lawn care services in Bristol, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for homes and businesses."
+        keywords="lawn care Bristol CT, lawn mowing Bristol Connecticut, landscaping Bristol, yard maintenance Bristol CT, fertilization Bristol, weed control Bristol"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-bristol-ct"
         ogImage="/GD.png"
         ogType="website"
@@ -133,7 +133,7 @@ const LawnCareBristolPage = () => {
             <div>
               <img src="/GD.png" alt="GD Landscaping - Professional Lawn Care Services in Bristol Connecticut" style={{height: '200px', marginBottom: '2rem'}} />
               <h1>Professional Lawn Care in Bristol, CT</h1>
-              <p>GD Landscaping provides expert lawn maintenance and landscaping services throughout Bristol, Forestville, Edgewood, and Federal Hill. Beautiful, healthy lawns for Bristol homes and businesses.</p>
+              <p>GD Landscaping provides expert lawn maintenance and landscaping services throughout Bristol. Expect clean lines, reliable scheduling, and lawns that look great all season.</p>
 
               <div style={{
                 margin: '30px 0',
@@ -180,7 +180,7 @@ const LawnCareBristolPage = () => {
 
         <LocationGallery
           townName="Bristol, CT"
-          subtitle="Trusted crews delivering sharp cuts throughout Forestville, Edgewood, and Federal Hill."
+          subtitle="Trusted crews delivering sharp cuts for every Bristol neighborhood."
         />
 
         <section className="town-overview">
@@ -188,7 +188,7 @@ const LawnCareBristolPage = () => {
             <div className="town-overview-grid">
               <div className="town-overview-card">
                 <h2>Built for Bristol Properties</h2>
-                <p>From the slopes around Federal Hill to the compact downtown lots near Riverside Avenue, Bristol yards need flexible crews that can maneuver on every terrain. We tailor deck heights, trimming order, and cleanup to match each street’s character.</p>
+                <p>Bristol yards range from tight in-town lawns to larger suburban builds. We tailor deck heights, trimming order, and cleanup to match each property’s layout and goals.</p>
                 <ul>
                   {overviewHighlights.map((item, idx) => (
                     <li key={`bristol-highlight-${idx}`}>

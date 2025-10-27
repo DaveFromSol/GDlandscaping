@@ -5,9 +5,9 @@ const phoneNumber = '(860) 526-7583';
 
 const BushTrimmingBristolPage = () => {
     const overviewHighlights = [
-    'Forestville and Edgewood routes keep boxwoods and privet hedges tight all season.',
-    'Federal Hill estates receive custom shaping for formal hedges, topiary, and ornamental shrubs.',
-    'Commercial trim packages keep downtown storefront plantings sharp before weekend traffic.'
+    'Dedicated Bristol crews keep hedges crisp with reliable visit schedules.',
+    'Estate properties receive custom shaping for formal hedges, topiary, and ornamental shrubs.',
+    'Commercial trim packages keep storefront plantings sharp before weekend traffic.'
   ];
 
   const serviceStats = [
@@ -39,7 +39,7 @@ const BushTrimmingBristolPage = () => {
       seo={{
         title: 'Bush Trimming Bristol CT | Hedge & Shrub Trimming | GD Landscaping',
         description:
-          'Professional bush trimming and hedge shaping in Bristol, CT. Serving Forestville, Edgewood, Federal Hill, and surrounding neighborhoods.',
+          'Professional bush trimming and hedge shaping in Bristol, CT with attentive crews and precision equipment.',
         keywords: 'bush trimming Bristol CT, hedge trimming Bristol, shrub trimming Bristol Connecticut',
         canonicalUrl: 'https://www.gdlandscapingllc.com/bush-trimming-bristol-ct',
         structuredData: {
@@ -55,20 +55,20 @@ const BushTrimmingBristolPage = () => {
       hero={{
         badge: '🌿 Serving Bristol, CT',
         title: 'Bush Trimming Bristol CT',
-        subtitle: 'Keep Forestville, Edgewood, and Federal Hill properties polished with pro hedge and shrub care.',
+        subtitle: 'Keep Bristol properties polished with meticulous hedge and shrub care built around your landscape.',
         addressPrompt: 'Type your Bristol address for instant trimming availability',
         ctaPrimaryText: 'Book Bristol Trimming',
         ctaSecondaryText: `Call ${phoneNumber}`,
         ctaSecondaryHref: `tel:${phoneNumber}`,
         overviewIntro:
-          'Bristol lawns range from downtown lots to steep Chippens Hill corners. We tailor trimming schedules and equipment for every property.',
+          'Bristol lawns range from compact in-town lots to larger hillside properties. We tailor trimming schedules and equipment for every property.',
         snapshotCopy: 'Crews provide precise cuts and full cleanup, leaving hedges sharp and beds debris-free.'
       }}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}
       areas={areas}
-      gallerySubtitle="Hedge shaping and shrub care across Bristol, Forestville, and Edgewood."
+      gallerySubtitle="Hedge shaping and shrub care across Bristol."
       quoteConfig={{
         title: 'Plan Your Bristol Hedge Trimming',
         subtitle: 'Share the plants you need trimmed and your preferred schedule—we’ll handle the rest.',

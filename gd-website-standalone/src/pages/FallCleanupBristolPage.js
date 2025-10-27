@@ -9,7 +9,7 @@ const FallCleanupBristolPage = () => {
       id: 'bristol-basic',
       name: 'Bristol Leaf Sweep',
       price: '$295 / visit',
-      description: 'Perfect for Forestville and Edgewood lots that need recurring pickup.',
+      description: 'Perfect for Bristol properties that benefit from recurring pickup appointments.',
       features: [
         'Lawn + hardscape leaf removal',
         'Front walkway + porch blow-off',
@@ -22,7 +22,7 @@ const FallCleanupBristolPage = () => {
       id: 'bristol-premium',
       name: 'Bristol Premier Cleanup',
       price: '$545 / visit',
-      description: 'Complete seasonal cleanup for Federal Hill, Edgewood, and Downtown neighborhoods.',
+      description: 'Complete seasonal cleanup for Bristol properties that expect full curb appeal.',
       features: [
         'Full-property leaf + debris removal',
         'Landscape bed detailing and cutbacks',
@@ -58,7 +58,7 @@ const FallCleanupBristolPage = () => {
     {
       icon: '🚛',
       title: 'On-Route Crews',
-      description: 'Dedicated trucks loop through Forestville, Edgewood, and Federal Hill daily during peak season.'
+      description: 'Dedicated trucks loop through Bristol each day during peak season to keep curb appeal dialed in.'
     },
     {
       icon: '🕓',
@@ -79,8 +79,8 @@ const FallCleanupBristolPage = () => {
   ];
 
   const overviewHighlights = [
-    'Hard-to-access Federal Hill lots get smaller crews with compact vacuums to protect tight driveways.',
-    'Edgewood + Forestville lawns receive combined leaf removal, shrub trimming, and bed winterization.',
+    'Tight downtown lots and spacious yards alike receive crews matched to the property layout.',
+    'Comprehensive leaf removal, shrub trimming, and bed winterization keep Bristol landscapes ready for winter.',
     'Commercial clients downtown receive after-hours cleanup so sidewalks and parking lots open on time.'
   ];
 
@@ -94,7 +94,7 @@ const FallCleanupBristolPage = () => {
     <FallCleanupTemplate
       townName="Bristol, CT"
       seoTitle="Fall Cleanup Bristol CT | Leaf Removal & Yard Cleanups | GD Landscaping"
-      seoDescription="Bristol CT fall cleanup services: leaf removal, gutter policing, shrub cutbacks, and haul-away for Forestville, Edgewood, and Federal Hill properties."
+      seoDescription="Bristol CT fall cleanup services: leaf removal, gutter policing, shrub cutbacks, and haul-away from attentive local crews."
       seoKeywords="fall cleanup Bristol CT, leaf removal Bristol, yard cleanups Bristol Connecticut, fall landscaping Bristol"
       canonicalUrl="https://www.gdlandscapingllc.com/fall-cleanup-bristol-ct"
       structuredData={{
@@ -118,13 +118,13 @@ const FallCleanupBristolPage = () => {
         badge: '🍂 Serving Bristol, CT',
         title: 'Fall Cleanup Bristol CT',
         subtitle:
-          'Leaf removal, shrub pruning, and seasonal prep for homes and businesses across Forestville, Edgewood, and Federal Hill.',
+          'Leaf removal, shrub pruning, and seasonal prep for Bristol homes and businesses with full-service crews.',
         addressPrompt: 'Type your Bristol address for instant fall cleanup scheduling',
         ctaPrimaryText: 'Book Bristol Cleanup',
         ctaSecondaryText: `Call ${phoneNumber}`,
         ctaSecondaryHref: `tel:${phoneNumber}`,
         overviewIntro:
-          'From Chippens Hill estates to compact downtown lots, we tailor crews and equipment for every Bristol property.',
+          'We tailor equipment, crew size, and timing for every Bristol property so cleanups finish efficiently.',
         snapshotCopy: 'Our Hardware City teams stay routed nearby for fast follow-ups when late storms roll through.'
       }}
       packages={packages}
@@ -132,7 +132,7 @@ const FallCleanupBristolPage = () => {
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}
       areas={areas}
-      gallerySubtitle="Freshly cleared lawns and beds across Bristol, Forestville, and Edgewood."
+      gallerySubtitle="Freshly cleared lawns and beds across Bristol."
       quoteConfig={{
         title: 'Plan Your Bristol Fall Cleanup',
         subtitle: 'Send property details and we’ll confirm the next opening on your preferred route.',

@@ -96,9 +96,9 @@ const SnowRemovalBristolPage = () => {
   ];
 
   const overviewHighlights = [
-    'Dedicated Forestville and Federal Hill routes keep driveways open before the morning commute.',
-    'Sidewalk and entry crews return after the plow pass to remove lingering ice and windrows.',
-    'Commercial lots along Route 6 receive overnight service so parking stalls are clear before opening.'
+    'Dedicated residential and commercial routes keep Bristol driveways open before the morning commute.',
+    'Sidewalk and entry crews follow plow passes to remove lingering ice and windrows.',
+    'Commercial lots receive overnight service so parking stalls are clear before opening.'
   ];
 
   const serviceStats = [
@@ -146,7 +146,7 @@ const SnowRemovalBristolPage = () => {
       <SEOHead
         title="Snow Removal Bristol CT | Professional Winter Services | GD Landscaping"
         description="Reliable snow removal services in Bristol, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
-        keywords="snow removal Bristol CT, snow plowing Bristol Connecticut, winter services Bristol, ice management Bristol CT, residential snow removal Bristol, commercial snow plowing Bristol, Forestville snow removal, Edgewood winter services"
+        keywords="snow removal Bristol CT, snow plowing Bristol Connecticut, winter services Bristol, ice management Bristol CT, residential snow removal Bristol, commercial snow plowing Bristol"
         canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-bristol-ct"
         structuredData={structuredData}
       />
@@ -161,7 +161,7 @@ const SnowRemovalBristolPage = () => {
                 <span>❄️ Serving Bristol, CT</span>
               </div>
               <h1>Professional Snow Removal in Bristol, CT</h1>
-              <p className="hero-subtitle">Route-based crews plow, shovel, and de-ice Forestville, Edgewood, Federal Hill, and downtown properties before sunrise, then loop back for cleanups so windrows never block you in.</p>
+              <p className="hero-subtitle">Route-based crews plow, shovel, and de-ice Bristol properties before sunrise, then loop back for cleanups so windrows never block you in.</p>
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Bristol Winter Quote
@@ -271,7 +271,7 @@ const SnowRemovalBristolPage = () => {
               <div className="benefit-card">
                 <div className="benefit-icon">🏠</div>
                 <h3>Serving Bristol</h3>
-                <p>Fast response times to all Bristol areas including Forestville, Edgewood, and Federal Hill. We know Bristol's streets and neighborhoods.</p>
+                <p>Fast response times to every Bristol area with teams that know the streets, traffic patterns, and winter trouble spots.</p>
               </div>
               <div className="benefit-card">
                 <div className="benefit-icon">⚡</div>
@@ -315,7 +315,7 @@ const SnowRemovalBristolPage = () => {
                 </div>
                 <div className="highlight-item">
                   <h4>🏘️ Residential Areas</h4>
-                  <p>Reliable home snow removal services throughout all Bristol neighborhoods from downtown to Forestville.</p>
+                  <p>Reliable home snow removal services across every Bristol neighborhood, sized to fit your driveway and walkways.</p>
                 </div>
                 <div className="highlight-item">
                   <h4>🏭 Business Parks</h4>
