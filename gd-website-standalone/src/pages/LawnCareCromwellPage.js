@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import AddressAutocomplete from '../components/AddressAutocomplete';
+import LocationGallery from '../components/LocationGallery';
+import QuoteSection from '../components/QuoteSection';
 
 const LawnCareCromwellPage = () => {
   const packages = [
@@ -62,8 +65,20 @@ const LawnCareCromwellPage = () => {
       "addressCountry": "US"
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscaping.com/lawn-care-cromwell-ct"
+    "url": "https://gdlandscapingllc.com/lawn-care-cromwell-ct"
   };
+
+  const overviewHighlights = [
+    'Irrigation-friendly mowing schedules for River Highlands and Court Street slopes where drainage runs toward the Connecticut River.',
+    'Detail-focused crews that handle bed edging, walkway trimming, and seasonal color change-outs for Main Street store fronts.',
+    'Flexible service windows for TPC River Highlands-adjacent neighborhoods where commuter traffic peaks early.'
+  ];
+
+  const serviceStats = [
+    { value: '15', label: 'Cromwell crews on call' },
+    { value: '20 min', label: 'Average dispatch ETA' },
+    { value: '100%', label: 'Storm follow-up checks' }
+  ];
 
   return (
     <>
@@ -71,12 +86,18 @@ const LawnCareCromwellPage = () => {
         title="Lawn Care Cromwell CT | Professional Lawn Maintenance Services | GD Landscaping"
         description="Professional lawn care services in Cromwell, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for all Cromwell neighborhoods."
         keywords="lawn care Cromwell CT, lawn mowing Cromwell Connecticut, landscaping Cromwell, yard maintenance Cromwell CT, fertilization Cromwell, weed control Cromwell"
-        canonicalUrl="https://gdlandscaping.com/lawn-care-cromwell-ct"
+        canonicalUrl="https://gdlandscapingllc.com/lawn-care-cromwell-ct"
         structuredData={structuredData}
       />
 
       <div className="lawn-care-section">
         <div className="lawn-hero">
+          <div className="lawn-hero-video">
+            <video autoPlay muted loop playsInline preload="auto" poster="/IMG_5407.jpeg">
+              <source src="/AdobeStock_657294798.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
           <div className="lawn-hero-overlay"></div>
           <div className="lawn-hero-content">
             <div className="container">
@@ -85,6 +106,23 @@ const LawnCareCromwellPage = () => {
               </div>
               <h1>Lawn Care Service Cromwell CT</h1>
               <p className="hero-subtitle">Professional lawn maintenance for Cromwell residents and businesses. Keep your Connecticut River town property looking pristine with expert lawn care services.</p>
+
+              <div style={{
+                margin: '30px 0',
+                padding: '0 20px'
+              }}>
+                <h2 style={{
+                  color: 'black',
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  marginBottom: '15px',
+                  textShadow: '1px 1px 2px rgba(255,255,255,0.5)'
+                }}>
+                  Type Your Cromwell Address for Instant Lawn Care Quote
+                </h2>
+                <AddressAutocomplete />
+              </div>
+
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Cromwell Quote
@@ -96,6 +134,42 @@ const LawnCareCromwellPage = () => {
             </div>
           </div>
         </div>
+
+        <LocationGallery
+          townName="Cromwell, CT"
+          subtitle="Real project snapshots from Riverport, Nooks Hill, and the neighborhoods flanking Main Street."
+        />
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Cromwell Lawn Intelligence</h2>
+                <p>Riverfront moisture, clay-heavy soil, and mature shade trees require different approaches across Cromwell. We tighten up mower decks near the bluffs, leave longer blades in river bottoms, and schedule aeration right after fall tournaments.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`cromwell-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Cromwell Service Snapshot</h3>
+                <p>Every route is backed by on-call supervisors who inspect after storms or large events.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           <section className="location-benefits">
@@ -130,7 +204,7 @@ const LawnCareCromwellPage = () => {
 
           <section className="packages-section">
             <div className="section-header">
-              <h2>Cromwell Lawn Care Packages</h2>
+              <h2>Professional Lawn Care Services</h2>
               <p className="section-subtitle">Tailored lawn maintenance solutions for Cromwell properties</p>
             </div>
 
@@ -162,6 +236,13 @@ const LawnCareCromwellPage = () => {
               ))}
             </div>
           </section>
+
+          <QuoteSection
+            title="Ready for a Cromwell Quote?"
+            subtitle="Send us the basics about your Connecticut River property and we’ll reply with a detailed estimate ASAP."
+            locationName="Cromwell"
+            source="Cromwell Lawn Page"
+          />
 
           <section className="lawn-cta">
             <div className="cta-content">

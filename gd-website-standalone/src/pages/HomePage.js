@@ -1,6 +1,7 @@
 import React from 'react';
 import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
+import QuoteSection from '../components/QuoteSection';
 
 const HomePage = () => {
   const structuredData = [
@@ -183,7 +184,65 @@ const HomePage = () => {
         ogType="website"
         structuredData={structuredData}
       />
-      
+
+      <style>{`
+        @media (max-width: 768px) {
+          .contact-form-grid {
+            grid-template-columns: 1fr !important;
+            gap: 24px !important;
+          }
+
+          .form-row {
+            grid-template-columns: 1fr !important;
+          }
+
+          .home-contact-section {
+            padding: 30px 15px !important;
+          }
+
+          .home-contact-section h2 {
+            font-size: 28px !important;
+          }
+
+          .home-contact-section .section-subtitle {
+            font-size: 14px !important;
+          }
+
+          .contact-form {
+            padding: 24px !important;
+          }
+
+          .contact-form h3 {
+            font-size: 20px !important;
+          }
+
+          .form-subtitle {
+            font-size: 14px !important;
+          }
+
+          .contact-form input,
+          .contact-form select,
+          .contact-form textarea {
+            font-size: 16px !important;
+          }
+
+          .contact-form button {
+            font-size: 16px !important;
+            padding: 14px !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .home-contact-section h2 {
+            font-size: 24px !important;
+          }
+
+          .contact-form h3 {
+            font-size: 18px !important;
+          }
+        }
+      `}</style>
+
       <div className="home-section">
         <div className="hero">
           <div className="hero-video-background">
@@ -248,11 +307,6 @@ const HomePage = () => {
                 <div className="feature-icon">💯</div>
                 <h3>Satisfaction Guarantee</h3>
                 <p>We stand behind our work with a 100% satisfaction guarantee.</p>
-              </div>
-              <div className="feature">
-                <div className="feature-icon">📞</div>
-                <h3>24/7 Support</h3>
-                <p>Emergency services available for urgent landscaping needs.</p>
               </div>
             </div>
 
@@ -332,6 +386,13 @@ const HomePage = () => {
             </div>
           </div>
         </div>
+
+        <QuoteSection
+          title="Get Your Free Quote Today"
+          subtitle="Choose your preferred method to request a quote - instant or detailed form"
+          locationName="Home"
+          source="Home Page Form"
+        />
 
         {/* Service Areas */}
         <div className="service-areas">

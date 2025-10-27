@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import AddressAutocomplete from '../components/AddressAutocomplete';
+import LocationGallery from '../components/LocationGallery';
+import QuoteSection from '../components/QuoteSection';
 
 const LawnCareMiddletownPage = () => {
   const packages = [
@@ -62,8 +65,20 @@ const LawnCareMiddletownPage = () => {
       "addressCountry": "US"
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscaping.com/lawn-care-middletown-ct"
+    "url": "https://gdlandscapingllc.com/lawn-care-middletown-ct"
   };
+
+  const overviewHighlights = [
+    'Weekly schedules built around university traffic keep Wesleyan-area clients serviced before campus crowds fill the streets.',
+    'Higher-cut programs for the Highlands and Laurel Grove protect turf health on rocky soil while maintaining crisp stripes.',
+    'Add-on pruning, mulch refresh, and seasonal cleanup keep Middlefield Street and Westfield neighborhoods show-ready year-round.'
+  ];
+
+  const serviceStats = [
+    { value: '14', label: 'Middletown routes' },
+    { value: '25 min', label: 'Average dispatch' },
+    { value: '120+', label: 'Acres maintained' }
+  ];
 
   return (
     <>
@@ -71,12 +86,18 @@ const LawnCareMiddletownPage = () => {
         title="Lawn Care Middletown CT | Professional Lawn Maintenance Services | GD Landscaping"
         description="Professional lawn care services in Middletown, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for all Middletown areas."
         keywords="lawn care Middletown CT, lawn mowing Middletown Connecticut, landscaping Middletown, yard maintenance Middletown CT, fertilization Middletown, weed control Middletown"
-        canonicalUrl="https://gdlandscaping.com/lawn-care-middletown-ct"
+        canonicalUrl="https://gdlandscapingllc.com/lawn-care-middletown-ct"
         structuredData={structuredData}
       />
 
       <div className="lawn-care-section">
         <div className="lawn-hero">
+          <div className="lawn-hero-video">
+            <video autoPlay muted loop playsInline preload="auto" poster="/IMG_5407.jpeg">
+              <source src="/AdobeStock_657294798.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
           <div className="lawn-hero-overlay"></div>
           <div className="lawn-hero-content">
             <div className="container">
@@ -85,6 +106,23 @@ const LawnCareMiddletownPage = () => {
               </div>
               <h1>Lawn Care Service Middletown CT</h1>
               <p className="hero-subtitle">Professional lawn maintenance for Middletown residents and businesses. Keep your university town property looking exceptional with expert lawn care services.</p>
+
+              <div style={{
+                margin: '30px 0',
+                padding: '0 20px'
+              }}>
+                <h2 style={{
+                  color: 'black',
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  marginBottom: '15px',
+                  textShadow: '1px 1px 2px rgba(255,255,255,0.5)'
+                }}>
+                  Type Your Middletown Address for Instant Lawn Care Quote
+                </h2>
+                <AddressAutocomplete />
+              </div>
+
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Middletown Quote
@@ -97,10 +135,46 @@ const LawnCareMiddletownPage = () => {
           </div>
         </div>
 
+        <LocationGallery
+          townName="Middletown, CT"
+          subtitle="Maintenance highlights from Wesleyan Hill to the Highlands and Westfield districts."
+        />
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Middletown Insight, Professional Finish</h2>
+                <p>College-town lawns see constant activity, shade, and irrigation challenges. We blend university-area expectations with quieter suburban neighborhoods to deliver the same neat, upscale curb appeal across Middletown.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`middletown-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Middletown Service Snapshot</h3>
+                <p>Crews stage minutes from Main Street for rapid deployment when weather shifts.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <div className="container">
           <section className="packages-section">
             <div className="section-header">
-              <h2>Middletown Lawn Care Packages</h2>
+              <h2>Professional Lawn Care Services</h2>
               <p className="section-subtitle">Professional lawn maintenance plans for Middletown properties</p>
             </div>
 
@@ -132,6 +206,13 @@ const LawnCareMiddletownPage = () => {
               ))}
             </div>
           </section>
+
+          <QuoteSection
+            title="Tell Us About Your Middletown Property"
+            subtitle="Prefer the traditional route? Share your details and we’ll send a custom lawn care estimate shortly."
+            locationName="Middletown"
+            source="Middletown Lawn Page"
+          />
 
           <section className="lawn-cta">
             <div className="cta-content">

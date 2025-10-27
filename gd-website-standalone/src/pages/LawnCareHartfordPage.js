@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import AddressAutocomplete from '../components/AddressAutocomplete';
+import LocationGallery from '../components/LocationGallery';
+import QuoteSection from '../components/QuoteSection';
 
 const LawnCareHartfordPage = () => {
   const packages = [
@@ -82,12 +85,24 @@ const LawnCareHartfordPage = () => {
       "longitude": -72.6734
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscaping.com/lawn-care-hartford-ct",
+    "url": "https://gdlandscapingllc.com/lawn-care-hartford-ct",
     "serviceArea": {
       "@type": "City",
       "name": "Hartford, Connecticut"
     }
   };
+
+  const overviewHighlights = [
+    'Crew leads familiar with Parkville’s compact lots and the wide estates off Blue Hills Avenue calibrate deck sizes and approach patterns per street.',
+    'Integrated turf care—fertilization, weed control, and overseeding—keeps city lots lush even with heavy foot traffic and pets.',
+    'Night-before route planning means downtown, Asylum Hill, and South End clients receive service windows before rush-hour parking fills curb lanes.'
+  ];
+
+  const serviceStats = [
+    { value: '6', label: 'Dedicated Hartford crews' },
+    { value: '20+', label: 'Neighborhoods covered' },
+    { value: '2 hrs', label: 'Storm follow-up max' }
+  ];
 
   return (
     <>
@@ -95,12 +110,18 @@ const LawnCareHartfordPage = () => {
         title="Lawn Care Hartford CT | Professional Lawn Maintenance Services | GD Landscaping"
         description="Professional lawn care services in Hartford, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance. Serving all Hartford neighborhoods."
         keywords="lawn care Hartford CT, lawn mowing Hartford Connecticut, landscaping Hartford, yard maintenance Hartford CT, fertilization Hartford, weed control Hartford"
-        canonicalUrl="https://gdlandscaping.com/lawn-care-hartford-ct"
+        canonicalUrl="https://gdlandscapingllc.com/lawn-care-hartford-ct"
         structuredData={structuredData}
       />
 
       <div className="lawn-care-section">
         <div className="lawn-hero">
+          <div className="lawn-hero-video">
+            <video autoPlay muted loop playsInline preload="auto" poster="/IMG_5407.jpeg">
+              <source src="/AdobeStock_657294798.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
           <div className="lawn-hero-overlay"></div>
           <div className="lawn-hero-content">
             <div className="container">
@@ -109,6 +130,23 @@ const LawnCareHartfordPage = () => {
               </div>
               <h1>Lawn Care Service Hartford CT</h1>
               <p className="hero-subtitle">Professional lawn maintenance for Hartford residents and businesses. Keep Connecticut's capital city properties looking their best year-round with GD Landscaping's expert lawn care services.</p>
+
+              <div style={{
+                margin: '30px 0',
+                padding: '0 20px'
+              }}>
+                <h2 style={{
+                  color: 'black',
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  marginBottom: '15px',
+                  textShadow: '1px 1px 2px rgba(255,255,255,0.5)'
+                }}>
+                  Type Your Hartford Address for Instant Lawn Care Quote
+                </h2>
+                <AddressAutocomplete />
+              </div>
+
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Hartford Quote
@@ -120,6 +158,42 @@ const LawnCareHartfordPage = () => {
             </div>
           </div>
         </div>
+
+        <LocationGallery
+          townName="Hartford, CT"
+          subtitle="Fresh cuts and bed edging from Asylum Hill to the South End."
+        />
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Urban Lawn Care That Fits Hartford</h2>
+                <p>Between historic brownstones, riverfront businesses, and new apartment communities, Hartford lawns demand flexible equipment and careful timing. We protect delicate irrigation, coordinate around on-street parking, and keep clippings off city drains.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`hartford-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Hartford Service Snapshot</h3>
+                <p>Supervisors stage in Downtown, Parkville, and Wethersfield Avenue for rapid deployment.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           <section className="location-benefits">
@@ -154,7 +228,7 @@ const LawnCareHartfordPage = () => {
 
           <section className="packages-section">
             <div className="section-header">
-              <h2>Hartford Lawn Care Packages</h2>
+              <h2>Professional Lawn Care Services</h2>
               <p className="section-subtitle">Professional lawn maintenance plans tailored for Hartford properties</p>
             </div>
 
@@ -238,6 +312,13 @@ const LawnCareHartfordPage = () => {
               </div>
             </div>
           </section>
+
+          <QuoteSection
+            title="Get a Detailed Hartford Estimate"
+            subtitle="Fill out the request form and our Hartford account manager will deliver a tailored quote."
+            locationName="Hartford"
+            source="Hartford Lawn Page"
+          />
 
           <section className="lawn-cta">
             <div className="cta-content">

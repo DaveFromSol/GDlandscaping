@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import AddressAutocomplete from '../components/AddressAutocomplete';
+import LocationGallery from '../components/LocationGallery';
+import QuoteSection from '../components/QuoteSection';
 
 const LawnCareNewingtonPage = () => {
   const packages = [
@@ -61,8 +64,20 @@ const LawnCareNewingtonPage = () => {
       "addressCountry": "US"
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscaping.com/lawn-care-newington-ct"
+    "url": "https://gdlandscapingllc.com/lawn-care-newington-ct"
   };
+
+  const overviewHighlights = [
+    'Customized mowing stripes for Newington Center colonials, Maple Hill cul-de-sacs, and the larger Willard School neighborhoods.',
+    'Blade sharpening schedule adjusted for Newington’s thicker cool-season turf so cuts stay clean even during humid weeks.',
+    'Optional shrub trimming, mulch, and seasonal color that keep Cedar Mountain and Church Street properties camera-ready.'
+  ];
+
+  const serviceStats = [
+    { value: '4.9/5', label: 'Local review score' },
+    { value: '16', label: 'Weekly route loops' },
+    { value: '2 hr', label: 'Weather alerts' }
+  ];
 
   return (
     <>
@@ -70,12 +85,18 @@ const LawnCareNewingtonPage = () => {
         title="Lawn Care Newington CT | Professional Lawn Maintenance Services | GD Landscaping"
         description="Professional lawn care services in Newington, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for all Newington properties."
         keywords="lawn care Newington CT, lawn mowing Newington Connecticut, landscaping Newington, yard maintenance Newington CT, fertilization Newington"
-        canonicalUrl="https://gdlandscaping.com/lawn-care-newington-ct"
+        canonicalUrl="https://gdlandscapingllc.com/lawn-care-newington-ct"
         structuredData={structuredData}
       />
 
       <div className="lawn-care-section">
         <div className="lawn-hero">
+          <div className="lawn-hero-video">
+            <video autoPlay muted loop playsInline preload="auto" poster="/IMG_5407.jpeg">
+              <source src="/AdobeStock_657294798.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
           <div className="lawn-hero-overlay"></div>
           <div className="lawn-hero-content">
             <div className="container">
@@ -84,6 +105,23 @@ const LawnCareNewingtonPage = () => {
               </div>
               <h1>Lawn Care Service Newington CT</h1>
               <p className="hero-subtitle">Professional lawn maintenance for Newington residents and businesses. Keep your community property looking pristine with expert lawn care services.</p>
+
+              <div style={{
+                margin: '30px 0',
+                padding: '0 20px'
+              }}>
+                <h2 style={{
+                  color: 'black',
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  marginBottom: '15px',
+                  textShadow: '1px 1px 2px rgba(255,255,255,0.5)'
+                }}>
+                  Type Your Newington Address for Instant Lawn Care Quote
+                </h2>
+                <AddressAutocomplete />
+              </div>
+
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Newington Quote
@@ -96,10 +134,46 @@ const LawnCareNewingtonPage = () => {
           </div>
         </div>
 
+        <LocationGallery
+          townName="Newington, CT"
+          subtitle="Weekly cuts and detailing completed throughout Newington Center, Willard, and Maple Hill."
+        />
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Newington Lawn Insight</h2>
+                <p>Newington lawns range from wide corner lots to cozy ranch yards shaded by mature oaks. We match deck sizes, clippings strategy, and trim order so every property gets a boutique finish without slowing the schedule.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`newington-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Newington Service Snapshot</h3>
+                <p>We keep the same crew leaders on each street every week for consistent quality.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <div className="container">
           <section className="packages-section">
             <div className="section-header">
-              <h2>Newington Lawn Care Packages</h2>
+              <h2>Professional Lawn Care Services</h2>
               <p className="section-subtitle">Professional lawn maintenance for Newington properties</p>
             </div>
 
@@ -131,6 +205,13 @@ const LawnCareNewingtonPage = () => {
               ))}
             </div>
           </section>
+
+          <QuoteSection
+            title="Need a Newington Quote?"
+            subtitle="Provide details about your property and we'll deliver a personalized lawn care estimate fast."
+            locationName="Newington"
+            source="Newington Lawn Page"
+          />
 
           <section className="lawn-cta">
             <div className="cta-content">

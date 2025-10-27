@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import AddressAutocomplete from '../components/AddressAutocomplete';
+import LocationGallery from '../components/LocationGallery';
+import QuoteSection from '../components/QuoteSection';
 
 const LawnCareBerlinPage = () => {
   const packages = [
@@ -61,6 +64,18 @@ const LawnCareBerlinPage = () => {
     'Christian Lane area'
   ];
 
+  const overviewHighlights = [
+    'Route-optimized crews that service Kensington, East Berlin, and Worthington Ridge multiple times per week for dependable scheduling.',
+    'Seasonal programs that pair mowing with fertilization, spot-spraying, and clean bed edges so Berlin lawns hold rich color through August.',
+    'On-call quality checks after heavy rain to make sure slopes off Chamberlain Highway stay safe and ruts-free.'
+  ];
+
+  const serviceStats = [
+    { value: '24 hrs', label: 'Average callback' },
+    { value: '12+', label: 'Berlin neighborhoods' },
+    { value: '4.9/5', label: 'Client rating' }
+  ];
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -78,7 +93,7 @@ const LawnCareBerlinPage = () => {
       "longitude": -72.7551
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscaping.com/lawn-care-berlin-ct",
+    "url": "https://gdlandscapingllc.com/lawn-care-berlin-ct",
     "serviceArea": {
       "@type": "City",
       "name": "Berlin, Connecticut"
@@ -91,13 +106,19 @@ const LawnCareBerlinPage = () => {
         title="Lawn Care Berlin CT | Professional Lawn Maintenance Services | GD Landscaping"
         description="Professional lawn care services in Berlin, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance. Serving all Berlin neighborhoods."
         keywords="lawn care Berlin CT, lawn mowing Berlin Connecticut, landscaping Berlin, yard maintenance Berlin CT, fertilization Berlin, weed control Berlin"
-        canonicalUrl="https://gdlandscaping.com/lawn-care-berlin-ct"
+        canonicalUrl="https://gdlandscapingllc.com/lawn-care-berlin-ct"
         structuredData={structuredData}
       />
 
       <div className="lawn-care-section">
         {/* Berlin Hero Section */}
         <div className="lawn-hero">
+          <div className="lawn-hero-video">
+            <video autoPlay muted loop playsInline preload="auto" poster="/IMG_5407.jpeg">
+              <source src="/AdobeStock_657294798.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
           <div className="lawn-hero-overlay"></div>
           <div className="lawn-hero-content">
             <div className="container">
@@ -106,6 +127,23 @@ const LawnCareBerlinPage = () => {
               </div>
               <h1>Lawn Care Service Berlin CT</h1>
               <p className="hero-subtitle">Professional lawn maintenance for Berlin residents and businesses. Your local Berlin landscaping experts dedicated to keeping your property beautiful year-round.</p>
+
+              <div style={{
+                margin: '30px 0',
+                padding: '0 20px'
+              }}>
+                <h2 style={{
+                  color: 'black',
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  marginBottom: '15px',
+                  textShadow: '1px 1px 2px rgba(255,255,255,0.5)'
+                }}>
+                  Type Your Berlin Address for Instant Lawn Care Quote
+                </h2>
+                <AddressAutocomplete />
+              </div>
+
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Berlin Quote
@@ -117,6 +155,42 @@ const LawnCareBerlinPage = () => {
             </div>
           </div>
         </div>
+
+        <LocationGallery
+          townName="Berlin, CT"
+          subtitle="A quick look at the weekly mowing, edging, and bed care we provide around Kensington, East Berlin, and Worthington Ridge."
+        />
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Hyper-Local Berlin Lawn Care</h2>
+                <p>Berlin properties span hilly Worthington Ridge estates, Kensington cul-de-sacs, and compact downtown lots. We tailor cut heights, striping patterns, and clean-up routines for each micro area so every yard keeps a consistent, high-end finish.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`berlin-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Berlin Service Snapshot</h3>
+                <p>We keep a dedicated crew, trailer, and standby equipment in town all season.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           {/* Berlin Specific Benefits */}
@@ -153,7 +227,7 @@ const LawnCareBerlinPage = () => {
           {/* Berlin Packages */}
           <section className="packages-section">
             <div className="section-header">
-              <h2>Berlin Lawn Care Packages</h2>
+              <h2>Professional Lawn Care Services</h2>
               <p className="section-subtitle">Professional lawn maintenance plans tailored for Berlin properties</p>
             </div>
 
@@ -239,6 +313,14 @@ const LawnCareBerlinPage = () => {
               </div>
             </div>
           </section>
+
+          {/* Contact CTA */}
+          <QuoteSection
+            title="Need a Detailed Berlin Quote?"
+            subtitle="Send us a few property details and our Berlin team will follow up with personalized pricing."
+            locationName="Berlin"
+            source="Berlin Lawn Page"
+          />
 
           {/* Contact CTA */}
           <section className="lawn-cta">

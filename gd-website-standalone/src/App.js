@@ -23,7 +23,46 @@ import LawnCareMiddletownPage from './pages/LawnCareMiddletownPage';
 import LawnCareRockyHillPage from './pages/LawnCareRockyHillPage';
 import LawnCareNewingtonPage from './pages/LawnCareNewingtonPage';
 import LawnCareBerlinPage from './pages/LawnCareBerlinPage';
+import LawnCareBristolPage from './pages/LawnCareBristolPage';
+import SnowRemovalBristolPage from './pages/SnowRemovalBristolPage';
+import LawnCareWestHartfordPage from './pages/LawnCareWestHartfordPage';
+import SnowRemovalWestHartfordPage from './pages/SnowRemovalWestHartfordPage';
+import LawnCareHartfordPage from './pages/LawnCareHartfordPage';
+import SnowRemovalHartfordPage from './pages/SnowRemovalHartfordPage';
+import SnowRemovalFarmingtonPage from './pages/SnowRemovalFarmingtonPage';
 import InstantQuotePage from './pages/InstantQuotePage';
+import FallCleanupBerlinPage from './pages/FallCleanupBerlinPage';
+import FallCleanupBristolPage from './pages/FallCleanupBristolPage';
+import FallCleanupCromwellPage from './pages/FallCleanupCromwellPage';
+import FallCleanupHartfordPage from './pages/FallCleanupHartfordPage';
+import FallCleanupMiddletownPage from './pages/FallCleanupMiddletownPage';
+import FallCleanupNewBritainPage from './pages/FallCleanupNewBritainPage';
+import FallCleanupNewingtonPage from './pages/FallCleanupNewingtonPage';
+import FallCleanupRockyHillPage from './pages/FallCleanupRockyHillPage';
+import FallCleanupWestHartfordPage from './pages/FallCleanupWestHartfordPage';
+import FallCleanupFarmingtonPage from './pages/FallCleanupFarmingtonPage';
+import BushTrimmingBerlinPage from './pages/BushTrimmingBerlinPage';
+import BushTrimmingBristolPage from './pages/BushTrimmingBristolPage';
+import BushTrimmingCromwellPage from './pages/BushTrimmingCromwellPage';
+import BushTrimmingHartfordPage from './pages/BushTrimmingHartfordPage';
+import BushTrimmingMiddletownPage from './pages/BushTrimmingMiddletownPage';
+import BushTrimmingNewBritainPage from './pages/BushTrimmingNewBritainPage';
+import BushTrimmingNewingtonPage from './pages/BushTrimmingNewingtonPage';
+import BushTrimmingRockyHillPage from './pages/BushTrimmingRockyHillPage';
+import BushTrimmingWestHartfordPage from './pages/BushTrimmingWestHartfordPage';
+import BushTrimmingFarmingtonPage from './pages/BushTrimmingFarmingtonPage';
+import LawnCareFarmingtonPage from './pages/LawnCareFarmingtonPage';
+import BlogPage from './pages/BlogPage';
+import BlogSeasonalLawnCarePage from './pages/BlogSeasonalLawnCarePage';
+import BlogCoreAerationBenefitsPage from './pages/BlogCoreAerationBenefitsPage';
+import BlogFallCleanupChecklistPage from './pages/BlogFallCleanupChecklistPage';
+import BlogWinterizeIrrigationPage from './pages/BlogWinterizeIrrigationPage';
+import BlogMulchEdgingCurbAppealPage from './pages/BlogMulchEdgingCurbAppealPage';
+import BlogDroughtResistantLandscapingPage from './pages/BlogDroughtResistantLandscapingPage';
+import BlogSnowReadinessCommercialPage from './pages/BlogSnowReadinessCommercialPage';
+import BlogHedgeTrimmingSecretsPage from './pages/BlogHedgeTrimmingSecretsPage';
+import BlogHOAGroundsManagementPage from './pages/BlogHOAGroundsManagementPage';
+import BlogSustainableLandscapingPage from './pages/BlogSustainableLandscapingPage';
 
 const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -82,6 +121,15 @@ const Navigation = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 🌱 Services
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/blog"
+                className={isActive('/blog') ? 'active' : ''}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                📝 Blog
               </Link>
             </li>
             <li>
@@ -169,8 +217,47 @@ function App() {
               <Route path="/lawn-care-middletown-ct" element={<LawnCareMiddletownPage />} />
               <Route path="/lawn-care-rocky-hill-ct" element={<LawnCareRockyHillPage />} />
               <Route path="/lawn-care-newington-ct" element={<LawnCareNewingtonPage />} />
+              <Route path="/lawn-care-farmington-ct" element={<LawnCareFarmingtonPage />} />
               <Route path="/lawn-care-berlin-ct" element={<LawnCareBerlinPage />} />
               <Route path="/snow-removal-berlin-ct" element={<SnowRemovalBerlinPage />} />
+              <Route path="/lawn-care-bristol-ct" element={<LawnCareBristolPage />} />
+              <Route path="/snow-removal-bristol-ct" element={<SnowRemovalBristolPage />} />
+              <Route path="/lawn-care-west-hartford-ct" element={<LawnCareWestHartfordPage />} />
+              <Route path="/snow-removal-west-hartford-ct" element={<SnowRemovalWestHartfordPage />} />
+              <Route path="/lawn-care-hartford-ct" element={<LawnCareHartfordPage />} />
+              <Route path="/snow-removal-hartford-ct" element={<SnowRemovalHartfordPage />} />
+              <Route path="/snow-removal-farmington-ct" element={<SnowRemovalFarmingtonPage />} />
+              <Route path="/fall-cleanup-berlin-ct" element={<FallCleanupBerlinPage />} />
+              <Route path="/fall-cleanup-bristol-ct" element={<FallCleanupBristolPage />} />
+              <Route path="/fall-cleanup-cromwell-ct" element={<FallCleanupCromwellPage />} />
+              <Route path="/fall-cleanup-hartford-ct" element={<FallCleanupHartfordPage />} />
+              <Route path="/fall-cleanup-middletown-ct" element={<FallCleanupMiddletownPage />} />
+              <Route path="/fall-cleanup-new-britain-ct" element={<FallCleanupNewBritainPage />} />
+              <Route path="/fall-cleanup-newington-ct" element={<FallCleanupNewingtonPage />} />
+              <Route path="/fall-cleanup-rocky-hill-ct" element={<FallCleanupRockyHillPage />} />
+              <Route path="/fall-cleanup-west-hartford-ct" element={<FallCleanupWestHartfordPage />} />
+              <Route path="/fall-cleanup-farmington-ct" element={<FallCleanupFarmingtonPage />} />
+              <Route path="/bush-trimming-berlin-ct" element={<BushTrimmingBerlinPage />} />
+              <Route path="/bush-trimming-bristol-ct" element={<BushTrimmingBristolPage />} />
+              <Route path="/bush-trimming-cromwell-ct" element={<BushTrimmingCromwellPage />} />
+              <Route path="/bush-trimming-hartford-ct" element={<BushTrimmingHartfordPage />} />
+              <Route path="/bush-trimming-middletown-ct" element={<BushTrimmingMiddletownPage />} />
+              <Route path="/bush-trimming-new-britain-ct" element={<BushTrimmingNewBritainPage />} />
+              <Route path="/bush-trimming-newington-ct" element={<BushTrimmingNewingtonPage />} />
+              <Route path="/bush-trimming-rocky-hill-ct" element={<BushTrimmingRockyHillPage />} />
+              <Route path="/bush-trimming-farmington-ct" element={<BushTrimmingFarmingtonPage />} />
+              <Route path="/bush-trimming-west-hartford-ct" element={<BushTrimmingWestHartfordPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/seasonal-lawn-care-schedule" element={<BlogSeasonalLawnCarePage />} />
+              <Route path="/blog/core-aeration-benefits" element={<BlogCoreAerationBenefitsPage />} />
+              <Route path="/blog/fall-cleanup-checklist" element={<BlogFallCleanupChecklistPage />} />
+              <Route path="/blog/winterize-irrigation-systems" element={<BlogWinterizeIrrigationPage />} />
+              <Route path="/blog/mulch-edging-curb-appeal" element={<BlogMulchEdgingCurbAppealPage />} />
+              <Route path="/blog/drought-resistant-landscaping-ideas" element={<BlogDroughtResistantLandscapingPage />} />
+              <Route path="/blog/snow-readiness-commercial-lots" element={<BlogSnowReadinessCommercialPage />} />
+              <Route path="/blog/hedge-trimming-secrets" element={<BlogHedgeTrimmingSecretsPage />} />
+              <Route path="/blog/hoa-grounds-management" element={<BlogHOAGroundsManagementPage />} />
+              <Route path="/blog/sustainable-landscaping-connecticut" element={<BlogSustainableLandscapingPage />} />
               <Route path="/admin" element={<AdminPage />} />
             </Routes>
           </main>

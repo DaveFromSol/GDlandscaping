@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import AddressAutocomplete from '../components/AddressAutocomplete';
+import LocationGallery from '../components/LocationGallery';
+import QuoteSection from '../components/QuoteSection';
 
 const LawnCareNewBritainPage = () => {
   const packages = [
@@ -78,12 +81,24 @@ const LawnCareNewBritainPage = () => {
       "longitude": -72.7795
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscaping.com/lawn-care-new-britain-ct",
+    "url": "https://gdlandscapingllc.com/lawn-care-new-britain-ct",
     "serviceArea": {
       "@type": "City",
       "name": "New Britain, Connecticut"
     }
   };
+
+  const overviewHighlights = [
+    'Little Poland storefronts, Belvedere hills, and West Side neighborhoods all receive trims tuned to their lot sizes and sun exposure.',
+    'Our Hardware City crews bag clippings during peak seed drop to keep sidewalks spotless and storm drains clear.',
+    'Commercial accounts receive after-hours mowing so parking lots along Broad Street stay open for customers.'
+  ];
+
+  const serviceStats = [
+    { value: '5', label: 'Dedicated crews in town' },
+    { value: '22', label: 'Neighborhood routes' },
+    { value: '365', label: 'Support days' }
+  ];
 
   return (
     <>
@@ -91,13 +106,19 @@ const LawnCareNewBritainPage = () => {
         title="Lawn Care New Britain CT | Professional Lawn Maintenance Services | GD Landscaping"
         description="Professional lawn care services in New Britain, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance. Serving all New Britain neighborhoods."
         keywords="lawn care New Britain CT, lawn mowing New Britain Connecticut, landscaping New Britain, yard maintenance New Britain CT, fertilization New Britain, weed control New Britain"
-        canonicalUrl="https://gdlandscaping.com/lawn-care-new-britain-ct"
+        canonicalUrl="https://gdlandscapingllc.com/lawn-care-new-britain-ct"
         structuredData={structuredData}
       />
 
       <div className="lawn-care-section">
         {/* New Britain Hero Section */}
         <div className="lawn-hero">
+          <div className="lawn-hero-video">
+            <video autoPlay muted loop playsInline preload="auto" poster="/IMG_5407.jpeg">
+              <source src="/AdobeStock_657294798.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
           <div className="lawn-hero-overlay"></div>
           <div className="lawn-hero-content">
             <div className="container">
@@ -106,6 +127,23 @@ const LawnCareNewBritainPage = () => {
               </div>
               <h1>Lawn Care Service New Britain CT</h1>
               <p className="hero-subtitle">Professional lawn maintenance for New Britain residents and businesses. Keep your Hardware City property looking its best year-round with GD Landscaping's expert lawn care services.</p>
+
+              <div style={{
+                margin: '30px 0',
+                padding: '0 20px'
+              }}>
+                <h2 style={{
+                  color: 'black',
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  marginBottom: '15px',
+                  textShadow: '1px 1px 2px rgba(255,255,255,0.5)'
+                }}>
+                  Type Your New Britain Address for Instant Lawn Care Quote
+                </h2>
+                <AddressAutocomplete />
+              </div>
+
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get New Britain Quote
@@ -117,6 +155,42 @@ const LawnCareNewBritainPage = () => {
             </div>
           </div>
         </div>
+
+        <LocationGallery
+          townName="New Britain, CT"
+          subtitle="See our crews polishing lawns across Little Poland, Belvedere, and the East Side."
+        />
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Dialed-In for New Britain Yards</h2>
+                <p>New Britain mixes city blocks, condo associations, and classic neighborhoods with mature maples. We manage traffic, slope, and shade by pairing the right equipment with each route so lawns stay consistent across town.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`new-britain-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>New Britain Service Snapshot</h3>
+                <p>Supervisors live nearby for true neighborhood-level accountability.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           {/* New Britain Specific Benefits */}
@@ -153,7 +227,7 @@ const LawnCareNewBritainPage = () => {
           {/* New Britain Packages */}
           <section className="packages-section">
             <div className="section-header">
-              <h2>New Britain Lawn Care Packages</h2>
+              <h2>Professional Lawn Care Services</h2>
               <p className="section-subtitle">Professional lawn maintenance plans tailored for New Britain properties</p>
             </div>
 
@@ -239,6 +313,13 @@ const LawnCareNewBritainPage = () => {
               </div>
             </div>
           </section>
+
+          <QuoteSection
+            title="Need a Detailed New Britain Quote?"
+            subtitle="Share a few details about your Hardware City property and we’ll send pricing within a business day."
+            locationName="New Britain"
+            source="New Britain Lawn Page"
+          />
 
           {/* Contact CTA */}
           <section className="lawn-cta">

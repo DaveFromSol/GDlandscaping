@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import QuoteSection from '../components/QuoteSection';
 
 const SnowRemovalBerlinPage = () => {
   const packages = [
@@ -61,11 +62,25 @@ const SnowRemovalBerlinPage = () => {
     'Christian Lane area'
   ];
 
+  const overviewHighlights = [
+    'Crew leaders live in Berlin, so plows roll out before 4:30 AM to keep Kensington and East Berlin driveways open ahead of the commute.',
+    'Sidewalk crews clear front walks, stoops, and mailbox paths while plow trucks finish the driveway pass to limit refreeze.',
+    'Post-storm inspections verify drains along Worthington Ridge stay open so meltwater doesn’t re-freeze across aprons.'
+  ];
+
+  const serviceStats = [
+    { value: '4:30 AM', label: 'First pass starts' },
+    { value: '20+', label: 'Local storm routes' },
+    { value: '24/7', label: 'Weather monitoring' }
+  ];
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "Snow Removal Service Berlin CT - GD Landscaping",
     "description": "Professional snow removal services in Berlin, Connecticut. Reliable snow plowing, ice management, and winter maintenance for homes and businesses.",
+    "logo": "https://gdlandscapingllc.com/GD.png",
+    "image": "https://gdlandscapingllc.com/GD.png",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Berlin",
@@ -78,7 +93,7 @@ const SnowRemovalBerlinPage = () => {
       "longitude": -72.7551
     },
     "telephone": "(860) 526-7583",
-    "url": "https://gdlandscaping.com/snow-removal-berlin-ct",
+    "url": "https://gdlandscapingllc.com/snow-removal-berlin-ct",
     "serviceArea": {
       "@type": "City",
       "name": "Berlin, Connecticut"
@@ -91,7 +106,7 @@ const SnowRemovalBerlinPage = () => {
         title="Snow Removal Berlin CT | Professional Winter Services | GD Landscaping"
         description="Reliable snow removal services in Berlin, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Berlin CT, snow plowing Berlin Connecticut, winter services Berlin, ice management Berlin CT, residential snow removal Berlin, commercial snow plowing Berlin"
-        canonicalUrl="https://gdlandscaping.com/snow-removal-berlin-ct"
+        canonicalUrl="https://gdlandscapingllc.com/snow-removal-berlin-ct"
         structuredData={structuredData}
       />
 
@@ -105,7 +120,7 @@ const SnowRemovalBerlinPage = () => {
                 <span>❄️ Serving Berlin, CT</span>
               </div>
               <h1>Snow Removal Service Berlin CT</h1>
-              <p className="hero-subtitle">Professional winter maintenance for Berlin residents and businesses. Your local Berlin snow removal experts keeping properties safe and accessible all season long.</p>
+              <p className="hero-subtitle">Storm-tracking crews clear Berlin driveways, sidewalks, and entrances before the morning rush, then return for follow-up service to keep everything open while temperatures swing.</p>
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Berlin Quote
@@ -117,6 +132,37 @@ const SnowRemovalBerlinPage = () => {
             </div>
           </div>
         </div>
+
+        <section className="town-overview">
+          <div className="container">
+            <div className="town-overview-grid">
+              <div className="town-overview-card">
+                <h2>Berlin Winter Readiness</h2>
+                <p>Berlin storms stack up quickly on Worthington Ridge and sweep across Kensington. We pre-salt, plow, and return for cleanup so your property never falls behind the weather.</p>
+                <ul>
+                  {overviewHighlights.map((item, idx) => (
+                    <li key={`berlin-snow-highlight-${idx}`}>
+                      <span>✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="town-overview-card">
+                <h3>Berlin Snow Stats</h3>
+                <p>Dedicated plow trucks, sidewalk crews, and loaders are staged inside town limits all winter.</p>
+                <div className="town-stats">
+                  {serviceStats.map((stat) => (
+                    <div key={stat.label} className="town-stat">
+                      <strong>{stat.value}</strong>
+                      <span>{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <div className="container">
           {/* Berlin Specific Benefits */}
@@ -239,6 +285,13 @@ const SnowRemovalBerlinPage = () => {
               </div>
             </div>
           </section>
+
+          <QuoteSection
+            title="Request Berlin Snow Removal"
+            subtitle="Prefer the traditional form? Share property details and we’ll confirm your route time right away."
+            locationName="Berlin Snow"
+            source="Berlin Snow Page"
+          />
 
           {/* Contact CTA */}
           <section className="snow-cta">
