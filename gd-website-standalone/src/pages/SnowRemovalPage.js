@@ -255,11 +255,13 @@ const SnowRemovalPage = () => {
                   <span className="town">Cromwell</span>
                   <span className="town">Middletown</span>
                   <span className="town">Hartford</span>
+                  <span className="town">West Hartford</span>
                   <span className="town">Newington</span>
                   <span className="town">Wethersfield</span>
                   <span className="town">Rocky Hill</span>
                   <span className="town">Glastonbury</span>
                   <span className="town">Manchester</span>
+                  <span className="town">Bristol</span>
                   <span className="town">Farmington</span>
                 </div>
               </div>
