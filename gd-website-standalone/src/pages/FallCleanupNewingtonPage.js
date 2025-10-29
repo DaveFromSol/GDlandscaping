@@ -4,50 +4,6 @@ import FallCleanupTemplate from './FallCleanupTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const FallCleanupNewingtonPage = () => {
-  const packages = [
-    {
-      id: 'newington-basic',
-      name: 'Newington Leaf Pass',
-      price: '$295 / visit',
-      description: 'Recurring leaf pickup for Newington Center, Willard, and Maple Hill blocks.',
-      features: [
-        'Leaf + stick removal from turf',
-        'Walkway + driveway blow-off',
-        'Bagging for town collection',
-        'Rear yard cleanup included',
-        'Storm follow-up inspection'
-      ]
-    },
-    {
-      id: 'newington-premium',
-      name: 'Cedar Mountain Cleanup',
-      price: '$545 / visit',
-      description: 'Complete fall cleanup for larger lots and HOA communities.',
-      features: [
-        'Full-property leaf removal',
-        'Bed cutbacks + shrub pruning',
-        'Single-story gutter policing',
-        'Final mow, trim, and edging',
-        'Haul-away + disposal',
-        'Priority service window'
-      ],
-      popular: true
-    },
-    {
-      id: 'newington-commercial',
-      name: 'Newington Commercial/HOA',
-      price: 'Custom Quote',
-      description: 'Tailored plans for Berlin Turnpike plazas, condos, and office parks.',
-      features: [
-        'Loader + sweeper support',
-        'Parking lot + loading dock cleanup',
-        'Drain + catch basin clearing',
-        'Bed winterization and mulch touch-ups',
-        'Detailed status reporting',
-        'Flexible off-hours scheduling'
-      ]
-    }
-  ];
 
   const serviceHighlights = [
     { icon: '📍', title: 'Neighborhood Routes', description: 'Crews run dedicated loops for Newington Center, Maple Hill, and Willard.' },
@@ -114,7 +70,6 @@ const FallCleanupNewingtonPage = () => {
           'From tree-lined cul-de-sacs to busy Berlin Turnpike plazas, we tailor cleanup crews for every Newington property.',
         snapshotCopy: 'Customers receive live updates when crews are en route or when storms adjust the schedule.'
       }}
-      packages={packages}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}

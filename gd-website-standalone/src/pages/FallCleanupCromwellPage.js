@@ -4,50 +4,6 @@ import FallCleanupTemplate from './FallCleanupTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const FallCleanupCromwellPage = () => {
-  const packages = [
-    {
-      id: 'cromwell-basic',
-      name: 'Cromwell Leaf Pass',
-      price: '$310 / visit',
-      description: 'Weekly or bi-weekly leaf pickup for Cromwell Center and North Cromwell homes.',
-      features: [
-        'Leaf + twig removal from turf',
-        'Walkway and driveway blow-off',
-        'Bagging or on-site composting',
-        'Seasonal scheduling reminders',
-        'Storm follow-up alerts'
-      ]
-    },
-    {
-      id: 'cromwell-premium',
-      name: 'River Town Cleanup',
-      price: '$560 / visit',
-      description: 'Complete fall cleanup for Main Street, Nooks Hill, and River Highlands properties.',
-      features: [
-        'Full-property leaf + debris removal',
-        'Bed cutbacks + ornamental pruning',
-        'Final mowing + edging',
-        'Gutter policing (single story)',
-        'Haul-away & disposal included',
-        'Priority slot after major storms'
-      ],
-      popular: true
-    },
-    {
-      id: 'cromwell-commercial',
-      name: 'Cromwell HOA & Commercial',
-      price: 'Custom Quote',
-      description: 'Tailored fall cleanup for HOAs, golf-adjacent communities, and businesses.',
-      features: [
-        'Multi-day cleanup plans',
-        'Loader / vacuum truck support',
-        'Storm drain clearing',
-        'Mulch bed winterization',
-        'Flexible off-hour scheduling',
-        'Detailed completion reporting'
-      ]
-    }
-  ];
 
   const serviceHighlights = [
     {
@@ -127,7 +83,6 @@ const FallCleanupCromwellPage = () => {
           'Cromwell’s riverfront weather demands flexible fall cleanup routes. We tune schedules around wind, tide, and neighborhood needs.',
         snapshotCopy: 'Supervisors coordinate with HOAs and property managers for seamless cleanups.'
       }}
-      packages={packages}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}

@@ -135,36 +135,73 @@ const FallCleanupTemplate = ({
         <div className="container">
           <section className="packages-section">
             <div className="section-header">
-              <h2>{townName} Fall Cleanup Packages</h2>
-              <p className="section-subtitle">Choose the right level of seasonal cleanup and prep for your property.</p>
+              <h2>Get Your Custom Fall Cleanup Quote</h2>
+              <p className="section-subtitle">Every property is unique. Pricing depends on lot size, leaf coverage, and specific service needs.</p>
             </div>
 
-            <div className="packages-grid">
-              {packages.map((pkg) => (
-                <div key={pkg.id} className={`package-card ${pkg.popular ? 'popular' : ''}`}>
-                  {pkg.popular && <div className="popular-badge">Most Popular</div>}
-                  <div className="package-header">
-                    <h3>{pkg.name}</h3>
-                    <div className="package-price">{pkg.price}</div>
-                    <p className="package-description">{pkg.description}</p>
-                  </div>
-                  <div className="package-features">
-                    <ul>
-                      {pkg.features.map((feature, index) => (
-                        <li key={`${pkg.id}-feature-${index}`}>
-                          <span className="feature-check">✓</span>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="package-footer">
-                    <Link to="/contact" className="package-btn">
-                      Book This Package
-                    </Link>
-                  </div>
-                </div>
-              ))}
+            <div className="pricing-cta-section" style={{
+              background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+              borderRadius: '16px',
+              padding: '60px 40px',
+              textAlign: 'center',
+              color: 'white',
+              maxWidth: '800px',
+              margin: '0 auto',
+              boxShadow: '0 20px 50px rgba(249, 115, 22, 0.3)'
+            }}>
+              <div style={{ fontSize: '48px', marginBottom: '20px' }}>🍂</div>
+              <h3 style={{ fontSize: '32px', fontWeight: '700', marginBottom: '16px', color: 'white' }}>
+                Customized Pricing for Your Property
+              </h3>
+              <p style={{ fontSize: '18px', marginBottom: '32px', opacity: '0.95', lineHeight: '1.6' }}>
+                Get an accurate quote based on your property size and cleanup needs. We offer competitive rates for {townName} homeowners.
+              </p>
+              <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <Link
+                  to="/instant-quote"
+                  style={{
+                    background: 'white',
+                    color: '#ea580c',
+                    padding: '16px 32px',
+                    borderRadius: '10px',
+                    fontWeight: '700',
+                    fontSize: '18px',
+                    textDecoration: 'none',
+                    display: 'inline-block',
+                    transition: 'all 0.3s ease',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
+                  }}
+                  onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
+                  onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
+                >
+                  Get Instant Quote
+                </Link>
+                <a
+                  href="tel:8605267583"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.2)',
+                    color: 'white',
+                    padding: '16px 32px',
+                    borderRadius: '10px',
+                    fontWeight: '700',
+                    fontSize: '18px',
+                    textDecoration: 'none',
+                    display: 'inline-block',
+                    border: '2px solid white',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseOver={(e) => {
+                    e.target.style.background = 'white';
+                    e.target.style.color = '#ea580c';
+                  }}
+                  onMouseOut={(e) => {
+                    e.target.style.background = 'rgba(255, 255, 255, 0.2)';
+                    e.target.style.color = 'white';
+                  }}
+                >
+                  Call (860) 526-7583
+                </a>
+              </div>
             </div>
           </section>
 

@@ -4,50 +4,6 @@ import FallCleanupTemplate from './FallCleanupTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const FallCleanupBristolPage = () => {
-  const packages = [
-    {
-      id: 'bristol-basic',
-      name: 'Bristol Leaf Sweep',
-      price: '$295 / visit',
-      description: 'Perfect for Bristol properties that benefit from recurring pickup appointments.',
-      features: [
-        'Lawn + hardscape leaf removal',
-        'Front walkway + porch blow-off',
-        'Bagging for town pickup',
-        'Weekly or bi-weekly scheduling',
-        'Storm follow-up check'
-      ]
-    },
-    {
-      id: 'bristol-premium',
-      name: 'Bristol Premier Cleanup',
-      price: '$545 / visit',
-      description: 'Complete seasonal cleanup for Bristol properties that expect full curb appeal.',
-      features: [
-        'Full-property leaf + debris removal',
-        'Landscape bed detailing and cutbacks',
-        'Final mow + edge + stripe',
-        'Gutter policing (single story)',
-        'Haul-away + disposal included',
-        'Priority service windows'
-      ],
-      popular: true
-    },
-    {
-      id: 'bristol-commercial',
-      name: 'Hardware City Commercial',
-      price: 'Custom Quote',
-      description: 'Custom cleanup for downtown storefronts, HOAs, and commercial campuses.',
-      features: [
-        'Sidewalk + storefront detailing',
-        'Loader / vacuum truck support',
-        'Parking lot sweeping',
-        'Drain + curb inlet clearing',
-        'Flexible off-hours scheduling',
-        'Detailed completion reporting'
-      ]
-    }
-  ];
 
   const serviceHighlights = [
     {
@@ -127,7 +83,6 @@ const FallCleanupBristolPage = () => {
           'We tailor equipment, crew size, and timing for every Bristol property so cleanups finish efficiently.',
         snapshotCopy: 'Our Hardware City teams stay routed nearby for fast follow-ups when late storms roll through.'
       }}
-      packages={packages}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}

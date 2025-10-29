@@ -4,50 +4,6 @@ import FallCleanupTemplate from './FallCleanupTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const FallCleanupBerlinPage = () => {
-  const packages = [
-    {
-      id: 'berlin-basic',
-      name: 'Berlin Leaf Lift',
-      price: '$325 / visit',
-      description: 'Ideal for smaller Berlin properties that need recurring leaf pickup.',
-      features: [
-        'Lawn and hardscape leaf cleanup',
-        'Bagging and curbside placement',
-        'Front entry blow-off',
-        'Spot pruning for perennials',
-        'Weekly route scheduling'
-      ]
-    },
-    {
-      id: 'berlin-premium',
-      name: 'Berlin Complete Cleanup',
-      price: '$575 / visit',
-      description: 'Full-property fall cleanup for Kensington, East Berlin, and Worthington Ridge homes.',
-      features: [
-        'Comprehensive leaf + debris removal',
-        'Landscape bed and hedge cleanup',
-        'Gutter policing (single story)',
-        'Final high cut + striping',
-        'Haul-away and disposal included',
-        'Priority weather window'
-      ],
-      popular: true
-    },
-    {
-      id: 'berlin-estate',
-      name: 'Berlin Estate & HOA',
-      price: 'Custom Quote',
-      description: 'Custom fall cleanup for estate lots, HOAs, and commercial properties.',
-      features: [
-        'Route planning with property managers',
-        'Loader + vacuum truck support',
-        'Storm drain clearing',
-        'Shrub + ornamental grass cutbacks',
-        'Ongoing leaf monitoring',
-        'Detailed reporting'
-      ]
-    }
-  ];
 
   const serviceHighlights = [
     {
@@ -128,7 +84,6 @@ const FallCleanupBerlinPage = () => {
           'Berlin lawns range from hilly Worthington Ridge estates to compact downtown lots. We tailor equipment and cleanup order for each neighborhood.',
         snapshotCopy: 'Our Berlin crews stay staged within town limits for rapid follow-ups after windy nights.'
       }}
-      packages={packages}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}

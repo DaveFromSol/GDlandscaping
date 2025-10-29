@@ -4,50 +4,6 @@ import FallCleanupTemplate from './FallCleanupTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const FallCleanupHartfordPage = () => {
-  const packages = [
-    {
-      id: 'hartford-basic',
-      name: 'Hartford Urban Sweep',
-      price: '$340 / visit',
-      description: 'Leaf and debris removal tailored for compact city lots.',
-      features: [
-        'Leaf + litter removal from turf',
-        'Sidewalk + curb cleanup',
-        'Bagging for city pickup',
-        'Rear-courtyard blow-out',
-        'On-street parking coordination'
-      ]
-    },
-    {
-      id: 'hartford-premium',
-      name: 'Capital City Cleanup',
-      price: '$595 / visit',
-      description: 'Full-property fall cleanup for Asylum Hill, West End, and South End homes.',
-      features: [
-        'Full yard leaf + debris removal',
-        'Bed cutbacks + shrub shaping',
-        'Gutter policing (single story)',
-        'Final trim + mow',
-        'Haul-away + disposal',
-        'Priority scheduling'
-      ],
-      popular: true
-    },
-    {
-      id: 'hartford-commercial',
-      name: 'Downtown & Institutional',
-      price: 'Custom Quote',
-      description: 'For municipal, campus, and commercial properties downtown.',
-      features: [
-        'Sidewalk + plaza clearing',
-        'Loader + sweeper support',
-        'Storm drain inspection',
-        'Planter + bed winterization',
-        'After-hours availability',
-        'Detailed compliance reporting'
-      ]
-    }
-  ];
 
   const serviceHighlights = [
     {
@@ -127,7 +83,6 @@ const FallCleanupHartfordPage = () => {
           'Hartford’s dense streets require flexible cleanup crews. We coordinate around parking bans, events, and school schedules.',
         snapshotCopy: 'Supervisors send ETA texts so residents and managers always know when crews arrive.'
       }}
-      packages={packages}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}

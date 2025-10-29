@@ -4,50 +4,6 @@ import FallCleanupTemplate from './FallCleanupTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const FallCleanupNewBritainPage = () => {
-  const packages = [
-    {
-      id: 'nb-basic',
-      name: 'Hardware City Leaf Lift',
-      price: '$300 / visit',
-      description: 'Recurring cleanup for Little Poland, East Side, and Belvedere neighborhoods.',
-      features: [
-        'Leaf + debris removal from turf',
-        'Sidewalk + curb blow-off',
-        'Bagging for city pickup',
-        'Rear yard / alley detailing',
-        'Windstorm follow-up check'
-      ]
-    },
-    {
-      id: 'nb-premium',
-      name: 'New Britain Complete Cleanup',
-      price: '$560 / visit',
-      description: 'Full fall cleanup for Sloper, West End, and condo communities.',
-      features: [
-        'Full-property leaf + stick removal',
-        'Bed cutbacks + shrub trimming',
-        'Final mow + edge + stripe',
-        'Single-story gutter policing',
-        'Haul-away + disposal',
-        'Priority scheduling during peak weeks'
-      ],
-      popular: true
-    },
-    {
-      id: 'nb-commercial',
-      name: 'Downtown & Commercial',
-      price: 'Custom Quote',
-      description: 'Custom cleanup plans for Broad Street storefronts and industrial corridors.',
-      features: [
-        'Loader + sweeper support',
-        'Parking lot + loading dock clearing',
-        'Planter + bed winterization',
-        'Drain + catch basin checks',
-        'After-hours scheduling',
-        'Work order documentation'
-      ]
-    }
-  ];
 
   const serviceHighlights = [
     {
@@ -127,7 +83,6 @@ const FallCleanupNewBritainPage = () => {
           'Hardware City properties vary from tight city lots to sprawling neighborhoods. We tailor crews for each street.',
         snapshotCopy: 'Supervisors keep crews rotating through the city for quick follow-ups after windy nights.'
       }}
-      packages={packages}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}

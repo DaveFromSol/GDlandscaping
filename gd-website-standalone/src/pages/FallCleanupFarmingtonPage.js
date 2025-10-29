@@ -4,50 +4,6 @@ import FallCleanupTemplate from './FallCleanupTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const FallCleanupFarmingtonPage = () => {
-  const packages = [
-    {
-      id: 'farmington-basic',
-      name: 'Farmington Leaf Sweep',
-      price: '$335 / visit',
-      description: 'Ideal for Unionville and Farmington Village properties that need recurring pickup.',
-      features: [
-        'Lawn and hardscape leaf cleanup',
-        'Bagging and curbside placement',
-        'Front entry blow-off',
-        'Spot pruning for perennials',
-        'Weekly route scheduling'
-      ]
-    },
-    {
-      id: 'farmington-premium',
-      name: 'Farmington Complete Cleanup',
-      price: '$585 / visit',
-      description: 'Full-property fall cleanup for Devonwood, Talcott Mountain, and Unionville homes.',
-      features: [
-        'Comprehensive leaf + debris removal',
-        'Landscape bed and hedge cleanup',
-        'Gutter policing (single story)',
-        'Final high cut + striping',
-        'Haul-away and disposal included',
-        'Priority weather window'
-      ],
-      popular: true
-    },
-    {
-      id: 'farmington-estate',
-      name: 'Farmington Estate & HOA',
-      price: 'Custom Quote',
-      description: 'Custom fall cleanup for estate lots, HOAs, private roads, and commercial properties.',
-      features: [
-        'Route planning with property managers',
-        'Loader + vacuum truck support',
-        'Storm drain clearing',
-        'Shrub + ornamental grass cutbacks',
-        'Ongoing leaf monitoring',
-        'Detailed reporting'
-      ]
-    }
-  ];
 
   const serviceHighlights = [
     {
@@ -128,7 +84,6 @@ const FallCleanupFarmingtonPage = () => {
           'Farmington lawns range from hillside estates to compact village lots. We tailor equipment and cleanup order for each neighborhood.',
         snapshotCopy: 'Our Farmington crews stay staged inside town limits for rapid follow-ups after windy nights.'
       }}
-      packages={packages}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}

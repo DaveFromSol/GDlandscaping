@@ -4,50 +4,6 @@ import FallCleanupTemplate from './FallCleanupTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const FallCleanupRockyHillPage = () => {
-  const packages = [
-    {
-      id: 'rockyhill-basic',
-      name: 'Dividend Leaf Pass',
-      price: '$315 / visit',
-      description: 'Recurring cleanup for Dividend, Ferry Landing, and Old Main Street homes.',
-      features: [
-        'Leaf + debris removal from turf',
-        'Patio, deck, and walkway blow-off',
-        'Bagging or on-site piling',
-        'Weekly / bi-weekly routes',
-        'Drain + curb checks'
-      ]
-    },
-    {
-      id: 'rockyhill-premium',
-      name: 'River Valley Cleanup',
-      price: '$575 / visit',
-      description: 'Complete fall cleanup for West Rocky Hill, Corporate Ridge, and riverfront estates.',
-      features: [
-        'Full-property leaf removal',
-        'Bed cutbacks + shrub pruning',
-        'Final mow + trim + edge',
-        'Gutter policing (single story)',
-        'Haul-away + disposal',
-        'Priority rescheduling after storms'
-      ],
-      popular: true
-    },
-    {
-      id: 'rockyhill-commercial',
-      name: 'Corporate & HOA Cleanup',
-      price: 'Custom Quote',
-      description: 'Custom plans for Cromwell Avenue corridors, HOAs, and business parks.',
-      features: [
-        'Loader + vacuum truck support',
-        'Parking lot + loading dock sweeping',
-        'Storm drain + curb inlet clearing',
-        'Mulch + bed winterization',
-        'After-hours scheduling',
-        'Detailed completion reporting'
-      ]
-    }
-  ];
 
   const serviceHighlights = [
     { icon: '🌊', title: 'Riverfront Ready', description: 'Extra passes near the Connecticut River keep soggy leaves from matting and freezing.' },
@@ -115,7 +71,6 @@ const FallCleanupRockyHillPage = () => {
           'River winds and steep cul-de-sacs require flexible crews. We keep equipment staged throughout Rocky Hill.',
         snapshotCopy: 'Resident alerts and property-manager updates keep everyone informed during the busy season.'
       }}
-      packages={packages}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}

@@ -4,50 +4,6 @@ import FallCleanupTemplate from './FallCleanupTemplate';
 const phoneNumber = '(860) 526-7583';
 
 const FallCleanupWestHartfordPage = () => {
-  const packages = [
-    {
-      id: 'wh-basic',
-      name: 'West Hartford Leaf Pass',
-      price: '$345 / visit',
-      description: 'Recurring pickups for Elmwood, Prospect Hill, and Sunset Ridge streets.',
-      features: [
-        'Leaf + debris removal across turf',
-        'Sidewalk + curb blow-off',
-        'Bagging for town pickup',
-        'Rear courtyard detailing',
-        'Weekly or bi-weekly scheduling'
-      ]
-    },
-    {
-      id: 'wh-premium',
-      name: 'Blue Back Complete Cleanup',
-      price: '$595 / visit',
-      description: 'Full-property cleanup for West Hartford Center, Bishop’s Corner, and estate lots.',
-      features: [
-        'Full leaf + stick removal',
-        'Bed cutbacks + shrub pruning',
-        'Single-story gutter policing',
-        'Final mow + edge + stripe',
-        'Haul-away + disposal included',
-        'Priority service slots'
-      ],
-      popular: true
-    },
-    {
-      id: 'wh-commercial',
-      name: 'Commercial & HOA Program',
-      price: 'Custom Quote',
-      description: 'For Blue Back Square retailers, condos, schools, and office parks.',
-      features: [
-        'Loader + sweeper support',
-        'Parking lot + plaza cleanup',
-        'Planter + bed winterization',
-        'Storm drain clearing',
-        'After-hours availability',
-        'Photo + report delivery'
-      ]
-    }
-  ];
 
   const serviceHighlights = [
     { icon: '🏙️', title: 'Center Ready', description: 'We coordinate with parking bans and retail hours in West Hartford Center and Blue Back Square.' },
@@ -115,7 +71,6 @@ const FallCleanupWestHartfordPage = () => {
           'Mature trees and busy retail corridors demand proactive fall cleanups. We stage crews throughout West Hartford for seamless service.',
         snapshotCopy: 'Clients receive concierge-level communication from booking to completion.'
       }}
-      packages={packages}
       overviewHighlights={overviewHighlights}
       serviceStats={serviceStats}
       serviceHighlights={serviceHighlights}
