@@ -130,7 +130,7 @@ const HomePage = () => {
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "4.9",
-        "reviewCount": "500",
+        "reviewCount": "235",
         "bestRating": "5",
         "worstRating": "1"
       },
