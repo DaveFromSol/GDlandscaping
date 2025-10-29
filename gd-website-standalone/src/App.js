@@ -282,9 +282,9 @@ const CrawlPathLinks = () => {
       { text: 'Bush Trimming Rocky Hill CT', url: '/bush-trimming-rocky-hill' }
     ];
 
-    // Shuffle and pick 25 random links
+    // Shuffle and pick 5 random links
     const shuffled = [...allLinks].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 25);
+    return shuffled.slice(0, 5);
   });
 
   return (
