@@ -1,8 +1,44 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import FAQSection from '../components/FAQSection';
 
 const SnowRemovalPage = () => {
+  const faqs = [
+    {
+      question: "When do you start plowing snow?",
+      answer: "We begin plowing when snow accumulation reaches 2 inches or more. For seasonal contract customers, we monitor weather conditions 24/7 and proactively start services when snow begins to accumulate."
+    },
+    {
+      question: "Do you offer per-storm or seasonal contracts?",
+      answer: "Yes, we offer both options. Seasonal contracts provide priority service, guaranteed pricing, and unlimited plowing for a flat rate. Per-storm pricing is also available for those who prefer pay-as-you-go service."
+    },
+    {
+      question: "How quickly do you respond after a snowfall?",
+      answer: "Seasonal contract customers receive priority service and are typically cleared within 4-6 hours after snowfall ends. Emergency commercial clients may receive even faster response times depending on their contract terms."
+    },
+    {
+      question: "Do you provide salt or ice management?",
+      answer: "Absolutely! Salt/sand application and ice management are included in our premium packages and available as add-ons for basic packages. We use eco-friendly de-icing products when requested."
+    },
+    {
+      question: "What areas do you service for snow removal?",
+      answer: "We provide snow removal services throughout Central Connecticut including Berlin, Hartford, Cromwell, Middletown, West Hartford, Newington, Wethersfield, Rocky Hill, Glastonbury, Manchester, Bristol, and Farmington."
+    },
+    {
+      question: "Can you handle commercial snow removal?",
+      answer: "Yes! We service commercial properties including office buildings, retail centers, apartment complexes, and medical facilities. We offer customized service plans with guaranteed response times and 24/7 emergency availability."
+    },
+    {
+      question: "What happens if there's no snow this winter?",
+      answer: "Our seasonal contracts are risk-based pricing that protects both parties. While we can't control Mother Nature, our pricing is competitive and reflects historical snowfall averages for Connecticut. Per-storm contracts are also available if you prefer to pay only when it snows."
+    },
+    {
+      question: "Do I need to be home when you plow?",
+      answer: "No, you don't need to be home. Most of our plowing happens early morning or overnight. We ask that you keep vehicles off driveways when possible and ensure we have clear access to areas that need plowing."
+    }
+  ];
+
   const packages = [
     {
       id: 1,
@@ -267,6 +303,8 @@ const SnowRemovalPage = () => {
               </div>
             </div>
           </section>
+
+          <FAQSection faqs={faqs} title="Snow Removal FAQ" />
 
           {/* CTA Section */}
           <section className="snow-cta">

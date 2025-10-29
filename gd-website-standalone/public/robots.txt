@@ -1,8 +1,9 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
-Sitemap: https://gdlandscapingllc.com/sitemap.xml
+# Sitemap locations
+Sitemap: https://www.gdlandscapingllc.com/sitemap.xml
+Sitemap: https://www.gdlandscapingllc.com/sitemap-index.xml
 
 # Optimize for local search
 Allow: /services

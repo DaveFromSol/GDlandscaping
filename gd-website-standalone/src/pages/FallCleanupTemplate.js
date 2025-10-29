@@ -4,6 +4,7 @@ import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
 import LocationGallery from '../components/LocationGallery';
 import QuoteSection from '../components/QuoteSection';
+import FAQSection from '../components/FAQSection';
 
 const phoneNumber = '(860) 526-7583';
 
@@ -22,8 +23,45 @@ const FallCleanupTemplate = ({
   areas,
   gallerySubtitle,
   quoteConfig,
-  cta
+  cta,
+  faqs
 }) => {
+  const defaultFaqs = [
+    {
+      question: "When is the best time to schedule fall cleanup?",
+      answer: "The ideal time for fall cleanup in Connecticut is typically late October through early December, after most leaves have fallen but before the first major snowfall. We recommend scheduling early in the season to secure your preferred time slot, as demand is high during peak leaf-drop weeks."
+    },
+    {
+      question: "What's included in your fall cleanup service?",
+      answer: "Our comprehensive fall cleanup includes leaf removal from lawns and landscape beds, debris cleanup, trimming back perennials, clearing gutters (if requested), removing fallen branches, edging beds, and hauling away all organic material. We leave your property clean and ready for winter."
+    },
+    {
+      question: "How many visits does fall cleanup typically require?",
+      answer: "Most properties need 1-3 fall cleanup visits depending on the number and types of trees on your property. Properties with many oak trees may need an extra visit since oaks drop leaves later in the season. We can set up a schedule that works for your specific landscape."
+    },
+    {
+      question: "Do you mulch leaves or remove them completely?",
+      answer: "We typically remove leaves completely to prevent them from smothering your grass and promoting disease. However, if you prefer mulching for garden beds or composting, we can accommodate that request. We'll discuss the best approach for your property during the estimate."
+    },
+    {
+      question: "What happens to the leaves after you remove them?",
+      answer: "All leaves and organic debris are hauled away from your property and disposed of properly at approved facilities. We handle all removal and disposal - you won't need to worry about piles at the curb or managing disposal yourself."
+    },
+    {
+      question: "Can you clean up wet or matted leaves?",
+      answer: "Yes, our professional equipment can handle wet, matted leaves that regular rakes and blowers struggle with. Connecticut's fall weather can be unpredictable, and we're equipped to work in various conditions to keep your property clean."
+    },
+    {
+      question: "Should I wait until all the leaves have fallen?",
+      answer: "Not necessarily. For properties with heavy leaf coverage, we often recommend 2-3 visits throughout the fall season. This prevents thick layers from matting down and damaging your lawn. We can create a cleanup schedule based on your specific trees and property needs."
+    },
+    {
+      question: "Do you offer emergency cleanup after storms?",
+      answer: `Yes, we provide storm damage cleanup including removal of fallen branches, debris, and excess leaves. Contact us at ${phoneNumber} for urgent cleanup needs, and we'll prioritize your property based on severity and safety concerns.`
+    }
+  ];
+
+  const faqsToDisplay = faqs || defaultFaqs;
   const resolvedQuote = quoteConfig || {
     title: `Schedule Fall Cleanup in ${townName}`,
     subtitle: 'Share a few property details and we will confirm your route window.',
@@ -248,6 +286,8 @@ const FallCleanupTemplate = ({
             locationName={resolvedQuote.locationName}
             source={resolvedQuote.source}
           />
+
+          <FAQSection faqs={faqsToDisplay} title={`Fall Cleanup FAQ - ${townName.split(',')[0]}`} />
 
           <section className="fall-cta">
             <div className="cta-content">

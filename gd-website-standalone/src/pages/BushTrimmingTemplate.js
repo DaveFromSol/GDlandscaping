@@ -4,6 +4,7 @@ import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
 import LocationGallery from '../components/LocationGallery';
 import QuoteSection from '../components/QuoteSection';
+import FAQSection from '../components/FAQSection';
 
 const defaultPhoneNumber = '(860) 526-7583';
 
@@ -17,8 +18,45 @@ const BushTrimmingTemplate = ({
   areas,
   gallerySubtitle,
   quoteConfig,
-  cta
+  cta,
+  faqs
 }) => {
+  const defaultFaqs = [
+    {
+      question: "How often should I trim my hedges and bushes?",
+      answer: "Most hedges and shrubs benefit from trimming 2-3 times per year - typically in late spring, mid-summer, and early fall. Fast-growing shrubs like privet may need more frequent trimming. Our team will assess your specific plants and recommend an optimal schedule."
+    },
+    {
+      question: "What's the best time of year for bush trimming?",
+      answer: "The ideal timing depends on the plant type. Spring-flowering shrubs should be trimmed right after blooming, while summer-flowering shrubs are best trimmed in late winter or early spring. We recommend avoiding heavy trimming in late fall to prevent winter damage."
+    },
+    {
+      question: "Do you remove the clippings and debris?",
+      answer: "Yes, absolutely! Complete cleanup is included in our bush trimming service. We haul away all clippings, branches, and debris, leaving your property clean and tidy."
+    },
+    {
+      question: "Can you shape overgrown bushes into a specific design?",
+      answer: "Yes, we specialize in both maintenance trimming and restoration of overgrown shrubs. Whether you want formal geometric shapes, natural rounded forms, or creative topiary, our experienced crew can shape your hedges to match your vision."
+    },
+    {
+      question: "How much does bush trimming cost?",
+      answer: `Pricing varies based on the number of shrubs, their size, and complexity of the work. We offer free estimates and can provide accurate pricing after viewing your property. Contact us at ${defaultPhoneNumber} for a quote.`
+    },
+    {
+      question: "Will trimming hurt my plants?",
+      answer: "When done properly, trimming promotes healthy growth and fuller, more attractive plants. Our crew is trained in proper pruning techniques for different shrub species, ensuring cuts are made at the right angles and locations to encourage healthy regrowth."
+    },
+    {
+      question: "Do you trim both residential and commercial properties?",
+      answer: "Yes, we service both residential homes and commercial properties including office buildings, retail centers, HOA communities, and apartment complexes throughout Central Connecticut."
+    },
+    {
+      question: "What if I'm not home when you perform the service?",
+      answer: "No problem! Most of our bush trimming is done while clients are at work. We'll communicate the scheduled date in advance, and you can return home to beautifully trimmed hedges and a clean property."
+    }
+  ];
+
+  const faqsToDisplay = faqs || defaultFaqs;
   const resolvedQuote = quoteConfig || {
     title: `Request Bush Trimming in ${townName}`,
     subtitle: 'Tell us about your shrubs and hedges—our team will send a tailored quote.',
@@ -133,11 +171,11 @@ const BushTrimmingTemplate = ({
             </div>
             <div className="before-after-grid">
               <div className="before-after-card">
-                <img src="/IMG_9007.jpg" alt="Overgrown hedge before trimming" />
+                <img src="/overgrown-hedge-before-trimming-ct.jpg" alt="Overgrown and unruly hedge before professional bush trimming service in Connecticut" />
                 <div className="before-after-label before">Before</div>
               </div>
               <div className="before-after-card">
-                <img src="/IMG_9012.jpg" alt="Neatly trimmed hedge after professional service" />
+                <img src="/trimmed-hedge-after-service-ct.jpg" alt="Neatly shaped hedge with clean lines after professional bush trimming and cleanup in Connecticut" />
                 <div className="before-after-label after">After</div>
               </div>
             </div>
@@ -186,6 +224,8 @@ const BushTrimmingTemplate = ({
             locationName={resolvedQuote.locationName}
             source={resolvedQuote.source}
           />
+
+          <FAQSection faqs={faqsToDisplay} title={`Bush Trimming FAQ - ${townName.split(',')[0]}`} />
 
           <section className="trim-cta">
             <div className="cta-content">

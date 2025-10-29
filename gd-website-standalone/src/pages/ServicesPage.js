@@ -1,8 +1,44 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import FAQSection from '../components/FAQSection';
 
 const ServicesPage = () => {
+  const faqs = [
+    {
+      question: "What services does GD Landscaping offer in Connecticut?",
+      answer: "We offer comprehensive landscaping services including lawn maintenance, landscape design, tree services, hardscaping, irrigation systems, seasonal cleanup, snow removal, bush trimming, fertilization & weed control, and mulching. All services are available across Berlin, Hartford, and surrounding Connecticut areas."
+    },
+    {
+      question: "Do you provide free estimates for landscaping projects?",
+      answer: "Yes! We provide free, no-obligation estimates for all our services. You can request a quote through our website, call us at (860) 526-7583, or use our instant quote tool for lawn care services."
+    },
+    {
+      question: "Are you licensed and insured?",
+      answer: "Absolutely. GD Landscaping is fully licensed and insured in Connecticut. We carry comprehensive liability insurance to protect your property and our team members during all projects."
+    },
+    {
+      question: "What areas do you serve in Connecticut?",
+      answer: "We serve Berlin, Hartford, Farmington, New Britain, Cromwell, Middletown, Rocky Hill, Newington, West Hartford, Bristol, and surrounding Hartford County communities. Contact us to confirm service availability in your specific area."
+    },
+    {
+      question: "How often should I schedule lawn maintenance?",
+      answer: "For optimal lawn health, we recommend weekly mowing during the growing season (spring through fall). Our maintenance plans include mowing, edging, trimming, and seasonal services like fertilization and cleanup tailored to Connecticut's climate."
+    },
+    {
+      question: "Do you offer snow removal services?",
+      answer: "Yes, we provide professional snow removal services throughout the winter season, including plowing, shoveling, and ice management for both residential and commercial properties in Central Connecticut."
+    },
+    {
+      question: "What is your satisfaction guarantee?",
+      answer: "We stand behind our work with a 100% satisfaction guarantee. If you're not completely satisfied with our service, we'll work with you to make it right. Your satisfaction is our top priority."
+    },
+    {
+      question: "Can you help with commercial landscaping projects?",
+      answer: "Yes, we serve both residential and commercial clients. Our commercial services include property maintenance, seasonal decorating, snow removal, and comprehensive landscape management for businesses, offices, and multi-family properties."
+    }
+  ];
+
   const services = [
     {
       id: 1,
@@ -221,6 +257,8 @@ const ServicesPage = () => {
               </div>
             </div>
           </div>
+
+          <FAQSection faqs={faqs} title="Landscaping Services FAQ" />
 
           <div className="services-cta">
             <div className="cta-content">

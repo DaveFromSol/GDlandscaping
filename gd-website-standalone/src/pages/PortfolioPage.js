@@ -9,14 +9,14 @@ const PortfolioPage = () => {
       id: 1,
       title: 'Backyard Landscape Transformation',
       description: 'Complete backyard transformation with native plantings and stone pathways',
-      image: '/1A0AA44E-D251-41D2-B56A-9543E6E408BD - Edited.png',
+      image: '/backyard-landscape-transformation-berlin-ct.png',
       category: 'Landscape Design'
     },
     {
       id: 2,
       title: 'Custom Stone Patio',
       description: 'Elegant hardscaping and outdoor living space installation',
-      image: '/IMG_2692 - Edited - Edited.png',
+      image: '/custom-stone-patio-hardscaping-ct.png',
       category: 'Hardscaping'
     },
     {
@@ -30,28 +30,28 @@ const PortfolioPage = () => {
       id: 5,
       title: 'Seasonal Landscape Maintenance',
       description: 'Year-round property care and landscape management',
-      image: '/IMG_5152.jpeg',
+      image: '/seasonal-lawn-maintenance-berlin-ct.jpeg',
       category: 'Maintenance'
     },
     {
       id: 6,
       title: 'Commercial Property Care',
       description: 'Professional landscaping for commercial properties',
-      image: '/IMG_8872.jpeg',
+      image: '/commercial-property-landscaping-connecticut.jpeg',
       category: 'Commercial'
     },
     {
       id: 7,
       title: 'Residential Lawn Service',
       description: 'Premium lawn care and maintenance services',
-      image: '/IMG_8868.jpeg',
+      image: '/residential-lawn-service-berlin-ct.jpeg',
       category: 'Lawn Care'
     },
     {
       id: 8,
       title: 'Garden & Landscape Design',
       description: 'Custom landscape design and installation',
-      image: '/IMG_5407.jpeg',
+      image: '/garden-landscape-design-hartford-county.jpeg',
       category: 'Landscape Design'
     }
   ];

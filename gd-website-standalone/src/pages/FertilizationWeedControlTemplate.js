@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import QuoteSection from '../components/QuoteSection';
+import FAQSection from '../components/FAQSection';
 import './FertilizationWeedControlTemplate.css';
 
 const FertilizationWeedControlTemplate = ({
@@ -16,8 +17,45 @@ const FertilizationWeedControlTemplate = ({
   serviceAreas = [],
   seasonalTips,
   gallery,
-  cta
+  cta,
+  faqs
 }) => {
+  const defaultFaqs = [
+    {
+      question: "How often should I fertilize my lawn in Connecticut?",
+      answer: "Connecticut lawns typically benefit from 4-6 applications per year - early spring, late spring, summer, early fall, and late fall. The exact timing depends on your grass type, soil conditions, and weather patterns. Our customized programs are designed specifically for Connecticut's climate and growing seasons."
+    },
+    {
+      question: "What's the difference between your fertilization programs?",
+      answer: "Our programs range from basic nutrition (3-4 applications) to comprehensive care (6+ applications with pre-emergent weed control, soil amendments, and targeted treatments). Premium programs include more frequent visits, organic options, and advanced treatments for pest and disease prevention."
+    },
+    {
+      question: "Is your fertilizer safe for kids and pets?",
+      answer: "Yes, we use professional-grade products that are safe when applied correctly. We recommend keeping children and pets off treated areas until the product has been watered in or has dried (typically 2-4 hours). We can also provide organic and eco-friendly alternatives upon request."
+    },
+    {
+      question: "How do you control weeds without harming my grass?",
+      answer: "We use selective herbicides that target broadleaf weeds and crabgrass while leaving your desirable grass unharmed. Our pre-emergent treatments in early spring prevent weed seeds from germinating, while post-emergent treatments eliminate existing weeds. Proper lawn nutrition also helps grass outcompete weeds naturally."
+    },
+    {
+      question: "When will I see results from fertilization?",
+      answer: "You'll typically notice greener, healthier grass within 1-2 weeks of fertilization. Full results develop over 4-6 weeks as the nutrients are absorbed. Weed control results vary - pre-emergent works preventively while post-emergent treatments show visible weed decline within 7-14 days."
+    },
+    {
+      question: "Do I need to be home during application?",
+      answer: "No, you don't need to be home. We'll notify you in advance of your scheduled application and leave a service flag and notification after treatment. We mark treated areas and provide any necessary instructions, such as watering requirements or re-entry times."
+    },
+    {
+      question: "What if it rains after you apply fertilizer?",
+      answer: "Light rain after fertilization is actually beneficial as it helps water in the nutrients. Heavy rain immediately after application (within 1-2 hours) may reduce effectiveness. If this happens, we'll monitor your lawn and provide a re-treatment if necessary at no additional charge."
+    },
+    {
+      question: "Can you fix bare spots and thin areas?",
+      answer: "Yes! Our premium programs include overseeding and spot-seeding services to thicken thin areas and fill in bare spots. Combined with proper fertilization and weed control, we can transform patchy lawns into thick, lush turf. We'll assess your lawn and recommend the best approach during your consultation."
+    }
+  ];
+
+  const faqsToDisplay = faqs || defaultFaqs;
   const structuredDataEntries = Array.isArray(seo.structuredData)
     ? seo.structuredData
     : seo.structuredData
@@ -203,6 +241,10 @@ const FertilizationWeedControlTemplate = ({
             </div>
           </section>
         )}
+
+        <div className="container">
+          <FAQSection faqs={faqsToDisplay} title={`Fertilization & Weed Control FAQ - ${townName.split(',')[0]}`} />
+        </div>
 
         <QuoteSection
           title={cta?.title || `Start Your ${townName.split(',')[0]} Treatment Plan`}

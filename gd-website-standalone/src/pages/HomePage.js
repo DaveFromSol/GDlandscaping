@@ -396,8 +396,8 @@ const HomePage = () => {
               flexWrap: 'wrap'
             }}>
               <img
-                src="/IMG_8872.jpeg"
-                alt="GD Landscaping professional work"
+                src="/commercial-property-landscaping-connecticut.jpeg"
+                alt="Commercial property landscaping and lawn maintenance services in Connecticut by GD Landscaping"
                 style={{
                   width: '300px',
                   height: 'auto',
@@ -406,8 +406,8 @@ const HomePage = () => {
                 }}
               />
               <img
-                src="/IMG_5407.jpeg"
-                alt="GD Landscaping professional work"
+                src="/garden-landscape-design-hartford-county.jpeg"
+                alt="Professional garden and landscape design in Hartford County CT - custom lawn care and plantings"
                 style={{
                   width: '300px',
                   height: 'auto',
@@ -416,8 +416,8 @@ const HomePage = () => {
                 }}
               />
               <img
-                src="/IMG_8868.jpeg"
-                alt="GD Landscaping professional work"
+                src="/residential-lawn-service-berlin-ct.jpeg"
+                alt="Residential lawn mowing and care services in Berlin Connecticut - professional landscaping"
                 style={{
                   width: '300px',
                   height: 'auto',
@@ -479,10 +479,10 @@ const HomePage = () => {
             <p className="section-subtitle">Precision hedge shaping and debris cleanup gave this Newington property instant curb appeal.</p>
             <div className="before-after-grid">
               <figure className="before-card">
-                <img src="/images/before-farmington.jpg" alt="Before GD Landscaping bush trimming in Newington CT" />
+                <img src="/images/before-farmington.jpg" alt="Overgrown hedges and bushes before professional trimming service in Newington CT by GD Landscaping" />
               </figure>
               <figure className="after-card">
-                <img src="/images/after-farmington.jpg" alt="After GD Landscaping bush trimming in Newington CT" />
+                <img src="/images/after-farmington.jpg" alt="Neatly trimmed hedges and improved curb appeal after bush trimming service in Newington Connecticut" />
               </figure>
             </div>
           </div>

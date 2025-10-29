@@ -2,15 +2,15 @@ import React from 'react';
 
 const galleryImages = [
   {
-    src: '/IMG_8872.jpeg',
+    src: '/commercial-property-landscaping-connecticut.jpeg',
     label: 'Weekly mowing & crisp striping'
   },
   {
-    src: '/IMG_5407.jpeg',
+    src: '/garden-landscape-design-hartford-county.jpeg',
     label: 'Clean garden bed edging'
   },
   {
-    src: '/IMG_8868.jpeg',
+    src: '/residential-lawn-service-berlin-ct.jpeg',
     label: 'Commercial property care'
   }
 ];

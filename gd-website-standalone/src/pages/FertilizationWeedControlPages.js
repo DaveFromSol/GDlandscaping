@@ -2,7 +2,7 @@ import React from 'react';
 import FertilizationWeedControlTemplate from './FertilizationWeedControlTemplate';
 
 const phoneNumber = '(860) 526-7583';
-const heroImage = '/IMG_5152.jpeg';
+const heroImage = '/seasonal-lawn-maintenance-berlin-ct.jpeg';
 const galleryImage = '/IMG_5078 (1).avif';
 
 const createStructuredData = (town, slug) => ({

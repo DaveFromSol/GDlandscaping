@@ -134,7 +134,7 @@ const InstantQuotePage = () => {
             <div className="showcase-grid">
               <div className="showcase-item">
                 <div className="showcase-image-wrapper">
-                  <img src="/IMG_8868.jpeg" alt="Residential Lawn Service - Professional Landscaping Work in Berlin CT by GD Landscaping" />
+                  <img src="/residential-lawn-service-berlin-ct.jpeg" alt="Residential Lawn Service - Professional Landscaping Work in Berlin CT by GD Landscaping" />
                   <div className="showcase-overlay">
                     <div className="showcase-category">Lawn Care</div>
                     <h3>Residential Lawn Service</h3>
@@ -144,7 +144,7 @@ const InstantQuotePage = () => {
               </div>
               <div className="showcase-item">
                 <div className="showcase-image-wrapper">
-                  <img src="/IMG_8872.jpeg" alt="Commercial Property Care - Professional Landscaping for Businesses in Connecticut" />
+                  <img src="/commercial-property-landscaping-connecticut.jpeg" alt="Commercial Property Care - Professional Landscaping for Businesses in Connecticut" />
                   <div className="showcase-overlay">
                     <div className="showcase-category">Commercial</div>
                     <h3>Commercial Property Care</h3>
