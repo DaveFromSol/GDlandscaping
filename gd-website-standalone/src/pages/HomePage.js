@@ -134,6 +134,83 @@ const HomePage = () => {
         "bestRating": "5",
         "worstRating": "1"
       },
+      "review": [
+        {
+          "@type": "Review",
+          "author": {
+            "@type": "Person",
+            "name": "Michael Thompson"
+          },
+          "datePublished": "2024-11-15",
+          "reviewBody": "GD Landscaping has been taking care of our lawn for two years now. Always on time, professional crew, and our yard looks amazing. Highly recommend for anyone in Berlin or Hartford County.",
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5",
+            "worstRating": "1"
+          }
+        },
+        {
+          "@type": "Review",
+          "author": {
+            "@type": "Person",
+            "name": "Sarah Johnson"
+          },
+          "datePublished": "2024-10-22",
+          "reviewBody": "Best snow removal service in New Britain! They cleared our driveway during the last storm before we even woke up. Very reliable and reasonably priced.",
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5",
+            "worstRating": "1"
+          }
+        },
+        {
+          "@type": "Review",
+          "author": {
+            "@type": "Person",
+            "name": "David Martinez"
+          },
+          "datePublished": "2024-09-08",
+          "reviewBody": "Used them for fall cleanup and lawn maintenance in Cromwell. Great communication, fair pricing, and excellent work quality. The team is very professional.",
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5",
+            "worstRating": "1"
+          }
+        },
+        {
+          "@type": "Review",
+          "author": {
+            "@type": "Person",
+            "name": "Jennifer Lee"
+          },
+          "datePublished": "2024-08-14",
+          "reviewBody": "We've tried several landscaping companies in Hartford and GD Landscaping is by far the best. They transformed our overgrown yard into something beautiful. Weekly maintenance has been perfect.",
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5",
+            "worstRating": "1"
+          }
+        },
+        {
+          "@type": "Review",
+          "author": {
+            "@type": "Person",
+            "name": "Robert Chen"
+          },
+          "datePublished": "2024-07-30",
+          "reviewBody": "Professional bush trimming service in Farmington. They were careful around our flowerbeds and cleaned up everything perfectly. Will definitely use them again next season.",
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5",
+            "worstRating": "1"
+          }
+        }
+      ],
       "priceRange": "$$",
       "paymentAccepted": "Cash, Check, Credit Card",
       "currenciesAccepted": "USD",
