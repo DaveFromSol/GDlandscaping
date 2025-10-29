@@ -240,6 +240,83 @@ const FallBanner = () => (
   </div>
 );
 
+// SEO Crawl Path Component - shows random town/service links
+const CrawlPathLinks = () => {
+  const [links] = React.useState(() => {
+    const allLinks = [
+      { text: 'Fall Cleanup Berlin CT', url: '/fall-cleanup-berlin' },
+      { text: 'Fall Cleanup Bristol CT', url: '/fall-cleanup-bristol' },
+      { text: 'Fall Cleanup Cromwell CT', url: '/fall-cleanup-cromwell' },
+      { text: 'Fall Cleanup Farmington CT', url: '/fall-cleanup-farmington' },
+      { text: 'Fall Cleanup Hartford CT', url: '/fall-cleanup-hartford' },
+      { text: 'Fall Cleanup Middletown CT', url: '/fall-cleanup-middletown' },
+      { text: 'Fall Cleanup New Britain CT', url: '/fall-cleanup-new-britain' },
+      { text: 'Fall Cleanup Newington CT', url: '/fall-cleanup-newington' },
+      { text: 'Fall Cleanup Rocky Hill CT', url: '/fall-cleanup-rocky-hill' },
+      { text: 'Fall Cleanup West Hartford CT', url: '/fall-cleanup-west-hartford' },
+      { text: 'Lawn Care Berlin CT', url: '/lawn-care-berlin' },
+      { text: 'Lawn Care Bristol CT', url: '/lawn-care-bristol' },
+      { text: 'Lawn Care Cromwell CT', url: '/lawn-care-cromwell' },
+      { text: 'Lawn Care Farmington CT', url: '/lawn-care-farmington' },
+      { text: 'Lawn Care Hartford CT', url: '/lawn-care-hartford' },
+      { text: 'Lawn Care Middletown CT', url: '/lawn-care-middletown' },
+      { text: 'Lawn Care New Britain CT', url: '/lawn-care-new-britain' },
+      { text: 'Lawn Care Newington CT', url: '/lawn-care-newington' },
+      { text: 'Lawn Care Rocky Hill CT', url: '/lawn-care-rocky-hill' },
+      { text: 'Lawn Care West Hartford CT', url: '/lawn-care-west-hartford' },
+      { text: 'Snow Removal Berlin CT', url: '/snow-removal-berlin' },
+      { text: 'Snow Removal Bristol CT', url: '/snow-removal-bristol' },
+      { text: 'Snow Removal Cromwell CT', url: '/snow-removal-cromwell' },
+      { text: 'Snow Removal Middletown CT', url: '/snow-removal-middletown' },
+      { text: 'Snow Removal New Britain CT', url: '/snow-removal-new-britain' },
+      { text: 'Snow Removal Newington CT', url: '/snow-removal-newington' },
+      { text: 'Snow Removal Rocky Hill CT', url: '/snow-removal-rocky-hill' },
+      { text: 'Snow Removal West Hartford CT', url: '/snow-removal-west-hartford' },
+      { text: 'Bush Trimming Berlin CT', url: '/bush-trimming-berlin' },
+      { text: 'Bush Trimming Bristol CT', url: '/bush-trimming-bristol' },
+      { text: 'Bush Trimming Farmington CT', url: '/bush-trimming-farmington' },
+      { text: 'Bush Trimming Hartford CT', url: '/bush-trimming-hartford' },
+      { text: 'Bush Trimming Middletown CT', url: '/bush-trimming-middletown' },
+      { text: 'Bush Trimming New Britain CT', url: '/bush-trimming-new-britain' },
+      { text: 'Bush Trimming Newington CT', url: '/bush-trimming-newington' },
+      { text: 'Bush Trimming Rocky Hill CT', url: '/bush-trimming-rocky-hill' }
+    ];
+
+    // Shuffle and pick 25 random links
+    const shuffled = [...allLinks].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 25);
+  });
+
+  return (
+    <div style={{
+      fontSize: '11px',
+      lineHeight: '1.8',
+      color: '#888',
+      padding: '20px 0 10px',
+      borderTop: '1px solid #eee',
+      marginTop: '30px'
+    }}>
+      {links.map((link, index) => (
+        <React.Fragment key={link.url}>
+          {index > 0 && ' | '}
+          <Link
+            to={link.url}
+            style={{
+              color: '#666',
+              textDecoration: 'none',
+              transition: 'color 0.2s'
+            }}
+            onMouseEnter={(e) => e.target.style.color = '#22c55e'}
+            onMouseLeave={(e) => e.target.style.color = '#666'}
+          >
+            {link.text}
+          </Link>
+        </React.Fragment>
+      ))}
+    </div>
+  );
+};
+
 function App() {
   return (
     <FirebaseProvider>
@@ -362,6 +439,11 @@ function App() {
                   <p>Email: contact@gdlandscaping.com</p>
                 </div>
               </div>
+              {/* SEO Crawl Path */}
+              <div className="footer-crawl-path">
+                <CrawlPathLinks />
+              </div>
+
               <div className="footer-bottom">
                 <p>&copy; 2025 GD Landscaping. All rights reserved.</p>
               </div>
