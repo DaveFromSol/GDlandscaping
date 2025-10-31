@@ -66,6 +66,11 @@ const AdminDashboard = ({ user, onLogout }) => {
   const [isAddingJob, setIsAddingJob] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [recurringModalJob, setRecurringModalJob] = useState(null);
+  const [recurringSettings, setRecurringSettings] = useState({
+    recurrenceType: 'weekly',
+    recurrenceEndDate: ''
+  });
 
   // Real-time Firebase listener for quotes
   useEffect(() => {
@@ -686,6 +691,50 @@ const AdminDashboard = ({ user, onLogout }) => {
     } catch (error) {
       console.error('Error updating job status:', error);
       alert('Error updating job status.');
+    }
+  };
+
+  const handleMakeRecurring = async () => {
+    if (!recurringModalJob) return;
+
+    try {
+      setLoading(true);
+
+      // Update the original job to mark it as recurring
+      const jobRef = doc(db, 'jobs', recurringModalJob.id);
+      await updateDoc(jobRef, {
+        recurrenceType: recurringSettings.recurrenceType,
+        recurrenceEndDate: recurringSettings.recurrenceEndDate || null,
+        isRecurring: true,
+        updatedAt: serverTimestamp()
+      });
+
+      // Generate future recurring job instances
+      const jobData = {
+        ...recurringModalJob,
+        recurrenceType: recurringSettings.recurrenceType,
+        recurrenceEndDate: recurringSettings.recurrenceEndDate || null,
+        isRecurring: true
+      };
+
+      await generateRecurringJobs(recurringModalJob.id, recurringModalJob.date, jobData);
+
+      // Close modal and reload
+      setRecurringModalJob(null);
+      setRecurringSettings({ recurrenceType: 'weekly', recurrenceEndDate: '' });
+
+      await loadJobsForDate();
+      if (viewType !== 'day') {
+        const { startDate, endDate } = getDateRange(selectedDate, viewType);
+        await loadJobsForRange(startDate, endDate);
+      }
+
+      alert('Job set to recurring! Future instances have been generated.');
+    } catch (error) {
+      console.error('Error making job recurring:', error);
+      alert('Error making job recurring. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -1910,6 +1959,81 @@ const AdminDashboard = ({ user, onLogout }) => {
                 </div>
               )}
 
+              {/* Make Recurring Modal */}
+              {recurringModalJob && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+                  <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+                    <h3 className="text-lg font-semibold mb-4">🔄 Make Job Recurring</h3>
+
+                    <div className="mb-4">
+                      <p className="text-sm text-gray-600 mb-3">
+                        Set up a recurring schedule for <strong>{recurringModalJob.customerName}</strong>
+                      </p>
+
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Repeat Frequency
+                          </label>
+                          <select
+                            value={recurringSettings.recurrenceType}
+                            onChange={(e) => setRecurringSettings({...recurringSettings, recurrenceType: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                          >
+                            <option value="weekly">Weekly (Every 7 days)</option>
+                            <option value="biweekly">Bi-weekly (Every 14 days)</option>
+                            <option value="monthly">Monthly (Same date)</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Generate Until (Optional)
+                          </label>
+                          <input
+                            type="date"
+                            value={recurringSettings.recurrenceEndDate}
+                            onChange={(e) => setRecurringSettings({...recurringSettings, recurrenceEndDate: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                            min={new Date().toISOString().split('T')[0]}
+                          />
+                          <p className="text-xs text-gray-500 mt-1">Leave blank to generate for 1 year</p>
+                        </div>
+
+                        <div className="p-3 bg-purple-50 border border-purple-200 rounded-md">
+                          <p className="text-sm text-purple-800">
+                            <strong>ℹ️ This will create:</strong>
+                            {recurringSettings.recurrenceType === 'weekly' && ' A new job every week'}
+                            {recurringSettings.recurrenceType === 'biweekly' && ' A new job every 2 weeks'}
+                            {recurringSettings.recurrenceType === 'monthly' && ' A new job monthly'}
+                            {recurringSettings.recurrenceEndDate
+                              ? ` until ${new Date(recurringSettings.recurrenceEndDate).toLocaleDateString()}`
+                              : ' for the next year'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => setRecurringModalJob(null)}
+                        className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+                        disabled={loading}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={handleMakeRecurring}
+                        className="flex-1 px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-md transition-colors disabled:opacity-50"
+                        disabled={loading}
+                      >
+                        {loading ? 'Creating...' : '🔄 Make Recurring'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Job List */}
               <div className="bg-white shadow rounded-lg p-6">
                 <div className="flex justify-between items-center mb-4">
@@ -2019,6 +2143,18 @@ const AdminDashboard = ({ user, onLogout }) => {
                           </div>
 
                           <div className="flex gap-2 ml-4">
+                            {job.status === 'completed' && !job.isRecurring && (
+                              <button
+                                onClick={() => {
+                                  setRecurringModalJob(job);
+                                  setRecurringSettings({ recurrenceType: 'weekly', recurrenceEndDate: '' });
+                                }}
+                                className="px-3 py-1 bg-purple-500 hover:bg-purple-600 text-white text-sm rounded-md transition-colors"
+                                title="Make this job recurring"
+                              >
+                                🔄 Make Recurring
+                              </button>
+                            )}
                             <button
                               onClick={() => handleEditJob(job)}
                               className="text-blue-500 hover:text-blue-700"
