@@ -117,18 +117,43 @@ const AdminDashboard = ({ user, onLogout }) => {
     return () => unsubscribe();
   }, [db]);
 
-  // Update stats whenever quotes or bookings change
+  // Fetch all jobs for stats calculation
+  const [allJobsForStats, setAllJobsForStats] = useState([]);
+
   useEffect(() => {
+    if (!db) return;
+
+    const jobsRef = collection(db, 'jobs');
+    const unsubscribe = onSnapshot(jobsRef, (snapshot) => {
+      const jobsData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setAllJobsForStats(jobsData);
+    }, (error) => {
+      console.error('Error fetching jobs for stats:', error);
+    });
+
+    return () => unsubscribe();
+  }, [db]);
+
+  // Update stats whenever quotes, bookings, or jobs change
+  useEffect(() => {
+    const completedJobsFromJobs = allJobsForStats.filter(j => j.status === 'completed').length;
+    const jobRevenue = allJobsForStats
+      .filter(j => j.status === 'completed')
+      .reduce((sum, job) => sum + (parseFloat(job.actualPayment) || parseFloat(job.expectedPayment) || 0), 0);
+
     const updatedStats = {
       totalQuotes: quotes.length,
       pendingQuotes: quotes.filter(q => q.status === 'Pending').length,
-      completedJobs: quotes.filter(q => q.status === 'Completed').length,
-      totalRevenue: calculateRevenue(quotes),
+      completedJobs: quotes.filter(q => q.status === 'Completed').length + completedJobsFromJobs,
+      totalRevenue: calculateRevenue(quotes) + ` (+$${jobRevenue.toFixed(2)} from jobs)`,
       totalBookings: bookings.length,
       pendingBookings: bookings.filter(b => b.status === 'pending').length
     };
     setStats(updatedStats);
-  }, [quotes, bookings]);
+  }, [quotes, bookings, allJobsForStats]);
 
   const calculateRevenue = (quotes) => {
     // Basic revenue calculation - you can customize this
@@ -1960,11 +1985,14 @@ const AdminDashboard = ({ user, onLogout }) => {
                           {dayJobs.slice(0, 3).map(job => (
                             <div
                               key={job.id}
-                              className={`text-xs p-1 rounded text-white truncate`}
+                              className={`text-xs p-1 rounded text-white truncate flex items-center justify-between ${
+                                job.status === 'completed' ? 'opacity-60 line-through' : ''
+                              }`}
                               style={{ backgroundColor: getPriorityColor(job.priority) }}
-                              title={`${job.customerName} - ${job.serviceType}`}
+                              title={`${job.customerName} - ${job.serviceType}${job.status === 'completed' ? ' (DONE)' : ''}`}
                             >
-                              {job.customerName}
+                              <span className="truncate">{job.customerName}</span>
+                              {job.status === 'completed' && <span>✓</span>}
                             </div>
                           ))}
                           {dayJobs.length > 3 && (
@@ -1985,19 +2013,39 @@ const AdminDashboard = ({ user, onLogout }) => {
                     </h4>
                     <div className="space-y-2 max-h-60 overflow-y-auto">
                       {getJobsForDate(selectedDate).map(job => (
-                        <div key={job.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                          <div className="flex items-center gap-3">
+                        <div key={job.id} className={`flex items-center justify-between p-3 rounded-lg ${
+                          job.status === 'completed' ? 'bg-green-50 border-green-200 border' : 'bg-gray-50'
+                        }`}>
+                          <div className="flex items-center gap-3 flex-1">
+                            <button
+                              onClick={() => toggleJobStatus(job.id, job.status)}
+                              className={`flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                                job.status === 'completed'
+                                  ? 'bg-green-500 border-green-500 text-white'
+                                  : 'border-gray-300 hover:border-green-500'
+                              }`}
+                              title={job.status === 'completed' ? 'Mark as incomplete' : 'Mark as complete'}
+                            >
+                              {job.status === 'completed' && '✓'}
+                            </button>
                             <span
-                              className="w-3 h-3 rounded-full"
+                              className="w-3 h-3 rounded-full flex-shrink-0"
                               style={{ backgroundColor: getPriorityColor(job.priority) }}
                             />
-                            <div>
-                              <div className="font-medium text-gray-900">{job.customerName}</div>
-                              <div className="text-sm text-gray-600">{job.address}</div>
+                            <div className="flex-1 min-w-0">
+                              <div className={`font-medium truncate ${job.status === 'completed' ? 'text-gray-600 line-through' : 'text-gray-900'}`}>
+                                {job.customerName}
+                              </div>
+                              <div className="text-sm text-gray-600 truncate">{job.address}</div>
                             </div>
                           </div>
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-3 flex-shrink-0">
                             <div className="text-sm text-gray-500">{formatTime(parseInt(job.estimatedTime))}</div>
+                            {job.status === 'completed' && (
+                              <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                DONE
+                              </span>
+                            )}
                             <div className="flex gap-2">
                               <button
                                 onClick={() => handleEditJob(job)}
@@ -2070,11 +2118,14 @@ const AdminDashboard = ({ user, onLogout }) => {
                           {dayJobs.slice(0, 2).map(job => (
                             <div
                               key={job.id}
-                              className={`text-xs px-1 py-0.5 rounded text-white truncate`}
+                              className={`text-xs px-1 py-0.5 rounded text-white truncate flex items-center justify-between ${
+                                job.status === 'completed' ? 'opacity-70 line-through' : ''
+                              }`}
                               style={{ backgroundColor: getPriorityColor(job.priority) }}
-                              title={`${job.customerName} - ${job.serviceType}`}
+                              title={`${job.customerName} - ${job.serviceType}${job.status === 'completed' ? ' (DONE)' : ''}`}
                             >
-                              {job.customerName.split(' ')[0]}
+                              <span className="truncate">{job.customerName.split(' ')[0]}</span>
+                              {job.status === 'completed' && <span className="text-xs">✓</span>}
                             </div>
                           ))}
                           {dayJobs.length > 2 && (
@@ -2095,19 +2146,39 @@ const AdminDashboard = ({ user, onLogout }) => {
                     </h4>
                     <div className="space-y-2 max-h-60 overflow-y-auto">
                       {getJobsForDate(selectedDate).map(job => (
-                        <div key={job.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                          <div className="flex items-center gap-3">
+                        <div key={job.id} className={`flex items-center justify-between p-3 rounded-lg ${
+                          job.status === 'completed' ? 'bg-green-50 border-green-200 border' : 'bg-gray-50'
+                        }`}>
+                          <div className="flex items-center gap-3 flex-1">
+                            <button
+                              onClick={() => toggleJobStatus(job.id, job.status)}
+                              className={`flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                                job.status === 'completed'
+                                  ? 'bg-green-500 border-green-500 text-white'
+                                  : 'border-gray-300 hover:border-green-500'
+                              }`}
+                              title={job.status === 'completed' ? 'Mark as incomplete' : 'Mark as complete'}
+                            >
+                              {job.status === 'completed' && '✓'}
+                            </button>
                             <span
-                              className="w-3 h-3 rounded-full"
+                              className="w-3 h-3 rounded-full flex-shrink-0"
                               style={{ backgroundColor: getPriorityColor(job.priority) }}
                             />
-                            <div>
-                              <div className="font-medium text-gray-900">{job.customerName}</div>
-                              <div className="text-sm text-gray-600">{job.address}</div>
+                            <div className="flex-1 min-w-0">
+                              <div className={`font-medium truncate ${job.status === 'completed' ? 'text-gray-600 line-through' : 'text-gray-900'}`}>
+                                {job.customerName}
+                              </div>
+                              <div className="text-sm text-gray-600 truncate">{job.address}</div>
                             </div>
                           </div>
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-3 flex-shrink-0">
                             <div className="text-sm text-gray-500">{formatTime(parseInt(job.estimatedTime))}</div>
+                            {job.status === 'completed' && (
+                              <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                DONE
+                              </span>
+                            )}
                             <div className="flex gap-2">
                               <button
                                 onClick={() => handleEditJob(job)}
