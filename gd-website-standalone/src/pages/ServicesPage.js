@@ -90,6 +90,20 @@ const ServicesPage = () => {
     },
     {
       id: 7,
+      name: 'Leaf Removal & Haul Away',
+      description: 'Dedicated crews with high-capacity vacuums for spotless fall cleanups.',
+      price: 'Seasonal packages from $179',
+      image: '🍁',
+      features: [
+        'Curb-to-bed clearing and detailing',
+        'Vacuum trucks with disposal included',
+        'One-time or multi-visit scheduling',
+        'Before/after photo confirmation'
+      ],
+      link: '/leaf-removal'
+    },
+    {
+      id: 8,
       name: 'Snow Removal',
       description: 'Professional winter snow removal and ice management',
       price: 'Seasonal packages from $500',
@@ -97,7 +111,7 @@ const ServicesPage = () => {
       features: ['Snow plowing', 'Driveway clearing', 'Walkway maintenance', 'Salt application', '24/7 emergency service']
     },
     {
-      id: 8,
+      id: 9,
       name: 'Lawn Fertilization',
       description: 'Professional lawn care and nutrient programs',
       price: 'Starting at $95',
@@ -105,7 +119,7 @@ const ServicesPage = () => {
       features: ['Soil testing', 'Custom fertilizer programs', 'Weed control', 'Disease prevention']
     },
     {
-      id: 8,
+      id: 10,
       name: 'Outdoor Lighting',
       description: 'Landscape and security lighting installation',
       price: 'Starting at $400',
@@ -113,7 +127,7 @@ const ServicesPage = () => {
       features: ['LED installations', 'Security lighting', 'Pathway lights', 'Accent lighting']
     },
     {
-      id: 9,
+      id: 11,
       name: 'Mulching Services',
       description: 'Premium mulch installation and maintenance',
       price: 'Starting at $120',
@@ -121,7 +135,7 @@ const ServicesPage = () => {
       features: ['Premium mulch selection', 'Bed preparation', 'Weed barrier installation', 'Annual refresh']
     },
     {
-      id: 10,
+      id: 12,
       name: 'Pressure Washing',
       description: 'Professional cleaning for driveways and patios',
       price: 'Starting at $180',
@@ -233,10 +247,10 @@ const ServicesPage = () => {
                   </ul>
                 </div>
                 <Link 
-                  to="/contact"
+                  to={service.link || '/contact'}
                   className="service-cta"
                 >
-                  Get Quote
+                  {service.link ? 'View Service' : 'Get Quote'}
                 </Link>
               </div>
             ))}

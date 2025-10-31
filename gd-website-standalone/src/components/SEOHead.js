@@ -80,17 +80,58 @@ const SEOHead = ({
     updateMetaTag('name', 'twitter:image', fullOgImage);
     updateMetaTag('name', 'twitter:image:alt', 'GD Landscaping - Professional Lawn Care and Snow Removal Services');
     
-    // Add structured data
+    // Add structured data with base Organization schema
+    // Base Organization schema that appears on every page
+    const baseOrganizationSchema = {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "GD Landscaping LLC",
+      "legalName": "GD Landscaping LLC",
+      "url": "https://www.gdlandscapingllc.com",
+      "logo": "https://www.gdlandscapingllc.com/GD.png",
+      "image": "https://www.gdlandscapingllc.com/GD.png",
+      "telephone": "(860) 526-7583",
+      "email": "contact@gdlandscaping.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Berlin",
+        "addressRegion": "CT",
+        "postalCode": "06037",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "41.6219",
+        "longitude": "-72.7553"
+      },
+      "sameAs": [
+        "https://www.gdlandscapingllc.com"
+      ]
+    };
+
+    // Combine base schema with page-specific schema
+    let combinedSchema;
     if (structuredData) {
-      let script = document.querySelector('#structured-data');
-      if (!script) {
-        script = document.createElement('script');
-        script.id = 'structured-data';
-        script.type = 'application/ld+json';
-        document.head.appendChild(script);
+      if (Array.isArray(structuredData)) {
+        // If page provides array of schemas, add organization schema to it
+        combinedSchema = [baseOrganizationSchema, ...structuredData];
+      } else {
+        // If page provides single schema, combine with organization
+        combinedSchema = [baseOrganizationSchema, structuredData];
       }
-      script.textContent = JSON.stringify(structuredData);
+    } else {
+      // No page-specific schema, just use organization
+      combinedSchema = baseOrganizationSchema;
     }
+
+    let script = document.querySelector('#structured-data');
+    if (!script) {
+      script = document.createElement('script');
+      script.id = 'structured-data';
+      script.type = 'application/ld+json';
+      document.head.appendChild(script);
+    }
+    script.textContent = JSON.stringify(combinedSchema);
 
     // Add favicon if not present
     if (!document.querySelector('link[rel="icon"]')) {

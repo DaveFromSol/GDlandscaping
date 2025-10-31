@@ -10,6 +10,7 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import QuotePage from './pages/QuotePage';
 import AdminPage from './pages/AdminPage';
+import LeafRemovalPage from './pages/LeafRemovalPage';
 import SnowRemovalPage from './pages/SnowRemovalPage';
 import SnowRemovalNewBritainPage from './pages/SnowRemovalNewBritainPage';
 import SnowRemovalCromwellPage from './pages/SnowRemovalCromwellPage';
@@ -244,6 +245,7 @@ const FallBanner = () => (
 const CrawlPathLinks = () => {
   const [links] = React.useState(() => {
     const allLinks = [
+      { text: 'Leaf Removal Services CT', url: '/leaf-removal' },
       { text: 'Fall Cleanup Berlin CT', url: '/fall-cleanup-berlin' },
       { text: 'Fall Cleanup Bristol CT', url: '/fall-cleanup-bristol' },
       { text: 'Fall Cleanup Cromwell CT', url: '/fall-cleanup-cromwell' },
@@ -334,6 +336,7 @@ function App() {
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/quote" element={<QuotePage />} />
               <Route path="/instant-quote" element={<InstantQuotePage />} />
+              <Route path="/leaf-removal" element={<LeafRemovalPage />} />
               <Route path="/snow-removal" element={<SnowRemovalPage />} />
               <Route path="/snow-removal-new-britain-ct" element={<SnowRemovalNewBritainPage />} />
               <Route path="/snow-removal-cromwell-ct" element={<SnowRemovalCromwellPage />} />
