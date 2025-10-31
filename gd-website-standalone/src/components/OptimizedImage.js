@@ -77,52 +77,37 @@ const OptimizedImage = ({
   const aspectRatio = width && height ? (height / width) * 100 : null;
 
   return (
-    <div
+    <picture
       ref={imgRef}
       className={`optimized-image-wrapper ${className}`}
-      style={{
-        display: 'inline-block',
-        position: 'relative',
-        ...props.style,
-      }}
+      style={props.style}
     >
-      {/* Loading placeholder */}
-      {!isLoaded && isInView && (
-        <div
-          className="optimized-image-placeholder"
-          style={{
-            width: width || '100%',
-            height: height || '100%',
-          }}
+      {/* WebP source with priority */}
+      {isInView && <source srcSet={webpSrc} type="image/webp" />}
+
+      {/* Fallback to original format */}
+      {isInView ? (
+        <img
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          loading={priority ? 'eager' : 'lazy'}
+          onLoad={handleLoad}
+          className={`optimized-image ${isLoaded ? 'loaded' : ''} ${className}`}
+          {...props}
+        />
+      ) : (
+        <img
+          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E"
+          alt={alt}
+          width={width}
+          height={height}
+          className={`optimized-image-placeholder ${className}`}
+          style={props.style}
         />
       )}
-
-      {/* Actual image - only load when in view or priority */}
-      {isInView && (
-        <picture>
-          {/* WebP source with priority */}
-          <source srcSet={webpSrc} type="image/webp" />
-
-          {/* Fallback to original format */}
-          <img
-            src={src}
-            alt={alt}
-            width={width}
-            height={height}
-            loading={priority ? 'eager' : 'lazy'}
-            onLoad={handleLoad}
-            className={`optimized-image ${isLoaded ? 'loaded' : ''}`}
-            style={{
-              objectFit,
-              maxWidth: '100%',
-              height: 'auto',
-              display: 'block',
-            }}
-            {...props}
-          />
-        </picture>
-      )}
-    </div>
+    </picture>
   );
 };
 
