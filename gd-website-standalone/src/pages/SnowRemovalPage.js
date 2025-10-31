@@ -7,7 +7,7 @@ const SnowRemovalPage = () => {
   const faqs = [
     {
       question: "When do you start plowing snow?",
-      answer: "We begin plowing when snow accumulation reaches 2 inches or more. For seasonal contract customers, we monitor weather conditions 24/7 and proactively start services when snow begins to accumulate."
+      answer: "We begin plowing when snow accumulation reaches 1 inch or more. For seasonal contract customers, we monitor weather conditions 24/7 and proactively start services when snow begins to accumulate."
     },
     {
       question: "Do you offer per-storm or seasonal contracts?",
