@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import QuoteSection from '../components/QuoteSection';
 import FAQSection from '../components/FAQSection';
+import OptimizedImage from '../components/OptimizedImage';
 import './FertilizationWeedControlTemplate.css';
 
 const FertilizationWeedControlTemplate = ({
@@ -228,7 +229,12 @@ const FertilizationWeedControlTemplate = ({
             <div className="container">
               <div className="fert-gallery-grid">
                 <div className="fert-gallery-image">
-                  <img src={gallery.image} alt={gallery.alt} />
+                  <OptimizedImage
+                    src={gallery.image}
+                    alt={gallery.alt}
+                    width={800}
+                    height={600}
+                  />
                 </div>
                 <div className="fert-gallery-text">
                   <h3>{gallery.title}</h3>

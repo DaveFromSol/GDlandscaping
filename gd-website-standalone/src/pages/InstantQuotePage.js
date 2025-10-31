@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import AddressAutocomplete from '../components/AddressAutocomplete';
 import SEOHead from '../components/SEOHead';
+import OptimizedImage from '../components/OptimizedImage';
 import './InstantQuotePage.css';
 
 const InstantQuotePage = () => {
@@ -50,7 +51,14 @@ const InstantQuotePage = () => {
         <div className="hero-content">
           {/* Logo */}
           <div className="logo-container">
-            <img src="/GD.png" alt="GD Landscaping" className="landing-logo" />
+            <OptimizedImage
+              src="/GD.png"
+              alt="GD Landscaping"
+              width={200}
+              height={200}
+              priority={true}
+              className="landing-logo"
+            />
           </div>
 
           <h1 className="hero-title">
@@ -134,7 +142,12 @@ const InstantQuotePage = () => {
             <div className="showcase-grid">
               <div className="showcase-item">
                 <div className="showcase-image-wrapper">
-                  <img src="/residential-lawn-service-berlin-ct.jpeg" alt="Residential Lawn Service - Professional Landscaping Work in Berlin CT by GD Landscaping" />
+                  <OptimizedImage
+                    src="/residential-lawn-service-berlin-ct.jpeg"
+                    alt="Residential Lawn Service - Professional Landscaping Work in Berlin CT by GD Landscaping"
+                    width={600}
+                    height={400}
+                  />
                   <div className="showcase-overlay">
                     <div className="showcase-category">Lawn Care</div>
                     <h3>Residential Lawn Service</h3>
@@ -144,7 +157,12 @@ const InstantQuotePage = () => {
               </div>
               <div className="showcase-item">
                 <div className="showcase-image-wrapper">
-                  <img src="/commercial-property-landscaping-connecticut.jpeg" alt="Commercial Property Care - Professional Landscaping for Businesses in Connecticut" />
+                  <OptimizedImage
+                    src="/commercial-property-landscaping-connecticut.jpeg"
+                    alt="Commercial Property Care - Professional Landscaping for Businesses in Connecticut"
+                    width={600}
+                    height={400}
+                  />
                   <div className="showcase-overlay">
                     <div className="showcase-category">Commercial</div>
                     <h3>Commercial Property Care</h3>

@@ -2,6 +2,7 @@ import React from 'react';
 import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
 import QuoteSection from '../components/QuoteSection';
+import OptimizedImage from '../components/OptimizedImage';
 
 const HomePage = () => {
   const structuredData = [
@@ -343,7 +344,14 @@ const HomePage = () => {
           <div className="hero-overlay"></div>
           <div className="hero-content">
             <div>
-              <img src="/GD.png" alt="GD Landscaping - Lawn Care and Landscape Design Services in Berlin Connecticut" style={{height: '200px', marginBottom: '2rem'}} />
+              <OptimizedImage
+                src="/GD.png"
+                alt="GD Landscaping - Lawn Care and Landscape Design Services in Berlin Connecticut"
+                width={200}
+                height={200}
+                priority={true}
+                style={{height: '200px', marginBottom: '2rem'}}
+              />
               <h1>Beautiful Lawns in Summer, Clear Driveways in Winter</h1>
               <p>GD Landscaping keeps your property beautiful year-round — from lawn care to snow removal. Serving Berlin, Hartford County, and surrounding Connecticut communities within 25 miles.</p>
 
@@ -395,9 +403,11 @@ const HomePage = () => {
               marginTop: '40px',
               flexWrap: 'wrap'
             }}>
-              <img
+              <OptimizedImage
                 src="/commercial-property-landscaping-connecticut.jpeg"
                 alt="Commercial property landscaping and lawn maintenance services in Connecticut by GD Landscaping"
+                width={300}
+                height={200}
                 style={{
                   width: '300px',
                   height: 'auto',
@@ -405,9 +415,11 @@ const HomePage = () => {
                   boxShadow: '0 4px 16px rgba(0,0,0,0.08)'
                 }}
               />
-              <img
+              <OptimizedImage
                 src="/garden-landscape-design-hartford-county.jpeg"
                 alt="Professional garden and landscape design in Hartford County CT - custom lawn care and plantings"
+                width={300}
+                height={200}
                 style={{
                   width: '300px',
                   height: 'auto',
@@ -415,9 +427,11 @@ const HomePage = () => {
                   boxShadow: '0 4px 16px rgba(0,0,0,0.08)'
                 }}
               />
-              <img
+              <OptimizedImage
                 src="/residential-lawn-service-berlin-ct.jpeg"
                 alt="Residential lawn mowing and care services in Berlin Connecticut - professional landscaping"
+                width={300}
+                height={200}
                 style={{
                   width: '300px',
                   height: 'auto',
@@ -479,10 +493,20 @@ const HomePage = () => {
             <p className="section-subtitle">Precision hedge shaping and debris cleanup gave this Newington property instant curb appeal.</p>
             <div className="before-after-grid">
               <figure className="before-card">
-                <img src="/images/before-farmington.jpg" alt="Overgrown hedges and bushes before professional trimming service in Newington CT by GD Landscaping" />
+                <OptimizedImage
+                  src="/images/before-farmington.jpg"
+                  alt="Overgrown hedges and bushes before professional trimming service in Newington CT by GD Landscaping"
+                  width={600}
+                  height={400}
+                />
               </figure>
               <figure className="after-card">
-                <img src="/images/after-farmington.jpg" alt="Neatly trimmed hedges and improved curb appeal after bush trimming service in Newington Connecticut" />
+                <OptimizedImage
+                  src="/images/after-farmington.jpg"
+                  alt="Neatly trimmed hedges and improved curb appeal after bush trimming service in Newington Connecticut"
+                  width={600}
+                  height={400}
+                />
               </figure>
             </div>
           </div>

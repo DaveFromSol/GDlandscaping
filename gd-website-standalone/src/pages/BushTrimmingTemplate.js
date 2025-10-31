@@ -5,6 +5,7 @@ import AddressAutocomplete from '../components/AddressAutocomplete';
 import LocationGallery from '../components/LocationGallery';
 import QuoteSection from '../components/QuoteSection';
 import FAQSection from '../components/FAQSection';
+import OptimizedImage from '../components/OptimizedImage';
 
 const defaultPhoneNumber = '(860) 526-7583';
 
@@ -171,11 +172,21 @@ const BushTrimmingTemplate = ({
             </div>
             <div className="before-after-grid">
               <div className="before-after-card">
-                <img src="/overgrown-hedge-before-trimming-ct.jpg" alt="Overgrown and unruly hedge before professional bush trimming service in Connecticut" />
+                <OptimizedImage
+                  src="/overgrown-hedge-before-trimming-ct.jpg"
+                  alt="Overgrown and unruly hedge before professional bush trimming service in Connecticut"
+                  width={600}
+                  height={400}
+                />
                 <div className="before-after-label before">Before</div>
               </div>
               <div className="before-after-card">
-                <img src="/trimmed-hedge-after-service-ct.jpg" alt="Neatly shaped hedge with clean lines after professional bush trimming and cleanup in Connecticut" />
+                <OptimizedImage
+                  src="/trimmed-hedge-after-service-ct.jpg"
+                  alt="Neatly shaped hedge with clean lines after professional bush trimming and cleanup in Connecticut"
+                  width={600}
+                  height={400}
+                />
                 <div className="before-after-label after">After</div>
               </div>
             </div>

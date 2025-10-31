@@ -3,6 +3,7 @@ import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
 import LocationGallery from '../components/LocationGallery';
 import QuoteSection from '../components/QuoteSection';
+import OptimizedImage from '../components/OptimizedImage';
 
 const LawnCareBristolPage = () => {
   const structuredData = [
@@ -131,7 +132,14 @@ const LawnCareBristolPage = () => {
           <div className="hero-overlay"></div>
           <div className="hero-content">
             <div>
-              <img src="/GD.png" alt="GD Landscaping - Professional Lawn Care Services in Bristol Connecticut" style={{height: '200px', marginBottom: '2rem'}} />
+              <OptimizedImage
+                src="/GD.png"
+                alt="GD Landscaping - Professional Lawn Care Services in Bristol Connecticut"
+                width={200}
+                height={200}
+                priority={true}
+                style={{height: '200px', marginBottom: '2rem'}}
+              />
               <h1>Professional Lawn Care in Bristol, CT</h1>
               <p>GD Landscaping provides expert lawn maintenance and landscaping services throughout Bristol. Expect clean lines, reliable scheduling, and lawns that look great all season.</p>
 

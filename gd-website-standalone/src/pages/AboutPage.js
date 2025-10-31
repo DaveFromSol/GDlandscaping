@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import OptimizedImage from '../components/OptimizedImage';
 
 const AboutPage = () => {
   const structuredData = {
@@ -71,7 +72,13 @@ const AboutPage = () => {
             </div>
             <div className="about-hero-image">
               <div className="logo-container">
-                <img src="/GD.png" alt="GD Landscaping Logo" />
+                <OptimizedImage
+                  src="/GD.png"
+                  alt="GD Landscaping Logo"
+                  width={300}
+                  height={300}
+                  priority={true}
+                />
                 <div className="logo-accent"></div>
               </div>
             </div>
