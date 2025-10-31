@@ -540,6 +540,65 @@ const AdminDashboard = ({ user, onLogout }) => {
     });
   };
 
+  // Generate recurring job instances
+  const generateRecurringJobs = async (parentJobId, startDate, jobTemplate) => {
+    const { recurrenceType, recurrenceEndDate } = jobTemplate;
+    const generatedJobs = [];
+
+    // Calculate end date (default to 1 year if not specified)
+    const endDate = recurrenceEndDate
+      ? new Date(recurrenceEndDate)
+      : new Date(new Date(startDate).setFullYear(new Date(startDate).getFullYear() + 1));
+
+    let currentDate = new Date(startDate);
+
+    // Generate future job instances
+    while (currentDate <= endDate) {
+      // Move to next occurrence based on recurrence type
+      if (recurrenceType === 'weekly') {
+        currentDate.setDate(currentDate.getDate() + 7);
+      } else if (recurrenceType === 'biweekly') {
+        currentDate.setDate(currentDate.getDate() + 14);
+      } else if (recurrenceType === 'monthly') {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+      }
+
+      // Don't generate past end date
+      if (currentDate > endDate) break;
+
+      const futureDate = currentDate.toISOString().split('T')[0];
+
+      // Check if job already exists for this date
+      const existingJobsQuery = query(
+        collection(db, 'jobs'),
+        where('date', '==', futureDate),
+        where('parentRecurringJobId', '==', parentJobId)
+      );
+      const existingSnapshot = await getDocs(existingJobsQuery);
+
+      // Skip if already generated
+      if (!existingSnapshot.empty) continue;
+
+      // Create the recurring job instance
+      const recurringJobData = {
+        ...jobTemplate,
+        date: futureDate,
+        parentRecurringJobId: parentJobId,
+        isRecurringInstance: true,
+        status: 'scheduled',
+        actualPayment: 0,
+        paymentStatus: 'pending',
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      };
+
+      await addDoc(collection(db, 'jobs'), recurringJobData);
+      generatedJobs.push(futureDate);
+    }
+
+    return generatedJobs;
+  };
+
   const handleUpdateJob = async (e) => {
     e.preventDefault();
     if (!db) {
@@ -561,10 +620,18 @@ const AdminDashboard = ({ user, onLogout }) => {
         actualPayment: editingJob.actualPayment ? parseFloat(editingJob.actualPayment) : 0,
         paymentStatus: editingJob.paymentStatus,
         paymentMethod: editingJob.paymentMethod,
+        recurrenceType: editingJob.recurrenceType || 'none',
+        recurrenceEndDate: editingJob.recurrenceEndDate || null,
+        isRecurring: editingJob.recurrenceType && editingJob.recurrenceType !== 'none',
         updatedAt: serverTimestamp()
       };
 
       await updateDoc(doc(db, 'jobs', editingJob.id), jobData);
+
+      // Generate recurring jobs if needed
+      if (jobData.recurrenceType && jobData.recurrenceType !== 'none') {
+        await generateRecurringJobs(editingJob.id, editingJob.date, jobData);
+      }
 
       // Clear editing state
       setEditingJob(null);
@@ -1771,6 +1838,57 @@ const AdminDashboard = ({ user, onLogout }) => {
                         </div>
                       </div>
 
+                      {/* Recurrence Section */}
+                      <div className="border-t pt-4">
+                        <h4 className="text-sm font-medium text-gray-900 mb-3">🔄 Recurring Schedule</h4>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Repeat Frequency
+                            </label>
+                            <select
+                              value={editingJob.recurrenceType || 'none'}
+                              onChange={(e) => setEditingJob({...editingJob, recurrenceType: e.target.value})}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            >
+                              <option value="none">One-time Job</option>
+                              <option value="weekly">Weekly (Every 7 days)</option>
+                              <option value="biweekly">Bi-weekly (Every 14 days)</option>
+                              <option value="monthly">Monthly (Same date)</option>
+                            </select>
+                          </div>
+
+                          {editingJob.recurrenceType && editingJob.recurrenceType !== 'none' && (
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Generate Until
+                              </label>
+                              <input
+                                type="date"
+                                value={editingJob.recurrenceEndDate || ''}
+                                onChange={(e) => setEditingJob({...editingJob, recurrenceEndDate: e.target.value})}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                min={selectedDate}
+                              />
+                              <p className="text-xs text-gray-500 mt-1">Leave blank to repeat indefinitely</p>
+                            </div>
+                          )}
+                        </div>
+
+                        {editingJob.recurrenceType && editingJob.recurrenceType !== 'none' && (
+                          <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                            <p className="text-sm text-blue-800">
+                              <strong>ℹ️ Recurring Job:</strong> This job will automatically appear on your schedule
+                              {editingJob.recurrenceType === 'weekly' && ' every week'}
+                              {editingJob.recurrenceType === 'biweekly' && ' every 2 weeks'}
+                              {editingJob.recurrenceType === 'monthly' && ' every month'}
+                              {editingJob.recurrenceEndDate && ` until ${new Date(editingJob.recurrenceEndDate).toLocaleDateString()}`}.
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
                       <div className="flex gap-3">
                         <button
                           type="submit"
@@ -1847,6 +1965,11 @@ const AdminDashboard = ({ user, onLogout }) => {
                                 >
                                   {job.priority.toUpperCase()}
                                 </span>
+                                {job.isRecurring && (
+                                  <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-300" title="Recurring job">
+                                    🔄 {job.recurrenceType === 'weekly' ? 'Weekly' : job.recurrenceType === 'biweekly' ? 'Bi-weekly' : 'Monthly'}
+                                  </span>
+                                )}
                                 <span className="text-sm text-gray-500">{formatTime(parseInt(job.estimatedTime))}</span>
                                 {job.status === 'completed' && (
                                   <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
