@@ -8,7 +8,7 @@ const SnowRemovalRockyHillPage = () => {
     {
       id: 1,
       name: 'Rocky Hill Basic',
-      price: '$500/season',
+      price: 'Starting at $500/season',
       description: 'Perfect for Rocky Hill residential properties',
       features: [
         'Driveway snow plowing (up to 2 cars)',
@@ -21,7 +21,7 @@ const SnowRemovalRockyHillPage = () => {
     {
       id: 2,
       name: 'Rocky Hill Premium',
-      price: '$1000/season',
+      price: 'Starting at $1000/season',
       description: 'Complete snow removal for Rocky Hill homes',
       features: [
         'Full driveway and parking area',

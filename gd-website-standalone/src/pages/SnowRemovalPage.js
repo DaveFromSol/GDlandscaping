@@ -43,7 +43,7 @@ const SnowRemovalPage = () => {
     {
       id: 1,
       name: 'Residential Basic',
-      price: '$500/season',
+      price: 'Starting at $500/season',
       description: 'Perfect for small to medium residential properties',
       features: [
         'Driveway snow plowing (up to 2 cars)',
@@ -56,7 +56,7 @@ const SnowRemovalPage = () => {
     {
       id: 2,
       name: 'Residential Premium',
-      price: '$1000/season',
+      price: 'Starting at $1000/season',
       description: 'Comprehensive snow removal for larger homes',
       features: [
         'Full driveway and parking area',

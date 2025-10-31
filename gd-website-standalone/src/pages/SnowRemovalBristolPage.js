@@ -8,7 +8,7 @@ const SnowRemovalBristolPage = () => {
     {
       id: 1,
       name: 'Bristol Residential Basic',
-      price: '$500/season',
+      price: 'Starting at $500/season',
       description: 'Perfect for Bristol homes and driveways',
       features: [
         'Driveway snow plowing (up to 2 cars)',
@@ -21,7 +21,7 @@ const SnowRemovalBristolPage = () => {
     {
       id: 2,
       name: 'Bristol Residential Premium',
-      price: '$1000/season',
+      price: 'Starting at $1000/season',
       description: 'Complete snow removal for Bristol properties',
       features: [
         'Full driveway and parking area',

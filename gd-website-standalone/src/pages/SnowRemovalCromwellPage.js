@@ -8,7 +8,7 @@ const SnowRemovalCromwellPage = () => {
     {
       id: 1,
       name: 'Cromwell Basic',
-      price: '$500/season',
+      price: 'Starting at $500/season',
       description: 'Perfect for Cromwell residential properties',
       features: [
         'Driveway snow plowing (up to 2 cars)',
@@ -21,7 +21,7 @@ const SnowRemovalCromwellPage = () => {
     {
       id: 2,
       name: 'Cromwell Premium',
-      price: '$1000/season',
+      price: 'Starting at $1000/season',
       description: 'Complete snow removal for Cromwell homes',
       features: [
         'Full driveway and parking area',

@@ -8,7 +8,7 @@ const SnowRemovalNewBritainPage = () => {
     {
       id: 1,
       name: 'New Britain Basic',
-      price: '$500/season',
+      price: 'Starting at $500/season',
       description: 'Perfect for New Britain residential properties',
       features: [
         'Driveway snow plowing (up to 2 cars)',
@@ -21,7 +21,7 @@ const SnowRemovalNewBritainPage = () => {
     {
       id: 2,
       name: 'New Britain Premium',
-      price: '$1000/season',
+      price: 'Starting at $1000/season',
       description: 'Complete snow removal for New Britain homes',
       features: [
         'Full driveway and parking area',

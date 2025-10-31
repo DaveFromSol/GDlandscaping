@@ -8,7 +8,7 @@ const SnowRemovalWestHartfordPage = () => {
     {
       id: 1,
       name: 'West Hartford Residential Basic',
-      price: '$500/season',
+      price: 'Starting at $500/season',
       description: 'Perfect for West Hartford homes and driveways',
       features: [
         'Driveway snow plowing (up to 2 cars)',
@@ -21,7 +21,7 @@ const SnowRemovalWestHartfordPage = () => {
     {
       id: 2,
       name: 'West Hartford Residential Premium',
-      price: '$1000/season',
+      price: 'Starting at $1000/season',
       description: 'Complete snow removal for West Hartford properties',
       features: [
         'Full driveway and parking area',
