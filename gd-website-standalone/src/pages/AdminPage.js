@@ -1974,6 +1974,11 @@ const AdminDashboard = ({ user, onLogout }) => {
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
                         onClick={() => setSelectedDate(date)}
+                        onDoubleClick={() => {
+                          setSelectedDate(date);
+                          setViewType('day');
+                        }}
+                        title="Double-click to view day details"
                       >
                         <div className={`text-sm font-medium mb-1 ${
                           isToday ? 'text-green-700' : isSelected ? 'text-blue-700' : 'text-gray-900'
@@ -2101,6 +2106,11 @@ const AdminDashboard = ({ user, onLogout }) => {
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
                         onClick={() => setSelectedDate(date)}
+                        onDoubleClick={() => {
+                          setSelectedDate(date);
+                          setViewType('day');
+                        }}
+                        title="Double-click to view day details"
                       >
                         <div className={`text-xs font-medium mb-1 ${
                           !isCurrentMonth
