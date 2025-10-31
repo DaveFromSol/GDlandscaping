@@ -22,7 +22,7 @@ const OptimizedImage = ({
   quality = 75,
   ...props
 }) => {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(priority);
   const [isInView, setIsInView] = useState(priority);
   const imgRef = useRef();
 
@@ -111,7 +111,7 @@ const OptimizedImage = ({
             height={height}
             loading={priority ? 'eager' : 'lazy'}
             onLoad={handleLoad}
-            className={`optimized-image ${isLoaded ? 'loaded' : ''}`}
+            className={`optimized-image ${isLoaded ? 'loaded' : ''} ${priority ? 'priority' : ''}`}
             style={{
               objectFit,
               maxWidth: '100%',

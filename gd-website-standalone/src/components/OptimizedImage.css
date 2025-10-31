@@ -1,6 +1,6 @@
 .optimized-image-wrapper {
-  background-color: #f0f0f0;
-  display: block;
+  display: inline-block;
+  line-height: 0;
 }
 
 .optimized-image-placeholder {
@@ -28,7 +28,8 @@
   transition: opacity 0.3s ease-in-out;
 }
 
-.optimized-image.loaded {
+.optimized-image.loaded,
+.optimized-image.priority {
   opacity: 1;
 }
 
