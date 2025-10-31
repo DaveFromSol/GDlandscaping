@@ -81,18 +81,20 @@ const OptimizedImage = ({
       ref={imgRef}
       className={`optimized-image-wrapper ${className}`}
       style={{
+        display: 'inline-block',
         position: 'relative',
-        overflow: 'hidden',
-        ...(aspectRatio && {
-          paddingBottom: `${aspectRatio}%`,
-        }),
-        ...(width && !aspectRatio && { width }),
-        ...(height && !aspectRatio && { height }),
+        ...props.style,
       }}
     >
       {/* Loading placeholder */}
-      {!isLoaded && (
-        <div className="optimized-image-placeholder" />
+      {!isLoaded && isInView && (
+        <div
+          className="optimized-image-placeholder"
+          style={{
+            width: width || '100%',
+            height: height || '100%',
+          }}
+        />
       )}
 
       {/* Actual image - only load when in view or priority */}
@@ -112,11 +114,9 @@ const OptimizedImage = ({
             className={`optimized-image ${isLoaded ? 'loaded' : ''}`}
             style={{
               objectFit,
-              position: aspectRatio ? 'absolute' : 'relative',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
+              maxWidth: '100%',
+              height: 'auto',
+              display: 'block',
             }}
             {...props}
           />
