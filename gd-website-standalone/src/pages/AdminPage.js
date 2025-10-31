@@ -221,12 +221,54 @@ const AdminDashboard = ({ user, onLogout }) => {
     }
   };
 
+  const convertQuoteToLead = async (quote) => {
+    if (!window.confirm(`Convert "${quote.name}" to a lead in the pipeline?`)) return;
+
+    try {
+      const leadData = {
+        name: quote.name || '',
+        email: quote.email || '',
+        phone: quote.phone || '',
+        address: quote.address || '',
+        service: quote.service || '',
+        source: 'From Quote',
+        status: 'New Lead',
+        priority: 'normal',
+        notes: quote.description || '',
+        estimatedValue: 0,
+        followUpDate: '',
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        createdBy: user.email || 'unknown',
+        lastContactedAt: null,
+        contactCount: 0,
+        originalQuoteId: quote.id
+      };
+
+      await addDoc(collection(db, 'leads'), leadData);
+
+      // Update the quote status to indicate it's been converted
+      const quoteRef = doc(db, 'quotes', quote.id);
+      await updateDoc(quoteRef, {
+        status: 'Converted to Lead',
+        updatedAt: serverTimestamp(),
+        updatedBy: user.email || 'unknown'
+      });
+
+      alert(`Successfully added "${quote.name}" to lead pipeline!`);
+    } catch (error) {
+      console.error('Error converting quote to lead:', error);
+      alert('Error converting quote to lead. Please check your internet connection and try again.');
+    }
+  };
+
   const getStatusColor = (status) => {
     switch (status) {
       case 'Pending': return 'text-yellow-600 bg-yellow-100';
       case 'Approved': return 'text-blue-600 bg-blue-100';
       case 'Completed': return 'text-green-600 bg-green-100';
       case 'In Progress': return 'text-orange-600 bg-orange-100';
+      case 'Converted to Lead': return 'text-purple-600 bg-purple-100';
       case 'pending': return 'text-yellow-600 bg-yellow-100';
       case 'confirmed': return 'text-blue-600 bg-blue-100';
       case 'completed': return 'text-green-600 bg-green-100';
@@ -1007,6 +1049,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                       <option value="Approved">Approved</option>
                       <option value="In Progress">In Progress</option>
                       <option value="Completed">Completed</option>
+                      <option value="Converted to Lead">Converted to Lead</option>
                       <option value="Cancelled">Cancelled</option>
                     </select>
                   </div>
@@ -1118,6 +1161,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                           <option value="Approved">Approved</option>
                           <option value="In Progress">In Progress</option>
                           <option value="Completed">Completed</option>
+                          <option value="Converted to Lead">Converted to Lead</option>
                           <option value="Cancelled">Cancelled</option>
                         </select>
                       </td>
@@ -1127,6 +1171,13 @@ const AdminDashboard = ({ user, onLogout }) => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex flex-col">
                           <div className="flex space-x-2 mb-1">
+                            <button
+                              onClick={() => convertQuoteToLead(quote)}
+                              className="text-blue-600 hover:text-blue-900"
+                              title="Convert to lead in pipeline"
+                            >
+                              → Lead
+                            </button>
                             <button
                               onClick={() => editQuote(quote)}
                               className="text-indigo-600 hover:text-indigo-900"
