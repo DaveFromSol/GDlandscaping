@@ -506,6 +506,60 @@ const AdminDashboard = ({ user, onLogout }) => {
     });
   };
 
+  // Helper function to create or update customer from job
+  const upsertCustomerFromJob = async (jobData, jobDate) => {
+    if (!jobData.customerName || !db) return;
+
+    try {
+      // Search for existing customer by name
+      const customersRef = collection(db, 'customers');
+      const q = query(customersRef, where('name', '==', jobData.customerName));
+      const snapshot = await getDocs(q);
+
+      const payment = parseFloat(jobData.actualPayment || jobData.expectedPayment || 0);
+
+      if (!snapshot.empty) {
+        // Update existing customer
+        const customerDoc = snapshot.docs[0];
+        const currentData = customerDoc.data();
+
+        await updateDoc(doc(db, 'customers', customerDoc.id), {
+          lastServiceDate: jobDate || new Date().toISOString().split('T')[0],
+          totalSpent: (currentData.totalSpent || 0) + payment,
+          address: jobData.address || currentData.address,
+          updatedAt: serverTimestamp()
+        });
+        console.log('✅ Updated existing customer:', jobData.customerName);
+      } else {
+        // Create new customer
+        const newCustomer = {
+          name: jobData.customerName,
+          email: '',
+          phone: '',
+          address: jobData.address || '',
+          city: '',
+          state: 'CT',
+          zip: '',
+          customerType: 'Residential',
+          status: 'Active',
+          paymentMethod: jobData.paymentMethod || 'cash',
+          propertySize: '',
+          totalSpent: payment,
+          lastServiceDate: jobDate || new Date().toISOString().split('T')[0],
+          notes: '',
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        };
+
+        await addDoc(collection(db, 'customers'), newCustomer);
+        console.log('✅ Created new customer:', jobData.customerName);
+      }
+    } catch (error) {
+      console.error('Error upserting customer:', error);
+      // Don't fail the job if customer creation fails
+    }
+  };
+
   const handleAddJob = async (e) => {
     e.preventDefault();
     if (!db) {
@@ -525,6 +579,9 @@ const AdminDashboard = ({ user, onLogout }) => {
       };
 
       await addDoc(collection(db, 'jobs'), jobData);
+
+      // Automatically create/update customer
+      await upsertCustomerFromJob(jobData, selectedDate);
 
       // Reset form
       setNewJob({
@@ -731,6 +788,16 @@ const AdminDashboard = ({ user, onLogout }) => {
         completedAt: newStatus === 'completed' ? serverTimestamp() : null,
         updatedAt: serverTimestamp()
       });
+
+      // If marking as completed, update customer record
+      if (newStatus === 'completed') {
+        // Find the job to get its details
+        const job = jobs.find(j => j.id === jobId) || allJobs.find(j => j.id === jobId);
+        if (job) {
+          const jobDate = job.scheduledDate || job.date || new Date().toISOString().split('T')[0];
+          await upsertCustomerFromJob(job, jobDate);
+        }
+      }
 
       await loadJobsForDate();
       if (viewType !== 'day') {
