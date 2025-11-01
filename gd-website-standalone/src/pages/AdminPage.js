@@ -591,7 +591,11 @@ const AdminDashboard = ({ user, onLogout }) => {
     let currentDate = new Date(startDate);
 
     // Generate future job instances
+    let iterationCount = 0;
     while (currentDate <= endDate) {
+      iterationCount++;
+      console.log(`🔁 Loop iteration ${iterationCount}, currentDate:`, currentDate);
+
       // Move to next occurrence based on recurrence type
       if (recurrenceType === 'weekly') {
         currentDate.setDate(currentDate.getDate() + 7);
@@ -599,10 +603,18 @@ const AdminDashboard = ({ user, onLogout }) => {
         currentDate.setDate(currentDate.getDate() + 14);
       } else if (recurrenceType === 'monthly') {
         currentDate.setMonth(currentDate.getMonth() + 1);
+      } else {
+        console.error('❌ Unknown recurrence type:', recurrenceType);
+        break;
       }
 
+      console.log(`⏭️ After increment:`, currentDate.toISOString().split('T')[0]);
+
       // Don't generate past end date
-      if (currentDate > endDate) break;
+      if (currentDate > endDate) {
+        console.log('🛑 Reached end date, stopping');
+        break;
+      }
 
       const futureDate = currentDate.toISOString().split('T')[0];
 
