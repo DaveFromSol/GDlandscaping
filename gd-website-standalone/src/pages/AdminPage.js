@@ -341,13 +341,28 @@ const AdminDashboard = ({ user, onLogout }) => {
     try {
       setLoading(true);
       const jobsRef = collection(db, 'jobs');
-      const q = query(jobsRef, where('scheduledDate', '==', selectedDate));
-      const snapshot = await getDocs(q);
 
-      const jobsData = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
+      // Query for both 'scheduledDate' and 'date' fields to support both job types
+      const q1 = query(jobsRef, where('scheduledDate', '==', selectedDate));
+      const q2 = query(jobsRef, where('date', '==', selectedDate));
+
+      const [snapshot1, snapshot2] = await Promise.all([
+        getDocs(q1),
+        getDocs(q2)
+      ]);
+
+      // Merge and deduplicate results
+      const jobsMap = new Map();
+
+      snapshot1.docs.forEach(doc => {
+        jobsMap.set(doc.id, { id: doc.id, ...doc.data() });
+      });
+
+      snapshot2.docs.forEach(doc => {
+        jobsMap.set(doc.id, { id: doc.id, ...doc.data() });
+      });
+
+      const jobsData = Array.from(jobsMap.values());
 
       // Sort by priority and creation time
       jobsData.sort((a, b) => {
@@ -584,7 +599,7 @@ const AdminDashboard = ({ user, onLogout }) => {
       // Check if job already exists for this date
       const existingJobsQuery = query(
         collection(db, 'jobs'),
-        where('date', '==', futureDate),
+        where('scheduledDate', '==', futureDate),
         where('parentRecurringJobId', '==', parentJobId)
       );
       const existingSnapshot = await getDocs(existingJobsQuery);
@@ -595,7 +610,7 @@ const AdminDashboard = ({ user, onLogout }) => {
       // Create the recurring job instance
       const recurringJobData = {
         ...jobTemplate,
-        date: futureDate,
+        scheduledDate: futureDate,
         parentRecurringJobId: parentJobId,
         isRecurringInstance: true,
         status: 'scheduled',
