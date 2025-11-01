@@ -658,7 +658,8 @@ const AdminDashboard = ({ user, onLogout }) => {
 
       // Generate recurring jobs if needed
       if (jobData.recurrenceType && jobData.recurrenceType !== 'none') {
-        await generateRecurringJobs(editingJob.id, editingJob.date, jobData);
+        const startDate = editingJob.scheduledDate || editingJob.date;
+        await generateRecurringJobs(editingJob.id, startDate, jobData);
       }
 
       // Clear editing state
@@ -740,7 +741,8 @@ const AdminDashboard = ({ user, onLogout }) => {
         isRecurring: true
       };
 
-      await generateRecurringJobs(recurringModalJob.id, recurringModalJob.date, jobData);
+      const startDate = recurringModalJob.scheduledDate || recurringModalJob.date;
+      await generateRecurringJobs(recurringModalJob.id, startDate, jobData);
 
       // Close modal and reload
       setRecurringModalJob(null);
