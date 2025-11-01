@@ -787,6 +787,54 @@ const AdminDashboard = ({ user, onLogout }) => {
     }
   };
 
+  const handleRemoveRecurring = async (job) => {
+    if (!window.confirm(`Remove recurring status from "${job.customerName}"?\n\nThis will also delete all future scheduled instances of this job.`)) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      // Remove recurring flags from the original job
+      const jobRef = doc(db, 'jobs', job.id);
+      await updateDoc(jobRef, {
+        recurrenceType: 'none',
+        recurrenceEndDate: null,
+        isRecurring: false,
+        updatedAt: serverTimestamp()
+      });
+
+      // Delete all future recurring instances
+      const futureJobsQuery = query(
+        collection(db, 'jobs'),
+        where('parentRecurringJobId', '==', job.id),
+        where('status', '==', 'scheduled')
+      );
+      const futureJobsSnapshot = await getDocs(futureJobsQuery);
+
+      const deletePromises = futureJobsSnapshot.docs.map(doc =>
+        deleteDoc(doc.ref)
+      );
+      await Promise.all(deletePromises);
+
+      console.log(`✅ Removed recurring status and deleted ${futureJobsSnapshot.size} future instances`);
+
+      // Reload calendar
+      await loadJobsForDate();
+      if (viewType !== 'day') {
+        const { startDate, endDate } = getDateRange(selectedDate, viewType);
+        await loadJobsForRange(startDate, endDate);
+      }
+
+      alert(`Recurring status removed! Deleted ${futureJobsSnapshot.size} future instances.`);
+    } catch (error) {
+      console.error('Error removing recurring:', error);
+      alert('Error removing recurring status. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const optimizeRoute = () => {
     if (jobs.length < 2) {
       alert('Need at least 2 jobs to optimize route.');
@@ -2202,6 +2250,15 @@ const AdminDashboard = ({ user, onLogout }) => {
                                 title="Make this job recurring"
                               >
                                 🔄 Make Recurring
+                              </button>
+                            )}
+                            {job.isRecurring && (
+                              <button
+                                onClick={() => handleRemoveRecurring(job)}
+                                className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white text-sm rounded-md transition-colors"
+                                title="Remove recurring status"
+                              >
+                                ✕ Remove Recurring
                               </button>
                             )}
                             <button
