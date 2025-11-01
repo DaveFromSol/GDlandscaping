@@ -379,14 +379,18 @@ const AdminDashboard = ({ user, onLogout }) => {
         id: doc.id,
         ...doc.data()
       })).filter(job => {
-        if (!job.scheduledDate) return false;
-        return job.scheduledDate >= startDate && job.scheduledDate <= endDate;
+        // Support both 'date' and 'scheduledDate' field names
+        const jobDate = job.date || job.scheduledDate;
+        if (!jobDate) return false;
+        return jobDate >= startDate && jobDate <= endDate;
       });
 
       // Sort by date and priority
       jobsData.sort((a, b) => {
-        if (a.scheduledDate !== b.scheduledDate) {
-          return a.scheduledDate.localeCompare(b.scheduledDate);
+        const dateA = a.date || a.scheduledDate;
+        const dateB = b.date || b.scheduledDate;
+        if (dateA !== dateB) {
+          return dateA.localeCompare(dateB);
         }
         const priorityOrder = { high: 3, normal: 2, low: 1 };
         return priorityOrder[b.priority] - priorityOrder[a.priority];
@@ -480,7 +484,11 @@ const AdminDashboard = ({ user, onLogout }) => {
   };
 
   const getJobsForDate = (date) => {
-    return allJobs.filter(job => job.scheduledDate === date);
+    return allJobs.filter(job => {
+      // Support both 'date' and 'scheduledDate' field names
+      const jobDate = job.date || job.scheduledDate;
+      return jobDate === date;
+    });
   };
 
   const handleAddJob = async (e) => {
