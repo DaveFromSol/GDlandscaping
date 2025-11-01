@@ -570,13 +570,23 @@ const AdminDashboard = ({ user, onLogout }) => {
 
   // Generate recurring job instances
   const generateRecurringJobs = async (parentJobId, startDate, jobTemplate) => {
+    console.log('🔄 generateRecurringJobs called with:', { parentJobId, startDate, recurrenceType: jobTemplate.recurrenceType });
+
     const { recurrenceType, recurrenceEndDate } = jobTemplate;
     const generatedJobs = [];
+
+    if (!startDate) {
+      console.error('❌ No start date provided to generateRecurringJobs!');
+      alert('Error: Cannot generate recurring jobs without a start date');
+      return [];
+    }
 
     // Calculate end date (default to 1 year if not specified)
     const endDate = recurrenceEndDate
       ? new Date(recurrenceEndDate)
       : new Date(new Date(startDate).setFullYear(new Date(startDate).getFullYear() + 1));
+
+    console.log('📅 Date range:', { startDate, endDate, recurrenceType });
 
     let currentDate = new Date(startDate);
 
@@ -622,8 +632,10 @@ const AdminDashboard = ({ user, onLogout }) => {
 
       await addDoc(collection(db, 'jobs'), recurringJobData);
       generatedJobs.push(futureDate);
+      console.log('✅ Created recurring job for:', futureDate);
     }
 
+    console.log(`🎉 Generated ${generatedJobs.length} recurring jobs:`, generatedJobs);
     return generatedJobs;
   };
 
