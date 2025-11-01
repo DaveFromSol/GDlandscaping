@@ -610,13 +610,14 @@ const AdminDashboard = ({ user, onLogout }) => {
 
       console.log(`⏭️ After increment:`, currentDate.toISOString().split('T')[0]);
 
-      // Don't generate past end date
-      if (currentDate > endDate) {
+      const futureDate = currentDate.toISOString().split('T')[0];
+      const endDateString = endDate.toISOString().split('T')[0];
+
+      // Don't generate past end date (compare date strings to avoid timezone issues)
+      if (futureDate > endDateString) {
         console.log('🛑 Reached end date, stopping');
         break;
       }
-
-      const futureDate = currentDate.toISOString().split('T')[0];
 
       // Check if job already exists for this date
       const existingJobsQuery = query(
