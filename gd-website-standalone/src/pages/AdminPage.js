@@ -675,7 +675,7 @@ const AdminDashboard = ({ user, onLogout }) => {
         paymentMethod: editingJob.paymentMethod,
         recurrenceType: editingJob.recurrenceType || 'none',
         recurrenceEndDate: editingJob.recurrenceEndDate || null,
-        isRecurring: editingJob.recurrenceType && editingJob.recurrenceType !== 'none',
+        isRecurring: !!(editingJob.recurrenceType && editingJob.recurrenceType !== 'none'),
         updatedAt: serverTimestamp()
       };
 
