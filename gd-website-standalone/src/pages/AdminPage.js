@@ -627,13 +627,10 @@ const AdminDashboard = ({ user, onLogout }) => {
 
   // Generate recurring job instances
   const generateRecurringJobs = async (parentJobId, startDate, jobTemplate) => {
-    console.log('🔄 generateRecurringJobs called with:', { parentJobId, startDate, recurrenceType: jobTemplate.recurrenceType });
-
     const { recurrenceType, recurrenceEndDate } = jobTemplate;
     const generatedJobs = [];
 
     if (!startDate) {
-      console.error('❌ No start date provided to generateRecurringJobs!');
       alert('Error: Cannot generate recurring jobs without a start date');
       return [];
     }
@@ -643,16 +640,10 @@ const AdminDashboard = ({ user, onLogout }) => {
       ? new Date(recurrenceEndDate)
       : new Date(new Date(startDate).setFullYear(new Date(startDate).getFullYear() + 1));
 
-    console.log('📅 Date range:', { startDate, endDate, recurrenceType });
-
     let currentDate = new Date(startDate);
 
     // Generate future job instances
-    let iterationCount = 0;
     while (currentDate <= endDate) {
-      iterationCount++;
-      console.log(`🔁 Loop iteration ${iterationCount}, currentDate:`, currentDate);
-
       // Move to next occurrence based on recurrence type
       if (recurrenceType === 'weekly') {
         currentDate.setDate(currentDate.getDate() + 7);
@@ -661,18 +652,14 @@ const AdminDashboard = ({ user, onLogout }) => {
       } else if (recurrenceType === 'monthly') {
         currentDate.setMonth(currentDate.getMonth() + 1);
       } else {
-        console.error('❌ Unknown recurrence type:', recurrenceType);
         break;
       }
-
-      console.log(`⏭️ After increment:`, currentDate.toISOString().split('T')[0]);
 
       const futureDate = currentDate.toISOString().split('T')[0];
       const endDateString = endDate.toISOString().split('T')[0];
 
       // Don't generate past end date (compare date strings to avoid timezone issues)
       if (futureDate > endDateString) {
-        console.log('🛑 Reached end date, stopping');
         break;
       }
 
@@ -702,10 +689,8 @@ const AdminDashboard = ({ user, onLogout }) => {
 
       await addDoc(collection(db, 'jobs'), recurringJobData);
       generatedJobs.push(futureDate);
-      console.log('✅ Created recurring job for:', futureDate);
     }
 
-    console.log(`🎉 Generated ${generatedJobs.length} recurring jobs:`, generatedJobs);
     return generatedJobs;
   };
 
