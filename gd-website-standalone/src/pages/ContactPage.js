@@ -284,6 +284,15 @@ Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}`,
                   <p>Sunday: Emergency calls only</p>
                 </div>
               </div>
+
+              <div className="contact-item">
+                <div className="contact-icon">🚒</div>
+                <div className="contact-details">
+                  <h3>Firefighter-Owned</h3>
+                  <p>Proudly owned and operated by a local Berlin firefighter</p>
+                  <small>Committed to serving our community with integrity</small>
+                </div>
+              </div>
             </div>
 
             <div className="contact-form bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-200 w-full max-w-none">

@@ -393,6 +393,11 @@ const HomePage = () => {
                 <h3>Satisfaction Guarantee</h3>
                 <p>We stand behind our work with a 100% satisfaction guarantee.</p>
               </div>
+              <div className="feature">
+                <div className="feature-icon">🚒</div>
+                <h3>Firefighter-Owned</h3>
+                <p>Proudly owned and operated by a local Berlin firefighter committed to serving our community.</p>
+              </div>
             </div>
 
             {/* Small showcase images integrated into features section */}
