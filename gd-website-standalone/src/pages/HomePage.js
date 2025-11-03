@@ -444,6 +444,18 @@ const HomePage = () => {
                   boxShadow: '0 4px 16px rgba(0,0,0,0.08)'
                 }}
               />
+              <OptimizedImage
+                src="/professional-lawn-striping-mowing-berlin-ct.jpg"
+                alt="Professional lawn striping and mowing services in Berlin CT - precise lawn care by firefighter-owned GD Landscaping"
+                width={300}
+                height={200}
+                style={{
+                  width: '300px',
+                  height: 'auto',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.08)'
+                }}
+              />
             </div>
           </div>
         </div>
