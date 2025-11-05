@@ -55,7 +55,7 @@ const QuotePage = () => {
         xlarge: 0    // 15+ feet: $45 each
       }
     },
-    leafCleanup: { enabled: false, frequency: 'one-time', price: 85 },
+    leafCleanup: { enabled: false, frequency: 'one-time', price: 0, applyFallDiscount: false },
     fertilization: { enabled: false, frequency: 'one-time', price: 65 }
   });
 
@@ -79,13 +79,37 @@ const QuotePage = () => {
     return 40 + additionalPrice;
   };
 
-  // Update lawn mowing price when property size changes
+  // Calculate leaf cleanup price based on property size
+  // $100 minimum, then $20 per 0.1 acre above 0.2 acres
+  const calculateLeafCleanupPrice = () => {
+    if (!propertySize?.acres) return 100;
+
+    const acres = parseFloat(propertySize.acres);
+
+    // Minimum price is $100 for properties up to 0.2 acres
+    if (acres <= 0.2) {
+      return 100;
+    }
+
+    // Above 0.2 acres: add $20 for every 0.1 acre
+    const additionalAcres = acres - 0.2;
+    const additionalIncrements = Math.ceil(additionalAcres / 0.1);
+    const additionalPrice = additionalIncrements * 20;
+
+    return 100 + additionalPrice;
+  };
+
+  // Update lawn mowing and leaf cleanup prices when property size changes
   useEffect(() => {
     setServices(prev => ({
       ...prev,
       lawnMowing: {
         ...prev.lawnMowing,
         price: calculateBaseLawnPrice()
+      },
+      leafCleanup: {
+        ...prev.leafCleanup,
+        price: calculateLeafCleanupPrice()
       }
     }));
   }, [propertySize]);
@@ -216,6 +240,17 @@ const QuotePage = () => {
     });
   };
 
+  // Toggle fall cleanup discount
+  const toggleFallDiscount = () => {
+    setServices(prev => ({
+      ...prev,
+      leafCleanup: {
+        ...prev.leafCleanup,
+        applyFallDiscount: !prev.leafCleanup.applyFallDiscount
+      }
+    }));
+  };
+
   // Calculate total price
   const calculateTotal = () => {
     let total = 0;
@@ -223,6 +258,11 @@ const QuotePage = () => {
     Object.entries(services).forEach(([name, service]) => {
       if (service.enabled) {
         let price = service.price;
+
+        // Apply 20% fall cleanup discount if selected
+        if (name === 'leafCleanup' && service.applyFallDiscount) {
+          price = price * 0.8; // 20% off
+        }
 
         // Apply frequency multiplier for recurring services
         if (service.frequency === 'weekly') {
@@ -334,7 +374,8 @@ const QuotePage = () => {
           name: serviceInfo[name].name,
           frequency: service.frequency,
           price: service.price,
-          ...(name === 'bushTrimming' && service.bushes ? { bushes: service.bushes } : {})
+          ...(name === 'bushTrimming' && service.bushes ? { bushes: service.bushes } : {}),
+          ...(name === 'leafCleanup' && service.applyFallDiscount ? { fallDiscount: true } : {})
         }));
 
       // Save booking to Firebase (without password fields)
@@ -378,7 +419,8 @@ const QuotePage = () => {
       .map(([name, service]) => ({
         name: serviceInfo[name].name,
         frequency: service.frequency,
-        price: service.price
+        price: service.price,
+        ...(name === 'leafCleanup' && service.applyFallDiscount ? { fallDiscount: true } : {})
       }));
 
     navigate('/contact', {
@@ -521,6 +563,49 @@ const QuotePage = () => {
                         </div>
                       )}
 
+                      {/* Leaf Cleanup - Fall Discount Option */}
+                      {serviceName === 'leafCleanup' && (
+                        <div className="discount-section" style={{
+                          padding: '15px',
+                          background: '#f0f9ff',
+                          borderRadius: '8px',
+                          marginBottom: '15px',
+                          border: '2px solid #3b82f6'
+                        }}>
+                          <label style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                            cursor: 'pointer',
+                            fontSize: '16px',
+                            fontWeight: '600'
+                          }}>
+                            <input
+                              type="checkbox"
+                              checked={service.applyFallDiscount}
+                              onChange={toggleFallDiscount}
+                              style={{
+                                width: '20px',
+                                height: '20px',
+                                cursor: 'pointer'
+                              }}
+                            />
+                            <span>
+                              🍂 Apply 20% Fall Cleanup Discount
+                              <span style={{
+                                display: 'block',
+                                fontSize: '14px',
+                                fontWeight: '400',
+                                color: '#666',
+                                marginTop: '4px'
+                              }}>
+                                Save ${Math.round(service.price * 0.2)} on your leaf cleanup service!
+                              </span>
+                            </span>
+                          </label>
+                        </div>
+                      )}
+
                       <div className="service-options">
                         <div className="frequency-options">
                           <label className="frequency-label">Service Frequency:</label>
@@ -554,7 +639,30 @@ const QuotePage = () => {
 
                         <div className="service-price">
                           {service.frequency === 'one-time' ? (
-                            <span className="price">${service.price}</span>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                              {serviceName === 'leafCleanup' && service.applyFallDiscount ? (
+                                <>
+                                  <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '14px' }}>
+                                    ${service.price}
+                                  </span>
+                                  <span className="price" style={{ color: '#16a34a' }}>
+                                    ${Math.round(service.price * 0.8)}
+                                  </span>
+                                  <span className="discount-badge" style={{
+                                    background: '#dcfce7',
+                                    color: '#16a34a',
+                                    padding: '2px 8px',
+                                    borderRadius: '4px',
+                                    fontSize: '12px',
+                                    marginTop: '4px'
+                                  }}>
+                                    20% off
+                                  </span>
+                                </>
+                              ) : (
+                                <span className="price">${service.price}</span>
+                              )}
+                            </div>
                           ) : (
                             <div className="recurring-price">
                               <span className="price-label">
@@ -592,11 +700,38 @@ const QuotePage = () => {
                         <span>{serviceInfo[serviceName].icon}</span>
                         <span>{serviceInfo[serviceName].name}</span>
                         <span className="frequency-badge">{service.frequency}</span>
+                        {serviceName === 'leafCleanup' && service.applyFallDiscount && (
+                          <span style={{
+                            background: '#dcfce7',
+                            color: '#16a34a',
+                            padding: '2px 6px',
+                            borderRadius: '4px',
+                            fontSize: '11px',
+                            marginLeft: '5px',
+                            fontWeight: '600'
+                          }}>
+                            20% OFF
+                          </span>
+                        )}
                       </div>
                       <div className="item-price">
-                        ${service.frequency === 'weekly' ? Math.round(service.price * 4 * 0.8) :
-                          service.frequency === 'bi-weekly' ? service.price * 2 :
-                          service.price}
+                        ${(() => {
+                          let price = service.price;
+
+                          // Apply fall discount for leaf cleanup
+                          if (serviceName === 'leafCleanup' && service.applyFallDiscount) {
+                            price = Math.round(price * 0.8);
+                          }
+
+                          // Apply frequency multiplier
+                          if (service.frequency === 'weekly') {
+                            price = Math.round(price * 4 * 0.8);
+                          } else if (service.frequency === 'bi-weekly') {
+                            price = price * 2;
+                          }
+
+                          return price;
+                        })()}
                       </div>
                     </div>
                   ))}
