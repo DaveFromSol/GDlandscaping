@@ -115,7 +115,7 @@ const Navigation = () => {
         <div className="nav-container">
           <div className="logo">
             <Link to="/">
-              <img src="/GD.png" alt="GD Landscaping - Professional Landscaping Services Berlin CT" style={{height: '40px', marginRight: '10px'}} />
+              <img src="/GD.png" alt="GD Landscaping - Professional Landscaping Services Berlin CT" style={{height: '60px', marginRight: '10px'}} />
               <h2>GD Landscaping</h2>
             </Link>
           </div>

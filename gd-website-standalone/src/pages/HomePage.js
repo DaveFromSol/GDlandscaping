@@ -347,10 +347,10 @@ const HomePage = () => {
               <OptimizedImage
                 src="/GD.png"
                 alt="GD Landscaping - Lawn Care and Landscape Design Services in Berlin Connecticut"
-                width={200}
-                height={200}
+                width={350}
+                height={350}
                 priority={true}
-                style={{height: '200px', marginBottom: '2rem'}}
+                style={{height: '350px', marginBottom: '2rem'}}
               />
               <h1>Beautiful Lawns in Summer, Clear Driveways in Winter</h1>
               <p>GD Landscaping keeps your property beautiful year-round — from lawn care to snow removal. Serving Berlin, Hartford County, and surrounding Connecticut communities within 25 miles.</p>
