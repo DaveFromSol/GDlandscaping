@@ -190,6 +190,7 @@
   display: flex;
   list-style: none;
   gap: 0.5rem;
+  margin-left: 2rem;
 }
 
 @media (min-width: 769px) {
