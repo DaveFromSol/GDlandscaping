@@ -49,14 +49,14 @@ const QuotePage = () => {
       frequency: 'one-time',
       price: 0,
       bushes: {
-        small: 0,    // 1-3 feet: $10 each
-        medium: 0,   // 3-7 feet: $20 each
-        large: 0,    // 7-15 feet: $30 each
-        xlarge: 0    // 15+ feet: $45 each
+        small: 0,    // 1-3 feet: $12.50 each
+        medium: 0,   // 3-7 feet: $25 each
+        large: 0,    // 7-15 feet: $37.50 each
+        xlarge: 0    // 15+ feet: $56.25 each
       }
     },
     leafCleanup: { enabled: false, frequency: 'one-time', price: 0, applyFallDiscount: false },
-    fertilization: { enabled: false, frequency: 'one-time', price: 65 }
+    fertilization: { enabled: false, frequency: 'one-time', price: 81 }
   });
 
   // Calculate base lawn mowing price based on property size
@@ -80,23 +80,23 @@ const QuotePage = () => {
   };
 
   // Calculate leaf cleanup price based on property size
-  // $100 minimum, then $20 per 0.1 acre above 0.2 acres
+  // $125 minimum, then $25 per 0.1 acre above 0.2 acres
   const calculateLeafCleanupPrice = () => {
-    if (!propertySize?.acres) return 100;
+    if (!propertySize?.acres) return 125;
 
     const acres = parseFloat(propertySize.acres);
 
-    // Minimum price is $100 for properties up to 0.2 acres
+    // Minimum price is $125 for properties up to 0.2 acres
     if (acres <= 0.2) {
-      return 100;
+      return 125;
     }
 
-    // Above 0.2 acres: add $20 for every 0.1 acre
+    // Above 0.2 acres: add $25 for every 0.1 acre
     const additionalAcres = acres - 0.2;
     const additionalIncrements = Math.ceil(additionalAcres / 0.1);
-    const additionalPrice = additionalIncrements * 20;
+    const additionalPrice = additionalIncrements * 25;
 
-    return 100 + additionalPrice;
+    return 125 + additionalPrice;
   };
 
   // Update lawn mowing and leaf cleanup prices when property size changes
@@ -223,10 +223,10 @@ const QuotePage = () => {
 
       // Calculate total bush trimming price
       const price = (
-        newBushes.small * 10 +
-        newBushes.medium * 20 +
-        newBushes.large * 30 +
-        newBushes.xlarge * 45
+        newBushes.small * 12.50 +
+        newBushes.medium * 25 +
+        newBushes.large * 37.50 +
+        newBushes.xlarge * 56.25
       );
 
       return {
@@ -510,7 +510,6 @@ const QuotePage = () => {
                             <div className="bush-size-input">
                               <label>
                                 <span className="size-label">1-3 feet</span>
-                                <span className="size-price">$10 each</span>
                               </label>
                               <input
                                 type="number"
@@ -523,7 +522,6 @@ const QuotePage = () => {
                             <div className="bush-size-input">
                               <label>
                                 <span className="size-label">3-7 feet</span>
-                                <span className="size-price">$20 each</span>
                               </label>
                               <input
                                 type="number"
@@ -536,7 +534,6 @@ const QuotePage = () => {
                             <div className="bush-size-input">
                               <label>
                                 <span className="size-label">7-15 feet</span>
-                                <span className="size-price">$30 each</span>
                               </label>
                               <input
                                 type="number"
@@ -549,7 +546,6 @@ const QuotePage = () => {
                             <div className="bush-size-input">
                               <label>
                                 <span className="size-label">15+ feet</span>
-                                <span className="size-price">$45 each</span>
                               </label>
                               <input
                                 type="number"
