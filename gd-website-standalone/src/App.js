@@ -232,7 +232,7 @@ const FallBanner = () => (
     <div className="banner-content">
       <span className="banner-icon">🍂</span>
       <div className="banner-text">
-        <strong>Fall Cleanup Special!</strong> Save 20% on fall cleanup services - Book by October 31st!
+        <strong>Fall Cleanup Special!</strong> Save 20% on fall cleanup services - Book by November 15th!
       </div>
       <Link to="/contact" className="banner-cta">
         Book Now

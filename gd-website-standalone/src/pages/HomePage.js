@@ -358,7 +358,7 @@ const HomePage = () => {
                   marginBottom: '15px',
                   textShadow: '1px 1px 2px rgba(255,255,255,0.5)'
                 }}>
-                  Type Your Address for Instant Lawn Care Quote
+                  Type Your Address for Instant Lawn Care/Leaf Cleanup Quote
                 </h2>
                 <AddressAutocomplete />
               </div>
