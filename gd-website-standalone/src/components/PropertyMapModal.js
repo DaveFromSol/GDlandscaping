@@ -36,7 +36,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/satellite-streets-v12',
         center: coordinates,
-        zoom: 19,
+        zoom: 18,
         pitch: 45,
         collectResourceTiming: false // Disable telemetry to prevent CORS errors
       });
@@ -1384,6 +1384,16 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
             }}>
               {address}
             </p>
+            {propertySize && (
+              <div style={{
+                marginTop: '6px',
+                fontSize: window.innerWidth <= 768 ? '12px' : '14px',
+                color: '#2d5016',
+                fontWeight: '600'
+              }}>
+                {propertySize.sqFt?.toLocaleString()} ft² • {propertySize.acres} acres
+              </div>
+            )}
           </div>
           <button
             onClick={onClose}
@@ -1490,102 +1500,65 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
             }
           `}</style>
 
-          {/* Property Info Overlay - Responsive */}
+          {/* Parcel Data Status Badge */}
           {propertySize && (
             <div style={{
               position: 'absolute',
               ...(window.innerWidth <= 768 ? {
-                // Mobile: Compact card at bottom
+                // Mobile: Bottom right
                 bottom: '70px',
-                left: '12px',
                 right: '12px',
                 backgroundColor: 'rgba(255, 255, 255, 0.95)',
                 backdropFilter: 'blur(10px)',
-                padding: '10px 12px',
-                borderRadius: '8px',
+                padding: '8px 12px',
+                borderRadius: '6px',
                 boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
               } : {
                 // Desktop: Top left
                 top: '16px',
                 left: '16px',
                 backgroundColor: 'white',
-                padding: '16px',
+                padding: '10px 14px',
                 borderRadius: '8px',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                minWidth: '220px'
               })
             }}>
-              <h3 style={{
-                margin: '0 0 6px',
-                fontSize: window.innerWidth <= 768 ? '13px' : '16px',
-                fontWeight: '600',
-                color: '#1f2937'
-              }}>
-                {dataSource === 'cadastre' ? 'Property Lot Size' : 'Estimated Property Size'}
-              </h3>
               {dataSource === 'cadastre' && (
                 <div style={{
-                  fontSize: window.innerWidth <= 768 ? '10px' : '12px',
+                  fontSize: window.innerWidth <= 768 ? '11px' : '13px',
                   color: '#059669',
-                  marginBottom: window.innerWidth <= 768 ? '4px' : '8px',
-                  fontWeight: '500'
+                  fontWeight: '600',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px'
                 }}>
-                  ✓ Official Parcel Data
+                  <span>✓</span> Official Parcel Data
                 </div>
               )}
               {dataSource === 'building' && (
                 <div style={{
-                  fontSize: window.innerWidth <= 768 ? '10px' : '12px',
+                  fontSize: window.innerWidth <= 768 ? '11px' : '13px',
                   color: '#d97706',
-                  marginBottom: window.innerWidth <= 768 ? '4px' : '8px'
+                  fontWeight: '600',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px'
                 }}>
-                  ⚠ Estimated from building
+                  <span>⚠</span> Estimated from building
                 </div>
               )}
               {dataSource === 'estimate' && (
                 <div style={{
-                  fontSize: window.innerWidth <= 768 ? '10px' : '12px',
+                  fontSize: window.innerWidth <= 768 ? '11px' : '13px',
                   color: '#6b7280',
-                  marginBottom: window.innerWidth <= 768 ? '4px' : '8px'
+                  fontWeight: '600',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px'
                 }}>
-                  ℹ Standard lot estimate
+                  <span>ℹ</span> Standard lot estimate
                 </div>
               )}
-              <div style={{
-                display: 'flex',
-                flexDirection: window.innerWidth <= 768 ? 'row' : 'column',
-                gap: window.innerWidth <= 768 ? '16px' : '8px',
-                justifyContent: window.innerWidth <= 768 ? 'space-around' : 'flex-start'
-              }}>
-                <div>
-                  <div style={{
-                    fontSize: window.innerWidth <= 768 ? '11px' : '14px',
-                    color: '#6b7280'
-                  }}>Square Feet</div>
-                  <div style={{
-                    fontSize: window.innerWidth <= 768 ? '15px' : '20px',
-                    fontWeight: '700',
-                    color: '#2d5016',
-                    lineHeight: '1.2'
-                  }}>
-                    {propertySize.sqFt?.toLocaleString()} ft²
-                  </div>
-                </div>
-                <div>
-                  <div style={{
-                    fontSize: window.innerWidth <= 768 ? '11px' : '14px',
-                    color: '#6b7280'
-                  }}>Acres</div>
-                  <div style={{
-                    fontSize: window.innerWidth <= 768 ? '15px' : '20px',
-                    fontWeight: '700',
-                    color: '#2d5016',
-                    lineHeight: '1.2'
-                  }}>
-                    {propertySize.acres} acres
-                  </div>
-                </div>
-              </div>
             </div>
           )}
 
