@@ -134,7 +134,16 @@ const QuotePage = () => {
       style: 'mapbox://styles/mapbox/satellite-streets-v12',
       center: coordinates,
       zoom: 18,
-      attributionControl: false
+      attributionControl: false,
+      // Disable interactions on mobile for cleaner UI
+      dragPan: window.innerWidth > 768,
+      scrollZoom: false,
+      boxZoom: false,
+      dragRotate: false,
+      keyboard: false,
+      doubleClickZoom: false,
+      touchZoomRotate: false,
+      touchPitch: false
     });
 
     mapRef.current = map;
@@ -446,27 +455,30 @@ const QuotePage = () => {
         <div className="quote-header">
           <div className="header-content">
             <h1 style={{ color: 'white' }}>Lawn Care Instant Quote</h1>
-            <div className="property-info">
+          </div>
+
+          {/* Property Map with info banner overlay */}
+          <div style={{ position: 'relative', marginTop: '20px' }}>
+            <div
+              ref={mapContainerRef}
+              className="property-map"
+              style={{
+                width: '100%',
+                height: window.innerWidth <= 768 ? '200px' : '300px',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
+                pointerEvents: window.innerWidth <= 768 ? 'none' : 'auto'
+              }}
+            />
+            {/* Property info banner overlay */}
+            <div className="property-info-banner">
               <p className="address">{address}</p>
               <p className="size">
                 {propertySize.acres} acres ({propertySize.sqFt?.toLocaleString()} sq ft)
               </p>
             </div>
           </div>
-
-          {/* Property Map inside header */}
-          <div
-            ref={mapContainerRef}
-            className="property-map"
-            style={{
-              width: '100%',
-              height: '300px',
-              borderRadius: '12px',
-              overflow: 'hidden',
-              marginTop: '20px',
-              boxShadow: '0 4px 16px rgba(0,0,0,0.2)'
-            }}
-          />
         </div>
 
         <div className="quote-content">

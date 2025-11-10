@@ -41,6 +41,34 @@
   color: #666;
 }
 
+.property-info-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 8px 15px;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.property-info-banner .address {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
+  color: #2d5016;
+  line-height: 1.3;
+}
+
+.property-info-banner .size {
+  font-size: 0.8rem;
+  margin: 2px 0 0 0;
+  color: #666;
+  line-height: 1.2;
+}
+
 .quote-content {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -574,7 +602,23 @@
   }
 
   .property-info .address {
-    font-size: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .property-info .size {
+    font-size: 0.75rem;
+  }
+
+  .property-info-banner {
+    padding: 6px 12px;
+  }
+
+  .property-info-banner .address {
+    font-size: 0.85rem;
+  }
+
+  .property-info-banner .size {
+    font-size: 0.7rem;
   }
 
   .service-header {
