@@ -1359,16 +1359,16 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
       }}>
         {/* Header */}
         <div style={{
-          padding: '20px 24px',
+          padding: window.innerWidth <= 768 ? '12px 16px' : '20px 24px',
           borderBottom: '1px solid #e5e7eb',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center'
         }}>
-          <div>
+          <div style={{ flex: 1, minWidth: 0 }}>
             <h2 style={{
               margin: 0,
-              fontSize: '24px',
+              fontSize: window.innerWidth <= 768 ? '18px' : '24px',
               fontWeight: '700',
               color: '#1f2937'
             }}>
@@ -1376,8 +1376,11 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
             </h2>
             <p style={{
               margin: '4px 0 0',
-              fontSize: '14px',
-              color: '#6b7280'
+              fontSize: window.innerWidth <= 768 ? '12px' : '14px',
+              color: '#6b7280',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
             }}>
               {address}
             </p>
@@ -1387,16 +1390,18 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
             style={{
               background: 'none',
               border: 'none',
-              fontSize: '28px',
+              fontSize: window.innerWidth <= 768 ? '24px' : '28px',
               cursor: 'pointer',
               color: '#6b7280',
               padding: '0',
-              width: '32px',
-              height: '32px',
+              width: window.innerWidth <= 768 ? '28px' : '32px',
+              height: window.innerWidth <= 768 ? '28px' : '32px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              borderRadius: '6px'
+              borderRadius: '6px',
+              flexShrink: 0,
+              marginLeft: '12px'
             }}
             onMouseOver={(e) => e.target.style.backgroundColor = '#f3f4f6'}
             onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
@@ -1485,21 +1490,34 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
             }
           `}</style>
 
-          {/* Property Info Overlay */}
+          {/* Property Info Overlay - Responsive */}
           {propertySize && (
             <div style={{
               position: 'absolute',
-              top: '16px',
-              left: '16px',
-              backgroundColor: 'white',
-              padding: '16px',
-              borderRadius: '8px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-              minWidth: '220px'
+              ...(window.innerWidth <= 768 ? {
+                // Mobile: Compact card at bottom
+                bottom: '70px',
+                left: '12px',
+                right: '12px',
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(10px)',
+                padding: '10px 12px',
+                borderRadius: '8px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+              } : {
+                // Desktop: Top left
+                top: '16px',
+                left: '16px',
+                backgroundColor: 'white',
+                padding: '16px',
+                borderRadius: '8px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                minWidth: '220px'
+              })
             }}>
               <h3 style={{
-                margin: '0 0 8px',
-                fontSize: '16px',
+                margin: '0 0 6px',
+                fontSize: window.innerWidth <= 768 ? '13px' : '16px',
                 fontWeight: '600',
                 color: '#1f2937'
               }}>
@@ -1507,9 +1525,9 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
               </h3>
               {dataSource === 'cadastre' && (
                 <div style={{
-                  fontSize: '12px',
+                  fontSize: window.innerWidth <= 768 ? '10px' : '12px',
                   color: '#059669',
-                  marginBottom: '8px',
+                  marginBottom: window.innerWidth <= 768 ? '4px' : '8px',
                   fontWeight: '500'
                 }}>
                   ✓ Official Parcel Data
@@ -1517,32 +1535,53 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
               )}
               {dataSource === 'building' && (
                 <div style={{
-                  fontSize: '12px',
+                  fontSize: window.innerWidth <= 768 ? '10px' : '12px',
                   color: '#d97706',
-                  marginBottom: '8px'
+                  marginBottom: window.innerWidth <= 768 ? '4px' : '8px'
                 }}>
                   ⚠ Estimated from building
                 </div>
               )}
               {dataSource === 'estimate' && (
                 <div style={{
-                  fontSize: '12px',
+                  fontSize: window.innerWidth <= 768 ? '10px' : '12px',
                   color: '#6b7280',
-                  marginBottom: '8px'
+                  marginBottom: window.innerWidth <= 768 ? '4px' : '8px'
                 }}>
                   ℹ Standard lot estimate
                 </div>
               )}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{
+                display: 'flex',
+                flexDirection: window.innerWidth <= 768 ? 'row' : 'column',
+                gap: window.innerWidth <= 768 ? '16px' : '8px',
+                justifyContent: window.innerWidth <= 768 ? 'space-around' : 'flex-start'
+              }}>
                 <div>
-                  <div style={{ fontSize: '14px', color: '#6b7280' }}>Square Feet</div>
-                  <div style={{ fontSize: '20px', fontWeight: '700', color: '#2d5016' }}>
+                  <div style={{
+                    fontSize: window.innerWidth <= 768 ? '11px' : '14px',
+                    color: '#6b7280'
+                  }}>Square Feet</div>
+                  <div style={{
+                    fontSize: window.innerWidth <= 768 ? '15px' : '20px',
+                    fontWeight: '700',
+                    color: '#2d5016',
+                    lineHeight: '1.2'
+                  }}>
                     {propertySize.sqFt?.toLocaleString()} ft²
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '14px', color: '#6b7280' }}>Acres</div>
-                  <div style={{ fontSize: '20px', fontWeight: '700', color: '#2d5016' }}>
+                  <div style={{
+                    fontSize: window.innerWidth <= 768 ? '11px' : '14px',
+                    color: '#6b7280'
+                  }}>Acres</div>
+                  <div style={{
+                    fontSize: window.innerWidth <= 768 ? '15px' : '20px',
+                    fontWeight: '700',
+                    color: '#2d5016',
+                    lineHeight: '1.2'
+                  }}>
                     {propertySize.acres} acres
                   </div>
                 </div>
@@ -1550,41 +1589,44 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
             </div>
           )}
 
-          {/* Instructions */}
-          <div style={{
-            position: 'absolute',
-            bottom: '16px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            backgroundColor: 'rgba(0, 0, 0, 0.75)',
-            color: 'white',
-            padding: '12px 20px',
-            borderRadius: '8px',
-            fontSize: '14px',
-            textAlign: 'center'
-          }}>
-            📍 Property boundary shown in green • Use scroll to zoom
-          </div>
+          {/* Instructions - Hidden on mobile to save space */}
+          {window.innerWidth > 768 && (
+            <div style={{
+              position: 'absolute',
+              bottom: '16px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              backgroundColor: 'rgba(0, 0, 0, 0.75)',
+              color: 'white',
+              padding: '12px 20px',
+              borderRadius: '8px',
+              fontSize: '14px',
+              textAlign: 'center'
+            }}>
+              📍 Property boundary shown in green • Use scroll to zoom
+            </div>
+          )}
         </div>
 
-        {/* Footer */}
+        {/* Footer - Sticky buttons */}
         <div style={{
-          padding: window.innerWidth <= 768 ? '16px' : '20px 24px',
+          padding: window.innerWidth <= 768 ? '10px 12px' : '20px 24px',
           borderTop: '1px solid #e5e7eb',
           display: 'flex',
-          gap: '12px',
+          gap: window.innerWidth <= 768 ? '8px' : '12px',
           justifyContent: window.innerWidth <= 768 ? 'stretch' : 'flex-end',
-          flexDirection: window.innerWidth <= 768 ? 'column' : 'row',
+          flexDirection: window.innerWidth <= 768 ? 'row' : 'row',
           backgroundColor: 'white',
           position: 'sticky',
           bottom: 0,
-          zIndex: 10
+          zIndex: 10,
+          boxShadow: '0 -2px 8px rgba(0,0,0,0.05)'
         }}>
           <button
             onClick={onClose}
             style={{
-              padding: '12px 24px',
-              fontSize: '16px',
+              padding: window.innerWidth <= 768 ? '10px 16px' : '12px 24px',
+              fontSize: window.innerWidth <= 768 ? '14px' : '16px',
               fontWeight: '600',
               border: '2px solid #d1d5db',
               backgroundColor: 'white',
@@ -1603,8 +1645,8 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
           <button
             onClick={handleConfirm}
             style={{
-              padding: '14px 32px',
-              fontSize: '16px',
+              padding: window.innerWidth <= 768 ? '10px 20px' : '14px 32px',
+              fontSize: window.innerWidth <= 768 ? '14px' : '16px',
               fontWeight: '600',
               border: 'none',
               backgroundColor: '#2d5016',
@@ -1612,7 +1654,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
               borderRadius: '8px',
               cursor: 'pointer',
               transition: 'all 0.2s',
-              flex: window.innerWidth <= 768 ? '1' : 'none',
+              flex: window.innerWidth <= 768 ? '2' : 'none',
               width: window.innerWidth <= 768 ? '100%' : 'auto'
             }}
             onMouseOver={(e) => e.target.style.backgroundColor = '#1f3810'}
