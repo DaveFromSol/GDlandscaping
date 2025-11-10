@@ -289,7 +289,7 @@ Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}`,
                 <div className="contact-icon">🚒</div>
                 <div className="contact-details">
                   <h3>Firefighter-Owned</h3>
-                  <p>Proudly owned and operated by a local Berlin firefighter</p>
+                  <p>Proudly owned and operated by a local firefighter</p>
                   <small>Committed to serving our community with integrity</small>
                 </div>
               </div>

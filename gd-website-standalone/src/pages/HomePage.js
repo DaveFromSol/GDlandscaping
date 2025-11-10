@@ -388,7 +388,7 @@ const HomePage = () => {
               <div className="feature">
                 <div className="feature-icon">🚒</div>
                 <h3>Firefighter-Owned</h3>
-                <p>Proudly owned and operated by a local Berlin firefighter committed to serving our community.</p>
+                <p>Proudly owned and operated by a local firefighter committed to serving our community.</p>
               </div>
             </div>
 
