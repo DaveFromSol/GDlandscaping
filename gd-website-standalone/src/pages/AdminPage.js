@@ -3608,7 +3608,10 @@ const AdminDashboard = ({ user, onLogout }) => {
                     <h3 className="text-lg font-semibold text-gray-900">Snow Removal Contracts</h3>
                     <p className="text-sm text-gray-500 mt-1">Active contracts for the season</p>
                   </div>
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium">
+                  <button
+                    onClick={() => setActiveTab('customers')}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
+                  >
                     + Add Contract
                   </button>
                 </div>
@@ -3662,7 +3665,10 @@ const AdminDashboard = ({ user, onLogout }) => {
                         <div className="text-gray-400 text-5xl mb-4">❄️</div>
                         <h3 className="text-lg font-medium text-gray-900 mb-2">No snow removal contracts</h3>
                         <p className="text-sm text-gray-500 mb-4">Add customers with snow removal service to see them here</p>
-                        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium">
+                        <button
+                          onClick={() => setActiveTab('customers')}
+                          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
+                        >
                           Add First Contract
                         </button>
                       </div>
