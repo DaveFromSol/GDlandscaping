@@ -4,6 +4,7 @@ import SEOHead from '../components/SEOHead';
 import Leads from '../components/Leads';
 import Customers from '../components/Customers';
 import SnowRemovalMap from '../components/SnowRemovalMap';
+import GoogleAddressAutocomplete from '../components/GoogleAddressAutocomplete';
 import {
   collection,
   addDoc,
@@ -2614,14 +2615,19 @@ const AdminDashboard = ({ user, onLogout }) => {
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Address *
+                        <span className="text-xs text-gray-500 ml-2">(Start typing for suggestions)</span>
                       </label>
-                      <input
-                        type="text"
+                      <GoogleAddressAutocomplete
                         value={newJob.address}
-                        onChange={(e) => setNewJob({...newJob, address: e.target.value})}
-                        placeholder="123 Main St, Berlin, CT 06037"
+                        onChange={(value) => setNewJob({...newJob, address: value})}
+                        onPlaceSelected={(addressData) => {
+                          setNewJob({
+                            ...newJob,
+                            address: addressData.fullAddress
+                          });
+                        }}
+                        placeholder="Start typing the job address..."
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        required
                       />
                     </div>
 

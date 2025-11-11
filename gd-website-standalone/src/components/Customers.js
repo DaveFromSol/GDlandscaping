@@ -11,6 +11,7 @@ import {
   serverTimestamp
 } from 'firebase/firestore';
 import { useFirebase } from '../contexts/FirebaseContext';
+import GoogleAddressAutocomplete from './GoogleAddressAutocomplete';
 
 const Customers = ({ user }) => {
   const { db } = useFirebase();
@@ -333,13 +334,24 @@ const Customers = ({ user }) => {
                   </select>
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                  <input
-                    type="text"
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Address
+                    <span className="text-xs text-gray-500 ml-2">(Start typing for suggestions)</span>
+                  </label>
+                  <GoogleAddressAutocomplete
                     value={newCustomer.address}
-                    onChange={(e) => setNewCustomer({...newCustomer, address: e.target.value})}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="Street address"
+                    onChange={(value) => setNewCustomer({...newCustomer, address: value})}
+                    onPlaceSelected={(addressData) => {
+                      setNewCustomer({
+                        ...newCustomer,
+                        address: addressData.street || addressData.fullAddress,
+                        city: addressData.city,
+                        state: addressData.state,
+                        zip: addressData.zip
+                      });
+                    }}
+                    placeholder="Start typing your address..."
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
                 <div>
