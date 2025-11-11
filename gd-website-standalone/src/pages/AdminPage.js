@@ -21,7 +21,7 @@ import { useFirebase } from '../contexts/FirebaseContext';
 
 const AdminDashboard = ({ user, onLogout }) => {
   const { db } = useFirebase();
-  const [activeTab, setActiveTab] = useState('leads');
+  const [activeTab, setActiveTab] = useState('overview');
   const [stats, setStats] = useState({
     totalQuotes: 0,
     pendingQuotes: 0,
@@ -1131,6 +1131,16 @@ const AdminDashboard = ({ user, onLogout }) => {
           <div className="border-b border-gray-200">
             <nav className="-mb-px flex space-x-8 px-6">
               <button
+                onClick={() => setActiveTab('overview')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'overview'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                🏠 Overview
+              </button>
+              <button
                 onClick={() => setActiveTab('leads')}
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
                   activeTab === 'leads'
@@ -1190,6 +1200,308 @@ const AdminDashboard = ({ user, onLogout }) => {
         </div>
 
         {/* Tab Content */}
+        {activeTab === 'overview' && (
+          <div className="space-y-6">
+            {/* Enhanced Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Total Revenue Card */}
+              <div style={{
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                borderRadius: '16px',
+                padding: '24px',
+                color: 'white',
+                boxShadow: '0 10px 30px rgba(102, 126, 234, 0.3)'
+              }}>
+                <div style={{ fontSize: '32px', marginBottom: '12px' }}>💰</div>
+                <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Total Revenue</div>
+                <div style={{ fontSize: '28px', fontWeight: 'bold' }}>{stats.totalRevenue}</div>
+              </div>
+
+              {/* Completed Jobs Card */}
+              <div style={{
+                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                borderRadius: '16px',
+                padding: '24px',
+                color: 'white',
+                boxShadow: '0 10px 30px rgba(16, 185, 129, 0.3)'
+              }}>
+                <div style={{ fontSize: '32px', marginBottom: '12px' }}>✅</div>
+                <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Completed Jobs</div>
+                <div style={{ fontSize: '28px', fontWeight: 'bold' }}>{stats.completedJobs}</div>
+              </div>
+
+              {/* Pending Quotes Card */}
+              <div style={{
+                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                borderRadius: '16px',
+                padding: '24px',
+                color: 'white',
+                boxShadow: '0 10px 30px rgba(245, 158, 11, 0.3)'
+              }}>
+                <div style={{ fontSize: '32px', marginBottom: '12px' }}>⏰</div>
+                <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Pending Quotes</div>
+                <div style={{ fontSize: '28px', fontWeight: 'bold' }}>{stats.pendingQuotes}</div>
+              </div>
+
+              {/* Total Customers Card */}
+              <div style={{
+                background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+                borderRadius: '16px',
+                padding: '24px',
+                color: 'white',
+                boxShadow: '0 10px 30px rgba(59, 130, 246, 0.3)'
+              }}>
+                <div style={{ fontSize: '32px', marginBottom: '12px' }}>👥</div>
+                <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Total Customers</div>
+                <div style={{ fontSize: '28px', fontWeight: 'bold' }}>{customers.length}</div>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-4">⚡ Quick Actions</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button
+                  onClick={() => setActiveTab('routes')}
+                  style={{
+                    padding: '20px',
+                    borderRadius: '12px',
+                    border: '2px solid #e5e7eb',
+                    backgroundColor: 'white',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    textAlign: 'center'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#3b82f6';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '#e5e7eb';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
+                  <div style={{ fontSize: '32px', marginBottom: '8px' }}>📅</div>
+                  <div style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>Schedule Job</div>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab('leads')}
+                  style={{
+                    padding: '20px',
+                    borderRadius: '12px',
+                    border: '2px solid #e5e7eb',
+                    backgroundColor: 'white',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    textAlign: 'center'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#10b981';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '#e5e7eb';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
+                  <div style={{ fontSize: '32px', marginBottom: '8px' }}>🎯</div>
+                  <div style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>View Leads</div>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab('customers')}
+                  style={{
+                    padding: '20px',
+                    borderRadius: '12px',
+                    border: '2px solid #e5e7eb',
+                    backgroundColor: 'white',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    textAlign: 'center'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#8b5cf6';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(139, 92, 246, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '#e5e7eb';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
+                  <div style={{ fontSize: '32px', marginBottom: '8px' }}>👥</div>
+                  <div style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>Customers</div>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab('bookings')}
+                  style={{
+                    padding: '20px',
+                    borderRadius: '12px',
+                    border: '2px solid #e5e7eb',
+                    backgroundColor: 'white',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    textAlign: 'center'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#f59e0b';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(245, 158, 11, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '#e5e7eb';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
+                  <div style={{ fontSize: '32px', marginBottom: '8px' }}>📋</div>
+                  <div style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>Bookings</div>
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Today's Jobs */}
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">📅 Today's Schedule</h3>
+                {jobs.length > 0 ? (
+                  <div className="space-y-3">
+                    {jobs.slice(0, 5).map((job) => (
+                      <div
+                        key={job.id}
+                        style={{
+                          padding: '16px',
+                          borderRadius: '10px',
+                          backgroundColor: job.status === 'completed' ? '#f0fdf4' : '#f9fafb',
+                          border: '1px solid',
+                          borderColor: job.status === 'completed' ? '#86efac' : '#e5e7eb'
+                        }}
+                      >
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1">
+                            <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '4px' }}>
+                              {job.customerName}
+                            </div>
+                            <div style={{ fontSize: '14px', color: '#6b7280' }}>
+                              {job.serviceType} • {job.estimatedTime}min
+                            </div>
+                          </div>
+                          <div style={{
+                            padding: '4px 12px',
+                            borderRadius: '12px',
+                            fontSize: '12px',
+                            fontWeight: '600',
+                            backgroundColor: job.status === 'completed' ? '#10b981' : '#f59e0b',
+                            color: 'white'
+                          }}>
+                            {job.status === 'completed' ? '✓ Done' : '⏱ Pending'}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    {jobs.length > 5 && (
+                      <button
+                        onClick={() => setActiveTab('routes')}
+                        style={{
+                          width: '100%',
+                          padding: '12px',
+                          marginTop: '12px',
+                          color: '#3b82f6',
+                          fontWeight: '600',
+                          fontSize: '14px',
+                          textAlign: 'center',
+                          cursor: 'pointer',
+                          backgroundColor: 'transparent',
+                          border: 'none'
+                        }}
+                      >
+                        View all {jobs.length} jobs →
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <div style={{ textAlign: 'center', padding: '40px 20px', color: '#9ca3af' }}>
+                    <div style={{ fontSize: '48px', marginBottom: '12px' }}>📭</div>
+                    <div>No jobs scheduled for today</div>
+                  </div>
+                )}
+              </div>
+
+              {/* Recent Bookings */}
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">🔔 Recent Activity</h3>
+                {bookings.length > 0 ? (
+                  <div className="space-y-3">
+                    {bookings.slice(0, 5).map((booking) => (
+                      <div
+                        key={booking.id}
+                        style={{
+                          padding: '16px',
+                          borderRadius: '10px',
+                          backgroundColor: '#fef3c7',
+                          border: '1px solid #fbbf24'
+                        }}
+                      >
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1">
+                            <div style={{ fontWeight: '600', color: '#92400e', marginBottom: '4px' }}>
+                              {booking.name}
+                            </div>
+                            <div style={{ fontSize: '14px', color: '#78350f' }}>
+                              {booking.service}
+                            </div>
+                          </div>
+                          <div style={{
+                            padding: '4px 12px',
+                            borderRadius: '12px',
+                            fontSize: '12px',
+                            fontWeight: '600',
+                            backgroundColor: '#f59e0b',
+                            color: 'white'
+                          }}>
+                            New
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    {bookings.length > 5 && (
+                      <button
+                        onClick={() => setActiveTab('bookings')}
+                        style={{
+                          width: '100%',
+                          padding: '12px',
+                          marginTop: '12px',
+                          color: '#3b82f6',
+                          fontWeight: '600',
+                          fontSize: '14px',
+                          textAlign: 'center',
+                          cursor: 'pointer',
+                          backgroundColor: 'transparent',
+                          border: 'none'
+                        }}
+                      >
+                        View all {bookings.length} bookings →
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <div style={{ textAlign: 'center', padding: '40px 20px', color: '#9ca3af' }}>
+                    <div style={{ fontSize: '48px', marginBottom: '12px' }}>📭</div>
+                    <div>No recent bookings</div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
         {activeTab === 'leads' && (
           <Leads user={user} />
         )}
