@@ -189,23 +189,24 @@ const AdminDashboard = ({ user, onLogout }) => {
       .filter(j => j.status === 'completed')
       .reduce((sum, job) => sum + (parseFloat(job.actualPayment) || parseFloat(job.expectedPayment) || 0), 0);
 
+    // Calculate revenue from quotes (if any have prices)
+    const quoteRevenue = quotes
+      .filter(q => q.status === 'Completed')
+      .reduce((sum, quote) => sum + (parseFloat(quote.price) || 0), 0);
+
+    // Combine both revenue sources
+    const totalRevenue = quoteRevenue + jobRevenue;
+
     const updatedStats = {
       totalQuotes: quotes.length,
       pendingQuotes: quotes.filter(q => q.status === 'Pending').length,
       completedJobs: quotes.filter(q => q.status === 'Completed').length + completedJobsFromJobs,
-      totalRevenue: calculateRevenue(quotes) + ` (+$${jobRevenue.toFixed(2)} from jobs)`,
+      totalRevenue: `$${totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       totalBookings: bookings.length,
       pendingBookings: bookings.filter(b => b.status === 'pending').length
     };
     setStats(updatedStats);
   }, [quotes, bookings, allJobsForStats]);
-
-  const calculateRevenue = (quotes) => {
-    // Basic revenue calculation - you can customize this
-    const completedJobs = quotes.filter(q => q.status === 'Completed').length;
-    const avgJobValue = 450; // Average job value - adjust as needed
-    return `$${(completedJobs * avgJobValue).toLocaleString()}`;
-  };
 
   const addQuote = async () => {
     if (!newQuote.name || !newQuote.service) return;
