@@ -1,0 +1,256 @@
+import React, { useState, useCallback } from 'react';
+import { GoogleMap, LoadScript, Marker, DirectionsRenderer } from '@react-google-maps/api';
+
+const GOOGLE_MAPS_API_KEY = 'AIzaSyDiFzxddX5tpdulBf8YMVXFekxFUJ2ys-c';
+
+const mapContainerStyle = {
+  width: '100%',
+  height: '500px'
+};
+
+const defaultCenter = {
+  lat: 41.6032,
+  lng: -73.0877 // Connecticut center
+};
+
+const SnowRemovalMap = ({ contracts }) => {
+  const [directionsResponse, setDirectionsResponse] = useState(null);
+  const [optimizedRoute, setOptimizedRoute] = useState([]);
+  const [routeInfo, setRouteInfo] = useState(null);
+  const [isOptimizing, setIsOptimizing] = useState(false);
+
+  const optimizeRoute = useCallback(() => {
+    if (!contracts || contracts.length === 0) {
+      alert('No contracts available to optimize');
+      return;
+    }
+
+    if (contracts.length < 2) {
+      alert('Need at least 2 contracts to create a route');
+      return;
+    }
+
+    setIsOptimizing(true);
+
+    // Use Google Directions Service to optimize route
+    const directionsService = new window.google.maps.DirectionsService();
+
+    // Sort by priority first (High priority contracts first)
+    const prioritySorted = [...contracts].sort((a, b) => {
+      const priorityOrder = { High: 0, Normal: 1, Low: 2 };
+      return priorityOrder[a.priority || 'Normal'] - priorityOrder[b.priority || 'Normal'];
+    });
+
+    // First contract is origin, last is destination, rest are waypoints
+    const origin = prioritySorted[0].address;
+    const destination = prioritySorted[prioritySorted.length - 1].address;
+    const waypoints = prioritySorted.slice(1, -1).map(contract => ({
+      location: contract.address,
+      stopover: true
+    }));
+
+    directionsService.route(
+      {
+        origin: origin,
+        destination: destination,
+        waypoints: waypoints,
+        optimizeWaypoints: true,
+        travelMode: window.google.maps.TravelMode.DRIVING,
+      },
+      (result, status) => {
+        setIsOptimizing(false);
+        if (status === window.google.maps.DirectionsStatus.OK) {
+          setDirectionsResponse(result);
+
+          // Get optimized order
+          const waypointOrder = result.routes[0].waypoint_order;
+          const optimized = [
+            prioritySorted[0], // origin
+            ...waypointOrder.map(i => prioritySorted[i + 1]), // optimized waypoints
+            prioritySorted[prioritySorted.length - 1] // destination
+          ];
+          setOptimizedRoute(optimized);
+
+          // Calculate total distance and duration
+          const route = result.routes[0];
+          let totalDistance = 0;
+          let totalDuration = 0;
+
+          route.legs.forEach(leg => {
+            totalDistance += leg.distance.value; // in meters
+            totalDuration += leg.duration.value; // in seconds
+          });
+
+          setRouteInfo({
+            distance: (totalDistance / 1609.34).toFixed(2), // Convert to miles
+            duration: Math.round(totalDuration / 60), // Convert to minutes
+            stops: contracts.length
+          });
+        } else {
+          console.error('Directions request failed:', status);
+          alert('Failed to optimize route. Please check addresses.');
+        }
+      }
+    );
+  }, [contracts]);
+
+  const exportRoute = () => {
+    if (!optimizedRoute || optimizedRoute.length === 0) {
+      alert('Please optimize the route first');
+      return;
+    }
+
+    let routeText = '🚗 OPTIMIZED SNOW REMOVAL ROUTE\n';
+    routeText += '================================\n\n';
+    routeText += `Total Stops: ${routeInfo.stops}\n`;
+    routeText += `Total Distance: ${routeInfo.distance} miles\n`;
+    routeText += `Estimated Time: ${routeInfo.duration} minutes\n\n`;
+    routeText += 'ROUTE ORDER:\n';
+    routeText += '============\n\n';
+
+    optimizedRoute.forEach((contract, index) => {
+      routeText += `${index + 1}. ${contract.name}\n`;
+      routeText += `   Address: ${contract.address}\n`;
+      routeText += `   Priority: ${contract.priority || 'Normal'}\n`;
+      if (contract.phone) routeText += `   Phone: ${contract.phone}\n`;
+      routeText += '\n';
+    });
+
+    // Create and download file
+    const blob = new Blob([routeText], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `snow-route-${new Date().toISOString().split('T')[0]}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const openInGoogleMaps = () => {
+    if (!optimizedRoute || optimizedRoute.length === 0) {
+      alert('Please optimize the route first');
+      return;
+    }
+
+    // Build Google Maps URL with waypoints
+    const origin = encodeURIComponent(optimizedRoute[0].address);
+    const destination = encodeURIComponent(optimizedRoute[optimizedRoute.length - 1].address);
+    const waypoints = optimizedRoute
+      .slice(1, -1)
+      .map(c => encodeURIComponent(c.address))
+      .join('|');
+
+    const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&waypoints=${waypoints}&travelmode=driving`;
+    window.open(url, '_blank');
+  };
+
+  return (
+    <div className="space-y-4">
+      <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={defaultCenter}
+          zoom={10}
+        >
+          {/* Display markers for all contracts */}
+          {contracts && contracts.map((contract, index) => {
+            // Geocode address to get lat/lng (simplified - in production use Geocoding API)
+            // For now, we'll use the map's built-in geocoding via addresses
+            return null; // We'll rely on DirectionsRenderer to show the route
+          })}
+
+          {/* Display optimized route */}
+          {directionsResponse && (
+            <DirectionsRenderer
+              directions={directionsResponse}
+              options={{
+                suppressMarkers: false,
+                polylineOptions: {
+                  strokeColor: '#3B82F6',
+                  strokeWeight: 5
+                }
+              }}
+            />
+          )}
+        </GoogleMap>
+      </LoadScript>
+
+      {/* Route Controls */}
+      <div className="flex flex-wrap gap-3">
+        <button
+          onClick={optimizeRoute}
+          disabled={isOptimizing}
+          className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
+        >
+          {isOptimizing ? '⏳ Optimizing...' : '🎯 Optimize Route'}
+        </button>
+        <button
+          onClick={exportRoute}
+          disabled={!optimizedRoute || optimizedRoute.length === 0}
+          className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:bg-gray-400 transition-colors"
+        >
+          📄 Export Route
+        </button>
+        <button
+          onClick={openInGoogleMaps}
+          disabled={!optimizedRoute || optimizedRoute.length === 0}
+          className="flex-1 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 transition-colors"
+        >
+          🗺️ Open in Google Maps
+        </button>
+      </div>
+
+      {/* Route Information */}
+      {routeInfo && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h4 className="font-semibold text-blue-900 mb-2">📊 Route Information</h4>
+          <div className="grid grid-cols-3 gap-4 text-sm">
+            <div>
+              <span className="text-gray-600">Total Distance:</span>
+              <p className="font-semibold text-blue-900">{routeInfo.distance} mi</p>
+            </div>
+            <div>
+              <span className="text-gray-600">Estimated Time:</span>
+              <p className="font-semibold text-blue-900">{routeInfo.duration} min</p>
+            </div>
+            <div>
+              <span className="text-gray-600">Total Stops:</span>
+              <p className="font-semibold text-blue-900">{routeInfo.stops}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Optimized Route List */}
+      {optimizedRoute && optimizedRoute.length > 0 && (
+        <div className="bg-white border border-gray-200 rounded-lg p-4">
+          <h4 className="font-semibold text-gray-900 mb-3">📍 Optimized Route Order</h4>
+          <div className="space-y-2">
+            {optimizedRoute.map((contract, index) => (
+              <div key={contract.id} className="flex items-center gap-3 p-2 bg-gray-50 rounded">
+                <span className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold text-sm">
+                  {index + 1}
+                </span>
+                <div className="flex-1">
+                  <p className="font-medium text-gray-900">{contract.name}</p>
+                  <p className="text-xs text-gray-600">{contract.address}</p>
+                </div>
+                <span className={`px-2 py-1 text-xs rounded-full ${
+                  contract.priority === 'High' ? 'bg-red-100 text-red-800' :
+                  contract.priority === 'Low' ? 'bg-gray-100 text-gray-800' :
+                  'bg-blue-100 text-blue-800'
+                }`}>
+                  {contract.priority || 'Normal'}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default SnowRemovalMap;
