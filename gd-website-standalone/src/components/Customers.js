@@ -36,7 +36,9 @@ const Customers = ({ user }) => {
     notes: '',
     totalSpent: 0,
     lastServiceDate: '',
-    tags: []
+    tags: [],
+    snowRemoval: false,
+    priority: 'Normal'
   });
 
   // Real-time Firebase listener for customers
@@ -154,7 +156,9 @@ const Customers = ({ user }) => {
       notes: customer.notes || '',
       totalSpent: customer.totalSpent || 0,
       lastServiceDate: customer.lastServiceDate || '',
-      tags: customer.tags || []
+      tags: customer.tags || [],
+      snowRemoval: customer.snowRemoval || false,
+      priority: customer.priority || 'Normal'
     });
     setShowAddCustomer(true);
   };
@@ -176,7 +180,9 @@ const Customers = ({ user }) => {
       notes: '',
       totalSpent: 0,
       lastServiceDate: '',
-      tags: []
+      tags: [],
+      snowRemoval: false,
+      priority: 'Normal'
     });
   };
 
@@ -425,6 +431,33 @@ const Customers = ({ user }) => {
                     onChange={(e) => setNewCustomer({...newCustomer, lastServiceDate: e.target.value})}
                     className="w-full p-2 border border-gray-300 rounded-md"
                   />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Snow Removal Priority</label>
+                  <select
+                    value={newCustomer.priority}
+                    onChange={(e) => setNewCustomer({...newCustomer, priority: e.target.value})}
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  >
+                    <option value="Normal">Normal</option>
+                    <option value="High">High</option>
+                    <option value="Low">Low</option>
+                  </select>
+                </div>
+                <div className="md:col-span-2">
+                  <div className="flex items-center gap-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <input
+                      type="checkbox"
+                      id="snowRemoval"
+                      checked={newCustomer.snowRemoval}
+                      onChange={(e) => setNewCustomer({...newCustomer, snowRemoval: e.target.checked})}
+                      className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <label htmlFor="snowRemoval" className="text-sm font-medium text-gray-900 cursor-pointer">
+                      ❄️ Snow Removal Contract
+                      <span className="block text-xs text-gray-600 mt-1">Enable this customer for snow removal operations</span>
+                    </label>
+                  </div>
                 </div>
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
