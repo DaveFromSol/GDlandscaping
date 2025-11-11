@@ -1202,6 +1202,44 @@ const AdminDashboard = ({ user, onLogout }) => {
         {/* Tab Content */}
         {activeTab === 'overview' && (
           <div className="space-y-6">
+            {/* Welcome Banner */}
+            <div style={{
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              borderRadius: '20px',
+              padding: '32px',
+              color: 'white',
+              boxShadow: '0 20px 60px rgba(102, 126, 234, 0.3)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <div style={{
+                position: 'absolute',
+                top: '-50px',
+                right: '-50px',
+                width: '200px',
+                height: '200px',
+                background: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: '50%'
+              }}></div>
+              <div style={{
+                position: 'absolute',
+                bottom: '-30px',
+                right: '100px',
+                width: '150px',
+                height: '150px',
+                background: 'rgba(255, 255, 255, 0.05)',
+                borderRadius: '50%'
+              }}></div>
+              <div style={{ position: 'relative', zIndex: 1 }}>
+                <h2 style={{ fontSize: '28px', fontWeight: 'bold', marginBottom: '8px' }}>
+                  Welcome back! 👋
+                </h2>
+                <p style={{ fontSize: '16px', opacity: 0.9 }}>
+                  Here's what's happening with your business today
+                </p>
+              </div>
+            </div>
+
             {/* Enhanced Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Total Revenue Card */}
@@ -1210,11 +1248,39 @@ const AdminDashboard = ({ user, onLogout }) => {
                 borderRadius: '16px',
                 padding: '24px',
                 color: 'white',
-                boxShadow: '0 10px 30px rgba(102, 126, 234, 0.3)'
+                boxShadow: '0 10px 30px rgba(102, 126, 234, 0.3)',
+                position: 'relative',
+                overflow: 'hidden',
+                transition: 'transform 0.2s'
               }}>
-                <div style={{ fontSize: '32px', marginBottom: '12px' }}>💰</div>
-                <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Total Revenue</div>
-                <div style={{ fontSize: '28px', fontWeight: 'bold' }}>{stats.totalRevenue}</div>
+                <div style={{
+                  position: 'absolute',
+                  top: '-10px',
+                  right: '-10px',
+                  width: '80px',
+                  height: '80px',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  borderRadius: '50%'
+                }}></div>
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
+                    <div style={{ fontSize: '32px' }}>💰</div>
+                    <div style={{
+                      padding: '4px 8px',
+                      borderRadius: '8px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                      fontSize: '12px',
+                      fontWeight: '600'
+                    }}>
+                      This Month
+                    </div>
+                  </div>
+                  <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Total Revenue</div>
+                  <div style={{ fontSize: '32px', fontWeight: 'bold', marginBottom: '8px' }}>{stats.totalRevenue}</div>
+                  <div style={{ fontSize: '12px', opacity: 0.8 }}>
+                    ↗ Great progress!
+                  </div>
+                </div>
               </div>
 
               {/* Completed Jobs Card */}
@@ -1223,11 +1289,39 @@ const AdminDashboard = ({ user, onLogout }) => {
                 borderRadius: '16px',
                 padding: '24px',
                 color: 'white',
-                boxShadow: '0 10px 30px rgba(16, 185, 129, 0.3)'
+                boxShadow: '0 10px 30px rgba(16, 185, 129, 0.3)',
+                position: 'relative',
+                overflow: 'hidden',
+                transition: 'transform 0.2s'
               }}>
-                <div style={{ fontSize: '32px', marginBottom: '12px' }}>✅</div>
-                <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Completed Jobs</div>
-                <div style={{ fontSize: '28px', fontWeight: 'bold' }}>{stats.completedJobs}</div>
+                <div style={{
+                  position: 'absolute',
+                  top: '-10px',
+                  right: '-10px',
+                  width: '80px',
+                  height: '80px',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  borderRadius: '50%'
+                }}></div>
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
+                    <div style={{ fontSize: '32px' }}>✅</div>
+                    <div style={{
+                      padding: '4px 8px',
+                      borderRadius: '8px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                      fontSize: '12px',
+                      fontWeight: '600'
+                    }}>
+                      All Time
+                    </div>
+                  </div>
+                  <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Completed Jobs</div>
+                  <div style={{ fontSize: '32px', fontWeight: 'bold', marginBottom: '8px' }}>{stats.completedJobs}</div>
+                  <div style={{ fontSize: '12px', opacity: 0.8 }}>
+                    {jobs.filter(j => j.status === 'completed').length} today
+                  </div>
+                </div>
               </div>
 
               {/* Pending Quotes Card */}
@@ -1236,11 +1330,46 @@ const AdminDashboard = ({ user, onLogout }) => {
                 borderRadius: '16px',
                 padding: '24px',
                 color: 'white',
-                boxShadow: '0 10px 30px rgba(245, 158, 11, 0.3)'
-              }}>
-                <div style={{ fontSize: '32px', marginBottom: '12px' }}>⏰</div>
-                <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Pending Quotes</div>
-                <div style={{ fontSize: '28px', fontWeight: 'bold' }}>{stats.pendingQuotes}</div>
+                boxShadow: '0 10px 30px rgba(245, 158, 11, 0.3)',
+                position: 'relative',
+                overflow: 'hidden',
+                cursor: 'pointer',
+                transition: 'transform 0.2s'
+              }}
+              onClick={() => setActiveTab('quotes')}
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-4px)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+              >
+                <div style={{
+                  position: 'absolute',
+                  top: '-10px',
+                  right: '-10px',
+                  width: '80px',
+                  height: '80px',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  borderRadius: '50%'
+                }}></div>
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
+                    <div style={{ fontSize: '32px' }}>⏰</div>
+                    {stats.pendingQuotes > 0 && (
+                      <div style={{
+                        padding: '4px 8px',
+                        borderRadius: '8px',
+                        backgroundColor: 'rgba(255, 255, 255, 0.3)',
+                        fontSize: '12px',
+                        fontWeight: '600'
+                      }}>
+                        Action Needed
+                      </div>
+                    )}
+                  </div>
+                  <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Pending Quotes</div>
+                  <div style={{ fontSize: '32px', fontWeight: 'bold', marginBottom: '8px' }}>{stats.pendingQuotes}</div>
+                  <div style={{ fontSize: '12px', opacity: 0.8 }}>
+                    Click to review →
+                  </div>
+                </div>
               </div>
 
               {/* Total Customers Card */}
@@ -1249,11 +1378,44 @@ const AdminDashboard = ({ user, onLogout }) => {
                 borderRadius: '16px',
                 padding: '24px',
                 color: 'white',
-                boxShadow: '0 10px 30px rgba(59, 130, 246, 0.3)'
-              }}>
-                <div style={{ fontSize: '32px', marginBottom: '12px' }}>👥</div>
-                <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Total Customers</div>
-                <div style={{ fontSize: '28px', fontWeight: 'bold' }}>{customers.length}</div>
+                boxShadow: '0 10px 30px rgba(59, 130, 246, 0.3)',
+                position: 'relative',
+                overflow: 'hidden',
+                cursor: 'pointer',
+                transition: 'transform 0.2s'
+              }}
+              onClick={() => setActiveTab('customers')}
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-4px)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+              >
+                <div style={{
+                  position: 'absolute',
+                  top: '-10px',
+                  right: '-10px',
+                  width: '80px',
+                  height: '80px',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  borderRadius: '50%'
+                }}></div>
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
+                    <div style={{ fontSize: '32px' }}>👥</div>
+                    <div style={{
+                      padding: '4px 8px',
+                      borderRadius: '8px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                      fontSize: '12px',
+                      fontWeight: '600'
+                    }}>
+                      Database
+                    </div>
+                  </div>
+                  <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Total Customers</div>
+                  <div style={{ fontSize: '32px', fontWeight: 'bold', marginBottom: '8px' }}>{customers.length}</div>
+                  <div style={{ fontSize: '12px', opacity: 0.8 }}>
+                    View all customers →
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -1369,104 +1531,294 @@ const AdminDashboard = ({ user, onLogout }) => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Today's Jobs */}
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">📅 Today's Schedule</h3>
+              <div className="bg-white rounded-xl shadow-lg p-6" style={{ border: '2px solid #f0f0f0' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                  <h3 className="text-xl font-bold text-gray-900">📅 Today's Schedule</h3>
+                  {jobs.length > 0 && (
+                    <div style={{
+                      padding: '4px 12px',
+                      borderRadius: '20px',
+                      backgroundColor: '#eff6ff',
+                      color: '#3b82f6',
+                      fontSize: '14px',
+                      fontWeight: '600'
+                    }}>
+                      {jobs.length} {jobs.length === 1 ? 'job' : 'jobs'}
+                    </div>
+                  )}
+                </div>
                 {jobs.length > 0 ? (
                   <div className="space-y-3">
-                    {jobs.slice(0, 5).map((job) => (
+                    {jobs.slice(0, 5).map((job, index) => (
                       <div
                         key={job.id}
                         style={{
                           padding: '16px',
-                          borderRadius: '10px',
-                          backgroundColor: job.status === 'completed' ? '#f0fdf4' : '#f9fafb',
-                          border: '1px solid',
-                          borderColor: job.status === 'completed' ? '#86efac' : '#e5e7eb'
+                          borderRadius: '12px',
+                          backgroundColor: job.status === 'completed' ? '#f0fdf4' : 'white',
+                          border: '2px solid',
+                          borderColor: job.status === 'completed' ? '#86efac' : '#e5e7eb',
+                          transition: 'all 0.2s',
+                          cursor: 'pointer',
+                          position: 'relative',
+                          overflow: 'hidden'
+                        }}
+                        onClick={() => setActiveTab('routes')}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'translateX(4px)';
+                          e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'translateX(0)';
+                          e.currentTarget.style.boxShadow = 'none';
                         }}
                       >
-                        <div className="flex justify-between items-start">
+                        <div style={{
+                          position: 'absolute',
+                          left: 0,
+                          top: 0,
+                          bottom: 0,
+                          width: '4px',
+                          backgroundColor: job.status === 'completed' ? '#10b981' : '#f59e0b'
+                        }}></div>
+                        <div className="flex justify-between items-start" style={{ marginLeft: '8px' }}>
                           <div className="flex-1">
-                            <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '4px' }}>
-                              {job.customerName}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                              <span style={{
+                                width: '24px',
+                                height: '24px',
+                                borderRadius: '50%',
+                                backgroundColor: job.status === 'completed' ? '#d1fae5' : '#fef3c7',
+                                color: job.status === 'completed' ? '#059669' : '#d97706',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '12px',
+                                fontWeight: 'bold'
+                              }}>
+                                {index + 1}
+                              </span>
+                              <div style={{ fontWeight: '700', color: '#1f2937', fontSize: '15px' }}>
+                                {job.customerName}
+                              </div>
                             </div>
-                            <div style={{ fontSize: '14px', color: '#6b7280' }}>
-                              {job.serviceType} • {job.estimatedTime}min
+                            <div style={{ fontSize: '13px', color: '#6b7280', marginLeft: '32px' }}>
+                              📍 {job.address?.split(',')[0] || 'No address'}
                             </div>
+                            <div style={{ fontSize: '13px', color: '#6b7280', marginLeft: '32px', marginTop: '2px' }}>
+                              🛠 {job.serviceType} • ⏱ {job.estimatedTime}min
+                            </div>
+                            {job.expectedPayment && (
+                              <div style={{ fontSize: '13px', color: '#10b981', marginLeft: '32px', marginTop: '4px', fontWeight: '600' }}>
+                                💵 ${job.expectedPayment}
+                              </div>
+                            )}
                           </div>
                           <div style={{
-                            padding: '4px 12px',
-                            borderRadius: '12px',
-                            fontSize: '12px',
-                            fontWeight: '600',
+                            padding: '6px 12px',
+                            borderRadius: '20px',
+                            fontSize: '11px',
+                            fontWeight: '700',
                             backgroundColor: job.status === 'completed' ? '#10b981' : '#f59e0b',
-                            color: 'white'
+                            color: 'white',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px'
                           }}>
-                            {job.status === 'completed' ? '✓ Done' : '⏱ Pending'}
+                            {job.status === 'completed' ? '✓ Done' : '⏱ Todo'}
                           </div>
                         </div>
                       </div>
                     ))}
+                    <div style={{
+                      marginTop: '16px',
+                      padding: '12px',
+                      borderRadius: '8px',
+                      backgroundColor: '#f9fafb',
+                      textAlign: 'center'
+                    }}>
+                      <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>
+                        Progress Today
+                      </div>
+                      <div style={{
+                        width: '100%',
+                        height: '8px',
+                        backgroundColor: '#e5e7eb',
+                        borderRadius: '4px',
+                        overflow: 'hidden'
+                      }}>
+                        <div style={{
+                          width: `${jobs.length > 0 ? (jobs.filter(j => j.status === 'completed').length / jobs.length) * 100 : 0}%`,
+                          height: '100%',
+                          backgroundColor: '#10b981',
+                          transition: 'width 0.3s'
+                        }}></div>
+                      </div>
+                      <div style={{ fontSize: '13px', color: '#1f2937', marginTop: '6px', fontWeight: '600' }}>
+                        {jobs.filter(j => j.status === 'completed').length} of {jobs.length} completed
+                      </div>
+                    </div>
                     {jobs.length > 5 && (
                       <button
                         onClick={() => setActiveTab('routes')}
                         style={{
                           width: '100%',
-                          padding: '12px',
+                          padding: '14px',
                           marginTop: '12px',
-                          color: '#3b82f6',
+                          color: 'white',
+                          backgroundColor: '#3b82f6',
                           fontWeight: '600',
                           fontSize: '14px',
                           textAlign: 'center',
                           cursor: 'pointer',
-                          backgroundColor: 'transparent',
-                          border: 'none'
+                          border: 'none',
+                          borderRadius: '10px',
+                          transition: 'all 0.2s'
                         }}
+                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
+                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
                       >
                         View all {jobs.length} jobs →
                       </button>
                     )}
                   </div>
                 ) : (
-                  <div style={{ textAlign: 'center', padding: '40px 20px', color: '#9ca3af' }}>
-                    <div style={{ fontSize: '48px', marginBottom: '12px' }}>📭</div>
-                    <div>No jobs scheduled for today</div>
+                  <div style={{ textAlign: 'center', padding: '60px 20px', color: '#9ca3af' }}>
+                    <div style={{ fontSize: '64px', marginBottom: '16px', opacity: 0.5 }}>📭</div>
+                    <div style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px' }}>No jobs scheduled</div>
+                    <div style={{ fontSize: '14px', marginBottom: '20px' }}>Start by adding a job to the route planner</div>
+                    <button
+                      onClick={() => setActiveTab('routes')}
+                      style={{
+                        padding: '10px 20px',
+                        backgroundColor: '#3b82f6',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontWeight: '600',
+                        fontSize: '14px'
+                      }}
+                    >
+                      Go to Route Planner
+                    </button>
                   </div>
                 )}
               </div>
 
               {/* Recent Bookings */}
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">🔔 Recent Activity</h3>
+              <div className="bg-white rounded-xl shadow-lg p-6" style={{ border: '2px solid #f0f0f0' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                  <h3 className="text-xl font-bold text-gray-900">🔔 Recent Activity</h3>
+                  {bookings.length > 0 && (
+                    <div style={{
+                      padding: '4px 12px',
+                      borderRadius: '20px',
+                      backgroundColor: '#fef3c7',
+                      color: '#d97706',
+                      fontSize: '14px',
+                      fontWeight: '600'
+                    }}>
+                      {bookings.length} new
+                    </div>
+                  )}
+                </div>
                 {bookings.length > 0 ? (
                   <div className="space-y-3">
-                    {bookings.slice(0, 5).map((booking) => (
+                    {bookings.slice(0, 5).map((booking, index) => (
                       <div
                         key={booking.id}
                         style={{
                           padding: '16px',
-                          borderRadius: '10px',
-                          backgroundColor: '#fef3c7',
-                          border: '1px solid #fbbf24'
+                          borderRadius: '12px',
+                          background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
+                          border: '2px solid #fbbf24',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s',
+                          position: 'relative',
+                          overflow: 'hidden'
+                        }}
+                        onClick={() => setActiveTab('bookings')}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'translateX(4px)';
+                          e.currentTarget.style.boxShadow = '0 4px 12px rgba(251, 191, 36, 0.3)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'translateX(0)';
+                          e.currentTarget.style.boxShadow = 'none';
                         }}
                       >
+                        <div style={{
+                          position: 'absolute',
+                          top: '8px',
+                          right: '8px',
+                          width: '8px',
+                          height: '8px',
+                          borderRadius: '50%',
+                          backgroundColor: '#ef4444',
+                          animation: 'pulse 2s infinite'
+                        }}></div>
                         <div className="flex justify-between items-start">
                           <div className="flex-1">
-                            <div style={{ fontWeight: '600', color: '#92400e', marginBottom: '4px' }}>
-                              {booking.name}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                              <span style={{
+                                width: '32px',
+                                height: '32px',
+                                borderRadius: '50%',
+                                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                                color: 'white',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '14px',
+                                fontWeight: 'bold',
+                                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+                              }}>
+                                {booking.name?.charAt(0).toUpperCase() || '?'}
+                              </span>
+                              <div>
+                                <div style={{ fontWeight: '700', color: '#78350f', fontSize: '15px' }}>
+                                  {booking.name}
+                                </div>
+                                <div style={{ fontSize: '12px', color: '#92400e', opacity: 0.8 }}>
+                                  {booking.email || booking.phone}
+                                </div>
+                              </div>
                             </div>
-                            <div style={{ fontSize: '14px', color: '#78350f' }}>
-                              {booking.service}
+                            <div style={{ fontSize: '13px', color: '#92400e', marginLeft: '40px', marginTop: '4px' }}>
+                              🛠 {booking.service || booking.services}
                             </div>
+                            {booking.address && (
+                              <div style={{ fontSize: '13px', color: '#92400e', marginLeft: '40px', marginTop: '2px' }}>
+                                📍 {booking.address}
+                              </div>
+                            )}
+                            {booking.description && (
+                              <div style={{
+                                fontSize: '12px',
+                                color: '#92400e',
+                                marginLeft: '40px',
+                                marginTop: '4px',
+                                padding: '6px 8px',
+                                backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                                borderRadius: '6px',
+                                fontStyle: 'italic'
+                              }}>
+                                "{booking.description.substring(0, 60)}{booking.description.length > 60 ? '...' : ''}"
+                              </div>
+                            )}
                           </div>
                           <div style={{
-                            padding: '4px 12px',
-                            borderRadius: '12px',
-                            fontSize: '12px',
-                            fontWeight: '600',
-                            backgroundColor: '#f59e0b',
-                            color: 'white'
+                            padding: '6px 12px',
+                            borderRadius: '20px',
+                            fontSize: '11px',
+                            fontWeight: '700',
+                            background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                            color: 'white',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px',
+                            boxShadow: '0 2px 4px rgba(239, 68, 68, 0.3)'
                           }}>
-                            New
+                            ⚡ New
                           </div>
                         </div>
                       </div>
@@ -1476,15 +1828,26 @@ const AdminDashboard = ({ user, onLogout }) => {
                         onClick={() => setActiveTab('bookings')}
                         style={{
                           width: '100%',
-                          padding: '12px',
+                          padding: '14px',
                           marginTop: '12px',
-                          color: '#3b82f6',
+                          color: 'white',
+                          background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
                           fontWeight: '600',
                           fontSize: '14px',
                           textAlign: 'center',
                           cursor: 'pointer',
-                          backgroundColor: 'transparent',
-                          border: 'none'
+                          border: 'none',
+                          borderRadius: '10px',
+                          transition: 'all 0.2s',
+                          boxShadow: '0 4px 12px rgba(245, 158, 11, 0.3)'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'translateY(-2px)';
+                          e.currentTarget.style.boxShadow = '0 6px 16px rgba(245, 158, 11, 0.4)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = '0 4px 12px rgba(245, 158, 11, 0.3)';
                         }}
                       >
                         View all {bookings.length} bookings →
@@ -1492,9 +1855,25 @@ const AdminDashboard = ({ user, onLogout }) => {
                     )}
                   </div>
                 ) : (
-                  <div style={{ textAlign: 'center', padding: '40px 20px', color: '#9ca3af' }}>
-                    <div style={{ fontSize: '48px', marginBottom: '12px' }}>📭</div>
-                    <div>No recent bookings</div>
+                  <div style={{ textAlign: 'center', padding: '60px 20px', color: '#9ca3af' }}>
+                    <div style={{ fontSize: '64px', marginBottom: '16px', opacity: 0.5' }}>🔔</div>
+                    <div style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px' }}>No recent bookings</div>
+                    <div style={{ fontSize: '14px', marginBottom: '20px' }}>New customer inquiries will appear here</div>
+                    <button
+                      onClick={() => setActiveTab('bookings')}
+                      style={{
+                        padding: '10px 20px',
+                        background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontWeight: '600',
+                        fontSize: '14px'
+                      }}
+                    >
+                      View All Bookings
+                    </button>
                   </div>
                 )}
               </div>
