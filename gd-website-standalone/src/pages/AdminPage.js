@@ -72,6 +72,11 @@ const AdminDashboard = ({ user, onLogout }) => {
     recurrenceEndDate: ''
   });
 
+  // Customer autocomplete state
+  const [customers, setCustomers] = useState([]);
+  const [filteredCustomers, setFilteredCustomers] = useState([]);
+  const [showCustomerAutocomplete, setShowCustomerAutocomplete] = useState(false);
+
   // Real-time Firebase listener for quotes
   useEffect(() => {
     if (!db) return;
@@ -121,6 +126,41 @@ const AdminDashboard = ({ user, onLogout }) => {
 
     return () => unsubscribe();
   }, [db]);
+
+  // Real-time Firebase listener for customers
+  useEffect(() => {
+    if (!db) return;
+
+    const customersRef = collection(db, 'customers');
+    const q = query(customersRef, orderBy('name', 'asc'));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const customersData = [];
+      snapshot.forEach((doc) => {
+        customersData.push({
+          id: doc.id,
+          ...doc.data()
+        });
+      });
+      setCustomers(customersData);
+    }, (error) => {
+      console.error('Error fetching customers:', error);
+    });
+
+    return () => unsubscribe();
+  }, [db]);
+
+  // Close autocomplete when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showCustomerAutocomplete && !event.target.closest('.customer-autocomplete-container')) {
+        setShowCustomerAutocomplete(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showCustomerAutocomplete]);
 
   // Fetch all jobs for stats calculation
   const [allJobsForStats, setAllJobsForStats] = useState([]);
@@ -558,6 +598,32 @@ const AdminDashboard = ({ user, onLogout }) => {
       console.error('Error upserting customer:', error);
       // Don't fail the job if customer creation fails
     }
+  };
+
+  // Customer autocomplete handlers
+  const handleCustomerNameChange = (e) => {
+    const value = e.target.value;
+    setNewJob({...newJob, customerName: value});
+
+    if (value.trim().length > 0) {
+      const filtered = customers.filter(customer =>
+        customer.name.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredCustomers(filtered);
+      setShowCustomerAutocomplete(true);
+    } else {
+      setFilteredCustomers([]);
+      setShowCustomerAutocomplete(false);
+    }
+  };
+
+  const handleCustomerSelect = (customer) => {
+    setNewJob({
+      ...newJob,
+      customerName: customer.name,
+      address: customer.address || ''
+    });
+    setShowCustomerAutocomplete(false);
   };
 
   const handleAddJob = async (e) => {
@@ -1708,17 +1774,61 @@ const AdminDashboard = ({ user, onLogout }) => {
                 <h3 className="text-lg font-semibold mb-4">➕ Add New Job</h3>
                 <form onSubmit={handleAddJob}>
                   <div className="space-y-4">
-                    <div>
+                    <div className="customer-autocomplete-container" style={{ position: 'relative' }}>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Customer Name *
                       </label>
                       <input
                         type="text"
                         value={newJob.customerName}
-                        onChange={(e) => setNewJob({...newJob, customerName: e.target.value})}
+                        onChange={handleCustomerNameChange}
+                        onFocus={() => {
+                          if (newJob.customerName.trim().length > 0 && filteredCustomers.length > 0) {
+                            setShowCustomerAutocomplete(true);
+                          }
+                        }}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         required
+                        autoComplete="off"
                       />
+                      {showCustomerAutocomplete && filteredCustomers.length > 0 && (
+                        <div style={{
+                          position: 'absolute',
+                          top: '100%',
+                          left: 0,
+                          right: 0,
+                          maxHeight: '200px',
+                          overflowY: 'auto',
+                          backgroundColor: 'white',
+                          border: '1px solid #d1d5db',
+                          borderRadius: '6px',
+                          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                          zIndex: 1000,
+                          marginTop: '4px'
+                        }}>
+                          {filteredCustomers.map((customer) => (
+                            <div
+                              key={customer.id}
+                              onClick={() => handleCustomerSelect(customer)}
+                              style={{
+                                padding: '10px 12px',
+                                cursor: 'pointer',
+                                borderBottom: '1px solid #f3f4f6',
+                                transition: 'background-color 0.2s'
+                              }}
+                              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
+                              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
+                            >
+                              <div style={{ fontWeight: '600', color: '#1f2937' }}>{customer.name}</div>
+                              {customer.address && (
+                                <div style={{ fontSize: '0.875rem', color: '#6b7280', marginTop: '2px' }}>
+                                  {customer.address}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
 
                     <div>
