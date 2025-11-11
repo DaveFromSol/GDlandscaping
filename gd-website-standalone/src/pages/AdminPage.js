@@ -699,9 +699,19 @@ const AdminDashboard = ({ user, onLogout }) => {
     const generatedJobs = [];
 
     if (!startDate) {
+      console.error('❌ Cannot generate recurring jobs without a start date');
       alert('Error: Cannot generate recurring jobs without a start date');
       return [];
     }
+
+    if (!db) {
+      console.error('❌ Database not available');
+      alert('Error: Database not available');
+      return [];
+    }
+
+    console.log(`🔄 Starting to generate recurring jobs for parent: ${parentJobId}`);
+    console.log(`   Recurrence: ${recurrenceType}, Start: ${startDate}, End: ${recurrenceEndDate || 'auto (1 year)'}`);
 
     // Calculate end date (default to 1 year if not specified)
     const endDate = recurrenceEndDate
@@ -731,34 +741,55 @@ const AdminDashboard = ({ user, onLogout }) => {
         break;
       }
 
-      // Check if job already exists for this date
-      const existingJobsQuery = query(
-        collection(db, 'jobs'),
-        where('scheduledDate', '==', futureDate),
-        where('parentRecurringJobId', '==', parentJobId)
-      );
-      const existingSnapshot = await getDocs(existingJobsQuery);
+      try {
+        // Check if job already exists for this date
+        const existingJobsQuery = query(
+          collection(db, 'jobs'),
+          where('scheduledDate', '==', futureDate),
+          where('parentRecurringJobId', '==', parentJobId)
+        );
+        const existingSnapshot = await getDocs(existingJobsQuery);
 
-      // Skip if already generated
-      if (!existingSnapshot.empty) continue;
+        // Skip if already generated
+        if (!existingSnapshot.empty) {
+          console.log(`   ⏭ Skipping ${futureDate} - already exists`);
+          continue;
+        }
 
-      // Create the recurring job instance
-      const recurringJobData = {
-        ...jobTemplate,
-        scheduledDate: futureDate,
-        parentRecurringJobId: parentJobId,
-        isRecurringInstance: true,
-        status: 'scheduled',
-        actualPayment: 0,
-        paymentStatus: 'pending',
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
-      };
+        // Create the recurring job instance
+        const recurringJobData = {
+          customerName: jobTemplate.customerName,
+          address: jobTemplate.address,
+          serviceType: jobTemplate.serviceType,
+          estimatedTime: jobTemplate.estimatedTime,
+          notes: jobTemplate.notes || '',
+          priority: jobTemplate.priority || 'normal',
+          expectedPayment: jobTemplate.expectedPayment || 0,
+          scheduledDate: futureDate,
+          date: futureDate, // Add both for compatibility
+          parentRecurringJobId: parentJobId,
+          isRecurringInstance: true,
+          isRecurring: false, // Instances are not themselves recurring
+          recurrenceType: 'none', // Instances don't have their own recurrence
+          status: 'scheduled',
+          actualPayment: 0,
+          paymentStatus: 'pending',
+          paymentMethod: jobTemplate.paymentMethod || 'cash',
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        };
 
-      await addDoc(collection(db, 'jobs'), recurringJobData);
-      generatedJobs.push(futureDate);
+        console.log(`   ➕ Creating job for ${futureDate}...`);
+        const docRef = await addDoc(collection(db, 'jobs'), recurringJobData);
+        console.log(`   ✅ Created job ${docRef.id} for ${futureDate}`);
+        generatedJobs.push(futureDate);
+      } catch (error) {
+        console.error(`   ❌ Error creating job for ${futureDate}:`, error);
+        // Continue with next date even if one fails
+      }
     }
 
+    console.log(`✅ Generated ${generatedJobs.length} recurring job instances`);
     return generatedJobs;
   };
 
