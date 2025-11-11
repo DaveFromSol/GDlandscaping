@@ -1274,14 +1274,14 @@ const AdminDashboard = ({ user, onLogout }) => {
                 🗺️ Route Planner
               </button>
               <button
-                onClick={() => setActiveTab('completed')}
+                onClick={() => setActiveTab('snow-removal')}
                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'completed'
+                  activeTab === 'snow-removal'
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
-                ✅ Completed Jobs
+                ❄️ Snow Removal
               </button>
             </nav>
           </div>
@@ -3523,107 +3523,284 @@ const AdminDashboard = ({ user, onLogout }) => {
           </div>
         )}
 
-        {/* Completed Jobs Tab */}
-        {activeTab === 'completed' && (
-          <div className="bg-white shadow rounded-lg">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900">✅ Completed Jobs History</h2>
-              <p className="text-sm text-gray-600 mt-1">View, edit, and manage all completed jobs</p>
+        {/* Snow Removal Tab */}
+        {activeTab === 'snow-removal' && (
+          <div className="space-y-6">
+            <div className="bg-gradient-to-r from-blue-500 to-blue-700 rounded-lg shadow-lg p-6 text-white">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold mb-2">❄️ Snow Removal Operations</h2>
+                  <p className="text-blue-100">Manage contracts, teams, and routes for efficient snow removal</p>
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold">{customers.filter(c => c.snowRemoval).length}</div>
+                  <div className="text-sm text-blue-100">Active Contracts</div>
+                </div>
+              </div>
             </div>
 
-            {allJobsForStats.filter(j => j.status === 'completed').length > 0 ? (
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Date
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Customer
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Service
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Payment
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Status
-                      </th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {allJobsForStats
-                      .filter(j => j.status === 'completed')
-                      .sort((a, b) => {
-                        const dateA = a.completedAt?.toDate?.() || a.scheduledDate || new Date(0);
-                        const dateB = b.completedAt?.toDate?.() || b.scheduledDate || new Date(0);
-                        return dateB - dateA;
-                      })
-                      .map((job) => (
-                        <tr key={job.id} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {job.completedAt?.toDate?.().toLocaleDateString() || job.scheduledDate || 'N/A'}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm font-medium text-gray-900">{job.customerName}</div>
-                            <div className="text-sm text-gray-500">{job.address?.split(',')[0]}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">{job.serviceType}</div>
-                            <div className="text-sm text-gray-500">{job.estimatedTime} min</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm font-medium text-green-600">
-                              ${job.actualPayment || job.expectedPayment || '0'}
+            {/* Quick Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="bg-white rounded-lg shadow p-4">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 bg-blue-100 rounded-lg p-3">
+                    <svg className="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-500">Total Contracts</p>
+                    <p className="text-2xl font-semibold text-gray-900">{customers.filter(c => c.snowRemoval).length}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg shadow p-4">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 bg-green-100 rounded-lg p-3">
+                    <svg className="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                  </div>
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-500">Active Teams</p>
+                    <p className="text-2xl font-semibold text-gray-900">3</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg shadow p-4">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 bg-yellow-100 rounded-lg p-3">
+                    <svg className="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                    </svg>
+                  </div>
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-500">Today's Routes</p>
+                    <p className="text-2xl font-semibold text-gray-900">12</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg shadow p-4">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 bg-purple-100 rounded-lg p-3">
+                    <svg className="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-500">Est. Time</p>
+                    <p className="text-2xl font-semibold text-gray-900">6.5h</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Contract List & Route Map */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Contract List */}
+              <div className="bg-white rounded-lg shadow">
+                <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">Snow Removal Contracts</h3>
+                    <p className="text-sm text-gray-500 mt-1">Active contracts for the season</p>
+                  </div>
+                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium">
+                    + Add Contract
+                  </button>
+                </div>
+                <div className="p-6">
+                  <div className="mb-4">
+                    <input
+                      type="text"
+                      placeholder="Search contracts..."
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div className="space-y-3 max-h-96 overflow-y-auto">
+                    {customers.filter(c => c.snowRemoval).length > 0 ? (
+                      customers
+                        .filter(c => c.snowRemoval)
+                        .map((customer) => (
+                          <div key={customer.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <h4 className="font-semibold text-gray-900">{customer.name}</h4>
+                                  <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                                    Priority {customer.priority || 'Normal'}
+                                  </span>
+                                </div>
+                                <p className="text-sm text-gray-600 mb-1">
+                                  📍 {customer.address}
+                                </p>
+                                <p className="text-sm text-gray-500">
+                                  📞 {customer.phone || 'No phone'}
+                                </p>
+                                {customer.notes && (
+                                  <p className="text-xs text-gray-500 mt-2 italic">
+                                    Note: {customer.notes}
+                                  </p>
+                                )}
+                              </div>
+                              <div className="flex flex-col gap-2">
+                                <button className="px-3 py-1 bg-green-100 text-green-700 rounded text-xs font-medium hover:bg-green-200">
+                                  Assign Team
+                                </button>
+                                <button className="px-3 py-1 bg-gray-100 text-gray-700 rounded text-xs font-medium hover:bg-gray-200">
+                                  View Details
+                                </button>
+                              </div>
                             </div>
-                            <div className="text-sm text-gray-500">{job.paymentMethod || 'N/A'}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                              ✓ Completed
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button
-                              onClick={() => setEditingJob(job)}
-                              className="text-blue-600 hover:text-blue-900 mr-4"
-                            >
-                              Edit
-                            </button>
-                            <button
-                              onClick={async () => {
-                                if (window.confirm(`Delete job for ${job.customerName}?`)) {
-                                  try {
-                                    await deleteDoc(doc(db, 'jobs', job.id));
-                                    alert('Job deleted successfully');
-                                  } catch (error) {
-                                    console.error('Error deleting job:', error);
-                                    alert('Error deleting job');
-                                  }
-                                }
-                              }}
-                              className="text-red-600 hover:text-red-900"
-                            >
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
+                          </div>
+                        ))
+                    ) : (
+                      <div className="text-center py-12">
+                        <div className="text-gray-400 text-5xl mb-4">❄️</div>
+                        <h3 className="text-lg font-medium text-gray-900 mb-2">No snow removal contracts</h3>
+                        <p className="text-sm text-gray-500 mb-4">Add customers with snow removal service to see them here</p>
+                        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium">
+                          Add First Contract
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
-            ) : (
-              <div className="text-center py-12">
-                <div className="text-gray-400 text-6xl mb-4">✅</div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No completed jobs yet</h3>
-                <p className="text-sm text-gray-500">Completed jobs will appear here</p>
+
+              {/* Route Map */}
+              <div className="bg-white rounded-lg shadow">
+                <div className="px-6 py-4 border-b border-gray-200">
+                  <h3 className="text-lg font-semibold text-gray-900">Route Map</h3>
+                  <p className="text-sm text-gray-500 mt-1">Optimized routes for today's operations</p>
+                </div>
+                <div className="p-6">
+                  <div className="bg-gray-100 rounded-lg h-96 flex items-center justify-center">
+                    <div className="text-center">
+                      <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                      </svg>
+                      <p className="mt-2 text-sm text-gray-500">Map view coming soon</p>
+                      <p className="text-xs text-gray-400 mt-1">Google Maps integration will show optimized routes</p>
+                    </div>
+                  </div>
+                  <div className="mt-4 flex gap-2">
+                    <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
+                      Optimize Routes
+                    </button>
+                    <button className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-medium">
+                      Export Routes
+                    </button>
+                  </div>
+                </div>
               </div>
-            )}
+            </div>
+
+            {/* Team Assignments */}
+            <div className="bg-white rounded-lg shadow">
+              <div className="px-6 py-4 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900">Team Assignments</h3>
+                <p className="text-sm text-gray-500 mt-1">Assign contracts to teams for today's snow removal</p>
+              </div>
+              <div className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Team 1 */}
+                  <div className="border-2 border-blue-200 rounded-lg p-4 bg-blue-50">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
+                          A
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-900">Team Alpha</h4>
+                          <p className="text-xs text-gray-500">Lead: John D.</p>
+                        </div>
+                      </div>
+                      <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                        Active
+                      </span>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="text-sm">
+                        <span className="text-gray-600">Assigned: </span>
+                        <span className="font-semibold text-gray-900">0 contracts</span>
+                      </div>
+                      <div className="text-sm">
+                        <span className="text-gray-600">Est. Time: </span>
+                        <span className="font-semibold text-gray-900">0h</span>
+                      </div>
+                    </div>
+                    <button className="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium">
+                      Assign Contracts
+                    </button>
+                  </div>
+
+                  {/* Team 2 */}
+                  <div className="border-2 border-green-200 rounded-lg p-4 bg-green-50">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-bold">
+                          B
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-900">Team Bravo</h4>
+                          <p className="text-xs text-gray-500">Lead: Mike S.</p>
+                        </div>
+                      </div>
+                      <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                        Active
+                      </span>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="text-sm">
+                        <span className="text-gray-600">Assigned: </span>
+                        <span className="font-semibold text-gray-900">0 contracts</span>
+                      </div>
+                      <div className="text-sm">
+                        <span className="text-gray-600">Est. Time: </span>
+                        <span className="font-semibold text-gray-900">0h</span>
+                      </div>
+                    </div>
+                    <button className="w-full mt-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
+                      Assign Contracts
+                    </button>
+                  </div>
+
+                  {/* Team 3 */}
+                  <div className="border-2 border-purple-200 rounded-lg p-4 bg-purple-50">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                          C
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-900">Team Charlie</h4>
+                          <p className="text-xs text-gray-500">Lead: Dave P.</p>
+                        </div>
+                      </div>
+                      <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                        Active
+                      </span>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="text-sm">
+                        <span className="text-gray-600">Assigned: </span>
+                        <span className="font-semibold text-gray-900">0 contracts</span>
+                      </div>
+                      <div className="text-sm">
+                        <span className="text-gray-600">Est. Time: </span>
+                        <span className="font-semibold text-gray-900">0h</span>
+                      </div>
+                    </div>
+                    <button className="w-full mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm font-medium">
+                      Assign Contracts
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>
