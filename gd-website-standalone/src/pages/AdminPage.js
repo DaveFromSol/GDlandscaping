@@ -1785,7 +1785,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                               </div>
                             </div>
                             <div style={{ fontSize: '13px', color: '#92400e', marginLeft: '40px', marginTop: '4px' }}>
-                              🛠 {booking.service || booking.services}
+                              🛠 {booking.service || (Array.isArray(booking.services) ? booking.services.map(s => s.name).join(', ') : 'Services requested')}
                             </div>
                             {booking.address && (
                               <div style={{ fontSize: '13px', color: '#92400e', marginLeft: '40px', marginTop: '2px' }}>
