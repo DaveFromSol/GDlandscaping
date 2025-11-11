@@ -9,6 +9,7 @@ import {
   updateDoc,
   deleteDoc,
   doc,
+  getDoc,
   onSnapshot,
   query,
   orderBy,
@@ -837,6 +838,27 @@ const AdminDashboard = ({ user, onLogout }) => {
 
       console.log(`Toggling job ${jobId} from ${currentStatus} to ${newStatus}`);
 
+      // First, check if the document exists in Firebase
+      const jobRef = doc(db, 'jobs', jobId);
+      const jobSnapshot = await getDoc(jobRef);
+
+      if (!jobSnapshot.exists()) {
+        console.error(`❌ Job ${jobId} does not exist in Firebase`);
+        alert('This job no longer exists in the database. It may have been deleted. Refreshing the view...');
+
+        // Remove from local state
+        setJobs(prevJobs => prevJobs.filter(j => j.id !== jobId));
+        setAllJobs(prevJobs => prevJobs.filter(j => j.id !== jobId));
+
+        // Reload from Firebase
+        await loadJobsForDate();
+        if (viewType !== 'day') {
+          const { startDate, endDate } = getDateRange(selectedDate, viewType);
+          await loadJobsForRange(startDate, endDate);
+        }
+        return;
+      }
+
       // Optimistically update local state immediately for better UX
       const updateJobInArray = (jobsArray) =>
         jobsArray.map(j =>
@@ -849,7 +871,6 @@ const AdminDashboard = ({ user, onLogout }) => {
       setAllJobs(prevJobs => updateJobInArray(prevJobs));
 
       // Update in Firebase
-      const jobRef = doc(db, 'jobs', jobId);
       await updateDoc(jobRef, {
         status: newStatus,
         completedAt: newStatus === 'completed' ? serverTimestamp() : null,
