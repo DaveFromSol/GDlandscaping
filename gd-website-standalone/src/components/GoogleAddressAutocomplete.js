@@ -108,14 +108,11 @@ const GoogleAddressAutocomplete = ({ value, onChange, onPlaceSelected, placehold
       lng: place.geometry?.location?.lng()
     };
 
-    // Call the callback with parsed address data
+    console.log('Address selected:', addressData);
+
+    // Call the callback with parsed address data first
     if (onPlaceSelected) {
       onPlaceSelected(addressData);
-    }
-
-    // Update the input value
-    if (onChange) {
-      onChange(place.formatted_address);
     }
   };
 
@@ -125,11 +122,21 @@ const GoogleAddressAutocomplete = ({ value, onChange, onPlaceSelected, placehold
     }
   };
 
+  // Sync the input value when it changes from parent
+  useEffect(() => {
+    if (inputRef.current && value !== undefined) {
+      // Only update if the values are different to avoid cursor jumping
+      if (inputRef.current.value !== value) {
+        inputRef.current.value = value;
+      }
+    }
+  }, [value]);
+
   return (
     <input
       ref={inputRef}
       type="text"
-      value={value}
+      defaultValue={value}
       onChange={handleInputChange}
       placeholder={placeholder}
       className={className}
