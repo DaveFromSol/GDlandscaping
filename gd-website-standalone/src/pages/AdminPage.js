@@ -834,12 +834,29 @@ const AdminDashboard = ({ user, onLogout }) => {
   const toggleJobStatus = async (jobId, currentStatus) => {
     try {
       const newStatus = currentStatus === 'completed' ? 'scheduled' : 'completed';
+
+      console.log(`Toggling job ${jobId} from ${currentStatus} to ${newStatus}`);
+
+      // Optimistically update local state immediately for better UX
+      const updateJobInArray = (jobsArray) =>
+        jobsArray.map(j =>
+          j.id === jobId
+            ? { ...j, status: newStatus, completedAt: newStatus === 'completed' ? new Date() : null }
+            : j
+        );
+
+      setJobs(prevJobs => updateJobInArray(prevJobs));
+      setAllJobs(prevJobs => updateJobInArray(prevJobs));
+
+      // Update in Firebase
       const jobRef = doc(db, 'jobs', jobId);
       await updateDoc(jobRef, {
         status: newStatus,
         completedAt: newStatus === 'completed' ? serverTimestamp() : null,
         updatedAt: serverTimestamp()
       });
+
+      console.log(`✅ Successfully updated job ${jobId} status to ${newStatus}`);
 
       // If marking as completed, update customer record
       if (newStatus === 'completed') {
@@ -851,14 +868,22 @@ const AdminDashboard = ({ user, onLogout }) => {
         }
       }
 
+      // Reload from Firebase to ensure consistency
       await loadJobsForDate();
       if (viewType !== 'day') {
         const { startDate, endDate } = getDateRange(selectedDate, viewType);
         await loadJobsForRange(startDate, endDate);
       }
     } catch (error) {
-      console.error('Error updating job status:', error);
-      alert('Error updating job status.');
+      console.error('❌ Error updating job status:', error);
+      alert(`Error updating job status: ${error.message}`);
+
+      // Reload to revert optimistic update if there was an error
+      await loadJobsForDate();
+      if (viewType !== 'day') {
+        const { startDate, endDate } = getDateRange(selectedDate, viewType);
+        await loadJobsForRange(startDate, endDate);
+      }
     }
   };
 
