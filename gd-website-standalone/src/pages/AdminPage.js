@@ -1856,7 +1856,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                   </div>
                 ) : (
                   <div style={{ textAlign: 'center', padding: '60px 20px', color: '#9ca3af' }}>
-                    <div style={{ fontSize: '64px', marginBottom: '16px', opacity: 0.5' }}>🔔</div>
+                    <div style={{ fontSize: '64px', marginBottom: '16px', opacity: 0.5 }}>🔔</div>
                     <div style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px' }}>No recent bookings</div>
                     <div style={{ fontSize: '14px', marginBottom: '20px' }}>New customer inquiries will appear here</div>
                     <button
