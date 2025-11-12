@@ -35,6 +35,19 @@ const SnowRemovalMap = ({ contracts }) => {
     // Use Google Directions Service to optimize route
     const directionsService = new window.google.maps.DirectionsService();
 
+    // Helper function to format complete address
+    const formatAddress = (contract) => {
+      // Combine all address components into a complete address
+      const parts = [
+        contract.address,
+        contract.city,
+        contract.state,
+        contract.zip
+      ].filter(part => part && part.trim()); // Filter out empty parts
+
+      return parts.join(', ');
+    };
+
     // Sort by priority first (High priority contracts first)
     const prioritySorted = [...contracts].sort((a, b) => {
       const priorityOrder = { High: 0, Normal: 1, Low: 2 };
@@ -42,10 +55,10 @@ const SnowRemovalMap = ({ contracts }) => {
     });
 
     // First contract is origin, last is destination, rest are waypoints
-    const origin = prioritySorted[0].address;
-    const destination = prioritySorted[prioritySorted.length - 1].address;
+    const origin = formatAddress(prioritySorted[0]);
+    const destination = formatAddress(prioritySorted[prioritySorted.length - 1]);
     const waypoints = prioritySorted.slice(1, -1).map(contract => ({
-      location: contract.address,
+      location: formatAddress(contract),
       stopover: true
     }));
 
@@ -53,7 +66,11 @@ const SnowRemovalMap = ({ contracts }) => {
     console.log('Origin:', origin);
     console.log('Destination:', destination);
     console.log('Waypoints:', waypoints);
-    console.log('All contracts:', prioritySorted.map(c => ({ name: c.name, address: c.address })));
+    console.log('All contracts:', prioritySorted.map(c => ({
+      name: c.name,
+      address: formatAddress(c),
+      priority: c.priority || 'Normal'
+    })));
 
     directionsService.route(
       {
@@ -136,6 +153,17 @@ const SnowRemovalMap = ({ contracts }) => {
       return;
     }
 
+    // Helper function to format complete address for export
+    const formatFullAddress = (contract) => {
+      const parts = [
+        contract.address,
+        contract.city,
+        contract.state,
+        contract.zip
+      ].filter(part => part && part.trim());
+      return parts.join(', ');
+    };
+
     let routeText = '🚗 OPTIMIZED SNOW REMOVAL ROUTE\n';
     routeText += '================================\n\n';
     routeText += `Total Stops: ${routeInfo.stops}\n`;
@@ -146,7 +174,7 @@ const SnowRemovalMap = ({ contracts }) => {
 
     optimizedRoute.forEach((contract, index) => {
       routeText += `${index + 1}. ${contract.name}\n`;
-      routeText += `   Address: ${contract.address}\n`;
+      routeText += `   Address: ${formatFullAddress(contract)}\n`;
       routeText += `   Priority: ${contract.priority || 'Normal'}\n`;
       if (contract.phone) routeText += `   Phone: ${contract.phone}\n`;
       routeText += '\n';
@@ -170,12 +198,23 @@ const SnowRemovalMap = ({ contracts }) => {
       return;
     }
 
+    // Helper function to format complete address
+    const formatFullAddress = (contract) => {
+      const parts = [
+        contract.address,
+        contract.city,
+        contract.state,
+        contract.zip
+      ].filter(part => part && part.trim());
+      return parts.join(', ');
+    };
+
     // Build Google Maps URL with waypoints
-    const origin = encodeURIComponent(optimizedRoute[0].address);
-    const destination = encodeURIComponent(optimizedRoute[optimizedRoute.length - 1].address);
+    const origin = encodeURIComponent(formatFullAddress(optimizedRoute[0]));
+    const destination = encodeURIComponent(formatFullAddress(optimizedRoute[optimizedRoute.length - 1]));
     const waypoints = optimizedRoute
       .slice(1, -1)
-      .map(c => encodeURIComponent(c.address))
+      .map(c => encodeURIComponent(formatFullAddress(c)))
       .join('|');
 
     const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&waypoints=${waypoints}&travelmode=driving`;
@@ -264,24 +303,34 @@ const SnowRemovalMap = ({ contracts }) => {
         <div className="bg-white border border-gray-200 rounded-lg p-4">
           <h4 className="font-semibold text-gray-900 mb-3">📍 Optimized Route Order</h4>
           <div className="space-y-2">
-            {optimizedRoute.map((contract, index) => (
-              <div key={contract.id} className="flex items-center gap-3 p-2 bg-gray-50 rounded">
-                <span className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold text-sm">
-                  {index + 1}
-                </span>
-                <div className="flex-1">
-                  <p className="font-medium text-gray-900">{contract.name}</p>
-                  <p className="text-xs text-gray-600">{contract.address}</p>
+            {optimizedRoute.map((contract, index) => {
+              // Format complete address for display
+              const fullAddress = [
+                contract.address,
+                contract.city,
+                contract.state,
+                contract.zip
+              ].filter(part => part && part.trim()).join(', ');
+
+              return (
+                <div key={contract.id} className="flex items-center gap-3 p-2 bg-gray-50 rounded">
+                  <span className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold text-sm">
+                    {index + 1}
+                  </span>
+                  <div className="flex-1">
+                    <p className="font-medium text-gray-900">{contract.name}</p>
+                    <p className="text-xs text-gray-600">{fullAddress}</p>
+                  </div>
+                  <span className={`px-2 py-1 text-xs rounded-full ${
+                    contract.priority === 'High' ? 'bg-red-100 text-red-800' :
+                    contract.priority === 'Low' ? 'bg-gray-100 text-gray-800' :
+                    'bg-blue-100 text-blue-800'
+                  }`}>
+                    {contract.priority || 'Normal'}
+                  </span>
                 </div>
-                <span className={`px-2 py-1 text-xs rounded-full ${
-                  contract.priority === 'High' ? 'bg-red-100 text-red-800' :
-                  contract.priority === 'Low' ? 'bg-gray-100 text-gray-800' :
-                  'bg-blue-100 text-blue-800'
-                }`}>
-                  {contract.priority || 'Normal'}
-                </span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
