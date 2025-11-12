@@ -148,6 +148,75 @@ const Leads = ({ user }) => {
     }
   };
 
+  const convertToCustomer = async (lead) => {
+    if (!window.confirm(`Convert ${lead.name} to a customer?`)) return;
+
+    try {
+      // Parse address into components (basic parsing)
+      const addressParts = (lead.address || '').split(',').map(p => p.trim());
+      let street = '';
+      let city = '';
+      let state = 'CT';
+      let zip = '';
+
+      if (addressParts.length >= 1) street = addressParts[0];
+      if (addressParts.length >= 2) city = addressParts[1];
+      if (addressParts.length >= 3) {
+        // Try to extract state and zip from last part
+        const lastPart = addressParts[addressParts.length - 1];
+        const stateZipMatch = lastPart.match(/([A-Z]{2})\s*(\d{5})/);
+        if (stateZipMatch) {
+          state = stateZipMatch[1];
+          zip = stateZipMatch[2];
+        }
+      }
+
+      // Create customer from lead data
+      const customerData = {
+        name: lead.name || '',
+        email: lead.email || '',
+        phone: lead.phone || '',
+        address: street,
+        city: city,
+        state: state,
+        zip: zip,
+        customerType: 'Residential',
+        status: 'Active',
+        preferredServices: lead.service ? [lead.service] : [],
+        paymentMethod: 'Cash',
+        propertySize: '',
+        notes: `Converted from lead on ${new Date().toLocaleDateString()}\n${lead.notes || ''}`,
+        totalSpent: 0,
+        lastServiceDate: '',
+        tags: ['converted-lead'],
+        snowRemoval: false,
+        priority: 'Normal',
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        createdBy: user.email || 'unknown',
+        convertedFrom: lead.id
+      };
+
+      // Add customer to database
+      const customerRef = await addDoc(collection(db, 'customers'), customerData);
+
+      // Update lead status to "Converted"
+      const leadRef = doc(db, 'leads', lead.id);
+      await updateDoc(leadRef, {
+        status: 'Converted',
+        convertedToCustomerId: customerRef.id,
+        convertedAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        updatedBy: user.email || 'unknown'
+      });
+
+      alert(`✅ Successfully converted ${lead.name} to a customer!`);
+    } catch (error) {
+      console.error('Error converting lead to customer:', error);
+      alert('Error converting lead to customer. Please try again.');
+    }
+  };
+
   const editLead = (lead) => {
     setEditingLead(lead);
     setNewLead({
@@ -612,6 +681,18 @@ const Leads = ({ user }) => {
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             Edit
+                          </button>
+                          <button
+                            onClick={() => convertToCustomer(lead)}
+                            disabled={lead.status === 'Converted'}
+                            className={`${
+                              lead.status === 'Converted'
+                                ? 'text-gray-400 cursor-not-allowed'
+                                : 'text-purple-600 hover:text-purple-900'
+                            }`}
+                            title={lead.status === 'Converted' ? 'Already converted' : 'Convert to customer'}
+                          >
+                            Customer
                           </button>
                           <button
                             onClick={() => deleteLead(lead.id)}
