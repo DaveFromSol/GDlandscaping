@@ -49,6 +49,12 @@ const SnowRemovalMap = ({ contracts }) => {
       stopover: true
     }));
 
+    console.log('🗺️ Optimizing route with:');
+    console.log('Origin:', origin);
+    console.log('Destination:', destination);
+    console.log('Waypoints:', waypoints);
+    console.log('All contracts:', prioritySorted.map(c => ({ name: c.name, address: c.address })));
+
     directionsService.route(
       {
         origin: origin,
@@ -59,7 +65,10 @@ const SnowRemovalMap = ({ contracts }) => {
       },
       (result, status) => {
         setIsOptimizing(false);
+        console.log('Directions API response status:', status);
+
         if (status === window.google.maps.DirectionsStatus.OK) {
+          console.log('✅ Route optimized successfully!');
           setDirectionsResponse(result);
 
           // Get optimized order
@@ -87,8 +96,35 @@ const SnowRemovalMap = ({ contracts }) => {
             stops: contracts.length
           });
         } else {
-          console.error('Directions request failed:', status);
-          alert('Failed to optimize route. Please check addresses.');
+          console.error('❌ Directions request failed with status:', status);
+          console.error('Full result:', result);
+
+          // Provide more specific error messages
+          let errorMessage = 'Failed to optimize route. ';
+          switch (status) {
+            case 'ZERO_RESULTS':
+              errorMessage += 'No route could be found between these addresses. Please verify all addresses are correct and accessible.';
+              break;
+            case 'NOT_FOUND':
+              errorMessage += 'One or more addresses could not be found. Please check that all addresses are complete and valid.';
+              break;
+            case 'INVALID_REQUEST':
+              errorMessage += 'Invalid request. Please ensure all addresses are properly formatted.';
+              break;
+            case 'OVER_QUERY_LIMIT':
+              errorMessage += 'Too many requests. Please try again in a moment.';
+              break;
+            case 'REQUEST_DENIED':
+              errorMessage += 'Request denied. Please check the API key permissions.';
+              break;
+            case 'UNKNOWN_ERROR':
+              errorMessage += 'Server error. Please try again.';
+              break;
+            default:
+              errorMessage += `Error: ${status}. Please check addresses.`;
+          }
+
+          alert(errorMessage);
         }
       }
     );
