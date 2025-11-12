@@ -18,6 +18,8 @@ const SnowRemovalMap = ({ contracts }) => {
   const [optimizedRoute, setOptimizedRoute] = useState([]);
   const [routeInfo, setRouteInfo] = useState(null);
   const [isOptimizing, setIsOptimizing] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [useCurrentLocation, setUseCurrentLocation] = useState(true);
 
   const optimizeRoute = useCallback(() => {
     if (!contracts || contracts.length === 0) {
@@ -25,8 +27,39 @@ const SnowRemovalMap = ({ contracts }) => {
       return;
     }
 
-    if (contracts.length < 2) {
-      alert('Need at least 2 contracts to create a route');
+    if (contracts.length < 1) {
+      alert('Need at least 1 contract to create a route');
+      return;
+    }
+
+    // Get current location if enabled
+    if (useCurrentLocation && !currentLocation) {
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported by your browser. Starting from first contract instead.');
+        setUseCurrentLocation(false);
+        return;
+      }
+
+      console.log('📍 Getting your current location...');
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const location = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          setCurrentLocation(location);
+          console.log('✅ Current location obtained:', location);
+          // Trigger optimization again with location
+          setTimeout(() => optimizeRoute(), 100);
+        },
+        (error) => {
+          console.error('❌ Error getting location:', error);
+          alert(`Could not get your location: ${error.message}\nStarting from first contract instead.`);
+          setUseCurrentLocation(false);
+          setCurrentLocation(null);
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
       return;
     }
 
@@ -54,16 +87,34 @@ const SnowRemovalMap = ({ contracts }) => {
       return priorityOrder[a.priority || 'Normal'] - priorityOrder[b.priority || 'Normal'];
     });
 
-    // First contract is origin, last is destination, rest are waypoints
-    const origin = formatAddress(prioritySorted[0]);
-    const destination = formatAddress(prioritySorted[prioritySorted.length - 1]);
-    const waypoints = prioritySorted.slice(1, -1).map(contract => ({
-      location: formatAddress(contract),
-      stopover: true
-    }));
+    // Determine origin based on whether we're using current location
+    let origin;
+    let destination;
+    let waypoints;
+
+    if (useCurrentLocation && currentLocation) {
+      // Start from current location
+      origin = `${currentLocation.lat},${currentLocation.lng}`;
+      // Last contract is destination
+      destination = formatAddress(prioritySorted[prioritySorted.length - 1]);
+      // All other contracts are waypoints
+      waypoints = prioritySorted.slice(0, -1).map(contract => ({
+        location: formatAddress(contract),
+        stopover: true
+      }));
+    } else {
+      // Original behavior: start from first contract
+      origin = formatAddress(prioritySorted[0]);
+      destination = formatAddress(prioritySorted[prioritySorted.length - 1]);
+      waypoints = prioritySorted.slice(1, -1).map(contract => ({
+        location: formatAddress(contract),
+        stopover: true
+      }));
+    }
 
     console.log('🗺️ Optimizing route with:');
-    console.log('Origin:', origin);
+    console.log('Using current location:', useCurrentLocation && currentLocation ? 'YES' : 'NO');
+    console.log('Origin:', origin, useCurrentLocation && currentLocation ? '(Your Location)' : '');
     console.log('Destination:', destination);
     console.log('Waypoints:', waypoints);
     console.log('All contracts:', prioritySorted.map(c => ({
@@ -145,7 +196,7 @@ const SnowRemovalMap = ({ contracts }) => {
         }
       }
     );
-  }, [contracts]);
+  }, [contracts, currentLocation, useCurrentLocation]);
 
   const exportRoute = () => {
     if (!optimizedRoute || optimizedRoute.length === 0) {
@@ -251,6 +302,30 @@ const SnowRemovalMap = ({ contracts }) => {
           )}
         </GoogleMap>
       </LoadScript>
+
+      {/* Location Settings */}
+      <div className="bg-white border border-gray-200 rounded-lg p-3 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            id="useCurrentLocation"
+            checked={useCurrentLocation}
+            onChange={(e) => {
+              setUseCurrentLocation(e.target.checked);
+              if (!e.target.checked) {
+                setCurrentLocation(null);
+              }
+            }}
+            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+          />
+          <label htmlFor="useCurrentLocation" className="text-sm font-medium text-gray-900 cursor-pointer">
+            📍 Start route from my current location
+          </label>
+        </div>
+        {currentLocation && (
+          <span className="text-xs text-green-600 font-medium">✓ Location acquired</span>
+        )}
+      </div>
 
       {/* Route Controls */}
       <div className="flex flex-wrap gap-3">
