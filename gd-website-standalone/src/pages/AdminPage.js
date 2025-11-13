@@ -616,16 +616,29 @@ const AdminDashboard = ({ user, onLogout }) => {
       setFilteredCustomers(filtered);
       setShowCustomerAutocomplete(true);
     } else {
-      setFilteredCustomers([]);
-      setShowCustomerAutocomplete(false);
+      // Show all customers when field is empty
+      setFilteredCustomers(customers);
+      setShowCustomerAutocomplete(customers.length > 0);
     }
   };
 
   const handleCustomerSelect = (customer) => {
+    // Build complete address from customer data
+    let fullAddress = customer.address || '';
+    if (customer.city || customer.state || customer.zip) {
+      const addressParts = [
+        customer.address,
+        customer.city,
+        customer.state,
+        customer.zip
+      ].filter(part => part && part.trim());
+      fullAddress = addressParts.join(', ');
+    }
+
     setNewJob({
       ...newJob,
       customerName: customer.name,
-      address: customer.address || ''
+      address: fullAddress
     });
     setShowCustomerAutocomplete(false);
   };
@@ -2558,19 +2571,33 @@ const AdminDashboard = ({ user, onLogout }) => {
                     <div className="customer-autocomplete-container" style={{ position: 'relative' }}>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Customer Name *
+                        <span className="text-xs text-gray-500 ml-2 font-normal">(Click to see all customers)</span>
                       </label>
                       <input
                         type="text"
                         value={newJob.customerName}
                         onChange={handleCustomerNameChange}
                         onFocus={() => {
-                          if (newJob.customerName.trim().length > 0 && filteredCustomers.length > 0) {
-                            setShowCustomerAutocomplete(true);
+                          // Show all customers or filtered customers when field is focused
+                          if (newJob.customerName.trim().length > 0) {
+                            const filtered = customers.filter(customer =>
+                              customer.name.toLowerCase().includes(newJob.customerName.toLowerCase())
+                            );
+                            setFilteredCustomers(filtered);
+                            setShowCustomerAutocomplete(filtered.length > 0);
+                          } else {
+                            setFilteredCustomers(customers);
+                            setShowCustomerAutocomplete(customers.length > 0);
                           }
+                        }}
+                        onBlur={() => {
+                          // Delay hiding to allow click on dropdown
+                          setTimeout(() => setShowCustomerAutocomplete(false), 200);
                         }}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         required
                         autoComplete="off"
+                        placeholder="Select or type customer name..."
                       />
                       {showCustomerAutocomplete && filteredCustomers.length > 0 && (
                         <div style={{
@@ -2587,27 +2614,40 @@ const AdminDashboard = ({ user, onLogout }) => {
                           zIndex: 1000,
                           marginTop: '4px'
                         }}>
-                          {filteredCustomers.map((customer) => (
-                            <div
-                              key={customer.id}
-                              onClick={() => handleCustomerSelect(customer)}
-                              style={{
-                                padding: '10px 12px',
-                                cursor: 'pointer',
-                                borderBottom: '1px solid #f3f4f6',
-                                transition: 'background-color 0.2s'
-                              }}
-                              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
-                              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
-                            >
-                              <div style={{ fontWeight: '600', color: '#1f2937' }}>{customer.name}</div>
-                              {customer.address && (
-                                <div style={{ fontSize: '0.875rem', color: '#6b7280', marginTop: '2px' }}>
-                                  {customer.address}
+                          {filteredCustomers.map((customer) => {
+                            const fullAddress = [customer.address, customer.city, customer.state, customer.zip]
+                              .filter(part => part && part.trim())
+                              .join(', ');
+
+                            return (
+                              <div
+                                key={customer.id}
+                                onClick={() => handleCustomerSelect(customer)}
+                                style={{
+                                  padding: '10px 12px',
+                                  cursor: 'pointer',
+                                  borderBottom: '1px solid #f3f4f6',
+                                  transition: 'background-color 0.2s'
+                                }}
+                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
+                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
+                              >
+                                <div style={{ fontWeight: '600', color: '#1f2937', marginBottom: '2px' }}>
+                                  {customer.name}
                                 </div>
-                              )}
-                            </div>
-                          ))}
+                                {fullAddress && (
+                                  <div style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '2px' }}>
+                                    📍 {fullAddress}
+                                  </div>
+                                )}
+                                {customer.phone && (
+                                  <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+                                    📞 {customer.phone}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
                       )}
                     </div>
