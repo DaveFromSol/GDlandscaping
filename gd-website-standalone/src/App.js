@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import './App.css';
 import { Analytics } from '@vercel/analytics/react';
 import { FirebaseProvider, useFirebase } from './contexts/FirebaseContext';
@@ -329,6 +329,52 @@ function App() {
 
           <main className="website-main">
             <Routes>
+              {/* Redirects for old URLs without -ct suffix (SEO fix for Google Search Console duplicates) */}
+              <Route path="/lawn-care-berlin" element={<Navigate to="/lawn-care-berlin-ct" replace />} />
+              <Route path="/lawn-care-hartford" element={<Navigate to="/lawn-care-hartford-ct" replace />} />
+              <Route path="/lawn-care-farmington" element={<Navigate to="/lawn-care-farmington-ct" replace />} />
+              <Route path="/lawn-care-new-britain" element={<Navigate to="/lawn-care-new-britain-ct" replace />} />
+              <Route path="/lawn-care-cromwell" element={<Navigate to="/lawn-care-cromwell-ct" replace />} />
+              <Route path="/lawn-care-middletown" element={<Navigate to="/lawn-care-middletown-ct" replace />} />
+              <Route path="/lawn-care-rocky-hill" element={<Navigate to="/lawn-care-rocky-hill-ct" replace />} />
+              <Route path="/lawn-care-newington" element={<Navigate to="/lawn-care-newington-ct" replace />} />
+              <Route path="/lawn-care-west-hartford" element={<Navigate to="/lawn-care-west-hartford-ct" replace />} />
+              <Route path="/lawn-care-bristol" element={<Navigate to="/lawn-care-bristol-ct" replace />} />
+
+              <Route path="/snow-removal-berlin" element={<Navigate to="/snow-removal-berlin-ct" replace />} />
+              <Route path="/snow-removal-hartford" element={<Navigate to="/snow-removal-hartford-ct" replace />} />
+              <Route path="/snow-removal-farmington" element={<Navigate to="/snow-removal-farmington-ct" replace />} />
+              <Route path="/snow-removal-new-britain" element={<Navigate to="/snow-removal-new-britain-ct" replace />} />
+              <Route path="/snow-removal-cromwell" element={<Navigate to="/snow-removal-cromwell-ct" replace />} />
+              <Route path="/snow-removal-middletown" element={<Navigate to="/snow-removal-middletown-ct" replace />} />
+              <Route path="/snow-removal-rocky-hill" element={<Navigate to="/snow-removal-rocky-hill-ct" replace />} />
+              <Route path="/snow-removal-newington" element={<Navigate to="/snow-removal-newington-ct" replace />} />
+              <Route path="/snow-removal-west-hartford" element={<Navigate to="/snow-removal-west-hartford-ct" replace />} />
+              <Route path="/snow-removal-bristol" element={<Navigate to="/snow-removal-bristol-ct" replace />} />
+
+              <Route path="/fall-cleanup-berlin" element={<Navigate to="/fall-cleanup-berlin-ct" replace />} />
+              <Route path="/fall-cleanup-hartford" element={<Navigate to="/fall-cleanup-hartford-ct" replace />} />
+              <Route path="/fall-cleanup-farmington" element={<Navigate to="/fall-cleanup-farmington-ct" replace />} />
+              <Route path="/fall-cleanup-new-britain" element={<Navigate to="/fall-cleanup-new-britain-ct" replace />} />
+              <Route path="/fall-cleanup-cromwell" element={<Navigate to="/fall-cleanup-cromwell-ct" replace />} />
+              <Route path="/fall-cleanup-middletown" element={<Navigate to="/fall-cleanup-middletown-ct" replace />} />
+              <Route path="/fall-cleanup-rocky-hill" element={<Navigate to="/fall-cleanup-rocky-hill-ct" replace />} />
+              <Route path="/fall-cleanup-newington" element={<Navigate to="/fall-cleanup-newington-ct" replace />} />
+              <Route path="/fall-cleanup-west-hartford" element={<Navigate to="/fall-cleanup-west-hartford-ct" replace />} />
+              <Route path="/fall-cleanup-bristol" element={<Navigate to="/fall-cleanup-bristol-ct" replace />} />
+
+              <Route path="/bush-trimming-berlin" element={<Navigate to="/bush-trimming-berlin-ct" replace />} />
+              <Route path="/bush-trimming-hartford" element={<Navigate to="/bush-trimming-hartford-ct" replace />} />
+              <Route path="/bush-trimming-farmington" element={<Navigate to="/bush-trimming-farmington-ct" replace />} />
+              <Route path="/bush-trimming-new-britain" element={<Navigate to="/bush-trimming-new-britain-ct" replace />} />
+              <Route path="/bush-trimming-cromwell" element={<Navigate to="/bush-trimming-cromwell-ct" replace />} />
+              <Route path="/bush-trimming-middletown" element={<Navigate to="/bush-trimming-middletown-ct" replace />} />
+              <Route path="/bush-trimming-rocky-hill" element={<Navigate to="/bush-trimming-rocky-hill-ct" replace />} />
+              <Route path="/bush-trimming-newington" element={<Navigate to="/bush-trimming-newington-ct" replace />} />
+              <Route path="/bush-trimming-west-hartford" element={<Navigate to="/bush-trimming-west-hartford-ct" replace />} />
+              <Route path="/bush-trimming-bristol" element={<Navigate to="/bush-trimming-bristol-ct" replace />} />
+
+              {/* Main pages */}
               <Route path="/" element={<HomePage />} />
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/portfolio" element={<PortfolioPage />} />
