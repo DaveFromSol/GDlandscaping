@@ -232,10 +232,10 @@ const FallBanner = () => (
     <div className="banner-content">
       <span className="banner-icon">🍂</span>
       <div className="banner-text">
-        <strong>Fall Cleanup Special!</strong> Save 20% on fall cleanup services - Book by November 15th!
+        <strong>Fall Discount on Instant Quotes!</strong> Save 20% - Book by November 20th!
       </div>
-      <Link to="/contact" className="banner-cta">
-        Book Now
+      <Link to="/instant-quote" className="banner-cta">
+        Get Quote
       </Link>
     </div>
   </div>
@@ -246,42 +246,42 @@ const CrawlPathLinks = () => {
   const [links] = React.useState(() => {
     const allLinks = [
       { text: 'Leaf Removal Services CT', url: '/leaf-removal' },
-      { text: 'Fall Cleanup Berlin CT', url: '/fall-cleanup-berlin' },
-      { text: 'Fall Cleanup Bristol CT', url: '/fall-cleanup-bristol' },
-      { text: 'Fall Cleanup Cromwell CT', url: '/fall-cleanup-cromwell' },
-      { text: 'Fall Cleanup Farmington CT', url: '/fall-cleanup-farmington' },
-      { text: 'Fall Cleanup Hartford CT', url: '/fall-cleanup-hartford' },
-      { text: 'Fall Cleanup Middletown CT', url: '/fall-cleanup-middletown' },
-      { text: 'Fall Cleanup New Britain CT', url: '/fall-cleanup-new-britain' },
-      { text: 'Fall Cleanup Newington CT', url: '/fall-cleanup-newington' },
-      { text: 'Fall Cleanup Rocky Hill CT', url: '/fall-cleanup-rocky-hill' },
-      { text: 'Fall Cleanup West Hartford CT', url: '/fall-cleanup-west-hartford' },
-      { text: 'Lawn Care Berlin CT', url: '/lawn-care-berlin' },
-      { text: 'Lawn Care Bristol CT', url: '/lawn-care-bristol' },
-      { text: 'Lawn Care Cromwell CT', url: '/lawn-care-cromwell' },
-      { text: 'Lawn Care Farmington CT', url: '/lawn-care-farmington' },
-      { text: 'Lawn Care Hartford CT', url: '/lawn-care-hartford' },
-      { text: 'Lawn Care Middletown CT', url: '/lawn-care-middletown' },
-      { text: 'Lawn Care New Britain CT', url: '/lawn-care-new-britain' },
-      { text: 'Lawn Care Newington CT', url: '/lawn-care-newington' },
-      { text: 'Lawn Care Rocky Hill CT', url: '/lawn-care-rocky-hill' },
-      { text: 'Lawn Care West Hartford CT', url: '/lawn-care-west-hartford' },
-      { text: 'Snow Removal Berlin CT', url: '/snow-removal-berlin' },
-      { text: 'Snow Removal Bristol CT', url: '/snow-removal-bristol' },
-      { text: 'Snow Removal Cromwell CT', url: '/snow-removal-cromwell' },
-      { text: 'Snow Removal Middletown CT', url: '/snow-removal-middletown' },
-      { text: 'Snow Removal New Britain CT', url: '/snow-removal-new-britain' },
-      { text: 'Snow Removal Newington CT', url: '/snow-removal-newington' },
-      { text: 'Snow Removal Rocky Hill CT', url: '/snow-removal-rocky-hill' },
-      { text: 'Snow Removal West Hartford CT', url: '/snow-removal-west-hartford' },
-      { text: 'Bush Trimming Berlin CT', url: '/bush-trimming-berlin' },
-      { text: 'Bush Trimming Bristol CT', url: '/bush-trimming-bristol' },
-      { text: 'Bush Trimming Farmington CT', url: '/bush-trimming-farmington' },
-      { text: 'Bush Trimming Hartford CT', url: '/bush-trimming-hartford' },
-      { text: 'Bush Trimming Middletown CT', url: '/bush-trimming-middletown' },
-      { text: 'Bush Trimming New Britain CT', url: '/bush-trimming-new-britain' },
-      { text: 'Bush Trimming Newington CT', url: '/bush-trimming-newington' },
-      { text: 'Bush Trimming Rocky Hill CT', url: '/bush-trimming-rocky-hill' }
+      { text: 'Fall Cleanup Berlin CT', url: '/fall-cleanup-berlin-ct' },
+      { text: 'Fall Cleanup Bristol CT', url: '/fall-cleanup-bristol-ct' },
+      { text: 'Fall Cleanup Cromwell CT', url: '/fall-cleanup-cromwell-ct' },
+      { text: 'Fall Cleanup Farmington CT', url: '/fall-cleanup-farmington-ct' },
+      { text: 'Fall Cleanup Hartford CT', url: '/fall-cleanup-hartford-ct' },
+      { text: 'Fall Cleanup Middletown CT', url: '/fall-cleanup-middletown-ct' },
+      { text: 'Fall Cleanup New Britain CT', url: '/fall-cleanup-new-britain-ct' },
+      { text: 'Fall Cleanup Newington CT', url: '/fall-cleanup-newington-ct' },
+      { text: 'Fall Cleanup Rocky Hill CT', url: '/fall-cleanup-rocky-hill-ct' },
+      { text: 'Fall Cleanup West Hartford CT', url: '/fall-cleanup-west-hartford-ct' },
+      { text: 'Lawn Care Berlin CT', url: '/lawn-care-berlin-ct' },
+      { text: 'Lawn Care Bristol CT', url: '/lawn-care-bristol-ct' },
+      { text: 'Lawn Care Cromwell CT', url: '/lawn-care-cromwell-ct' },
+      { text: 'Lawn Care Farmington CT', url: '/lawn-care-farmington-ct' },
+      { text: 'Lawn Care Hartford CT', url: '/lawn-care-hartford-ct' },
+      { text: 'Lawn Care Middletown CT', url: '/lawn-care-middletown-ct' },
+      { text: 'Lawn Care New Britain CT', url: '/lawn-care-new-britain-ct' },
+      { text: 'Lawn Care Newington CT', url: '/lawn-care-newington-ct' },
+      { text: 'Lawn Care Rocky Hill CT', url: '/lawn-care-rocky-hill-ct' },
+      { text: 'Lawn Care West Hartford CT', url: '/lawn-care-west-hartford-ct' },
+      { text: 'Snow Removal Berlin CT', url: '/snow-removal-berlin-ct' },
+      { text: 'Snow Removal Bristol CT', url: '/snow-removal-bristol-ct' },
+      { text: 'Snow Removal Cromwell CT', url: '/snow-removal-cromwell-ct' },
+      { text: 'Snow Removal Middletown CT', url: '/snow-removal-middletown-ct' },
+      { text: 'Snow Removal New Britain CT', url: '/snow-removal-new-britain-ct' },
+      { text: 'Snow Removal Newington CT', url: '/snow-removal-newington-ct' },
+      { text: 'Snow Removal Rocky Hill CT', url: '/snow-removal-rocky-hill-ct' },
+      { text: 'Snow Removal West Hartford CT', url: '/snow-removal-west-hartford-ct' },
+      { text: 'Bush Trimming Berlin CT', url: '/bush-trimming-berlin-ct' },
+      { text: 'Bush Trimming Bristol CT', url: '/bush-trimming-bristol-ct' },
+      { text: 'Bush Trimming Farmington CT', url: '/bush-trimming-farmington-ct' },
+      { text: 'Bush Trimming Hartford CT', url: '/bush-trimming-hartford-ct' },
+      { text: 'Bush Trimming Middletown CT', url: '/bush-trimming-middletown-ct' },
+      { text: 'Bush Trimming New Britain CT', url: '/bush-trimming-new-britain-ct' },
+      { text: 'Bush Trimming Newington CT', url: '/bush-trimming-newington-ct' },
+      { text: 'Bush Trimming Rocky Hill CT', url: '/bush-trimming-rocky-hill-ct' }
     ];
 
     // Shuffle and pick 5 random links

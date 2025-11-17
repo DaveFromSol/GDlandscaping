@@ -23,15 +23,15 @@ const mainPages = [
 const blogPages = [
   { url: '/blog', priority: 0.8, changefreq: 'weekly' },
   { url: '/blog/core-aeration-benefits', priority: 0.7, changefreq: 'monthly' },
-  { url: '/blog/drought-resistant-landscaping', priority: 0.7, changefreq: 'monthly' },
+  { url: '/blog/drought-resistant-landscaping-ideas', priority: 0.7, changefreq: 'monthly' },
   { url: '/blog/fall-cleanup-checklist', priority: 0.7, changefreq: 'monthly' },
   { url: '/blog/hoa-grounds-management', priority: 0.7, changefreq: 'monthly' },
   { url: '/blog/hedge-trimming-secrets', priority: 0.7, changefreq: 'monthly' },
   { url: '/blog/mulch-edging-curb-appeal', priority: 0.7, changefreq: 'monthly' },
-  { url: '/blog/seasonal-lawn-care', priority: 0.7, changefreq: 'monthly' },
-  { url: '/blog/snow-readiness-commercial', priority: 0.7, changefreq: 'monthly' },
-  { url: '/blog/sustainable-landscaping', priority: 0.7, changefreq: 'monthly' },
-  { url: '/blog/winterize-irrigation', priority: 0.7, changefreq: 'monthly' },
+  { url: '/blog/seasonal-lawn-care-schedule', priority: 0.7, changefreq: 'monthly' },
+  { url: '/blog/snow-readiness-commercial-lots', priority: 0.7, changefreq: 'monthly' },
+  { url: '/blog/sustainable-landscaping-connecticut', priority: 0.7, changefreq: 'monthly' },
+  { url: '/blog/winterize-irrigation-systems', priority: 0.7, changefreq: 'monthly' },
 ];
 
 // Location-specific pages

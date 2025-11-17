@@ -19,11 +19,11 @@ import {
   getDocs,
   serverTimestamp
 } from 'firebase/firestore';
-import { signOut } from 'firebase/auth';
+import { signOut, createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from 'firebase/auth';
 import { useFirebase } from '../contexts/FirebaseContext';
 
 const AdminDashboard = ({ user, onLogout }) => {
-  const { db } = useFirebase();
+  const { db, auth } = useFirebase();
   const [activeTab, setActiveTab] = useState('overview');
   const [stats, setStats] = useState({
     totalQuotes: 0,
@@ -79,6 +79,16 @@ const AdminDashboard = ({ user, onLogout }) => {
   const [customers, setCustomers] = useState([]);
   const [filteredCustomers, setFilteredCustomers] = useState([]);
   const [showCustomerAutocomplete, setShowCustomerAutocomplete] = useState(false);
+
+  // User Management state
+  const [showUserManagement, setShowUserManagement] = useState(false);
+  const [userAccounts, setUserAccounts] = useState([]);
+  const [newUserAccount, setNewUserAccount] = useState({
+    email: '',
+    password: '',
+    displayName: '',
+    linkedCustomerId: ''
+  });
 
   // Real-time Firebase listener for quotes
   useEffect(() => {
@@ -643,6 +653,106 @@ const AdminDashboard = ({ user, onLogout }) => {
     setShowCustomerAutocomplete(false);
   };
 
+  // User Management Functions
+  const loadUserAccounts = async () => {
+    if (!db) return;
+    try {
+      const usersQuery = query(collection(db, 'userAccounts'), orderBy('createdAt', 'desc'));
+      const usersSnapshot = await getDocs(usersQuery);
+      const users = [];
+      usersSnapshot.forEach((doc) => {
+        users.push({ id: doc.id, ...doc.data() });
+      });
+      setUserAccounts(users);
+    } catch (error) {
+      console.error('Error loading user accounts:', error);
+    }
+  };
+
+  const createUserAccount = async () => {
+    if (!auth || !db) {
+      alert('Authentication not available');
+      return;
+    }
+
+    if (!newUserAccount.email || !newUserAccount.password) {
+      alert('Email and password are required');
+      return;
+    }
+
+    if (newUserAccount.password.length < 6) {
+      alert('Password must be at least 6 characters');
+      return;
+    }
+
+    try {
+      // Create Firebase Auth account
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        newUserAccount.email,
+        newUserAccount.password
+      );
+
+      // Store user account info in Firestore
+      const userAccountData = {
+        uid: userCredential.user.uid,
+        email: newUserAccount.email,
+        displayName: newUserAccount.displayName || '',
+        linkedCustomerId: newUserAccount.linkedCustomerId || null,
+        role: 'customer',
+        source: 'Admin',
+        createdAt: serverTimestamp(),
+        createdBy: user.email || 'admin'
+      };
+
+      await addDoc(collection(db, 'userAccounts'), userAccountData);
+
+      // Update customer if linked
+      if (newUserAccount.linkedCustomerId) {
+        const customerRef = doc(db, 'customers', newUserAccount.linkedCustomerId);
+        await updateDoc(customerRef, {
+          linkedUserId: userCredential.user.uid,
+          userEmail: newUserAccount.email,
+          updatedAt: serverTimestamp()
+        });
+      }
+
+      alert('✅ User account created successfully!');
+      setNewUserAccount({ email: '', password: '', displayName: '', linkedCustomerId: '' });
+      loadUserAccounts();
+    } catch (error) {
+      console.error('Error creating user:', error);
+      if (error.code === 'auth/email-already-in-use') {
+        alert('This email is already in use');
+      } else if (error.code === 'auth/invalid-email') {
+        alert('Invalid email address');
+      } else if (error.code === 'auth/weak-password') {
+        alert('Password is too weak');
+      } else {
+        alert('Error creating user account: ' + error.message);
+      }
+    }
+  };
+
+  const linkCustomerToUser = async (customerId, userId, userEmail) => {
+    if (!db) return;
+
+    try {
+      const customerRef = doc(db, 'customers', customerId);
+      await updateDoc(customerRef, {
+        linkedUserId: userId,
+        userEmail: userEmail,
+        updatedAt: serverTimestamp()
+      });
+
+      alert('✅ Customer linked to user account!');
+      loadUserAccounts();
+    } catch (error) {
+      console.error('Error linking customer:', error);
+      alert('Error linking customer to user');
+    }
+  };
+
   const handleAddJob = async (e) => {
     e.preventDefault();
     if (!db) {
@@ -1116,18 +1226,21 @@ const AdminDashboard = ({ user, onLogout }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-gradient-to-r from-green-700 to-emerald-800 shadow-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-              <p className="text-gray-600">Welcome back, {user.displayName || user.email}</p>
+              <h1 className="text-3xl font-bold text-white flex items-center gap-3">
+                <span className="text-4xl">🌱</span>
+                GD Landscaping Admin
+              </h1>
+              <p className="text-green-100 font-medium mt-1">Welcome back, {user.displayName || user.email}</p>
             </div>
             <button
               onClick={onLogout}
-              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors"
+              className="bg-white text-green-700 hover:bg-green-50 px-6 py-2.5 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 border-2 border-green-100"
             >
               Logout
             </button>
@@ -1138,81 +1251,73 @@ const AdminDashboard = ({ user, onLogout }) => {
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <span className="text-2xl">📋</span>
+          <div className="bg-gradient-to-br from-emerald-50 to-green-100 overflow-hidden shadow-lg rounded-xl border border-green-200 hover:shadow-xl transition-shadow duration-300">
+            <div className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-green-700 uppercase tracking-wide mb-1">
+                    Total Quotes
+                  </p>
+                  <p className="text-3xl font-bold text-green-900">
+                    {stats.totalQuotes}
+                  </p>
                 </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">
-                      Total Quotes
-                    </dt>
-                    <dd className="text-lg font-medium text-gray-900">
-                      {stats.totalQuotes}
-                    </dd>
-                  </dl>
+                <div className="bg-green-600 rounded-full p-3 shadow-lg">
+                  <span className="text-3xl">📋</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-white overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <span className="text-2xl">⏰</span>
+          <div className="bg-gradient-to-br from-amber-50 to-yellow-100 overflow-hidden shadow-lg rounded-xl border border-amber-200 hover:shadow-xl transition-shadow duration-300">
+            <div className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-amber-700 uppercase tracking-wide mb-1">
+                    Pending Quotes
+                  </p>
+                  <p className="text-3xl font-bold text-amber-900">
+                    {stats.pendingQuotes}
+                  </p>
                 </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">
-                      Pending Quotes
-                    </dt>
-                    <dd className="text-lg font-medium text-gray-900">
-                      {stats.pendingQuotes}
-                    </dd>
-                  </dl>
+                <div className="bg-amber-500 rounded-full p-3 shadow-lg">
+                  <span className="text-3xl">⏰</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-white overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <span className="text-2xl">✅</span>
+          <div className="bg-gradient-to-br from-teal-50 to-emerald-100 overflow-hidden shadow-lg rounded-xl border border-teal-200 hover:shadow-xl transition-shadow duration-300">
+            <div className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-teal-700 uppercase tracking-wide mb-1">
+                    Completed Jobs
+                  </p>
+                  <p className="text-3xl font-bold text-teal-900">
+                    {stats.completedJobs}
+                  </p>
                 </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">
-                      Completed Jobs
-                    </dt>
-                    <dd className="text-lg font-medium text-gray-900">
-                      {stats.completedJobs}
-                    </dd>
-                  </dl>
+                <div className="bg-teal-600 rounded-full p-3 shadow-lg">
+                  <span className="text-3xl">✅</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-white overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <span className="text-2xl">💰</span>
+          <div className="bg-gradient-to-br from-green-100 to-emerald-200 overflow-hidden shadow-lg rounded-xl border border-green-300 hover:shadow-xl transition-shadow duration-300">
+            <div className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-green-800 uppercase tracking-wide mb-1">
+                    Total Revenue
+                  </p>
+                  <p className="text-3xl font-bold text-green-900">
+                    {stats.totalRevenue}
+                  </p>
                 </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">
-                      Total Revenue
-                    </dt>
-                    <dd className="text-lg font-medium text-gray-900">
-                      {stats.totalRevenue}
-                    </dd>
-                  </dl>
+                <div className="bg-green-600 rounded-full p-3 shadow-lg">
+                  <span className="text-3xl">💰</span>
                 </div>
               </div>
             </div>
@@ -1220,80 +1325,80 @@ const AdminDashboard = ({ user, onLogout }) => {
         </div>
 
         {/* Tab Navigation */}
-        <div className="bg-white shadow rounded-lg mb-6">
+        <div className="bg-white shadow-lg rounded-xl mb-6 border border-gray-100">
           <div className="border-b border-gray-200">
-            <nav className="-mb-px flex overflow-x-auto space-x-2 sm:space-x-4 md:space-x-6 lg:space-x-8 px-2 sm:px-4 md:px-6">
+            <nav className="-mb-px flex overflow-x-auto space-x-2 sm:space-x-4 md:space-x-6 lg:space-x-8 px-2 sm:px-4 md:px-6 scrollbar-hide">
               <button
                 onClick={() => setActiveTab('overview')}
-                className={`py-3 sm:py-4 px-2 sm:px-3 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
+                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
                   activeTab === 'overview'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-green-600 text-green-700 bg-green-50'
+                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
                 }`}
               >
                 🏠 Overview
               </button>
               <button
                 onClick={() => setActiveTab('leads')}
-                className={`py-3 sm:py-4 px-2 sm:px-3 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
+                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
                   activeTab === 'leads'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-green-600 text-green-700 bg-green-50'
+                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
                 }`}
               >
                 🎯 Leads
               </button>
               <button
                 onClick={() => setActiveTab('bookings')}
-                className={`py-3 sm:py-4 px-2 sm:px-3 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
+                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
                   activeTab === 'bookings'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-green-600 text-green-700 bg-green-50'
+                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
                 }`}
               >
                 📅 Bookings
                 {stats.pendingBookings > 0 && (
-                  <span className="ml-1 sm:ml-2 inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                  <span className="ml-1 sm:ml-2 inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded-full text-xs font-bold bg-amber-400 text-amber-900 shadow-sm">
                     {stats.pendingBookings}
                   </span>
                 )}
               </button>
               <button
                 onClick={() => setActiveTab('quotes')}
-                className={`py-3 sm:py-4 px-2 sm:px-3 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
+                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
                   activeTab === 'quotes'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-green-600 text-green-700 bg-green-50'
+                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
                 }`}
               >
                 📋 Quotes
               </button>
               <button
                 onClick={() => setActiveTab('customers')}
-                className={`py-3 sm:py-4 px-2 sm:px-3 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
+                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
                   activeTab === 'customers'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-green-600 text-green-700 bg-green-50'
+                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
                 }`}
               >
                 👥 Customers
               </button>
               <button
                 onClick={() => setActiveTab('routes')}
-                className={`py-3 sm:py-4 px-2 sm:px-3 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
+                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
                   activeTab === 'routes'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-green-600 text-green-700 bg-green-50'
+                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
                 }`}
               >
                 🗺️ Routes
               </button>
               <button
                 onClick={() => setActiveTab('snow-removal')}
-                className={`py-3 sm:py-4 px-2 sm:px-3 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
+                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
                   activeTab === 'snow-removal'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-green-600 text-green-700 bg-green-50'
+                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
                 }`}
               >
                 ❄️ Snow
@@ -1307,11 +1412,11 @@ const AdminDashboard = ({ user, onLogout }) => {
           <div className="space-y-6">
             {/* Welcome Banner */}
             <div style={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
               borderRadius: '20px',
               padding: '32px',
               color: 'white',
-              boxShadow: '0 20px 60px rgba(102, 126, 234, 0.3)',
+              boxShadow: '0 20px 60px rgba(5, 150, 105, 0.3)',
               position: 'relative',
               overflow: 'hidden'
             }}>
@@ -1347,11 +1452,11 @@ const AdminDashboard = ({ user, onLogout }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Total Revenue Card */}
               <div style={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                background: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
                 borderRadius: '16px',
                 padding: '24px',
                 color: 'white',
-                boxShadow: '0 10px 30px rgba(102, 126, 234, 0.3)',
+                boxShadow: '0 10px 30px rgba(5, 150, 105, 0.3)',
                 position: 'relative',
                 overflow: 'hidden',
                 transition: 'transform 0.2s'
@@ -1628,6 +1733,35 @@ const AdminDashboard = ({ user, onLogout }) => {
                 >
                   <div style={{ fontSize: '32px', marginBottom: '8px' }}>📋</div>
                   <div style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>Bookings</div>
+                </button>
+
+                <button
+                  onClick={() => {
+                    setShowUserManagement(true);
+                    loadUserAccounts();
+                  }}
+                  style={{
+                    padding: '20px',
+                    borderRadius: '12px',
+                    border: '2px solid #e5e7eb',
+                    backgroundColor: 'white',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    textAlign: 'center'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#059669';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(5, 150, 105, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '#e5e7eb';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
+                  <div style={{ fontSize: '32px', marginBottom: '8px' }}>🔐</div>
+                  <div style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>User Accounts</div>
                 </button>
               </div>
             </div>
@@ -3835,6 +3969,283 @@ const AdminDashboard = ({ user, onLogout }) => {
                       Assign Contracts
                     </button>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* User Management Modal */}
+        {showUserManagement && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-y-auto">
+            <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-y-auto my-8">
+              {/* Modal Header */}
+              <div className="sticky top-0 bg-gradient-to-r from-green-700 to-emerald-800 px-6 py-4 rounded-t-xl z-10">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                    <span>🔐</span> User Account Management
+                  </h2>
+                  <button
+                    onClick={() => {
+                      setShowUserManagement(false);
+                      setNewUserAccount({ email: '', password: '', displayName: '', linkedCustomerId: '' });
+                    }}
+                    className="text-white hover:bg-white hover:bg-opacity-20 rounded-lg p-2 transition-colors"
+                  >
+                    <span className="text-2xl">✕</span>
+                  </button>
+                </div>
+                <p className="text-green-100 text-sm mt-1">Create customer accounts and manage access</p>
+              </div>
+
+              <div className="p-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Left Column: Create New User Account */}
+                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border-2 border-green-200">
+                    <h3 className="text-lg font-bold text-green-900 mb-4 flex items-center gap-2">
+                      <span>➕</span> Create New User Account
+                    </h3>
+
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Email Address <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="email"
+                          value={newUserAccount.email}
+                          onChange={(e) => setNewUserAccount({...newUserAccount, email: e.target.value})}
+                          placeholder="customer@example.com"
+                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">This will be used to log in</p>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Password <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="password"
+                          value={newUserAccount.password}
+                          onChange={(e) => setNewUserAccount({...newUserAccount, password: e.target.value})}
+                          placeholder="Min. 6 characters"
+                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">Must be at least 6 characters</p>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Display Name
+                        </label>
+                        <input
+                          type="text"
+                          value={newUserAccount.displayName}
+                          onChange={(e) => setNewUserAccount({...newUserAccount, displayName: e.target.value})}
+                          placeholder="Customer's full name"
+                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Link to Existing Customer (Optional)
+                        </label>
+                        <select
+                          value={newUserAccount.linkedCustomerId}
+                          onChange={(e) => setNewUserAccount({...newUserAccount, linkedCustomerId: e.target.value})}
+                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                        >
+                          <option value="">-- Select a customer --</option>
+                          {customers.filter(c => !c.linkedUserId).map(customer => (
+                            <option key={customer.id} value={customer.id}>
+                              {customer.name} - {customer.email || customer.phone}
+                            </option>
+                          ))}
+                        </select>
+                        <p className="text-xs text-gray-500 mt-1">Link this login to an existing customer record</p>
+                      </div>
+
+                      <button
+                        onClick={createUserAccount}
+                        className="w-full bg-gradient-to-r from-green-600 to-emerald-700 text-white px-6 py-3 rounded-lg font-semibold hover:from-green-700 hover:to-emerald-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                      >
+                        <span className="flex items-center justify-center gap-2">
+                          <span>✓</span> Create User Account
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Existing User Accounts */}
+                  <div className="bg-white rounded-xl border-2 border-gray-200">
+                    <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 rounded-t-xl border-b-2 border-gray-200">
+                      <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                        <span>👥</span> Existing User Accounts
+                        <span className="ml-auto bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                          {userAccounts.length}
+                        </span>
+                      </h3>
+                    </div>
+
+                    <div className="p-4 max-h-[500px] overflow-y-auto">
+                      {userAccounts.length === 0 ? (
+                        <div className="text-center py-12">
+                          <div className="text-6xl mb-4">👤</div>
+                          <p className="text-gray-500 font-medium">No user accounts yet</p>
+                          <p className="text-sm text-gray-400 mt-1">Create your first user account to get started</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {userAccounts.map((account) => {
+                            const linkedCustomer = customers.find(c => c.linkedUserId === account.uid);
+                            return (
+                              <div key={account.id} className="bg-gray-50 rounded-lg p-4 border-2 border-gray-200 hover:border-green-300 transition-all">
+                                <div className="flex items-start justify-between mb-2">
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                      <h4 className="font-semibold text-gray-900">
+                                        {account.displayName || account.email}
+                                      </h4>
+                                      <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded">
+                                        {account.role || 'customer'}
+                                      </span>
+                                      {account.source && (
+                                        <span className={`text-xs font-medium px-2 py-1 rounded ${
+                                          account.source === 'Instant Quote'
+                                            ? 'bg-purple-100 text-purple-800'
+                                            : 'bg-gray-100 text-gray-800'
+                                        }`}>
+                                          {account.source === 'Instant Quote' ? '⚡ Auto-Created' : '👤 Admin'}
+                                        </span>
+                                      )}
+                                    </div>
+                                    <p className="text-sm text-gray-600">{account.email}</p>
+                                    {account.phone && (
+                                      <p className="text-sm text-gray-500">📱 {account.phone}</p>
+                                    )}
+                                    {account.createdAt && (
+                                      <p className="text-xs text-gray-400 mt-1">
+                                        Created: {new Date(account.createdAt?.seconds * 1000).toLocaleDateString()}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+
+                                {linkedCustomer ? (
+                                  <div className="mt-3 bg-green-50 border-2 border-green-200 rounded-lg p-3">
+                                    <p className="text-xs font-semibold text-green-700 mb-1">LINKED CUSTOMER</p>
+                                    <p className="font-medium text-green-900">{linkedCustomer.name}</p>
+                                    <p className="text-sm text-green-700">{linkedCustomer.address}</p>
+                                    {linkedCustomer.phone && (
+                                      <p className="text-sm text-green-600">{linkedCustomer.phone}</p>
+                                    )}
+                                  </div>
+                                ) : (
+                                  <div className="mt-3">
+                                    <p className="text-xs text-gray-500 mb-2 font-medium">Link to customer:</p>
+                                    <div className="flex gap-2">
+                                      <select
+                                        onChange={(e) => {
+                                          if (e.target.value) {
+                                            linkCustomerToUser(e.target.value, account.uid, account.email);
+                                            e.target.value = '';
+                                          }
+                                        }}
+                                        className="flex-1 px-3 py-2 text-sm border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                                      >
+                                        <option value="">-- Select customer --</option>
+                                        {customers.filter(c => !c.linkedUserId).map(customer => (
+                                          <option key={customer.id} value={customer.id}>
+                                            {customer.name}
+                                          </option>
+                                        ))}
+                                      </select>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Link Existing Customer to Existing User Section */}
+                <div className="mt-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border-2 border-blue-200">
+                  <h3 className="text-lg font-bold text-blue-900 mb-4 flex items-center gap-2">
+                    <span>🔗</span> Link Existing Customer to Existing User
+                  </h3>
+                  <p className="text-sm text-blue-700 mb-4">
+                    Connect an existing customer record to an existing user account for portal access
+                  </p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Select Customer
+                      </label>
+                      <select
+                        id="linkExistingCustomer"
+                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                      >
+                        <option value="">-- Choose customer --</option>
+                        {customers.filter(c => !c.linkedUserId).map(customer => (
+                          <option key={customer.id} value={customer.id}>
+                            {customer.name} - {customer.email || customer.phone}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Select User Account
+                      </label>
+                      <select
+                        id="linkExistingUser"
+                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                      >
+                        <option value="">-- Choose user --</option>
+                        {[...userAccounts]
+                          .sort((a, b) => {
+                            // Sort by creation date - oldest first (base accounts first)
+                            const dateA = a.createdAt?.seconds || 0;
+                            const dateB = b.createdAt?.seconds || 0;
+                            return dateA - dateB;
+                          })
+                          .map(account => (
+                            <option key={account.id} value={`${account.uid}|${account.email}`}>
+                              {account.displayName || account.email}
+                            </option>
+                          ))
+                        }
+                      </select>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      const customerId = document.getElementById('linkExistingCustomer').value;
+                      const userValue = document.getElementById('linkExistingUser').value;
+                      if (customerId && userValue) {
+                        const [userId, userEmail] = userValue.split('|');
+                        linkCustomerToUser(customerId, userId, userEmail);
+                        document.getElementById('linkExistingCustomer').value = '';
+                        document.getElementById('linkExistingUser').value = '';
+                      } else {
+                        alert('Please select both a customer and a user account');
+                      }
+                    }}
+                    className="w-full mt-4 bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                  >
+                    <span className="flex items-center justify-center gap-2">
+                      <span>🔗</span> Link Customer to User
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>

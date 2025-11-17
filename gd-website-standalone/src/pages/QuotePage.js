@@ -55,8 +55,8 @@ const QuotePage = () => {
         xlarge: 0    // 15+ feet: $56.25 each
       }
     },
-    leafCleanup: { enabled: false, frequency: 'one-time', price: 0, applyFallDiscount: false },
-    fertilization: { enabled: false, frequency: 'one-time', price: 81 }
+    leafCleanup: { enabled: false, frequency: 'one-time', price: 0, applyFallDiscount: false, includeHauling: false, haulingFee: 0 },
+    fertilization: { enabled: false, frequency: 'one-time', price: 0 }
   });
 
   // Calculate base lawn mowing price based on property size
@@ -99,6 +99,46 @@ const QuotePage = () => {
     return 125 + additionalPrice;
   };
 
+  // Calculate hauling fee for leaf cleanup
+  // $100 base, then $20 per 0.1 acre above 0.2 acres
+  const calculateHaulingFee = () => {
+    if (!propertySize?.acres) return 100;
+
+    const acres = parseFloat(propertySize.acres);
+
+    // Base fee is $100 for properties up to 0.2 acres
+    if (acres <= 0.2) {
+      return 100;
+    }
+
+    // Above 0.2 acres: add $20 for every 0.1 acre
+    const additionalAcres = acres - 0.2;
+    const additionalIncrements = Math.ceil(additionalAcres / 0.1);
+    const additionalPrice = additionalIncrements * 20;
+
+    return 100 + additionalPrice;
+  };
+
+  // Calculate fertilization price based on property size
+  // $100 minimum, then $15 per 0.1 acre above 0.2 acres
+  const calculateFertilizationPrice = () => {
+    if (!propertySize?.acres) return 100;
+
+    const acres = parseFloat(propertySize.acres);
+
+    // Minimum price is $100 for properties up to 0.2 acres
+    if (acres <= 0.2) {
+      return 100;
+    }
+
+    // Above 0.2 acres: add $15 for every 0.1 acre
+    const additionalAcres = acres - 0.2;
+    const additionalIncrements = Math.ceil(additionalAcres / 0.1);
+    const additionalPrice = additionalIncrements * 15;
+
+    return 100 + additionalPrice;
+  };
+
   // Update lawn mowing and leaf cleanup prices when property size changes
   useEffect(() => {
     setServices(prev => ({
@@ -109,7 +149,12 @@ const QuotePage = () => {
       },
       leafCleanup: {
         ...prev.leafCleanup,
-        price: calculateLeafCleanupPrice()
+        price: calculateLeafCleanupPrice(),
+        haulingFee: calculateHaulingFee()
+      },
+      fertilization: {
+        ...prev.fertilization,
+        price: calculateFertilizationPrice()
       }
     }));
   }, [propertySize]);
@@ -260,6 +305,17 @@ const QuotePage = () => {
     }));
   };
 
+  // Toggle hauling fee for leaf cleanup
+  const toggleHaulingFee = () => {
+    setServices(prev => ({
+      ...prev,
+      leafCleanup: {
+        ...prev.leafCleanup,
+        includeHauling: !prev.leafCleanup.includeHauling
+      }
+    }));
+  };
+
   // Calculate total price
   const calculateTotal = () => {
     let total = 0;
@@ -273,12 +329,18 @@ const QuotePage = () => {
           price = price * 0.8; // 20% off
         }
 
+        // Add hauling fee for leaf cleanup if selected
+        if (name === 'leafCleanup' && service.includeHauling) {
+          price += service.haulingFee || 0;
+        }
+
         // Apply frequency multiplier for recurring services
         if (service.frequency === 'weekly') {
           price = price * 4; // Monthly cost (4 weeks)
           price = price * 0.8; // 20% discount for weekly service
         } else if (service.frequency === 'bi-weekly') {
           price = price * 2; // Monthly cost (2 services)
+          price = price * 1.1; // 10% surcharge for bi-weekly
         }
         // monthly stays as-is
         // one-time is just added once
@@ -363,6 +425,34 @@ const QuotePage = () => {
               displayName: bookingData.name
             });
           }
+
+          // Save user account to userAccounts collection for admin management
+          await addDoc(collection(db, 'userAccounts'), {
+            uid: userToSave.uid,
+            email: bookingData.email,
+            displayName: bookingData.name || '',
+            phone: bookingData.phone || '',
+            role: 'customer',
+            source: 'Instant Quote',
+            createdAt: serverTimestamp()
+          });
+
+          // Create customer record and link it to the user account
+          await addDoc(collection(db, 'customers'), {
+            name: bookingData.name,
+            email: bookingData.email,
+            phone: bookingData.phone || '',
+            address: address,
+            city: '',
+            state: '',
+            zip: '',
+            linkedUserId: userToSave.uid,
+            userEmail: bookingData.email,
+            source: 'Instant Quote',
+            status: 'active',
+            createdAt: serverTimestamp(),
+            notes: `Customer created from instant quote. Property size: ${propertySize?.acres || 'N/A'} acres`
+          });
         } catch (authError) {
           if (authError.code === 'auth/email-already-in-use') {
             setFormError('This email is already registered. Please login instead or use a different email.');
@@ -384,7 +474,8 @@ const QuotePage = () => {
           frequency: service.frequency,
           price: service.price,
           ...(name === 'bushTrimming' && service.bushes ? { bushes: service.bushes } : {}),
-          ...(name === 'leafCleanup' && service.applyFallDiscount ? { fallDiscount: true } : {})
+          ...(name === 'leafCleanup' && service.applyFallDiscount ? { fallDiscount: true } : {}),
+          ...(name === 'leafCleanup' && service.includeHauling ? { hauling: true, haulingFee: service.haulingFee } : {})
         }));
 
       // Save booking to Firebase (without password fields)
@@ -429,7 +520,8 @@ const QuotePage = () => {
         name: serviceInfo[name].name,
         frequency: service.frequency,
         price: service.price,
-        ...(name === 'leafCleanup' && service.applyFallDiscount ? { fallDiscount: true } : {})
+        ...(name === 'leafCleanup' && service.applyFallDiscount ? { fallDiscount: true } : {}),
+        ...(name === 'leafCleanup' && service.includeHauling ? { hauling: true, haulingFee: service.haulingFee } : {})
       }));
 
     navigate('/contact', {
@@ -614,6 +706,49 @@ const QuotePage = () => {
                         </div>
                       )}
 
+                      {/* Leaf Cleanup - Hauling Fee Option */}
+                      {serviceName === 'leafCleanup' && (
+                        <div className="hauling-section" style={{
+                          padding: '15px',
+                          background: '#fef3c7',
+                          borderRadius: '8px',
+                          marginBottom: '15px',
+                          border: '2px solid #f59e0b'
+                        }}>
+                          <label style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                            cursor: 'pointer',
+                            fontSize: '16px',
+                            fontWeight: '600'
+                          }}>
+                            <input
+                              type="checkbox"
+                              checked={service.includeHauling}
+                              onChange={toggleHaulingFee}
+                              style={{
+                                width: '20px',
+                                height: '20px',
+                                cursor: 'pointer'
+                              }}
+                            />
+                            <span>
+                              🚚 Add Hauling Service (+${service.haulingFee || 100})
+                              <span style={{
+                                display: 'block',
+                                fontSize: '14px',
+                                fontWeight: '400',
+                                color: '#666',
+                                marginTop: '4px'
+                              }}>
+                                We'll haul away all leaves and debris from your property
+                              </span>
+                            </span>
+                          </label>
+                        </div>
+                      )}
+
                       <div className="service-options">
                         <div className="frequency-options">
                           <label className="frequency-label">Service Frequency:</label>
@@ -648,24 +783,37 @@ const QuotePage = () => {
                         <div className="service-price">
                           {service.frequency === 'one-time' ? (
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                              {serviceName === 'leafCleanup' && service.applyFallDiscount ? (
+                              {serviceName === 'leafCleanup' && (service.applyFallDiscount || service.includeHauling) ? (
                                 <>
-                                  <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '14px' }}>
-                                    ${service.price}
+                                  {service.applyFallDiscount && (
+                                    <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '14px' }}>
+                                      ${service.price}
+                                    </span>
+                                  )}
+                                  <span className="price" style={{ color: service.applyFallDiscount ? '#16a34a' : '#000' }}>
+                                    ${Math.round((service.applyFallDiscount ? service.price * 0.8 : service.price) + (service.includeHauling ? service.haulingFee : 0))}
                                   </span>
-                                  <span className="price" style={{ color: '#16a34a' }}>
-                                    ${Math.round(service.price * 0.8)}
-                                  </span>
-                                  <span className="discount-badge" style={{
-                                    background: '#dcfce7',
-                                    color: '#16a34a',
-                                    padding: '2px 8px',
-                                    borderRadius: '4px',
-                                    fontSize: '12px',
-                                    marginTop: '4px'
-                                  }}>
-                                    20% off
-                                  </span>
+                                  {service.applyFallDiscount && (
+                                    <span className="discount-badge" style={{
+                                      background: '#dcfce7',
+                                      color: '#16a34a',
+                                      padding: '2px 8px',
+                                      borderRadius: '4px',
+                                      fontSize: '12px',
+                                      marginTop: '4px'
+                                    }}>
+                                      20% off
+                                    </span>
+                                  )}
+                                  {service.includeHauling && (
+                                    <span style={{
+                                      fontSize: '12px',
+                                      color: '#666',
+                                      marginTop: '2px'
+                                    }}>
+                                      (+${service.haulingFee} hauling)
+                                    </span>
+                                  )}
                                 </>
                               ) : (
                                 <span className="price">${service.price}</span>
@@ -673,17 +821,33 @@ const QuotePage = () => {
                             </div>
                           ) : (
                             <div className="recurring-price">
-                              <span className="price-label">
-                                ${service.price} per service
-                              </span>
-                              <span className="monthly-price">
-                                ${service.frequency === 'weekly' ? Math.round(service.price * 4 * 0.8) :
-                                   service.frequency === 'bi-weekly' ? service.price * 2 :
-                                   service.price}/month
-                                {service.frequency === 'weekly' && (
-                                  <span className="discount-badge">20% off</span>
-                                )}
-                              </span>
+                              {service.frequency === 'weekly' ? (
+                                <>
+                                  <span className="price" style={{ fontSize: '24px', fontWeight: 'bold' }}>
+                                    ${Math.round(service.price * 4 * 0.8)}/month
+                                  </span>
+                                  <span className="discount-badge" style={{
+                                    background: '#dcfce7',
+                                    color: '#16a34a',
+                                    padding: '4px 8px',
+                                    borderRadius: '4px',
+                                    fontSize: '12px',
+                                    marginTop: '4px',
+                                    display: 'inline-block'
+                                  }}>
+                                    Weekly Service - 20% off
+                                  </span>
+                                </>
+                              ) : (
+                                <>
+                                  <span className="price-label">
+                                    ${service.price} per service
+                                  </span>
+                                  <span className="monthly-price">
+                                    ${service.frequency === 'bi-weekly' ? service.price * 2 : service.price}/month
+                                  </span>
+                                </>
+                              )}
                             </div>
                           )}
                         </div>
