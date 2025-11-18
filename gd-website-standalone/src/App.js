@@ -66,6 +66,7 @@ import BlogHOAGroundsManagementPage from './pages/BlogHOAGroundsManagementPage';
 import BlogSustainableLandscapingPage from './pages/BlogSustainableLandscapingPage';
 import LoginPage from './pages/LoginPage';
 import AccountPage from './pages/AccountPage';
+import NotFoundPage from './pages/NotFoundPage';
 import {
   FertilizationWeedControlBerlinPage,
   FertilizationWeedControlHartfordPage,
@@ -461,6 +462,9 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/account" element={<AccountPage />} />
               <Route path="/admin" element={<AdminPage />} />
+
+              {/* 404 Catch-all route - MUST be last */}
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>
 
