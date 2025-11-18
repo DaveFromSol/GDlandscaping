@@ -37,7 +37,7 @@ const BushTrimmingWestHartfordPage = () => {
     <BushTrimmingTemplate
       townName="West Hartford, CT"
       seo={{
-        title: 'Bush Trimming West Hartford CT | Hedge & Shrub Care | GD Landscaping',
+        title: 'Bush Trimming West Hartford CT - GD Landscaping',
         description:
           'Premium bush trimming and hedge shaping in West Hartford, CT. Serving West Hartford Center, Elmwood, Bishop’s Corner, and beyond.',
         keywords: 'bush trimming West Hartford CT, hedge trimming West Hartford, shrub pruning West Hartford Connecticut',

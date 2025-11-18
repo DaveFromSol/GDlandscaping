@@ -37,7 +37,7 @@ const BushTrimmingBristolPage = () => {
     <BushTrimmingTemplate
       townName="Bristol, CT"
       seo={{
-        title: 'Bush Trimming Bristol CT | Hedge & Shrub Trimming | GD Landscaping',
+        title: 'Bush Trimming Bristol CT - GD Landscaping',
         description:
           'Professional bush trimming and hedge shaping in Bristol, CT with attentive crews and precision equipment.',
         keywords: 'bush trimming Bristol CT, hedge trimming Bristol, shrub trimming Bristol Connecticut',

@@ -37,7 +37,7 @@ const BushTrimmingHartfordPage = () => {
     <BushTrimmingTemplate
       townName="Hartford, CT"
       seo={{
-        title: 'Bush Trimming Hartford CT | Hedge & Shrub Care | GD Landscaping',
+        title: 'Bush Trimming Hartford CT - GD Landscaping',
         description:
           'Professional hedge and shrub trimming in Hartford, CT. Serving downtown, Parkville, Asylum Hill, West End, and South End neighborhoods.',
         keywords: 'bush trimming Hartford CT, hedge trimming Hartford, shrub trimming Hartford Connecticut',

@@ -37,7 +37,7 @@ const BushTrimmingRockyHillPage = () => {
     <BushTrimmingTemplate
       townName="Rocky Hill, CT"
       seo={{
-        title: 'Bush Trimming Rocky Hill CT | Hedge & Shrub Care | GD Landscaping',
+        title: 'Bush Trimming Rocky Hill CT - GD Landscaping',
         description:
           'Professional hedge and shrub trimming in Rocky Hill, CT. Serving Dividend, Ferry Landing, West Rocky Hill, and Cromwell Avenue districts.',
         keywords: 'bush trimming Rocky Hill CT, hedge trimming Rocky Hill, shrub pruning Rocky Hill Connecticut',

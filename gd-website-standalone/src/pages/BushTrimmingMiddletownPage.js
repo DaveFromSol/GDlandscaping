@@ -37,7 +37,7 @@ const BushTrimmingMiddletownPage = () => {
     <BushTrimmingTemplate
       townName="Middletown, CT"
       seo={{
-        title: 'Bush Trimming Middletown CT | Hedge & Shrub Care | GD Landscaping',
+        title: 'Bush Trimming Middletown CT - GD Landscaping',
         description:
           'Professional bush trimming, hedge shaping, and shrub care in Middletown, CT. Serving Wesleyan, South Farms, Highland, and more.',
         keywords: 'bush trimming Middletown CT, hedge trimming Middletown, shrub pruning Middletown Connecticut',

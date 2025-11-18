@@ -37,7 +37,7 @@ const BushTrimmingBerlinPage = () => {
     <BushTrimmingTemplate
       townName="Berlin, CT"
       seo={{
-        title: 'Bush Trimming Berlin CT | Hedge & Shrub Care | GD Landscaping',
+        title: 'Bush Trimming Berlin CT - GD Landscaping',
         description:
           'Professional bush trimming and hedge shaping in Berlin, CT. Serving Kensington, East Berlin, Worthington Ridge, and surrounding neighborhoods.',
         keywords: 'bush trimming Berlin CT, hedge trimming Berlin, shrub pruning Berlin Connecticut',

@@ -37,7 +37,7 @@ const BushTrimmingNewingtonPage = () => {
     <BushTrimmingTemplate
       townName="Newington, CT"
       seo={{
-        title: 'Bush Trimming Newington CT | Hedge & Shrub Care | GD Landscaping',
+        title: 'Bush Trimming Newington CT - GD Landscaping',
         description:
           'Professional bush trimming and hedge shaping in Newington, CT. Serving Newington Center, Maple Hill, Cedar Mountain, and Berlin Turnpike corridors.',
         keywords: 'bush trimming Newington CT, hedge trimming Newington, shrub pruning Newington Connecticut',

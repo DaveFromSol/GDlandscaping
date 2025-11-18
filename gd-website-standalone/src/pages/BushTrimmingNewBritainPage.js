@@ -37,7 +37,7 @@ const BushTrimmingNewBritainPage = () => {
     <BushTrimmingTemplate
       townName="New Britain, CT"
       seo={{
-        title: 'Bush Trimming New Britain CT | Hedge & Shrub Care | GD Landscaping',
+        title: 'Bush Trimming New Britain CT - GD Landscaping',
         description:
           'Professional bush trimming and shrub care in New Britain, CT. Serving Little Poland, Belvedere, Sloper, and surrounding neighborhoods.',
         keywords: 'bush trimming New Britain CT, hedge trimming New Britain, shrub pruning New Britain Connecticut',
