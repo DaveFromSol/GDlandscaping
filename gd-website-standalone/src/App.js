@@ -329,6 +329,9 @@ function App() {
 
           <main className="website-main">
             <Routes>
+              {/* Redirect index.html to root (SEO fix for duplicate homepage) */}
+              <Route path="/index.html" element={<Navigate to="/" replace />} />
+
               {/* Redirects for old URLs without -ct suffix (SEO fix for Google Search Console duplicates) */}
               <Route path="/lawn-care-berlin" element={<Navigate to="/lawn-care-berlin-ct" replace />} />
               <Route path="/lawn-care-hartford" element={<Navigate to="/lawn-care-hartford-ct" replace />} />
