@@ -46,6 +46,41 @@ const FallCleanupBerlinPage = () => {
     { value: '4.9/5', label: 'Homeowner rating' }
   ];
 
+  const faqs = [
+    {
+      question: "How do you handle the hilly terrain in Worthington Ridge during fall cleanup?",
+      answer: "Worthington Ridge properties require specialized equipment and technique. We use self-propelled blowers and tarping systems that prevent leaves from sliding down slopes. Our crews are trained to work safely on inclines and ensure thorough cleanup of hillside properties without damaging lawns or landscape beds."
+    },
+    {
+      question: "Do you service both downtown Berlin and Kensington neighborhoods?",
+      answer: "Absolutely! We have dedicated routes for both downtown Berlin's compact properties and Kensington's larger lots. Our equipment is sized appropriately for each neighborhood - smaller machines for tight Berlin Center streets and high-capacity vacuums for Kensington's expansive lawns."
+    },
+    {
+      question: "When do oak leaves typically drop in Berlin?",
+      answer: "Berlin's abundant oak trees typically hold their leaves until late November or early December. We recommend scheduling an initial cleanup in late October for maples and other early-droppers, then a final visit in early December specifically for oak leaf removal. This two-visit approach ensures your lawn stays healthy all season."
+    },
+    {
+      question: "Can you clear leaves from around the mill pond area and drainage systems?",
+      answer: "Yes, we pay special attention to drainage areas, especially near Mill Street and low-lying properties. We clear storm drains, drainage swales, and pond perimeters to prevent flooding and ice dam issues. This is particularly important in Berlin where proper drainage prevents winter water damage."
+    },
+    {
+      question: "Do you work around Berlin's town transfer station schedule?",
+      answer: "We haul all debris directly from your property - you won't need to make any trips to the transfer station on Christian Lane. Our crews handle 100% of disposal, so you avoid the weekend crowds and heavy lifting completely."
+    },
+    {
+      question: "What about properties near Country Club Road with mature trees?",
+      answer: "Country Club Road estates with mature hardwoods get premium treatment. We use commercial-grade leaf vacuums that can handle heavy volume without multiple passes. These properties often need 2-3 visits as different tree species drop leaves on different schedules throughout fall."
+    },
+    {
+      question: "Can you clean up after early season nor'easters?",
+      answer: "Yes! Berlin often gets hit with October nor'easters that bring down leaves and branches before peak fall. We offer emergency cleanup after storms and can adjust your regular schedule to account for weather events. Call us at (860) 526-7583 if you need urgent storm cleanup."
+    },
+    {
+      question: "Do you service the East Berlin side of town?",
+      answer: "Absolutely. We have regular routes throughout East Berlin including properties along Route 372 and the neighborhoods east of Berlin Turnpike. Our crews are familiar with the area's mix of residential and light commercial properties and adjust our approach accordingly."
+    }
+  ];
+
   return (
     <FallCleanupTemplate
       townName="Berlin, CT"
@@ -101,6 +136,7 @@ const FallCleanupBerlinPage = () => {
         primaryText: 'Get Berlin Cleanup Quote',
         secondaryText: `Call ${phoneNumber}`
       }}
+      faqs={faqs}
     />
   );
 };

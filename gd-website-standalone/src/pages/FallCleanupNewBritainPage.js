@@ -46,6 +46,41 @@ const FallCleanupNewBritainPage = () => {
     { value: '4.9/5', label: 'Local rating' }
   ];
 
+  const faqs = [
+    {
+      question: "Do you service properties in Little Poland neighborhood?",
+      answer: "Absolutely! Little Poland is one of our core service areas. We're familiar with the neighborhood's tight streets, on-street parking patterns, and mix of single-family and multi-family properties. Our crews work efficiently around the area's unique character while delivering thorough cleanup service."
+    },
+    {
+      question: "Can you handle downtown storefronts along Broad Street and Main Street?",
+      answer: "Yes! We service commercial properties throughout downtown New Britain including retail stores, restaurants, and office buildings. We work overnight or early morning (typically 4-6 AM) to ensure sidewalks, entrances, and parking areas are spotless before businesses open. Storefronts receive priority attention to maintain professional appearances."
+    },
+    {
+      question: "What about properties in Belvedere and Sloper neighborhoods?",
+      answer: "Belvedere and Sloper properties get dedicated residential service with equipment sized for suburban lots. These neighborhoods have mature trees that produce significant leaf volume, so we typically recommend 2-3 cleanup visits throughout fall. Properties with mixed hardwoods benefit from staggered visits as different species drop leaves on different schedules."
+    },
+    {
+      question: "Do you work around CCSU campus and student housing areas?",
+      answer: "Yes! We service properties near Central Connecticut State University including student housing, faculty residences, and nearby apartment buildings. We coordinate around academic schedules and work with property managers to ensure minimal disruption to residents during busy periods like move-in, exams, and semester transitions."
+    },
+    {
+      question: "Can you service the Hardware City industrial zone?",
+      answer: "Absolutely. We handle commercial and light industrial properties including warehouse facilities, manufacturing sites, and office/warehouse combinations. We understand the importance of maintaining professional appearances for client visits and ensure parking areas, loading zones, and building entrances stay clean year-round."
+    },
+    {
+      question: "How do you handle the steep streets in West End and South End?",
+      answer: "West End and South End have challenging terrain with steep slopes and elevation changes. We use self-propelled equipment, strategic leaf containment, and hillside-specific techniques. Our crews are trained in slope safety and ensure thorough cleanup without leaves sliding into streets, storm drains, or neighboring properties."
+    },
+    {
+      question: "What's your approach for multi-family buildings and condo complexes?",
+      answer: "Multi-family properties receive comprehensive service with detailed documentation. Property managers get before/after photos, completion reports, and scheduled maintenance plans. We handle common areas, parking lots, individual unit yards, and courtyard spaces. Our crews coordinate timing to minimize resident disruption."
+    },
+    {
+      question: "Do you coordinate with New Britain's parking ban schedule?",
+      answer: "Yes! We monitor New Britain's winter parking ban calendar and schedule cleanups accordingly. For properties with street parking, we communicate 24-48 hours in advance about our arrival time and work efficiently to minimize any parking restrictions. Most residential cleanups happen during daytime hours when street parking is typically available."
+    }
+  ];
+
   return (
     <FallCleanupTemplate
       townName="New Britain, CT"
@@ -100,6 +135,7 @@ const FallCleanupNewBritainPage = () => {
         primaryText: 'Get New Britain Cleanup Quote',
         secondaryText: `Call ${phoneNumber}`
       }}
+      faqs={faqs}
     />
   );
 };

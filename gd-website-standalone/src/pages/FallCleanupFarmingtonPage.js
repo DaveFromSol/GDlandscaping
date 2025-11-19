@@ -46,6 +46,41 @@ const FallCleanupFarmingtonPage = () => {
     { value: '4.9/5', label: 'Homeowner rating' }
   ];
 
+  const faqs = [
+    {
+      question: "Do you service the upscale estates in Devonwood?",
+      answer: "Absolutely! Devonwood properties receive white-glove treatment matching the neighborhood's premium standards. We use commercial-grade equipment to handle large estates efficiently while maintaining meticulous attention to detail. Our crews understand Devonwood's expectations for landscaping excellence and deliver accordingly."
+    },
+    {
+      question: "How do you handle the steep slopes around Talcott Mountain?",
+      answer: "Talcott Mountain properties require specialized hillside techniques. We use self-propelled equipment, strategic tarping, and careful staging to manage leaves on steep terrain. Our crews are trained in slope safety and ensure thorough cleanup without erosion, property damage, or safety risks on Farmington's challenging topography."
+    },
+    {
+      question: "Can you service properties in Unionville's historic district?",
+      answer: "Yes! Unionville's historic properties get special care to preserve their character. We work around mature plantings, historic stone walls, and period landscaping features. Our crews understand the village's aesthetic standards and use equipment sized appropriately for the narrow streets and compact lots common in Unionville's center."
+    },
+    {
+      question: "What about properties along Scott Swamp and wetland areas?",
+      answer: "Properties near Scott Swamp and other wetlands receive environmentally conscious service. We prevent leaf debris from entering sensitive wetland areas, clear drainage features to maintain water flow, and use techniques that protect native vegetation. Our crews understand wetland buffer requirements and work accordingly."
+    },
+    {
+      question: "Do you handle cleanup for Farmington Woods neighborhood?",
+      answer: "Absolutely! Farmington Woods has extensive mature tree canopy that produces significant leaf volume. We typically recommend 2-3 cleanup visits for this neighborhood - early-season for maples, mid-season for mixed hardwoods, and a final visit for late-dropping oaks. This prevents lawn damage from thick leaf layers."
+    },
+    {
+      question: "Can you service properties along the Farmington River?",
+      answer: "Yes! River-adjacent properties get extra attention to prevent leaves and debris from entering the Farmington River. We clear streambanks, remove debris that could impact water quality, and ensure drainage features function properly. Our environmental awareness protects both your property and the river ecosystem."
+    },
+    {
+      question: "What's your approach for properties along Route 4 and Tunxis areas?",
+      answer: "Route 4 corridor properties often combine residential and light commercial uses. We schedule these cleanups to avoid peak traffic times and work efficiently to minimize any impact on road access. Properties get the same thorough treatment as our residential-only routes, just with strategic timing."
+    },
+    {
+      question: "Do you coordinate with Farmington's strict leaf disposal regulations?",
+      answer: "Yes. We haul all leaves and debris directly from your property - you won't need to deal with curbside pickup schedules or bring anything to the transfer station. Our disposal methods comply with all Farmington environmental regulations, and you avoid any town-imposed restrictions or timing requirements."
+    }
+  ];
+
   return (
     <FallCleanupTemplate
       townName="Farmington, CT"
@@ -101,6 +136,7 @@ const FallCleanupFarmingtonPage = () => {
         primaryText: 'Get Farmington Cleanup Quote',
         secondaryText: `Call ${phoneNumber}`
       }}
+      faqs={faqs}
     />
   );
 };

@@ -34,6 +34,41 @@ const FallCleanupRockyHillPage = () => {
     { value: '2+', label: 'Cleanup passes per visit' }
   ];
 
+  const faqs = [
+    {
+      question: "Do you service properties in the Ferry Landing riverfront area?",
+      answer: "Absolutely! Ferry Landing properties require special attention due to Connecticut River proximity. We prevent leaf debris from entering the river, clear drainage features proactively, and schedule multiple passes to manage wind-blown leaves from riverside vegetation. Properties with river views get premium treatment matching the area's high standards."
+    },
+    {
+      question: "Can you handle the Dividend neighborhood?",
+      answer: "Yes! Dividend is one of our core service areas. We're familiar with the neighborhood's mature trees, curved streets, and mix of property sizes. Crews adjust equipment and techniques based on each lot's specific needs - from compact yards to larger estate properties with extensive landscaping."
+    },
+    {
+      question: "What about properties along Silas Deane Highway commercial corridor?",
+      answer: "Silas Deane Highway businesses receive professional commercial service including retail centers, office parks, and mixed-use developments. We offer flexible scheduling including overnight and early morning service to ensure parking lots, entrances, and sidewalks are clean before business hours. Property managers receive completion documentation."
+    },
+    {
+      question: "Do you work around Glastonberry properties and Corporate Ridge?",
+      answer: "Absolutely. Corporate Ridge office parks and nearby residential areas get dedicated route attention. Commercial properties receive business-hours or after-hours service as needed. We understand the importance of maintaining professional appearances for office buildings that receive client visits and ensure consistent quality."
+    },
+    {
+      question: "Can you navigate the hillside properties in West Rocky Hill?",
+      answer: "Yes! West Rocky Hill has challenging elevation changes that require specialized techniques. We use self-propelled equipment, strategic containment, and hillside-specific methods to manage leaves on steep terrain. Our crews are trained in slope safety and prevent erosion or damage to retaining walls and drainage features."
+    },
+    {
+      question: "What's your approach for properties near Dinosaur State Park?",
+      answer: "Properties near Dinosaur State Park often collect wind-blown leaves from the park's wooded areas. We clear these accumulations and schedule visits to account for the additional leaf volume. Park-adjacent properties typically benefit from an extra mid-season cleanup to prevent thick matting from the park's extensive tree canopy."
+    },
+    {
+      question: "Do you service Old Main Street historic properties?",
+      answer: "Yes! Old Main Street properties receive careful treatment appropriate for historic homes. We work around mature plantings, stone walls, and period landscaping features. Our crews use equipment sized for these properties and understand the importance of preserving historic character while delivering thorough modern cleanup service."
+    },
+    {
+      question: "Can you handle multi-family properties and apartment complexes?",
+      answer: "Absolutely. Rocky Hill has numerous multi-family properties that receive our professional service. Property managers get detailed documentation, photo updates, and scheduled maintenance plans. We coordinate common area cleanup, parking lot service, and individual unit yards with timing that minimizes resident disruption."
+    }
+  ];
+
   return (
     <FallCleanupTemplate
       townName="Rocky Hill, CT"
@@ -88,7 +123,10 @@ const FallCleanupRockyHillPage = () => {
         primaryText: 'Get Rocky Hill Cleanup Quote',
         secondaryText: `Call ${phoneNumber}`
       }}
-    />
+
+      faqs={faqs}
+
+      />
   );
 };
 
