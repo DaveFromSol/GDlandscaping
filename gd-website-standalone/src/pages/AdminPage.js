@@ -2263,7 +2263,7 @@ const AdminDashboard = ({ user, onLogout }) => {
           <>
             {/* Add/Edit Quote Modal */}
         {showAddQuote && (
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-20 pb-10">
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-[1001] flex items-start justify-center pt-20 pb-10">
             <div className="relative mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white max-h-[calc(100vh-120px)] overflow-y-auto my-auto">
               <div className="mt-3">
                 <h3 className="text-lg font-medium text-gray-900 mb-4">
@@ -3181,7 +3181,7 @@ const AdminDashboard = ({ user, onLogout }) => {
 
               {/* Make Recurring Modal */}
               {recurringModalJob && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 bg-black bg-opacity-50 z-[1001] flex items-center justify-center p-4">
                   <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
                     <h3 className="text-lg font-semibold mb-4">🔄 Make Job Recurring</h3>
 
@@ -3977,7 +3977,7 @@ const AdminDashboard = ({ user, onLogout }) => {
 
         {/* User Management Modal */}
         {showUserManagement && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-[1001] flex items-center justify-center p-4 overflow-y-auto">
             <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-y-auto my-8">
               {/* Modal Header */}
               <div className="sticky top-0 bg-gradient-to-r from-green-700 to-emerald-800 px-6 py-4 rounded-t-xl z-10">
