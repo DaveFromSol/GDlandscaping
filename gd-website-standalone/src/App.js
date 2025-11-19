@@ -449,6 +449,12 @@ function App() {
               <Route path="/fertilization-weed-control-canton-ct" element={<FertilizationWeedControlCantonPage />} />
               <Route path="/fertilization-weed-control-enfield-ct" element={<FertilizationWeedControlEnfieldPage />} />
               <Route path="/blog" element={<BlogPage />} />
+
+              {/* Blog post redirects for old/shortened URLs */}
+              <Route path="/blog/snow-readiness-commercial" element={<Navigate to="/blog/snow-readiness-commercial-lots" replace />} />
+              <Route path="/blog/seasonal-lawn-care" element={<Navigate to="/blog/seasonal-lawn-care-schedule" replace />} />
+              <Route path="/blog/winterize-irrigation" element={<Navigate to="/blog/winterize-irrigation-systems" replace />} />
+
               <Route path="/blog/seasonal-lawn-care-schedule" element={<BlogSeasonalLawnCarePage />} />
               <Route path="/blog/core-aeration-benefits" element={<BlogCoreAerationBenefitsPage />} />
               <Route path="/blog/fall-cleanup-checklist" element={<BlogFallCleanupChecklistPage />} />
