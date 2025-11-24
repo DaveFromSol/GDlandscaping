@@ -233,7 +233,7 @@ const FallBanner = () => (
     <div className="banner-content">
       <span className="banner-icon">🍂</span>
       <div className="banner-text">
-        <strong>Fall Discount on Instant Quotes!</strong> Save 20% - Book by November 20th!
+        <strong>Fall Discount on Instant Quotes!</strong> Save 20% - until December 1st!
       </div>
       <Link to="/instant-quote" className="banner-cta">
         Get Quote
