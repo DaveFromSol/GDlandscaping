@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { collection, addDoc, serverTimestamp, doc, setDoc, increment } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useFirebase } from '../contexts/FirebaseContext';
+import GoogleAddressAutocomplete from './GoogleAddressAutocomplete';
 
 const INITIAL_FORM_STATE = {
   firstName: '',
@@ -168,13 +169,13 @@ Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}`,
 
         <div className="quote-form-group">
           <label htmlFor={inputId('address')}>Property Address</label>
-          <input
-            type="text"
-            id={inputId('address')}
-            name="address"
+          <GoogleAddressAutocomplete
             value={formData.address}
-            onChange={handleInputChange}
-            placeholder="Street address, City, State"
+            onChange={(value) => setFormData(prev => ({ ...prev, address: value }))}
+            onPlaceSelected={(addressData) => {
+              setFormData(prev => ({ ...prev, address: addressData.fullAddress }));
+            }}
+            placeholder="Start typing your address..."
             className="quote-input"
           />
         </div>
