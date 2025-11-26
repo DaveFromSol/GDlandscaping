@@ -4,6 +4,7 @@ import SEOHead from '../components/SEOHead';
 import Leads from '../components/Leads';
 import Customers from '../components/Customers';
 import SnowRemovalMap from '../components/SnowRemovalMap';
+import CommercialContracts from '../components/CommercialContracts';
 import GoogleAddressAutocomplete from '../components/GoogleAddressAutocomplete';
 import {
   collection,
@@ -90,6 +91,9 @@ const AdminDashboard = ({ user, onLogout }) => {
     linkedCustomerId: ''
   });
 
+  // Commercial Contracts state
+  const [commercialContracts, setCommercialContracts] = useState([]);
+
   // Real-time Firebase listener for quotes
   useEffect(() => {
     if (!db) return;
@@ -158,6 +162,26 @@ const AdminDashboard = ({ user, onLogout }) => {
       setCustomers(customersData);
     }, (error) => {
       console.error('Error fetching customers:', error);
+    });
+
+    return () => unsubscribe();
+  }, [db]);
+
+  // Real-time Firebase listener for commercial contracts
+  useEffect(() => {
+    if (!db) return;
+
+    const contractsRef = collection(db, 'commercialContracts');
+    const q = query(contractsRef, orderBy('createdAt', 'desc'));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const contractsData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setCommercialContracts(contractsData);
+    }, (error) => {
+      console.error('Error fetching commercial contracts:', error);
     });
 
     return () => unsubscribe();
@@ -3864,7 +3888,10 @@ const AdminDashboard = ({ user, onLogout }) => {
                   <p className="text-sm text-gray-500 mt-1">Optimized routes for today's operations</p>
                 </div>
                 <div className="p-6">
-                  <SnowRemovalMap contracts={customers.filter(c => c.snowRemoval)} />
+                  <SnowRemovalMap
+                    contracts={customers.filter(c => c.snowRemoval)}
+                    commercialContracts={commercialContracts}
+                  />
                 </div>
               </div>
             </div>
@@ -3971,6 +3998,11 @@ const AdminDashboard = ({ user, onLogout }) => {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* Commercial Contracts Section */}
+            <div className="mt-8">
+              <CommercialContracts db={db} />
             </div>
           </div>
         )}

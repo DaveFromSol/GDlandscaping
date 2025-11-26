@@ -13,7 +13,7 @@ const defaultCenter = {
   lng: -73.0877 // Connecticut center
 };
 
-const SnowRemovalMap = ({ contracts }) => {
+const SnowRemovalMap = ({ contracts, commercialContracts = [] }) => {
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [optimizedRoute, setOptimizedRoute] = useState([]);
   const [routeInfo, setRouteInfo] = useState(null);
@@ -22,13 +22,36 @@ const SnowRemovalMap = ({ contracts }) => {
   const [useCurrentLocation, setUseCurrentLocation] = useState(true);
 
   const optimizeRoute = useCallback(() => {
-    if (!contracts || contracts.length === 0) {
+    // Flatten commercial contracts into individual addresses
+    const commercialAddresses = commercialContracts.flatMap(contract =>
+      (contract.addresses || []).map((addr, index) => ({
+        id: `${contract.id}-${index}`,
+        name: `${contract.companyName} - ${addr.name || `Location ${index + 1}`}`,
+        address: addr.location,
+        city: '',
+        state: '',
+        zip: '',
+        priority: contract.priority || 'Normal',
+        phone: contract.phone,
+        notes: addr.specialInstructions,
+        isCommercial: true,
+        contractId: contract.id
+      }))
+    );
+
+    // Combine regular contracts with commercial addresses
+    const allStops = [
+      ...(contracts || []),
+      ...commercialAddresses
+    ];
+
+    if (!allStops || allStops.length === 0) {
       alert('No contracts available to optimize');
       return;
     }
 
-    if (contracts.length < 1) {
-      alert('Need at least 1 contract to create a route');
+    if (allStops.length < 1) {
+      alert('Need at least 1 location to create a route');
       return;
     }
 
@@ -81,9 +104,9 @@ const SnowRemovalMap = ({ contracts }) => {
       return parts.join(', ');
     };
 
-    // Sort by priority first (High priority contracts first)
-    const prioritySorted = [...contracts].sort((a, b) => {
-      const priorityOrder = { High: 0, Normal: 1, Low: 2 };
+    // Sort by priority first (High/Critical priority stops first)
+    const prioritySorted = [...allStops].sort((a, b) => {
+      const priorityOrder = { critical: 0, high: 1, normal: 2, low: 3, High: 1, Normal: 2, Low: 3 };
       return priorityOrder[a.priority || 'Normal'] - priorityOrder[b.priority || 'Normal'];
     });
 
@@ -161,7 +184,7 @@ const SnowRemovalMap = ({ contracts }) => {
           setRouteInfo({
             distance: (totalDistance / 1609.34).toFixed(2), // Convert to miles
             duration: Math.round(totalDuration / 60), // Convert to minutes
-            stops: contracts.length
+            stops: allStops.length
           });
         } else {
           console.error('❌ Directions request failed with status:', status);
@@ -196,7 +219,7 @@ const SnowRemovalMap = ({ contracts }) => {
         }
       }
     );
-  }, [contracts, currentLocation, useCurrentLocation]);
+  }, [contracts, commercialContracts, currentLocation, useCurrentLocation]);
 
   const exportRoute = () => {
     if (!optimizedRoute || optimizedRoute.length === 0) {
