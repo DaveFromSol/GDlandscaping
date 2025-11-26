@@ -39,7 +39,14 @@ const Customers = ({ user }) => {
     lastServiceDate: '',
     tags: [],
     snowRemoval: false,
-    priority: 'Normal'
+    priority: 'Normal',
+    addresses: [] // For HOA/Condo with multiple addresses
+  });
+
+  const [currentAddress, setCurrentAddress] = useState({
+    location: '',
+    unitNumber: '',
+    specialInstructions: ''
   });
 
   // Real-time Firebase listener for customers
@@ -159,7 +166,8 @@ const Customers = ({ user }) => {
       lastServiceDate: customer.lastServiceDate || '',
       tags: customer.tags || [],
       snowRemoval: customer.snowRemoval || false,
-      priority: customer.priority || 'Normal'
+      priority: customer.priority || 'Normal',
+      addresses: customer.addresses || []
     });
     setShowAddCustomer(true);
   };
@@ -183,7 +191,43 @@ const Customers = ({ user }) => {
       lastServiceDate: '',
       tags: [],
       snowRemoval: false,
-      priority: 'Normal'
+      priority: 'Normal',
+      addresses: []
+    });
+    setCurrentAddress({
+      location: '',
+      unitNumber: '',
+      specialInstructions: ''
+    });
+  };
+
+  const addAddress = () => {
+    if (!currentAddress.location.trim()) {
+      alert('Please enter an address');
+      return;
+    }
+
+    if (newCustomer.addresses.length >= 40) {
+      alert('Maximum 40 addresses allowed');
+      return;
+    }
+
+    setNewCustomer({
+      ...newCustomer,
+      addresses: [...newCustomer.addresses, { ...currentAddress }]
+    });
+
+    setCurrentAddress({
+      location: '',
+      unitNumber: '',
+      specialInstructions: ''
+    });
+  };
+
+  const removeAddress = (index) => {
+    setNewCustomer({
+      ...newCustomer,
+      addresses: newCustomer.addresses.filter((_, i) => i !== index)
     });
   };
 
@@ -333,57 +377,152 @@ const Customers = ({ user }) => {
                     <option value="Multi-family">Multi-family</option>
                   </select>
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Address
-                    <span className="text-xs text-gray-500 ml-2">(Start typing for suggestions)</span>
-                  </label>
-                  <GoogleAddressAutocomplete
-                    value={newCustomer.address}
-                    onChange={(value) => setNewCustomer({...newCustomer, address: value})}
-                    onPlaceSelected={(addressData) => {
-                      setNewCustomer({
-                        ...newCustomer,
-                        address: addressData.street || addressData.fullAddress,
-                        city: addressData.city,
-                        state: addressData.state,
-                        zip: addressData.zip
-                      });
-                    }}
-                    placeholder="Start typing your address..."
-                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
-                  <input
-                    type="text"
-                    value={newCustomer.city}
-                    onChange={(e) => setNewCustomer({...newCustomer, city: e.target.value})}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="Berlin"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
-                  <input
-                    type="text"
-                    value={newCustomer.state}
-                    onChange={(e) => setNewCustomer({...newCustomer, state: e.target.value})}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="CT"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">ZIP Code</label>
-                  <input
-                    type="text"
-                    value={newCustomer.zip}
-                    onChange={(e) => setNewCustomer({...newCustomer, zip: e.target.value})}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="06037"
-                  />
-                </div>
+                {/* Conditional Address Section */}
+                {newCustomer.customerType === 'HOA' ? (
+                  /* Multiple Addresses for HOA/Condo */
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Property Addresses ({newCustomer.addresses.length}/40)
+                    </label>
+
+                    {/* Add Address Form */}
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div className="md:col-span-2">
+                          <label className="block text-xs font-medium text-gray-600 mb-1">
+                            Address *
+                            <span className="text-gray-400 ml-1">(Google autocomplete)</span>
+                          </label>
+                          <GoogleAddressAutocomplete
+                            value={currentAddress.location}
+                            onChange={(value) => setCurrentAddress({...currentAddress, location: value})}
+                            onPlaceSelected={(addressData) => {
+                              setCurrentAddress({
+                                ...currentAddress,
+                                location: addressData.fullAddress
+                              });
+                            }}
+                            placeholder="123 Main St, Berlin, CT 06037"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">Unit/Building #</label>
+                          <input
+                            type="text"
+                            value={currentAddress.unitNumber}
+                            onChange={(e) => setCurrentAddress({...currentAddress, unitNumber: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            placeholder="Unit 101"
+                          />
+                        </div>
+                        <div className="md:col-span-2">
+                          <label className="block text-xs font-medium text-gray-600 mb-1">Special Instructions</label>
+                          <input
+                            type="text"
+                            value={currentAddress.specialInstructions}
+                            onChange={(e) => setCurrentAddress({...currentAddress, specialInstructions: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            placeholder="Gate code, parking instructions, etc."
+                          />
+                        </div>
+                        <div className="flex items-end">
+                          <button
+                            type="button"
+                            onClick={addAddress}
+                            className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+                          >
+                            + Add Address
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Address List */}
+                    {newCustomer.addresses.length > 0 && (
+                      <div className="space-y-2 max-h-64 overflow-y-auto">
+                        {newCustomer.addresses.map((addr, index) => (
+                          <div key={index} className="flex items-start gap-2 p-3 bg-white border border-gray-200 rounded-lg">
+                            <div className="flex-shrink-0 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold">
+                              {index + 1}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium text-gray-900">{addr.location}</p>
+                              {addr.unitNumber && (
+                                <p className="text-sm text-gray-600">Unit: {addr.unitNumber}</p>
+                              )}
+                              {addr.specialInstructions && (
+                                <p className="text-xs text-gray-500 mt-1">{addr.specialInstructions}</p>
+                              )}
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => removeAddress(index)}
+                              className="flex-shrink-0 px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 text-sm font-medium"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  /* Single Address for Residential/Commercial */
+                  <>
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Address
+                        <span className="text-xs text-gray-500 ml-2">(Start typing for suggestions)</span>
+                      </label>
+                      <GoogleAddressAutocomplete
+                        value={newCustomer.address}
+                        onChange={(value) => setNewCustomer({...newCustomer, address: value})}
+                        onPlaceSelected={(addressData) => {
+                          setNewCustomer({
+                            ...newCustomer,
+                            address: addressData.street || addressData.fullAddress,
+                            city: addressData.city,
+                            state: addressData.state,
+                            zip: addressData.zip
+                          });
+                        }}
+                        placeholder="Start typing your address..."
+                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
+                      <input
+                        type="text"
+                        value={newCustomer.city}
+                        onChange={(e) => setNewCustomer({...newCustomer, city: e.target.value})}
+                        className="w-full p-2 border border-gray-300 rounded-md"
+                        placeholder="Berlin"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
+                      <input
+                        type="text"
+                        value={newCustomer.state}
+                        onChange={(e) => setNewCustomer({...newCustomer, state: e.target.value})}
+                        className="w-full p-2 border border-gray-300 rounded-md"
+                        placeholder="CT"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">ZIP Code</label>
+                      <input
+                        type="text"
+                        value={newCustomer.zip}
+                        onChange={(e) => setNewCustomer({...newCustomer, zip: e.target.value})}
+                        className="w-full p-2 border border-gray-300 rounded-md"
+                        placeholder="06037"
+                      />
+                    </div>
+                  </>
+                )}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
                   <select

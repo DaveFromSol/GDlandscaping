@@ -22,7 +22,7 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
   const [useCurrentLocation, setUseCurrentLocation] = useState(true);
 
   const optimizeRoute = useCallback(() => {
-    // Flatten HOA/Condo properties into individual addresses
+    // Flatten HOA/Condo properties into individual addresses (from dedicated properties section)
     const hoaCondoAddresses = hoaCondoProperties.flatMap(property =>
       (property.addresses || []).map((addr, index) => ({
         id: `${property.id}-${index}`,
@@ -39,10 +39,35 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
       }))
     );
 
-    // Combine regular contracts with HOA/Condo addresses
+    // Flatten customers with customer type 'HOA' who have multiple addresses
+    const hoaCustomerAddresses = (contracts || [])
+      .filter(c => c.customerType === 'HOA' && c.addresses && c.addresses.length > 0)
+      .flatMap(customer =>
+        customer.addresses.map((addr, index) => ({
+          id: `${customer.id}-${index}`,
+          name: `${customer.name} - ${addr.unitNumber || `Location ${index + 1}`}`,
+          address: addr.location,
+          city: '',
+          state: '',
+          zip: '',
+          priority: customer.priority || 'Normal',
+          phone: customer.phone,
+          notes: addr.specialInstructions,
+          isHOACondo: true,
+          customerId: customer.id
+        }))
+      );
+
+    // Regular customers (non-HOA or HOA without multiple addresses)
+    const regularCustomers = (contracts || []).filter(c =>
+      c.customerType !== 'HOA' || !c.addresses || c.addresses.length === 0
+    );
+
+    // Combine all stops
     const allStops = [
-      ...(contracts || []),
-      ...hoaCondoAddresses
+      ...regularCustomers,
+      ...hoaCondoAddresses,
+      ...hoaCustomerAddresses
     ];
 
     if (!allStops || allStops.length === 0) {
