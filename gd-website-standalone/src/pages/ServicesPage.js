@@ -274,6 +274,75 @@ const ServicesPage = () => {
 
           <FAQSection faqs={faqs} title="Landscaping Services FAQ" />
 
+          <div className="service-locations-section">
+            <div className="section-header">
+              <h2>Local Service Pages</h2>
+              <p>Find specialized services tailored to your Connecticut town</p>
+            </div>
+            <div className="service-locations-grid">
+              <div className="service-location-category">
+                <h3>🍂 Fall Cleanup by Town</h3>
+                <ul className="service-location-links">
+                  <li><Link to="/fall-cleanup-berlin-ct">Berlin Fall Cleanup</Link></li>
+                  <li><Link to="/fall-cleanup-bristol-ct">Bristol Fall Cleanup</Link></li>
+                  <li><Link to="/fall-cleanup-cromwell-ct">Cromwell Fall Cleanup</Link></li>
+                  <li><Link to="/fall-cleanup-farmington-ct">Farmington Fall Cleanup</Link></li>
+                  <li><Link to="/fall-cleanup-hartford-ct">Hartford Fall Cleanup</Link></li>
+                  <li><Link to="/fall-cleanup-middletown-ct">Middletown Fall Cleanup</Link></li>
+                  <li><Link to="/fall-cleanup-new-britain-ct">New Britain Fall Cleanup</Link></li>
+                  <li><Link to="/fall-cleanup-newington-ct">Newington Fall Cleanup</Link></li>
+                  <li><Link to="/fall-cleanup-rocky-hill-ct">Rocky Hill Fall Cleanup</Link></li>
+                  <li><Link to="/fall-cleanup-west-hartford-ct">West Hartford Fall Cleanup</Link></li>
+                </ul>
+              </div>
+              <div className="service-location-category">
+                <h3>🌱 Lawn Care by Town</h3>
+                <ul className="service-location-links">
+                  <li><Link to="/lawn-care-berlin-ct">Berlin Lawn Care</Link></li>
+                  <li><Link to="/lawn-care-bristol-ct">Bristol Lawn Care</Link></li>
+                  <li><Link to="/lawn-care-cromwell-ct">Cromwell Lawn Care</Link></li>
+                  <li><Link to="/lawn-care-farmington-ct">Farmington Lawn Care</Link></li>
+                  <li><Link to="/lawn-care-hartford-ct">Hartford Lawn Care</Link></li>
+                  <li><Link to="/lawn-care-middletown-ct">Middletown Lawn Care</Link></li>
+                  <li><Link to="/lawn-care-new-britain-ct">New Britain Lawn Care</Link></li>
+                  <li><Link to="/lawn-care-newington-ct">Newington Lawn Care</Link></li>
+                  <li><Link to="/lawn-care-rocky-hill-ct">Rocky Hill Lawn Care</Link></li>
+                  <li><Link to="/lawn-care-west-hartford-ct">West Hartford Lawn Care</Link></li>
+                </ul>
+              </div>
+              <div className="service-location-category">
+                <h3>✂️ Bush Trimming by Town</h3>
+                <ul className="service-location-links">
+                  <li><Link to="/bush-trimming-berlin-ct">Berlin Bush Trimming</Link></li>
+                  <li><Link to="/bush-trimming-bristol-ct">Bristol Bush Trimming</Link></li>
+                  <li><Link to="/bush-trimming-cromwell-ct">Cromwell Bush Trimming</Link></li>
+                  <li><Link to="/bush-trimming-farmington-ct">Farmington Bush Trimming</Link></li>
+                  <li><Link to="/bush-trimming-hartford-ct">Hartford Bush Trimming</Link></li>
+                  <li><Link to="/bush-trimming-middletown-ct">Middletown Bush Trimming</Link></li>
+                  <li><Link to="/bush-trimming-new-britain-ct">New Britain Bush Trimming</Link></li>
+                  <li><Link to="/bush-trimming-newington-ct">Newington Bush Trimming</Link></li>
+                  <li><Link to="/bush-trimming-rocky-hill-ct">Rocky Hill Bush Trimming</Link></li>
+                  <li><Link to="/bush-trimming-west-hartford-ct">West Hartford Bush Trimming</Link></li>
+                </ul>
+              </div>
+              <div className="service-location-category">
+                <h3>❄️ Snow Removal by Town</h3>
+                <ul className="service-location-links">
+                  <li><Link to="/snow-removal-berlin-ct">Berlin Snow Removal</Link></li>
+                  <li><Link to="/snow-removal-bristol-ct">Bristol Snow Removal</Link></li>
+                  <li><Link to="/snow-removal-cromwell-ct">Cromwell Snow Removal</Link></li>
+                  <li><Link to="/snow-removal-farmington-ct">Farmington Snow Removal</Link></li>
+                  <li><Link to="/snow-removal-hartford-ct">Hartford Snow Removal</Link></li>
+                  <li><Link to="/snow-removal-middletown-ct">Middletown Snow Removal</Link></li>
+                  <li><Link to="/snow-removal-new-britain-ct">New Britain Snow Removal</Link></li>
+                  <li><Link to="/snow-removal-newington-ct">Newington Snow Removal</Link></li>
+                  <li><Link to="/snow-removal-rocky-hill-ct">Rocky Hill Snow Removal</Link></li>
+                  <li><Link to="/snow-removal-west-hartford-ct">West Hartford Snow Removal</Link></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
           <div className="services-cta">
             <div className="cta-content">
               <h2>Ready to Transform Your Outdoor Space?</h2>

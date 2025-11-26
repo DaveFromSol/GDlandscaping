@@ -4,6 +4,8 @@ import SEOHead from '../components/SEOHead';
 import QuoteSection from '../components/QuoteSection';
 import FAQSection from '../components/FAQSection';
 import OptimizedImage from '../components/OptimizedImage';
+import RelatedServices from '../components/RelatedServices';
+import RelatedArticles from '../components/RelatedArticles';
 import './FertilizationWeedControlTemplate.css';
 
 const FertilizationWeedControlTemplate = ({
@@ -57,6 +59,8 @@ const FertilizationWeedControlTemplate = ({
   ];
 
   const faqsToDisplay = faqs || defaultFaqs;
+  const cityName = townName.split(',')[0].trim();
+  const townSlug = cityName.toLowerCase().replace(/\s+/g, '-');
   const structuredDataEntries = Array.isArray(seo.structuredData)
     ? seo.structuredData
     : seo.structuredData
@@ -251,6 +255,14 @@ const FertilizationWeedControlTemplate = ({
         <div className="container">
           <FAQSection faqs={faqsToDisplay} title={`Fertilization & Weed Control FAQ - ${townName.split(',')[0]}`} />
         </div>
+
+        <RelatedArticles serviceType="fertilization" />
+
+        <RelatedServices
+          townSlug={townSlug}
+          currentService="fertilization"
+          townName={cityName}
+        />
 
         <QuoteSection
           title={cta?.title || `Start Your ${townName.split(',')[0]} Treatment Plan`}

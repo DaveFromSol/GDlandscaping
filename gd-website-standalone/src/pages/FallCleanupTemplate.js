@@ -5,6 +5,8 @@ import AddressAutocomplete from '../components/AddressAutocomplete';
 import LocationGallery from '../components/LocationGallery';
 import QuoteSection from '../components/QuoteSection';
 import FAQSection from '../components/FAQSection';
+import RelatedServices from '../components/RelatedServices';
+import RelatedArticles from '../components/RelatedArticles';
 
 const phoneNumber = '(860) 526-7583';
 
@@ -77,6 +79,7 @@ const FallCleanupTemplate = ({
   };
 
   const cityName = townName.split(',')[0].trim();
+  const townSlug = cityName.toLowerCase().replace(/\s+/g, '-');
   const localBusinessSchema = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
@@ -288,7 +291,17 @@ const FallCleanupTemplate = ({
           />
 
           <FAQSection faqs={faqsToDisplay} title={`Fall Cleanup FAQ - ${townName.split(',')[0]}`} />
+        </div>
 
+        <RelatedArticles serviceType="fall-cleanup" />
+
+        <RelatedServices
+          townSlug={townSlug}
+          currentService="fall-cleanup"
+          townName={cityName}
+        />
+
+        <div className="container">
           <section className="fall-cta">
             <div className="cta-content">
               <h2>{resolvedCta.title}</h2>

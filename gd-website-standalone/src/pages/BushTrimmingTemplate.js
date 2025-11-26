@@ -6,6 +6,8 @@ import LocationGallery from '../components/LocationGallery';
 import QuoteSection from '../components/QuoteSection';
 import FAQSection from '../components/FAQSection';
 import OptimizedImage from '../components/OptimizedImage';
+import RelatedServices from '../components/RelatedServices';
+import RelatedArticles from '../components/RelatedArticles';
 
 const defaultPhoneNumber = '(860) 526-7583';
 
@@ -73,6 +75,7 @@ const BushTrimmingTemplate = ({
   };
 
   const cityName = townName.split(',')[0].trim();
+  const townSlug = cityName.toLowerCase().replace(/\s+/g, '-');
   const localBusinessSchema = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
@@ -237,7 +240,17 @@ const BushTrimmingTemplate = ({
           />
 
           <FAQSection faqs={faqsToDisplay} title={`Bush Trimming FAQ - ${townName.split(',')[0]}`} />
+        </div>
 
+        <RelatedArticles serviceType="bush-trimming" />
+
+        <RelatedServices
+          townSlug={townSlug}
+          currentService="bush-trimming"
+          townName={cityName}
+        />
+
+        <div className="container">
           <section className="trim-cta">
             <div className="cta-content">
               <h2>{resolvedCta.title}</h2>
