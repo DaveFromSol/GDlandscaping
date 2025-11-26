@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
 import QuoteSection from '../components/QuoteSection';
@@ -440,6 +441,59 @@ const HomePage = () => {
           </div>
         </div>
 
+        {/* Featured Services */}
+        <div className="featured-services-section">
+          <div className="container">
+            <h2>Our Services</h2>
+            <p className="section-subtitle">Professional year-round landscaping solutions for Connecticut properties</p>
+
+            <div className="featured-services-grid">
+              <Link to="/services" className="featured-service-card">
+                <div className="service-card-icon">🌱</div>
+                <h3>All Landscaping Services</h3>
+                <p>Lawn care, design, hardscaping & more</p>
+                <span className="service-card-arrow">View All Services →</span>
+              </Link>
+
+              <Link to="/leaf-removal" className="featured-service-card featured">
+                <div className="service-card-badge">🍂 Seasonal</div>
+                <div className="service-card-icon">🍁</div>
+                <h3>Fall Leaf Removal</h3>
+                <p>Professional cleanup & haul-away service</p>
+                <span className="service-card-arrow">Learn More →</span>
+              </Link>
+
+              <Link to="/snow-removal" className="featured-service-card">
+                <div className="service-card-icon">❄️</div>
+                <h3>Snow Removal</h3>
+                <p>24/7 winter plowing & ice management</p>
+                <span className="service-card-arrow">Get Winter Ready →</span>
+              </Link>
+
+              <Link to="/lawn-care-berlin-ct" className="featured-service-card">
+                <div className="service-card-icon">🏡</div>
+                <h3>Lawn Care</h3>
+                <p>Weekly mowing, edging & maintenance</p>
+                <span className="service-card-arrow">View Local Services →</span>
+              </Link>
+
+              <Link to="/bush-trimming-berlin-ct" className="featured-service-card">
+                <div className="service-card-icon">✂️</div>
+                <h3>Bush Trimming</h3>
+                <p>Professional hedge & shrub shaping</p>
+                <span className="service-card-arrow">Get a Quote →</span>
+              </Link>
+
+              <Link to="/fertilization-weed-control-berlin-ct" className="featured-service-card">
+                <div className="service-card-icon">🌾</div>
+                <h3>Fertilization & Weed Control</h3>
+                <p>Custom lawn treatment programs</p>
+                <span className="service-card-arrow">See Programs →</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+
         {/* Customer Testimonials */}
         <div className="testimonials-section">
           <div className="container">
@@ -521,36 +575,36 @@ const HomePage = () => {
               <div className="area-section">
                 <h3>Hartford County</h3>
                 <div className="towns-grid">
-                  <span className="town">Berlin</span>
-                  <span className="town">Hartford</span>
-                  <span className="town">New Britain</span>
-                  <span className="town">West Hartford</span>
-                  <span className="town">East Hartford</span>
-                  <span className="town">Newington</span>
-                  <span className="town">Wethersfield</span>
-                  <span className="town">Rocky Hill</span>
-                  <span className="town">Glastonbury</span>
-                  <span className="town">Manchester</span>
-                  <span className="town">South Windsor</span>
-                  <span className="town">Farmington</span>
-                  <span className="town">Plainville</span>
-                  <span className="town">Bristol</span>
-                  <span className="town">Southington</span>
-                  <span className="town">Avon</span>
+                  <Link to="/lawn-care-berlin-ct" className="town">Berlin</Link>
+                  <Link to="/lawn-care-hartford-ct" className="town">Hartford</Link>
+                  <Link to="/lawn-care-new-britain-ct" className="town">New Britain</Link>
+                  <Link to="/lawn-care-west-hartford-ct" className="town">West Hartford</Link>
+                  <Link to="/fertilization-weed-control-east-hartford-ct" className="town">East Hartford</Link>
+                  <Link to="/lawn-care-newington-ct" className="town">Newington</Link>
+                  <Link to="/fertilization-weed-control-wethersfield-ct" className="town">Wethersfield</Link>
+                  <Link to="/lawn-care-rocky-hill-ct" className="town">Rocky Hill</Link>
+                  <Link to="/fertilization-weed-control-glastonbury-ct" className="town">Glastonbury</Link>
+                  <Link to="/fertilization-weed-control-manchester-ct" className="town">Manchester</Link>
+                  <Link to="/fertilization-weed-control-south-windsor-ct" className="town">South Windsor</Link>
+                  <Link to="/lawn-care-farmington-ct" className="town">Farmington</Link>
+                  <Link to="/fertilization-weed-control-plainville-ct" className="town">Plainville</Link>
+                  <Link to="/lawn-care-bristol-ct" className="town">Bristol</Link>
+                  <Link to="/fertilization-weed-control-southington-ct" className="town">Southington</Link>
+                  <Link to="/fertilization-weed-control-avon-ct" className="town">Avon</Link>
                   <span className="town">Simsbury</span>
-                  <span className="town">Windsor</span>
-                  <span className="town">Bloomfield</span>
-                  <span className="town">Canton</span>
+                  <Link to="/fertilization-weed-control-windsor-ct" className="town">Windsor</Link>
+                  <Link to="/fertilization-weed-control-bloomfield-ct" className="town">Bloomfield</Link>
+                  <Link to="/fertilization-weed-control-canton-ct" className="town">Canton</Link>
                   <span className="town">East Windsor</span>
-                  <span className="town">Enfield</span>
+                  <Link to="/fertilization-weed-control-enfield-ct" className="town">Enfield</Link>
                 </div>
               </div>
 
               <div className="area-section">
                 <h3>Middlesex County</h3>
                 <div className="towns-grid">
-                  <span className="town">Cromwell</span>
-                  <span className="town">Middletown</span>
+                  <Link to="/lawn-care-cromwell-ct" className="town">Cromwell</Link>
+                  <Link to="/lawn-care-middletown-ct" className="town">Middletown</Link>
                   <span className="town">Portland</span>
                   <span className="town">East Hampton</span>
                   <span className="town">Middlefield</span>

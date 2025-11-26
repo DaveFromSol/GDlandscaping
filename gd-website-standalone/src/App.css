@@ -5568,3 +5568,155 @@
     font-size: 24px;
   }
 }
+
+/* Featured Services Section - HomePage */
+.featured-services-section {
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+.featured-services-section h2 {
+  font-size: 40px;
+  color: #1a472a;
+  text-align: center;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.featured-services-section .section-subtitle {
+  text-align: center;
+  font-size: 18px;
+  color: #6b7280;
+  margin-bottom: 50px;
+}
+
+.featured-services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.featured-service-card {
+  background: white;
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 3px solid transparent;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.featured-service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(34, 197, 94, 0.2);
+  border-color: #22c55e;
+}
+
+.featured-service-card.featured {
+  border-color: #f97316;
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+}
+
+.featured-service-card.featured:hover {
+  border-color: #ea580c;
+  box-shadow: 0 12px 30px rgba(249, 115, 22, 0.25);
+}
+
+.service-card-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #f97316;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.service-card-icon {
+  font-size: 56px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.featured-service-card h3 {
+  font-size: 22px;
+  color: #1a472a;
+  margin: 0 0 12px 0;
+  font-weight: 700;
+}
+
+.featured-service-card p {
+  font-size: 15px;
+  color: #6b7280;
+  margin: 0 0 20px 0;
+  line-height: 1.6;
+  flex-grow: 1;
+}
+
+.service-card-arrow {
+  font-size: 15px;
+  color: #22c55e;
+  font-weight: 600;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.featured-service-card:hover .service-card-arrow {
+  transform: translateX(6px);
+}
+
+.featured-service-card.featured .service-card-arrow {
+  color: #f97316;
+}
+
+/* Clickable Town Links */
+.towns-grid a.town {
+  text-decoration: none;
+  color: #374151;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.towns-grid a.town:hover {
+  color: #22c55e;
+  background: #f0fdf4;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.15);
+}
+
+@media (max-width: 768px) {
+  .featured-services-section {
+    padding: 50px 16px;
+  }
+
+  .featured-services-section h2 {
+    font-size: 32px;
+  }
+
+  .featured-services-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .featured-service-card {
+    padding: 28px 20px;
+  }
+
+  .service-card-icon {
+    font-size: 48px;
+  }
+
+  .featured-service-card h3 {
+    font-size: 20px;
+  }
+}
