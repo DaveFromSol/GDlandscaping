@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation, Navigate } f
 import './App.css';
 import { Analytics } from '@vercel/analytics/react';
 import { FirebaseProvider, useFirebase } from './contexts/FirebaseContext';
+import ScrollToTop from './components/ScrollToTop';
 import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
 import PortfolioPage from './pages/PortfolioPage';
@@ -324,6 +325,7 @@ function App() {
   return (
     <FirebaseProvider>
       <Router>
+        <ScrollToTop />
         <div className="website">
           <FallBanner />
           <Navigation />
