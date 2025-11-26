@@ -179,7 +179,7 @@ const AdminDashboard = ({ user, onLogout }) => {
         id: doc.id,
         ...doc.data()
       }));
-      setHoaCondoProperties(propertiesData);
+      setHOACondoProperties(propertiesData);
     }, (error) => {
       console.error('Error fetching HOA/Condo properties:', error);
     });
