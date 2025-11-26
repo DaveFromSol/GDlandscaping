@@ -4,7 +4,7 @@ import SEOHead from '../components/SEOHead';
 import Leads from '../components/Leads';
 import Customers from '../components/Customers';
 import SnowRemovalMap from '../components/SnowRemovalMap';
-import CommercialContracts from '../components/CommercialContracts';
+import HOACondoProperties from '../components/HOACondoProperties';
 import GoogleAddressAutocomplete from '../components/GoogleAddressAutocomplete';
 import {
   collection,
@@ -91,8 +91,8 @@ const AdminDashboard = ({ user, onLogout }) => {
     linkedCustomerId: ''
   });
 
-  // Commercial Contracts state
-  const [commercialContracts, setCommercialContracts] = useState([]);
+  // HOA/Condo Properties state
+  const [hoaCondoProperties, setHOACondoProperties] = useState([]);
 
   // Real-time Firebase listener for quotes
   useEffect(() => {
@@ -3890,7 +3890,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                 <div className="p-6">
                   <SnowRemovalMap
                     contracts={customers.filter(c => c.snowRemoval)}
-                    commercialContracts={commercialContracts}
+                    hoaCondoProperties={hoaCondoProperties}
                   />
                 </div>
               </div>
@@ -4000,9 +4000,9 @@ const AdminDashboard = ({ user, onLogout }) => {
               </div>
             </div>
 
-            {/* Commercial Contracts Section */}
+            {/* HOA/Condo Properties Section */}
             <div className="mt-8">
-              <CommercialContracts db={db} />
+              <HOACondoProperties db={db} />
             </div>
           </div>
         )}

@@ -13,7 +13,7 @@ const defaultCenter = {
   lng: -73.0877 // Connecticut center
 };
 
-const SnowRemovalMap = ({ contracts, commercialContracts = [] }) => {
+const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [optimizedRoute, setOptimizedRoute] = useState([]);
   const [routeInfo, setRouteInfo] = useState(null);
@@ -22,27 +22,27 @@ const SnowRemovalMap = ({ contracts, commercialContracts = [] }) => {
   const [useCurrentLocation, setUseCurrentLocation] = useState(true);
 
   const optimizeRoute = useCallback(() => {
-    // Flatten commercial contracts into individual addresses
-    const commercialAddresses = commercialContracts.flatMap(contract =>
-      (contract.addresses || []).map((addr, index) => ({
-        id: `${contract.id}-${index}`,
-        name: `${contract.companyName} - ${addr.name || `Location ${index + 1}`}`,
+    // Flatten HOA/Condo properties into individual addresses
+    const hoaCondoAddresses = hoaCondoProperties.flatMap(property =>
+      (property.addresses || []).map((addr, index) => ({
+        id: `${property.id}-${index}`,
+        name: `${property.propertyName} - ${addr.unitNumber || `Unit ${index + 1}`}`,
         address: addr.location,
         city: '',
         state: '',
         zip: '',
-        priority: contract.priority || 'Normal',
-        phone: contract.phone,
+        priority: property.priority || 'Normal',
+        phone: property.phone,
         notes: addr.specialInstructions,
-        isCommercial: true,
-        contractId: contract.id
+        isHOACondo: true,
+        propertyId: property.id
       }))
     );
 
-    // Combine regular contracts with commercial addresses
+    // Combine regular contracts with HOA/Condo addresses
     const allStops = [
       ...(contracts || []),
-      ...commercialAddresses
+      ...hoaCondoAddresses
     ];
 
     if (!allStops || allStops.length === 0) {
@@ -219,7 +219,7 @@ const SnowRemovalMap = ({ contracts, commercialContracts = [] }) => {
         }
       }
     );
-  }, [contracts, commercialContracts, currentLocation, useCurrentLocation]);
+  }, [contracts, hoaCondoProperties, currentLocation, useCurrentLocation]);
 
   const exportRoute = () => {
     if (!optimizedRoute || optimizedRoute.length === 0) {

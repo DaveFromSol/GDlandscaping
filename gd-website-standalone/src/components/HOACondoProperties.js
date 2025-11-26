@@ -12,41 +12,40 @@ import {
 } from 'firebase/firestore';
 import GoogleAddressAutocomplete from './GoogleAddressAutocomplete';
 
-const CommercialContracts = ({ db }) => {
-  const [contracts, setContracts] = useState([]);
-  const [showAddContract, setShowAddContract] = useState(false);
-  const [editingContract, setEditingContract] = useState(null);
-  const [newContract, setNewContract] = useState({
-    companyName: '',
-    contactPerson: '',
+const HOACondoProperties = ({ db }) => {
+  const [properties, setProperties] = useState([]);
+  const [showAddProperty, setShowAddProperty] = useState(false);
+  const [editingProperty, setEditingProperty] = useState(null);
+  const [newProperty, setNewProperty] = useState({
+    propertyName: '',
+    propertyType: 'HOA', // HOA or Condo
+    contactName: '',
     email: '',
     phone: '',
-    contractType: 'seasonal', // seasonal, per-event, per-inch
-    contractValue: '',
     priority: 'normal',
     notes: '',
     addresses: []
   });
   const [currentAddress, setCurrentAddress] = useState({
     location: '',
-    name: '',
+    unitNumber: '',
     specialInstructions: ''
   });
-  const [expandedContract, setExpandedContract] = useState(null);
+  const [expandedProperty, setExpandedProperty] = useState(null);
 
-  // Real-time listener for commercial contracts
+  // Real-time listener for HOA/Condo properties
   useEffect(() => {
     if (!db) return;
 
-    const contractsRef = collection(db, 'commercialContracts');
-    const q = query(contractsRef, orderBy('createdAt', 'desc'));
+    const propertiesRef = collection(db, 'hoaCondoProperties');
+    const q = query(propertiesRef, orderBy('createdAt', 'desc'));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const contractsData = snapshot.docs.map(doc => ({
+      const propertiesData = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       }));
-      setContracts(contractsData);
+      setProperties(propertiesData);
     });
 
     return () => unsubscribe();
@@ -58,127 +57,124 @@ const CommercialContracts = ({ db }) => {
       return;
     }
 
-    if (newContract.addresses.length >= 50) {
-      alert('Maximum 50 addresses per contract');
+    if (newProperty.addresses.length >= 40) {
+      alert('Maximum 40 addresses per HOA/Condo property');
       return;
     }
 
-    setNewContract({
-      ...newContract,
-      addresses: [...newContract.addresses, { ...currentAddress, id: Date.now() }]
+    setNewProperty({
+      ...newProperty,
+      addresses: [...newProperty.addresses, { ...currentAddress, id: Date.now() }]
     });
 
     setCurrentAddress({
       location: '',
-      name: '',
+      unitNumber: '',
       specialInstructions: ''
     });
   };
 
   const handleRemoveAddress = (addressId) => {
-    setNewContract({
-      ...newContract,
-      addresses: newContract.addresses.filter(addr => addr.id !== addressId)
+    setNewProperty({
+      ...newProperty,
+      addresses: newProperty.addresses.filter(addr => addr.id !== addressId)
     });
   };
 
-  const handleSaveContract = async () => {
+  const handleSaveProperty = async () => {
     if (!db) return;
 
-    if (!newContract.companyName || !newContract.contactPerson) {
-      alert('Please fill in company name and contact person');
+    if (!newProperty.propertyName || !newProperty.contactName) {
+      alert('Please fill in property name and contact name');
       return;
     }
 
-    if (newContract.addresses.length === 0) {
+    if (newProperty.addresses.length === 0) {
       alert('Please add at least one address');
       return;
     }
 
     try {
-      if (editingContract) {
-        // Update existing contract
-        const contractRef = doc(db, 'commercialContracts', editingContract.id);
-        await updateDoc(contractRef, {
-          ...newContract,
+      if (editingProperty) {
+        // Update existing property
+        const propertyRef = doc(db, 'hoaCondoProperties', editingProperty.id);
+        await updateDoc(propertyRef, {
+          ...newProperty,
           updatedAt: serverTimestamp()
         });
       } else {
-        // Create new contract
-        await addDoc(collection(db, 'commercialContracts'), {
-          ...newContract,
+        // Create new property
+        await addDoc(collection(db, 'hoaCondoProperties'), {
+          ...newProperty,
           createdAt: serverTimestamp(),
           status: 'active'
         });
       }
 
       // Reset form
-      setNewContract({
-        companyName: '',
-        contactPerson: '',
+      setNewProperty({
+        propertyName: '',
+        propertyType: 'HOA',
+        contactName: '',
         email: '',
         phone: '',
-        contractType: 'seasonal',
-        contractValue: '',
         priority: 'normal',
         notes: '',
         addresses: []
       });
-      setShowAddContract(false);
-      setEditingContract(null);
+      setShowAddProperty(false);
+      setEditingProperty(null);
     } catch (error) {
-      console.error('Error saving contract:', error);
-      alert('Error saving contract. Please try again.');
+      console.error('Error saving property:', error);
+      alert('Error saving property. Please try again.');
     }
   };
 
-  const handleEditContract = (contract) => {
-    setEditingContract(contract);
-    setNewContract({
-      companyName: contract.companyName,
-      contactPerson: contract.contactPerson,
-      email: contract.email || '',
-      phone: contract.phone || '',
-      contractType: contract.contractType || 'seasonal',
-      contractValue: contract.contractValue || '',
-      priority: contract.priority || 'normal',
-      notes: contract.notes || '',
-      addresses: contract.addresses || []
+  const handleEditProperty = (property) => {
+    setEditingProperty(property);
+    setNewProperty({
+      propertyName: property.propertyName,
+      propertyType: property.propertyType || 'HOA',
+      contactName: property.contactName,
+      email: property.email || '',
+      phone: property.phone || '',
+      priority: property.priority || 'normal',
+      notes: property.notes || '',
+      addresses: property.addresses || []
     });
-    setShowAddContract(true);
+    setShowAddProperty(true);
   };
 
-  const handleDeleteContract = async (contractId) => {
-    if (!window.confirm('Are you sure you want to delete this commercial contract?')) {
+  const handleDeleteProperty = async (propertyId) => {
+    if (!window.confirm('Are you sure you want to delete this HOA/Condo property?')) {
       return;
     }
 
     try {
-      await deleteDoc(doc(db, 'commercialContracts', contractId));
+      await deleteDoc(doc(db, 'hoaCondoProperties', propertyId));
     } catch (error) {
-      console.error('Error deleting contract:', error);
-      alert('Error deleting contract. Please try again.');
+      console.error('Error deleting property:', error);
+      alert('Error deleting property. Please try again.');
     }
   };
 
   return (
-    <div className="commercial-contracts">
+    <div className="hoa-condo-properties">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Commercial Snow Removal Contracts</h2>
-          <p className="text-gray-600 mt-1">Manage multi-location commercial contracts</p>
+          <h2 className="text-2xl font-bold text-gray-900">HOA & Condo Snow Removal</h2>
+          <p className="text-gray-600 mt-1">Manage multi-unit HOA and Condo properties</p>
         </div>
         <button
           onClick={() => {
-            setShowAddContract(!showAddContract);
-            setEditingContract(null);
-            setNewContract({
-              companyName: '',
-              contactPerson: '',
+            setShowAddProperty(!showAddProperty);
+            setEditingProperty(null);
+            setNewProperty({
+              propertyName: '',
+              propertyType: 'HOA',
+              contactName: '',
               email: '',
               phone: '',
-              contractType: 'seasonal',
-              contractValue: '',
               priority: 'normal',
               notes: '',
               addresses: []
@@ -186,39 +182,39 @@ const CommercialContracts = ({ db }) => {
           }}
           className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium flex items-center gap-2"
         >
-          <span>{showAddContract ? '✕ Cancel' : '+ Add Commercial Contract'}</span>
+          <span>{showAddProperty ? '✕ Cancel' : '+ Add HOA/Condo Property'}</span>
         </button>
       </div>
 
-      {/* Add/Edit Contract Form */}
-      {showAddContract && (
+      {/* Add/Edit Property Form */}
+      {showAddProperty && (
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6 border-2 border-blue-200">
           <h3 className="text-xl font-bold mb-4 text-gray-900">
-            {editingContract ? 'Edit Commercial Contract' : 'New Commercial Contract'}
+            {editingProperty ? 'Edit HOA/Condo Property' : 'New HOA/Condo Property'}
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Company Name *
+                Property Name *
               </label>
               <input
                 type="text"
-                value={newContract.companyName}
-                onChange={(e) => setNewContract({ ...newContract, companyName: e.target.value })}
+                value={newProperty.propertyName}
+                onChange={(e) => setNewProperty({ ...newContract, propertyName: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                placeholder="ABC Corporation"
+                placeholder="Sunset Hills HOA"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Contact Person *
+                Contact Name *
               </label>
               <input
                 type="text"
-                value={newContract.contactPerson}
-                onChange={(e) => setNewContract({ ...newContract, contactPerson: e.target.value })}
+                value={newProperty.contactName}
+                onChange={(e) => setNewProperty({ ...newContract, contactName: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 placeholder="John Smith"
               />
@@ -230,8 +226,8 @@ const CommercialContracts = ({ db }) => {
               </label>
               <input
                 type="email"
-                value={newContract.email}
-                onChange={(e) => setNewContract({ ...newContract, email: e.target.value })}
+                value={newProperty.email}
+                onChange={(e) => setNewProperty({ ...newContract, email: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 placeholder="john@company.com"
               />
@@ -243,8 +239,8 @@ const CommercialContracts = ({ db }) => {
               </label>
               <input
                 type="tel"
-                value={newContract.phone}
-                onChange={(e) => setNewContract({ ...newContract, phone: e.target.value })}
+                value={newProperty.phone}
+                onChange={(e) => setNewProperty({ ...newContract, phone: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 placeholder="(860) 555-0123"
               />
@@ -252,30 +248,17 @@ const CommercialContracts = ({ db }) => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Contract Type
+                Property Type
               </label>
               <select
-                value={newContract.contractType}
-                onChange={(e) => setNewContract({ ...newContract, contractType: e.target.value })}
+                value={newProperty.propertyType}
+                onChange={(e) => setNewProperty({ ...newProperty, propertyType: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               >
-                <option value="seasonal">Seasonal (All Winter)</option>
-                <option value="per-event">Per Event</option>
-                <option value="per-inch">Per Inch</option>
+                <option value="HOA">HOA (Homeowners Association)</option>
+                <option value="Condo">Condo (Condominium)</option>
+                <option value="Townhome">Townhome Complex</option>
               </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Contract Value ($)
-              </label>
-              <input
-                type="number"
-                value={newContract.contractValue}
-                onChange={(e) => setNewContract({ ...newContract, contractValue: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                placeholder="5000"
-              />
             </div>
 
             <div>
@@ -283,8 +266,8 @@ const CommercialContracts = ({ db }) => {
                 Priority
               </label>
               <select
-                value={newContract.priority}
-                onChange={(e) => setNewContract({ ...newContract, priority: e.target.value })}
+                value={newProperty.priority}
+                onChange={(e) => setNewProperty({ ...newProperty, priority: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               >
                 <option value="low">Low</option>
@@ -297,11 +280,11 @@ const CommercialContracts = ({ db }) => {
 
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Contract Notes
+              Property Notes
             </label>
             <textarea
-              value={newContract.notes}
-              onChange={(e) => setNewContract({ ...newContract, notes: e.target.value })}
+              value={newProperty.notes}
+              onChange={(e) => setNewProperty({ ...newContract, notes: e.target.value })}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               rows="3"
               placeholder="Special requirements, billing info, etc."
@@ -311,7 +294,7 @@ const CommercialContracts = ({ db }) => {
           {/* Add Address Section */}
           <div className="border-t border-gray-200 pt-6">
             <h4 className="text-lg font-semibold mb-4 text-gray-900">
-              Service Locations ({newContract.addresses.length}/50)
+              Service Locations ({newProperty.addresses.length}/50)
             </h4>
 
             <div className="bg-gray-50 rounded-lg p-4 mb-4">
@@ -329,14 +312,14 @@ const CommercialContracts = ({ db }) => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Location Name
+                    Unit/Building Name
                   </label>
                   <input
                     type="text"
-                    value={currentAddress.name}
-                    onChange={(e) => setCurrentAddress({ ...currentAddress, name: e.target.value })}
+                    value={currentAddress.unitNumber}
+                    onChange={(e) => setCurrentAddress({ ...currentAddress, unitNumber: e.target.value })}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    placeholder="Main Office"
+                    placeholder="Building A, Unit 101, etc."
                   />
                 </div>
               </div>
@@ -350,30 +333,30 @@ const CommercialContracts = ({ db }) => {
                   value={currentAddress.specialInstructions}
                   onChange={(e) => setCurrentAddress({ ...currentAddress, specialInstructions: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  placeholder="Clear loading dock first, salt entrance heavily, etc."
+                  placeholder="Clear walkways first, salt all entrances, etc."
                 />
               </div>
 
               <button
                 onClick={handleAddAddress}
                 className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
-                disabled={newContract.addresses.length >= 50}
+                disabled={newProperty.addresses.length >= 40}
               >
                 + Add Address
               </button>
             </div>
 
             {/* Address List */}
-            {newContract.addresses.length > 0 && (
+            {newProperty.addresses.length > 0 && (
               <div className="space-y-2 max-h-96 overflow-y-auto">
-                {newContract.addresses.map((addr, index) => (
+                {newProperty.addresses.map((addr, index) => (
                   <div key={addr.id} className="flex items-start justify-between bg-white border border-gray-200 rounded-lg p-3">
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
                         <span className="font-semibold text-gray-900">#{index + 1}</span>
-                        {addr.name && (
+                        {addr.unitNumber && (
                           <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded">
-                            {addr.name}
+                            {addr.unitNumber}
                           </span>
                         )}
                       </div>
@@ -402,19 +385,19 @@ const CommercialContracts = ({ db }) => {
               onClick={handleSaveContract}
               className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
             >
-              {editingContract ? 'Update Contract' : 'Save Contract'}
+              {editingProperty ? 'Update Contract' : 'Save Contract'}
             </button>
             <button
               onClick={() => {
-                setShowAddContract(false);
-                setEditingContract(null);
-                setNewContract({
-                  companyName: '',
-                  contactPerson: '',
+                setShowAddProperty(false);
+                setEditingProperty(null);
+                setNewProperty({
+                  propertyName: '',
+                  contactName: '',
                   email: '',
                   phone: '',
-                  contractType: 'seasonal',
-                  contractValue: '',
+                  propertyType: 'seasonal',
+                  seasonalRate: '',
                   priority: 'normal',
                   notes: '',
                   addresses: []
@@ -430,26 +413,26 @@ const CommercialContracts = ({ db }) => {
 
       {/* Contracts List */}
       <div className="grid grid-cols-1 gap-4">
-        {contracts.length === 0 ? (
+        {properties.length === 0 ? (
           <div className="bg-white rounded-lg shadow p-12 text-center">
             <div className="text-6xl mb-4">🏢</div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No Commercial Contracts</h3>
             <p className="text-gray-600 mb-4">Create your first commercial contract to get started</p>
             <button
-              onClick={() => setShowAddContract(true)}
+              onClick={() => setShowAddProperty(true)}
               className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
             >
               + Add First Contract
             </button>
           </div>
         ) : (
-          contracts.map((contract) => (
+          properties.map((contract) => (
             <div key={contract.id} className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
               <div className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-xl font-bold text-gray-900">{contract.companyName}</h3>
+                      <h3 className="text-xl font-bold text-gray-900">{contract.propertyName}</h3>
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                         contract.priority === 'critical' ? 'bg-red-100 text-red-800' :
                         contract.priority === 'high' ? 'bg-orange-100 text-orange-800' :
@@ -459,12 +442,12 @@ const CommercialContracts = ({ db }) => {
                         {contract.priority.toUpperCase()}
                       </span>
                       <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
-                        {contract.contractType}
+                        {contract.propertyType}
                       </span>
                     </div>
                     <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-3">
                       <div>
-                        <span className="font-medium">Contact:</span> {contract.contactPerson}
+                        <span className="font-medium">Contact:</span> {contract.contactName}
                       </div>
                       {contract.phone && (
                         <div>
@@ -476,9 +459,9 @@ const CommercialContracts = ({ db }) => {
                           <span className="font-medium">Email:</span> {contract.email}
                         </div>
                       )}
-                      {contract.contractValue && (
+                      {contract.seasonalRate && (
                         <div>
-                          <span className="font-medium">Value:</span> ${contract.contractValue}
+                          <span className="font-medium">Value:</span> ${contract.seasonalRate}
                         </div>
                       )}
                     </div>
@@ -495,10 +478,10 @@ const CommercialContracts = ({ db }) => {
                   </div>
                   <div className="flex gap-2">
                     <button
-                      onClick={() => setExpandedContract(expandedContract === contract.id ? null : contract.id)}
+                      onClick={() => setExpandedProperty(expandedProperty === contract.id ? null : contract.id)}
                       className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 text-sm font-medium"
                     >
-                      {expandedContract === contract.id ? 'Hide' : 'View'} Locations
+                      {expandedProperty === contract.id ? 'Hide' : 'View'} Locations
                     </button>
                     <button
                       onClick={() => handleEditContract(contract)}
@@ -516,7 +499,7 @@ const CommercialContracts = ({ db }) => {
                 </div>
 
                 {/* Expanded Addresses */}
-                {expandedContract === contract.id && contract.addresses && contract.addresses.length > 0 && (
+                {expandedProperty === contract.id && contract.addresses && contract.addresses.length > 0 && (
                   <div className="mt-4 pt-4 border-t border-gray-200">
                     <h4 className="font-semibold text-gray-900 mb-3">Service Locations:</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -550,4 +533,4 @@ const CommercialContracts = ({ db }) => {
   );
 };
 
-export default CommercialContracts;
+export default HOACondoProperties;
