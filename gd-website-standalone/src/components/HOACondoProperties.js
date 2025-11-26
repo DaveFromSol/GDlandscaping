@@ -201,7 +201,7 @@ const HOACondoProperties = ({ db }) => {
               <input
                 type="text"
                 value={newProperty.propertyName}
-                onChange={(e) => setNewProperty({ ...newContract, propertyName: e.target.value })}
+                onChange={(e) => setNewProperty({ ...newProperty, propertyName: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 placeholder="Sunset Hills HOA"
               />
@@ -214,7 +214,7 @@ const HOACondoProperties = ({ db }) => {
               <input
                 type="text"
                 value={newProperty.contactName}
-                onChange={(e) => setNewProperty({ ...newContract, contactName: e.target.value })}
+                onChange={(e) => setNewProperty({ ...newProperty, contactName: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 placeholder="John Smith"
               />
@@ -227,7 +227,7 @@ const HOACondoProperties = ({ db }) => {
               <input
                 type="email"
                 value={newProperty.email}
-                onChange={(e) => setNewProperty({ ...newContract, email: e.target.value })}
+                onChange={(e) => setNewProperty({ ...newProperty, email: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 placeholder="john@company.com"
               />
@@ -240,7 +240,7 @@ const HOACondoProperties = ({ db }) => {
               <input
                 type="tel"
                 value={newProperty.phone}
-                onChange={(e) => setNewProperty({ ...newContract, phone: e.target.value })}
+                onChange={(e) => setNewProperty({ ...newProperty, phone: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 placeholder="(860) 555-0123"
               />
@@ -284,7 +284,7 @@ const HOACondoProperties = ({ db }) => {
             </label>
             <textarea
               value={newProperty.notes}
-              onChange={(e) => setNewProperty({ ...newContract, notes: e.target.value })}
+              onChange={(e) => setNewProperty({ ...newProperty, notes: e.target.value })}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               rows="3"
               placeholder="Special requirements, billing info, etc."
@@ -382,7 +382,7 @@ const HOACondoProperties = ({ db }) => {
           {/* Save/Cancel Buttons */}
           <div className="flex gap-3 mt-6 pt-6 border-t border-gray-200">
             <button
-              onClick={handleSaveContract}
+              onClick={handleSaveProperty}
               className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
             >
               {editingProperty ? 'Update Contract' : 'Save Contract'}
@@ -484,13 +484,13 @@ const HOACondoProperties = ({ db }) => {
                       {expandedProperty === contract.id ? 'Hide' : 'View'} Locations
                     </button>
                     <button
-                      onClick={() => handleEditContract(contract)}
+                      onClick={() => handleEditProperty(contract)}
                       className="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 text-sm font-medium"
                     >
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDeleteContract(contract.id)}
+                      onClick={() => handleDeleteProperty(contract.id)}
                       className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 text-sm font-medium"
                     >
                       Delete

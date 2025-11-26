@@ -167,21 +167,21 @@ const AdminDashboard = ({ user, onLogout }) => {
     return () => unsubscribe();
   }, [db]);
 
-  // Real-time Firebase listener for commercial contracts
+  // Real-time Firebase listener for HOA/Condo properties
   useEffect(() => {
     if (!db) return;
 
-    const contractsRef = collection(db, 'commercialContracts');
-    const q = query(contractsRef, orderBy('createdAt', 'desc'));
+    const propertiesRef = collection(db, 'hoaCondoProperties');
+    const q = query(propertiesRef, orderBy('createdAt', 'desc'));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const contractsData = snapshot.docs.map(doc => ({
+      const propertiesData = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       }));
-      setCommercialContracts(contractsData);
+      setHoaCondoProperties(propertiesData);
     }, (error) => {
-      console.error('Error fetching commercial contracts:', error);
+      console.error('Error fetching HOA/Condo properties:', error);
     });
 
     return () => unsubscribe();
