@@ -482,25 +482,35 @@ function App() {
                 <div className="footer-section">
                   <h3>GD Landscaping</h3>
                   <p>Professional landscape solutions for residential and commercial properties.</p>
+                  <div className="footer-nav-links">
+                    <Link to="/">Home</Link>
+                    <Link to="/services">Services</Link>
+                    <Link to="/blog">Blog</Link>
+                    <Link to="/portfolio">Portfolio</Link>
+                    <Link to="/about">About</Link>
+                    <Link to="/contact">Contact</Link>
+                  </div>
                 </div>
                 <div className="footer-section">
                   <h4>Services</h4>
                   <ul>
-                    <li>Lawn Maintenance</li>
-                    <li>Landscape Design</li>
-                    <li>Tree Services</li>
-                    <li>Hardscaping</li>
-                    <li>Irrigation Systems</li>
-                    <li>Outdoor Lighting</li>
-                    <li>Pressure Washing</li>
-                    <li>Snow Removal</li>
-                    <li>Winter Packages</li>
+                    <li><Link to="/services">All Services</Link></li>
+                    <li><Link to="/leaf-removal">Leaf Removal</Link></li>
+                    <li><Link to="/snow-removal">Snow Removal</Link></li>
+                    <li><Link to="/lawn-care-berlin-ct">Lawn Care</Link></li>
+                    <li><Link to="/fall-cleanup-berlin-ct">Fall Cleanup</Link></li>
+                    <li><Link to="/bush-trimming-berlin-ct">Bush Trimming</Link></li>
+                    <li><Link to="/fertilization-weed-control-berlin-ct">Fertilization & Weed Control</Link></li>
                   </ul>
                 </div>
                 <div className="footer-section">
                   <h4>Contact</h4>
-                  <p>Phone: (860) 526-7583</p>
-                  <p>Email: contact@gdlandscaping.com</p>
+                  <p>Phone: <a href="tel:8605267583">(860) 526-7583</a></p>
+                  <p>Email: <a href="mailto:contact@gdlandscaping.com">contact@gdlandscaping.com</a></p>
+                  <div className="footer-cta-links">
+                    <Link to="/instant-quote" className="footer-cta-btn">Get Instant Quote</Link>
+                    <Link to="/contact" className="footer-cta-btn-secondary">Request Consultation</Link>
+                  </div>
                 </div>
               </div>
               {/* SEO Crawl Path */}

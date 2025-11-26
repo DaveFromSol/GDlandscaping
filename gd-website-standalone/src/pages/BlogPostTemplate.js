@@ -25,6 +25,10 @@ const BlogPostTemplate = ({
       />
 
       <article className="blog-post">
+        <div className="blog-breadcrumb container">
+          <Link to="/blog" className="back-to-blog">← Back to All Articles</Link>
+        </div>
+
         <header className="blog-hero">
           <div className="container">
             <p className="blog-hero-overline">{heroOverline}</p>
@@ -69,6 +73,28 @@ const BlogPostTemplate = ({
                 Call (860) 526-7583
               </a>
             </div>
+          </section>
+
+          <section className="blog-more-articles">
+            <h3>Continue Reading</h3>
+            <div className="more-articles-grid">
+              <Link to="/blog/seasonal-lawn-care-schedule" className="more-article-card">
+                <span className="more-article-icon">📅</span>
+                <h4>Seasonal Lawn Care Schedule</h4>
+                <span className="more-article-arrow">→</span>
+              </Link>
+              <Link to="/blog/fall-cleanup-checklist" className="more-article-card">
+                <span className="more-article-icon">🍂</span>
+                <h4>Fall Cleanup Checklist</h4>
+                <span className="more-article-arrow">→</span>
+              </Link>
+              <Link to="/blog/hedge-trimming-secrets" className="more-article-card">
+                <span className="more-article-icon">✂️</span>
+                <h4>Hedge Trimming Secrets</h4>
+                <span className="more-article-arrow">→</span>
+              </Link>
+            </div>
+            <Link to="/blog" className="view-all-blog-link">View All Articles</Link>
           </section>
         </div>
 
