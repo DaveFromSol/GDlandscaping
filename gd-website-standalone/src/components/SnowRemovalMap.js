@@ -135,6 +135,21 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
       return priorityOrder[a.priority || 'Normal'] - priorityOrder[b.priority || 'Normal'];
     });
 
+    // Google Maps API limit: 25 total stops (23 waypoints + origin + destination)
+    const MAX_WAYPOINTS = 23;
+    const maxStops = MAX_WAYPOINTS + 2; // +2 for origin and destination
+    let stopsToRoute = prioritySorted;
+
+    if (prioritySorted.length > maxStops) {
+      const numExcluded = prioritySorted.length - maxStops;
+      alert(
+        `⚠️ Google Maps allows a maximum of 25 stops per route.\n\n` +
+        `You have ${prioritySorted.length} stops. The route will include the first 25 stops based on priority.\n\n` +
+        `${numExcluded} lower-priority stops will be excluded from this route.`
+      );
+      stopsToRoute = prioritySorted.slice(0, maxStops);
+    }
+
     // Determine origin based on whether we're using current location
     let origin;
     let destination;
@@ -144,17 +159,17 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
       // Start from current location
       origin = `${currentLocation.lat},${currentLocation.lng}`;
       // Last contract is destination
-      destination = formatAddress(prioritySorted[prioritySorted.length - 1]);
+      destination = formatAddress(stopsToRoute[stopsToRoute.length - 1]);
       // All other contracts are waypoints
-      waypoints = prioritySorted.slice(0, -1).map(contract => ({
+      waypoints = stopsToRoute.slice(0, -1).map(contract => ({
         location: formatAddress(contract),
         stopover: true
       }));
     } else {
       // Original behavior: start from first contract
-      origin = formatAddress(prioritySorted[0]);
-      destination = formatAddress(prioritySorted[prioritySorted.length - 1]);
-      waypoints = prioritySorted.slice(1, -1).map(contract => ({
+      origin = formatAddress(stopsToRoute[0]);
+      destination = formatAddress(stopsToRoute[stopsToRoute.length - 1]);
+      waypoints = stopsToRoute.slice(1, -1).map(contract => ({
         location: formatAddress(contract),
         stopover: true
       }));
@@ -165,11 +180,14 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
     console.log('Origin:', origin, useCurrentLocation && currentLocation ? '(Your Location)' : '');
     console.log('Destination:', destination);
     console.log('Waypoints:', waypoints);
-    console.log('All contracts:', prioritySorted.map(c => ({
+    console.log('Stops in route:', stopsToRoute.map(c => ({
       name: c.name,
       address: formatAddress(c),
       priority: c.priority || 'Normal'
     })));
+    if (prioritySorted.length > stopsToRoute.length) {
+      console.log(`⚠️ Excluded ${prioritySorted.length - stopsToRoute.length} stops due to Google Maps 25-stop limit`);
+    }
 
     directionsService.route(
       {
@@ -190,9 +208,9 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
           // Get optimized order
           const waypointOrder = result.routes[0].waypoint_order;
           const optimized = [
-            prioritySorted[0], // origin
-            ...waypointOrder.map(i => prioritySorted[i + 1]), // optimized waypoints
-            prioritySorted[prioritySorted.length - 1] // destination
+            stopsToRoute[0], // origin
+            ...waypointOrder.map(i => stopsToRoute[i + 1]), // optimized waypoints
+            stopsToRoute[stopsToRoute.length - 1] // destination
           ];
           setOptimizedRoute(optimized);
 
@@ -209,7 +227,9 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
           setRouteInfo({
             distance: (totalDistance / 1609.34).toFixed(2), // Convert to miles
             duration: Math.round(totalDuration / 60), // Convert to minutes
-            stops: allStops.length
+            stops: stopsToRoute.length,
+            totalStops: allStops.length,
+            excluded: allStops.length - stopsToRoute.length
           });
         } else {
           console.error('❌ Directions request failed with status:', status);
@@ -414,10 +434,18 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
               <p className="font-semibold text-blue-900">{routeInfo.duration} min</p>
             </div>
             <div>
-              <span className="text-gray-600">Total Stops:</span>
+              <span className="text-gray-600">Stops in Route:</span>
               <p className="font-semibold text-blue-900">{routeInfo.stops}</p>
             </div>
           </div>
+          {routeInfo.excluded > 0 && (
+            <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded text-sm">
+              <span className="text-yellow-800">
+                ⚠️ {routeInfo.excluded} stop{routeInfo.excluded > 1 ? 's' : ''} excluded (Google Maps 25-stop limit).
+                Total available: {routeInfo.totalStops}
+              </span>
+            </div>
+          )}
         </div>
       )}
 
