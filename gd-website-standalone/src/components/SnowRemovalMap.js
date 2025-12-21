@@ -1,11 +1,18 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { GoogleMap, LoadScript, DirectionsRenderer } from '@react-google-maps/api';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyDiFzxddX5tpdulBf8YMVXFekxFUJ2ys-c';
 
 const mapContainerStyle = {
   width: '100%',
-  height: '500px'
+  height: '400px'
+};
+
+// Larger map for mobile devices
+const mobileMapContainerStyle = {
+  width: '100%',
+  height: '60vh',
+  minHeight: '400px'
 };
 
 const defaultCenter = {
@@ -20,6 +27,14 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [useCurrentLocation, setUseCurrentLocation] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // Detect mobile viewport changes
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const optimizeRoute = useCallback(() => {
     // Flatten HOA/Condo properties into individual addresses (from dedicated properties section)
@@ -344,7 +359,7 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
     <div className="space-y-4">
       <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
         <GoogleMap
-          mapContainerStyle={mapContainerStyle}
+          mapContainerStyle={isMobile ? mobileMapContainerStyle : mapContainerStyle}
           center={defaultCenter}
           zoom={10}
         >
@@ -372,8 +387,8 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
       </LoadScript>
 
       {/* Location Settings */}
-      <div className="bg-white border border-gray-200 rounded-lg p-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+      <div className={`bg-white border border-gray-200 rounded-lg ${isMobile ? 'p-4' : 'p-3'} flex items-center justify-between`}>
+        <div className="flex items-center gap-3">
           <input
             type="checkbox"
             id="useCurrentLocation"
@@ -384,37 +399,37 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
                 setCurrentLocation(null);
               }
             }}
-            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            className={`${isMobile ? 'w-6 h-6' : 'w-4 h-4'} text-blue-600 border-gray-300 rounded focus:ring-blue-500`}
           />
-          <label htmlFor="useCurrentLocation" className="text-sm font-medium text-gray-900 cursor-pointer">
+          <label htmlFor="useCurrentLocation" className={`${isMobile ? 'text-base' : 'text-sm'} font-medium text-gray-900 cursor-pointer`}>
             📍 Start route from my current location
           </label>
         </div>
         {currentLocation && (
-          <span className="text-xs text-green-600 font-medium">✓ Location acquired</span>
+          <span className={`${isMobile ? 'text-sm' : 'text-xs'} text-green-600 font-medium`}>✓ Location acquired</span>
         )}
       </div>
 
       {/* Route Controls */}
-      <div className="flex flex-wrap gap-3">
+      <div className={`flex ${isMobile ? 'flex-col' : 'flex-wrap'} gap-3`}>
         <button
           onClick={optimizeRoute}
           disabled={isOptimizing}
-          className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
+          className={`${isMobile ? 'w-full text-lg py-4' : 'flex-1 py-2'} bg-blue-600 text-white px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors font-semibold shadow-md active:scale-95`}
         >
           {isOptimizing ? '⏳ Optimizing...' : '🎯 Optimize Route'}
         </button>
         <button
           onClick={exportRoute}
           disabled={!optimizedRoute || optimizedRoute.length === 0}
-          className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:bg-gray-400 transition-colors"
+          className={`${isMobile ? 'w-full text-lg py-4' : 'flex-1 py-2'} bg-green-600 text-white px-4 rounded-lg hover:bg-green-700 disabled:bg-gray-400 transition-colors font-semibold shadow-md active:scale-95`}
         >
           📄 Export Route
         </button>
         <button
           onClick={openInGoogleMaps}
           disabled={!optimizedRoute || optimizedRoute.length === 0}
-          className="flex-1 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 transition-colors"
+          className={`${isMobile ? 'w-full text-lg py-4' : 'flex-1 py-2'} bg-purple-600 text-white px-4 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 transition-colors font-semibold shadow-md active:scale-95`}
         >
           🗺️ Open in Google Maps
         </button>
@@ -422,25 +437,25 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
 
       {/* Route Information */}
       {routeInfo && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h4 className="font-semibold text-blue-900 mb-2">📊 Route Information</h4>
-          <div className="grid grid-cols-3 gap-4 text-sm">
+        <div className={`bg-blue-50 border border-blue-200 rounded-lg ${isMobile ? 'p-5' : 'p-4'}`}>
+          <h4 className={`font-semibold text-blue-900 mb-3 ${isMobile ? 'text-xl' : 'text-base'}`}>📊 Route Information</h4>
+          <div className={`grid grid-cols-3 gap-4 ${isMobile ? 'text-base' : 'text-sm'}`}>
             <div>
-              <span className="text-gray-600">Total Distance:</span>
-              <p className="font-semibold text-blue-900">{routeInfo.distance} mi</p>
+              <span className="text-gray-600 block mb-1">Total Distance:</span>
+              <p className={`font-bold text-blue-900 ${isMobile ? 'text-2xl' : 'text-lg'}`}>{routeInfo.distance} mi</p>
             </div>
             <div>
-              <span className="text-gray-600">Estimated Time:</span>
-              <p className="font-semibold text-blue-900">{routeInfo.duration} min</p>
+              <span className="text-gray-600 block mb-1">Estimated Time:</span>
+              <p className={`font-bold text-blue-900 ${isMobile ? 'text-2xl' : 'text-lg'}`}>{routeInfo.duration} min</p>
             </div>
             <div>
-              <span className="text-gray-600">Stops in Route:</span>
-              <p className="font-semibold text-blue-900">{routeInfo.stops}</p>
+              <span className="text-gray-600 block mb-1">Stops in Route:</span>
+              <p className={`font-bold text-blue-900 ${isMobile ? 'text-2xl' : 'text-lg'}`}>{routeInfo.stops}</p>
             </div>
           </div>
           {routeInfo.excluded > 0 && (
-            <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded text-sm">
-              <span className="text-yellow-800">
+            <div className={`mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded ${isMobile ? 'text-base' : 'text-sm'}`}>
+              <span className="text-yellow-800 font-medium">
                 ⚠️ {routeInfo.excluded} stop{routeInfo.excluded > 1 ? 's' : ''} excluded (Google Maps 25-stop limit).
                 Total available: {routeInfo.totalStops}
               </span>
@@ -451,9 +466,9 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
 
       {/* Optimized Route List */}
       {optimizedRoute && optimizedRoute.length > 0 && (
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
-          <h4 className="font-semibold text-gray-900 mb-3">📍 Optimized Route Order</h4>
-          <div className="space-y-2">
+        <div className={`bg-white border border-gray-200 rounded-lg ${isMobile ? 'p-5' : 'p-4'}`}>
+          <h4 className={`font-semibold text-gray-900 mb-4 ${isMobile ? 'text-xl' : 'text-base'}`}>📍 Optimized Route Order</h4>
+          <div className={isMobile ? 'space-y-3' : 'space-y-2'}>
             {optimizedRoute.map((contract, index) => {
               // Format complete address for display
               const fullAddress = [
@@ -464,15 +479,15 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
               ].filter(part => part && part.trim()).join(', ');
 
               return (
-                <div key={contract.id} className="flex items-center gap-3 p-2 bg-gray-50 rounded">
-                  <span className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold text-sm">
+                <div key={contract.id} className={`flex items-center gap-3 ${isMobile ? 'p-4' : 'p-2'} bg-gray-50 rounded-lg border border-gray-100`}>
+                  <span className={`flex-shrink-0 ${isMobile ? 'w-12 h-12 text-lg' : 'w-8 h-8 text-sm'} bg-blue-600 text-white rounded-full flex items-center justify-center font-bold shadow-sm`}>
                     {index + 1}
                   </span>
-                  <div className="flex-1">
-                    <p className="font-medium text-gray-900">{contract.name}</p>
-                    <p className="text-xs text-gray-600">{fullAddress}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className={`font-semibold text-gray-900 ${isMobile ? 'text-lg mb-1' : 'text-sm'}`}>{contract.name}</p>
+                    <p className={`text-gray-600 ${isMobile ? 'text-sm' : 'text-xs'}`}>{fullAddress}</p>
                   </div>
-                  <span className={`px-2 py-1 text-xs rounded-full ${
+                  <span className={`flex-shrink-0 ${isMobile ? 'px-3 py-2 text-sm' : 'px-2 py-1 text-xs'} rounded-full font-medium ${
                     contract.priority === 'High' ? 'bg-red-100 text-red-800' :
                     contract.priority === 'Low' ? 'bg-gray-100 text-gray-800' :
                     'bg-blue-100 text-blue-800'
