@@ -399,14 +399,23 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
         </GoogleMap>
       </LoadScript>
 
-      {/* Open in Google Maps Button */}
-      <button
-        onClick={openInGoogleMaps}
-        disabled={!optimizedRoute || optimizedRoute.length === 0}
-        className={`${isMobile ? 'w-full text-lg py-4' : 'w-full py-3'} bg-purple-600 text-white px-4 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 transition-colors font-semibold shadow-md active:scale-95`}
-      >
-        🗺️ Open in Google Maps
-      </button>
+      {/* Route Controls */}
+      <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-3`}>
+        <button
+          onClick={optimizeRoute}
+          disabled={isOptimizing}
+          className={`${isMobile ? 'w-full text-lg py-4' : 'flex-1 py-3'} bg-blue-600 text-white px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors font-semibold shadow-md active:scale-95`}
+        >
+          {isOptimizing ? '⏳ Optimizing...' : '🎯 Optimize Route'}
+        </button>
+        <button
+          onClick={openInGoogleMaps}
+          disabled={!optimizedRoute || optimizedRoute.length === 0}
+          className={`${isMobile ? 'w-full text-lg py-4' : 'flex-1 py-3'} bg-purple-600 text-white px-4 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 transition-colors font-semibold shadow-md active:scale-95`}
+        >
+          🗺️ Open in Google Maps
+        </button>
+      </div>
 
       {/* Route Information */}
       {routeInfo && (
