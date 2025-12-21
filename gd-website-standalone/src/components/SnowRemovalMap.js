@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { GoogleMap, LoadScript, DirectionsRenderer } from '@react-google-maps/api';
+import { GoogleMap, useLoadScript, DirectionsRenderer } from '@react-google-maps/api';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyDiFzxddX5tpdulBf8YMVXFekxFUJ2ys-c';
 
@@ -21,6 +21,10 @@ const defaultCenter = {
 };
 
 const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+  });
+
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [optimizedRoute, setOptimizedRoute] = useState([]);
   const [routeInfo, setRouteInfo] = useState(null);
@@ -306,10 +310,9 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
   useEffect(() => {
     // Check if we have contracts and Google Maps is loaded
     const hasContracts = (contracts && contracts.length > 0) || (hoaCondoProperties && hoaCondoProperties.length > 0);
-    const googleMapsLoaded = window.google && window.google.maps;
 
     // Since we always use current location, wait for it to be acquired before auto-optimizing
-    if (hasContracts && !hasAutoOptimized && !isOptimizing && googleMapsLoaded && currentLocation) {
+    if (hasContracts && !hasAutoOptimized && !isOptimizing && isLoaded && currentLocation) {
       console.log('🎯 Auto-optimizing route with current location...');
       setHasAutoOptimized(true);
 
@@ -320,7 +323,7 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
 
       return () => clearTimeout(timer);
     }
-  }, [contracts, hoaCondoProperties, hasAutoOptimized, isOptimizing, optimizeRoute, currentLocation]);
+  }, [contracts, hoaCondoProperties, hasAutoOptimized, isOptimizing, optimizeRoute, currentLocation, isLoaded]);
 
   const toggleStopCompletion = (stopId) => {
     setCompletedStops(prev => {
@@ -368,36 +371,37 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
     window.open(url, '_blank');
   };
 
+  if (loadError) return <div className="p-4 bg-red-50 text-red-700 rounded-lg">Error loading maps</div>;
+  if (!isLoaded) return <div className="p-4 bg-gray-50 text-gray-700 rounded-lg">Loading maps...</div>;
+
   return (
     <div className="space-y-4">
-      <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
-        <GoogleMap
-          mapContainerStyle={isMobile ? mobileMapContainerStyle : mapContainerStyle}
-          center={defaultCenter}
-          zoom={10}
-        >
-          {/* Display markers for all contracts */}
-          {contracts && contracts.map((contract, index) => {
-            // Geocode address to get lat/lng (simplified - in production use Geocoding API)
-            // For now, we'll use the map's built-in geocoding via addresses
-            return null; // We'll rely on DirectionsRenderer to show the route
-          })}
+      <GoogleMap
+        mapContainerStyle={isMobile ? mobileMapContainerStyle : mapContainerStyle}
+        center={defaultCenter}
+        zoom={10}
+      >
+        {/* Display markers for all contracts */}
+        {contracts && contracts.map((contract, index) => {
+          // Geocode address to get lat/lng (simplified - in production use Geocoding API)
+          // For now, we'll use the map's built-in geocoding via addresses
+          return null; // We'll rely on DirectionsRenderer to show the route
+        })}
 
-          {/* Display optimized route */}
-          {directionsResponse && (
-            <DirectionsRenderer
-              directions={directionsResponse}
-              options={{
-                suppressMarkers: false,
-                polylineOptions: {
-                  strokeColor: '#3B82F6',
-                  strokeWeight: 5
-                }
-              }}
-            />
-          )}
-        </GoogleMap>
-      </LoadScript>
+        {/* Display optimized route */}
+        {directionsResponse && (
+          <DirectionsRenderer
+            directions={directionsResponse}
+            options={{
+              suppressMarkers: false,
+              polylineOptions: {
+                strokeColor: '#3B82F6',
+                strokeWeight: 5
+              }
+            }}
+          />
+        )}
+      </GoogleMap>
 
       {/* Route Controls */}
       <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-3`}>
