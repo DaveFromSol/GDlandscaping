@@ -28,6 +28,8 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [useCurrentLocation, setUseCurrentLocation] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [completedStops, setCompletedStops] = useState(new Set());
+  const [hasAutoOptimized, setHasAutoOptimized] = useState(false);
 
   // Detect mobile viewport changes
   useEffect(() => {
@@ -283,19 +285,39 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
 
   // Auto-optimize route when contracts are loaded
   useEffect(() => {
-    // Check if we have contracts and haven't optimized yet
+    // Check if we have contracts and Google Maps is loaded
     const hasContracts = (contracts && contracts.length > 0) || (hoaCondoProperties && hoaCondoProperties.length > 0);
-    const hasNotOptimized = !optimizedRoute || optimizedRoute.length === 0;
+    const googleMapsLoaded = window.google && window.google.maps;
 
-    if (hasContracts && hasNotOptimized && !isOptimizing) {
-      // Small delay to ensure Google Maps is loaded
+    if (hasContracts && !hasAutoOptimized && !isOptimizing && googleMapsLoaded) {
+      console.log('🎯 Auto-optimizing route...');
+      setHasAutoOptimized(true);
+
+      // Small delay to ensure everything is ready
       const timer = setTimeout(() => {
         optimizeRoute();
-      }, 1000);
+      }, 1500);
 
       return () => clearTimeout(timer);
     }
-  }, [contracts, hoaCondoProperties, optimizedRoute, isOptimizing, optimizeRoute]);
+  }, [contracts, hoaCondoProperties, hasAutoOptimized, isOptimizing, optimizeRoute]);
+
+  const toggleStopCompletion = (stopId) => {
+    setCompletedStops(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(stopId)) {
+        newSet.delete(stopId);
+      } else {
+        newSet.add(stopId);
+      }
+      return newSet;
+    });
+  };
+
+  const getCompletionPercentage = () => {
+    if (!optimizedRoute || optimizedRoute.length === 0) return 0;
+    return Math.round((completedStops.size / optimizedRoute.length) * 100);
+  };
 
   const exportRoute = () => {
     if (!optimizedRoute || optimizedRoute.length === 0) {
@@ -480,6 +502,40 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
         </div>
       )}
 
+      {/* Progress Tracker */}
+      {optimizedRoute && optimizedRoute.length > 0 && (
+        <div className={`bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg ${isMobile ? 'p-5' : 'p-4'} shadow-sm`}>
+          <div className="flex items-center justify-between mb-3">
+            <h4 className={`font-bold text-green-900 ${isMobile ? 'text-xl' : 'text-base'}`}>🎯 Route Progress</h4>
+            <span className={`font-bold text-green-700 ${isMobile ? 'text-2xl' : 'text-xl'}`}>
+              {getCompletionPercentage()}%
+            </span>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="w-full bg-gray-200 rounded-full h-8 overflow-hidden shadow-inner">
+            <div
+              className="bg-gradient-to-r from-green-500 to-emerald-500 h-full transition-all duration-500 ease-out flex items-center justify-end pr-3"
+              style={{ width: `${getCompletionPercentage()}%` }}
+            >
+              {getCompletionPercentage() > 10 && (
+                <span className="text-white font-bold text-sm drop-shadow">
+                  {completedStops.size} / {optimizedRoute.length}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Summary Text */}
+          <div className={`mt-3 text-center ${isMobile ? 'text-base' : 'text-sm'} text-gray-700`}>
+            <span className="font-semibold">{completedStops.size}</span> of <span className="font-semibold">{optimizedRoute.length}</span> stops completed
+            {completedStops.size === optimizedRoute.length && optimizedRoute.length > 0 && (
+              <span className="ml-2 text-green-600 font-bold">✓ All Done!</span>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Optimized Route List */}
       {optimizedRoute && optimizedRoute.length > 0 && (
         <div className={`bg-white border border-gray-200 rounded-lg ${isMobile ? 'p-5' : 'p-4'}`}>
@@ -494,15 +550,46 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
                 contract.zip
               ].filter(part => part && part.trim()).join(', ');
 
+              const isCompleted = completedStops.has(contract.id);
+
               return (
-                <div key={contract.id} className={`flex items-center gap-3 ${isMobile ? 'p-4' : 'p-2'} bg-gray-50 rounded-lg border border-gray-100`}>
-                  <span className={`flex-shrink-0 ${isMobile ? 'w-12 h-12 text-lg' : 'w-8 h-8 text-sm'} bg-blue-600 text-white rounded-full flex items-center justify-center font-bold shadow-sm`}>
+                <div
+                  key={contract.id}
+                  className={`flex items-center gap-3 ${isMobile ? 'p-4' : 'p-2'} rounded-lg border transition-all ${
+                    isCompleted
+                      ? 'bg-green-50 border-green-200 opacity-75'
+                      : 'bg-gray-50 border-gray-100'
+                  }`}
+                  onClick={() => toggleStopCompletion(contract.id)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {/* Checkbox */}
+                  <input
+                    type="checkbox"
+                    checked={isCompleted}
+                    onChange={() => toggleStopCompletion(contract.id)}
+                    onClick={(e) => e.stopPropagation()}
+                    className={`flex-shrink-0 ${isMobile ? 'w-7 h-7' : 'w-5 h-5'} text-green-600 border-2 border-gray-300 rounded focus:ring-2 focus:ring-green-500 cursor-pointer`}
+                  />
+
+                  {/* Route Number */}
+                  <span className={`flex-shrink-0 ${isMobile ? 'w-12 h-12 text-lg' : 'w-8 h-8 text-sm'} ${
+                    isCompleted ? 'bg-green-600' : 'bg-blue-600'
+                  } text-white rounded-full flex items-center justify-center font-bold shadow-sm`}>
                     {index + 1}
                   </span>
+
+                  {/* Address Info */}
                   <div className="flex-1 min-w-0">
-                    <p className={`font-semibold text-gray-900 ${isMobile ? 'text-lg mb-1' : 'text-sm'}`}>{contract.name}</p>
-                    <p className={`text-gray-600 ${isMobile ? 'text-sm' : 'text-xs'}`}>{fullAddress}</p>
+                    <p className={`font-semibold ${isCompleted ? 'text-gray-500 line-through' : 'text-gray-900'} ${isMobile ? 'text-lg mb-1' : 'text-sm'}`}>
+                      {contract.name}
+                    </p>
+                    <p className={`${isCompleted ? 'text-gray-400' : 'text-gray-600'} ${isMobile ? 'text-sm' : 'text-xs'}`}>
+                      {fullAddress}
+                    </p>
                   </div>
+
+                  {/* Priority Badge */}
                   <span className={`flex-shrink-0 ${isMobile ? 'px-3 py-2 text-sm' : 'px-2 py-1 text-xs'} rounded-full font-medium ${
                     contract.priority === 'High' ? 'bg-red-100 text-red-800' :
                     contract.priority === 'Low' ? 'bg-gray-100 text-gray-800' :
