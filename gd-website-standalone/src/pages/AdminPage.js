@@ -1288,6 +1288,16 @@ const AdminDashboard = ({ user, onLogout }) => {
                 🏠 Overview
               </button>
               <button
+                onClick={() => setActiveTab('snow-removal')}
+                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
+                  activeTab === 'snow-removal'
+                    ? 'border-green-600 text-green-700 bg-green-50'
+                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
+                }`}
+              >
+                ❄️ Snow
+              </button>
+              <button
                 onClick={() => setActiveTab('leads')}
                 className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
                   activeTab === 'leads'
@@ -1341,16 +1351,6 @@ const AdminDashboard = ({ user, onLogout }) => {
                 }`}
               >
                 🗺️ Routes
-              </button>
-              <button
-                onClick={() => setActiveTab('snow-removal')}
-                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
-                  activeTab === 'snow-removal'
-                    ? 'border-green-600 text-green-700 bg-green-50'
-                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
-                }`}
-              >
-                ❄️ Snow
               </button>
             </nav>
           </div>
@@ -1533,6 +1533,32 @@ const AdminDashboard = ({ user, onLogout }) => {
                 >
                   <div style={{ fontSize: '32px', marginBottom: '8px' }}>🔐</div>
                   <div style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>User Accounts</div>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab('snow-removal')}
+                  style={{
+                    padding: '20px',
+                    borderRadius: '12px',
+                    border: '2px solid #e5e7eb',
+                    backgroundColor: 'white',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    textAlign: 'center'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#06b6d4';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(6, 182, 212, 0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '#e5e7eb';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
+                  <div style={{ fontSize: '32px', marginBottom: '8px' }}>❄️</div>
+                  <div style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>Snow Removal</div>
                 </button>
               </div>
             </div>
