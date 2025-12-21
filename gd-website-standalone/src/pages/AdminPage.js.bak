@@ -1397,6 +1397,184 @@ const AdminDashboard = ({ user, onLogout }) => {
               </div>
             </div>
 
+            {/* Enhanced Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Total Revenue Card */}
+              <div style={{
+                background: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
+                borderRadius: '16px',
+                padding: '24px',
+                color: 'white',
+                boxShadow: '0 10px 30px rgba(5, 150, 105, 0.3)',
+                position: 'relative',
+                overflow: 'hidden',
+                transition: 'transform 0.2s'
+              }}>
+                <div style={{
+                  position: 'absolute',
+                  top: '-10px',
+                  right: '-10px',
+                  width: '80px',
+                  height: '80px',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  borderRadius: '50%'
+                }}></div>
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
+                    <div style={{ fontSize: '32px' }}>💰</div>
+                    <div style={{
+                      padding: '4px 8px',
+                      borderRadius: '8px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                      fontSize: '12px',
+                      fontWeight: '600'
+                    }}>
+                      This Month
+                    </div>
+                  </div>
+                  <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Total Revenue</div>
+                  <div style={{ fontSize: '32px', fontWeight: 'bold', marginBottom: '8px' }}>{stats.totalRevenue}</div>
+                  <div style={{ fontSize: '12px', opacity: 0.8 }}>
+                    ↗ Great progress!
+                  </div>
+                </div>
+              </div>
+
+              {/* Completed Jobs Card */}
+              <div style={{
+                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                borderRadius: '16px',
+                padding: '24px',
+                color: 'white',
+                boxShadow: '0 10px 30px rgba(16, 185, 129, 0.3)',
+                position: 'relative',
+                overflow: 'hidden',
+                transition: 'transform 0.2s'
+              }}>
+                <div style={{
+                  position: 'absolute',
+                  top: '-10px',
+                  right: '-10px',
+                  width: '80px',
+                  height: '80px',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  borderRadius: '50%'
+                }}></div>
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
+                    <div style={{ fontSize: '32px' }}>✅</div>
+                    <div style={{
+                      padding: '4px 8px',
+                      borderRadius: '8px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                      fontSize: '12px',
+                      fontWeight: '600'
+                    }}>
+                      All Time
+                    </div>
+                  </div>
+                  <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Completed Jobs</div>
+                  <div style={{ fontSize: '32px', fontWeight: 'bold', marginBottom: '8px' }}>{stats.completedJobs}</div>
+                  <div style={{ fontSize: '12px', opacity: 0.8 }}>
+                    {jobs.filter(j => j.status === 'completed').length} today
+                  </div>
+                </div>
+              </div>
+
+              {/* Pending Quotes Card */}
+              <div style={{
+                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                borderRadius: '16px',
+                padding: '24px',
+                color: 'white',
+                boxShadow: '0 10px 30px rgba(245, 158, 11, 0.3)',
+                position: 'relative',
+                overflow: 'hidden',
+                cursor: 'pointer',
+                transition: 'transform 0.2s'
+              }}
+              onClick={() => setActiveTab('quotes')}
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-4px)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+              >
+                <div style={{
+                  position: 'absolute',
+                  top: '-10px',
+                  right: '-10px',
+                  width: '80px',
+                  height: '80px',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  borderRadius: '50%'
+                }}></div>
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
+                    <div style={{ fontSize: '32px' }}>⏰</div>
+                    {stats.pendingQuotes > 0 && (
+                      <div style={{
+                        padding: '4px 8px',
+                        borderRadius: '8px',
+                        backgroundColor: 'rgba(255, 255, 255, 0.3)',
+                        fontSize: '12px',
+                        fontWeight: '600'
+                      }}>
+                        Action Needed
+                      </div>
+                    )}
+                  </div>
+                  <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Pending Quotes</div>
+                  <div style={{ fontSize: '32px', fontWeight: 'bold', marginBottom: '8px' }}>{stats.pendingQuotes}</div>
+                  <div style={{ fontSize: '12px', opacity: 0.8 }}>
+                    Click to review →
+                  </div>
+                </div>
+              </div>
+
+              {/* Total Customers Card */}
+              <div style={{
+                background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+                borderRadius: '16px',
+                padding: '24px',
+                color: 'white',
+                boxShadow: '0 10px 30px rgba(59, 130, 246, 0.3)',
+                position: 'relative',
+                overflow: 'hidden',
+                cursor: 'pointer',
+                transition: 'transform 0.2s'
+              }}
+              onClick={() => setActiveTab('customers')}
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-4px)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+              >
+                <div style={{
+                  position: 'absolute',
+                  top: '-10px',
+                  right: '-10px',
+                  width: '80px',
+                  height: '80px',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  borderRadius: '50%'
+                }}></div>
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
+                    <div style={{ fontSize: '32px' }}>👥</div>
+                    <div style={{
+                      padding: '4px 8px',
+                      borderRadius: '8px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                      fontSize: '12px',
+                      fontWeight: '600'
+                    }}>
+                      Database
+                    </div>
+                  </div>
+                  <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '8px' }}>Total Customers</div>
+                  <div style={{ fontSize: '32px', fontWeight: 'bold', marginBottom: '8px' }}>{customers.length}</div>
+                  <div style={{ fontSize: '12px', opacity: 0.8 }}>
+                    View all customers →
+                  </div>
+                </div>
+              </div>
+            </div>
 
             {/* Quick Actions */}
             <div className="bg-white rounded-xl shadow-lg p-6">
