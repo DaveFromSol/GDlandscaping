@@ -3,6 +3,7 @@ import Login from '../components/Login';
 import SEOHead from '../components/SEOHead';
 import Leads from '../components/Leads';
 import Customers from '../components/Customers';
+import Employees from '../components/Employees';
 import SnowRemovalMap from '../components/SnowRemovalMap';
 import HOACondoProperties from '../components/HOACondoProperties';
 import GoogleAddressAutocomplete from '../components/GoogleAddressAutocomplete';
@@ -1343,6 +1344,16 @@ const AdminDashboard = ({ user, onLogout }) => {
                 👥 Customers
               </button>
               <button
+                onClick={() => setActiveTab('employees')}
+                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
+                  activeTab === 'employees'
+                    ? 'border-green-600 text-green-700 bg-green-50'
+                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
+                }`}
+              >
+                👨‍💼 Employees
+              </button>
+              <button
                 onClick={() => setActiveTab('routes')}
                 className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
                   activeTab === 'routes'
@@ -1921,6 +1932,10 @@ const AdminDashboard = ({ user, onLogout }) => {
 
         {activeTab === 'customers' && (
           <Customers user={user} />
+        )}
+
+        {activeTab === 'employees' && (
+          <Employees db={db} />
         )}
 
         {activeTab === 'bookings' && (
