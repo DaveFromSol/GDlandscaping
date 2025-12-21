@@ -26,7 +26,7 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
   const [routeInfo, setRouteInfo] = useState(null);
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [useCurrentLocation, setUseCurrentLocation] = useState(true);
+  const [useCurrentLocation] = useState(true); // Always use current location
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [completedStops, setCompletedStops] = useState(new Set());
   const [hasAutoOptimized, setHasAutoOptimized] = useState(false);
@@ -52,7 +52,7 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
         },
         (error) => {
           console.log('Location permission denied or unavailable, will use first stop as origin');
-          setUseCurrentLocation(false);
+          // Fall back silently - route will start from first stop
         },
         { enableHighAccuracy: true, timeout: 10000 }
       );
@@ -121,32 +121,30 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
     // Get current location if enabled
     if (useCurrentLocation && !currentLocation) {
       if (!navigator.geolocation) {
-        alert('Geolocation is not supported by your browser. Starting from first contract instead.');
-        setUseCurrentLocation(false);
+        console.log('Geolocation is not supported, starting from first contract instead.');
+        // Continue with route optimization using first stop
+      } else {
+        console.log('📍 Getting your current location...');
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const location = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            setCurrentLocation(location);
+            console.log('✅ Current location obtained:', location);
+            // Trigger optimization again with location
+            setTimeout(() => optimizeRoute(), 100);
+          },
+          (error) => {
+            console.error('❌ Error getting location:', error);
+            console.log('Starting from first contract instead.');
+            setCurrentLocation(null);
+          },
+          { enableHighAccuracy: true, timeout: 10000 }
+        );
         return;
       }
-
-      console.log('📍 Getting your current location...');
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const location = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-          setCurrentLocation(location);
-          console.log('✅ Current location obtained:', location);
-          // Trigger optimization again with location
-          setTimeout(() => optimizeRoute(), 100);
-        },
-        (error) => {
-          console.error('❌ Error getting location:', error);
-          alert(`Could not get your location: ${error.message}\nStarting from first contract instead.`);
-          setUseCurrentLocation(false);
-          setCurrentLocation(null);
-        },
-        { enableHighAccuracy: true, timeout: 10000 }
-      );
-      return;
     }
 
     setIsOptimizing(true);
@@ -340,51 +338,6 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
     return Math.round((completedStops.size / optimizedRoute.length) * 100);
   };
 
-  const exportRoute = () => {
-    if (!optimizedRoute || optimizedRoute.length === 0) {
-      alert('Please optimize the route first');
-      return;
-    }
-
-    // Helper function to format complete address for export
-    const formatFullAddress = (contract) => {
-      const parts = [
-        contract.address,
-        contract.city,
-        contract.state,
-        contract.zip
-      ].filter(part => part && part.trim());
-      return parts.join(', ');
-    };
-
-    let routeText = '🚗 OPTIMIZED SNOW REMOVAL ROUTE\n';
-    routeText += '================================\n\n';
-    routeText += `Total Stops: ${routeInfo.stops}\n`;
-    routeText += `Total Distance: ${routeInfo.distance} miles\n`;
-    routeText += `Estimated Time: ${routeInfo.duration} minutes\n\n`;
-    routeText += 'ROUTE ORDER:\n';
-    routeText += '============\n\n';
-
-    optimizedRoute.forEach((contract, index) => {
-      routeText += `${index + 1}. ${contract.name}\n`;
-      routeText += `   Address: ${formatFullAddress(contract)}\n`;
-      routeText += `   Priority: ${contract.priority || 'Normal'}\n`;
-      if (contract.phone) routeText += `   Phone: ${contract.phone}\n`;
-      routeText += '\n';
-    });
-
-    // Create and download file
-    const blob = new Blob([routeText], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `snow-route-${new Date().toISOString().split('T')[0]}.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
-
   const openInGoogleMaps = () => {
     if (!optimizedRoute || optimizedRoute.length === 0) {
       alert('Please optimize the route first');
@@ -445,54 +398,14 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
         </GoogleMap>
       </LoadScript>
 
-      {/* Location Settings */}
-      <div className={`bg-white border border-gray-200 rounded-lg ${isMobile ? 'p-4' : 'p-3'} flex items-center justify-between`}>
-        <div className="flex items-center gap-3">
-          <input
-            type="checkbox"
-            id="useCurrentLocation"
-            checked={useCurrentLocation}
-            onChange={(e) => {
-              setUseCurrentLocation(e.target.checked);
-              if (!e.target.checked) {
-                setCurrentLocation(null);
-              }
-            }}
-            className={`${isMobile ? 'w-6 h-6' : 'w-4 h-4'} text-blue-600 border-gray-300 rounded focus:ring-blue-500`}
-          />
-          <label htmlFor="useCurrentLocation" className={`${isMobile ? 'text-base' : 'text-sm'} font-medium text-gray-900 cursor-pointer`}>
-            📍 Start route from my current location
-          </label>
-        </div>
-        {currentLocation && (
-          <span className={`${isMobile ? 'text-sm' : 'text-xs'} text-green-600 font-medium`}>✓ Location acquired</span>
-        )}
-      </div>
-
-      {/* Route Controls */}
-      <div className={`flex ${isMobile ? 'flex-col' : 'flex-wrap'} gap-3`}>
-        <button
-          onClick={optimizeRoute}
-          disabled={isOptimizing}
-          className={`${isMobile ? 'w-full text-lg py-4' : 'flex-1 py-2'} bg-blue-600 text-white px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors font-semibold shadow-md active:scale-95`}
-        >
-          {isOptimizing ? '⏳ Optimizing...' : '🎯 Optimize Route'}
-        </button>
-        <button
-          onClick={exportRoute}
-          disabled={!optimizedRoute || optimizedRoute.length === 0}
-          className={`${isMobile ? 'w-full text-lg py-4' : 'flex-1 py-2'} bg-green-600 text-white px-4 rounded-lg hover:bg-green-700 disabled:bg-gray-400 transition-colors font-semibold shadow-md active:scale-95`}
-        >
-          📄 Export Route
-        </button>
-        <button
-          onClick={openInGoogleMaps}
-          disabled={!optimizedRoute || optimizedRoute.length === 0}
-          className={`${isMobile ? 'w-full text-lg py-4' : 'flex-1 py-2'} bg-purple-600 text-white px-4 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 transition-colors font-semibold shadow-md active:scale-95`}
-        >
-          🗺️ Open in Google Maps
-        </button>
-      </div>
+      {/* Open in Google Maps Button */}
+      <button
+        onClick={openInGoogleMaps}
+        disabled={!optimizedRoute || optimizedRoute.length === 0}
+        className={`${isMobile ? 'w-full text-lg py-4' : 'w-full py-3'} bg-purple-600 text-white px-4 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 transition-colors font-semibold shadow-md active:scale-95`}
+      >
+        🗺️ Open in Google Maps
+      </button>
 
       {/* Route Information */}
       {routeInfo && (
