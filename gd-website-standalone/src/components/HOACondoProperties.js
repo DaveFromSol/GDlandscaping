@@ -32,6 +32,8 @@ const HOACondoProperties = ({ db }) => {
     specialInstructions: ''
   });
   const [expandedProperty, setExpandedProperty] = useState(null);
+  const [bulkAddMode, setBulkAddMode] = useState(false);
+  const [bulkAddresses, setBulkAddresses] = useState('');
 
   // Real-time listener for HOA/Condo properties
   useEffect(() => {
@@ -79,6 +81,47 @@ const HOACondoProperties = ({ db }) => {
       ...newProperty,
       addresses: newProperty.addresses.filter(addr => addr.id !== addressId)
     });
+  };
+
+  const handleBulkAddAddresses = () => {
+    if (!bulkAddresses.trim()) {
+      alert('Please paste addresses (one per line)');
+      return;
+    }
+
+    // Split by newlines and filter out empty lines
+    const addressLines = bulkAddresses
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line.length > 0);
+
+    if (addressLines.length === 0) {
+      alert('No valid addresses found');
+      return;
+    }
+
+    if (newProperty.addresses.length + addressLines.length > 40) {
+      alert(`Cannot add ${addressLines.length} addresses. Current: ${newProperty.addresses.length}, Maximum: 40`);
+      return;
+    }
+
+    // Convert each line to an address object
+    const newAddresses = addressLines.map((location, index) => ({
+      location: location,
+      unitNumber: '',
+      specialInstructions: '',
+      id: Date.now() + index
+    }));
+
+    setNewProperty({
+      ...newProperty,
+      addresses: [...newProperty.addresses, ...newAddresses]
+    });
+
+    // Clear the bulk input and switch back to single mode
+    setBulkAddresses('');
+    setBulkAddMode(false);
+    alert(`Successfully added ${newAddresses.length} address${newAddresses.length > 1 ? 'es' : ''}`);
   };
 
   const handleSaveProperty = async () => {
@@ -293,57 +336,105 @@ const HOACondoProperties = ({ db }) => {
 
           {/* Add Address Section */}
           <div className="border-t border-gray-200 pt-6">
-            <h4 className="text-lg font-semibold mb-4 text-gray-900">
-              Service Locations ({newProperty.addresses.length}/50)
-            </h4>
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-lg font-semibold text-gray-900">
+                Service Locations ({newProperty.addresses.length}/40)
+              </h4>
+              <button
+                onClick={() => setBulkAddMode(!bulkAddMode)}
+                className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 font-medium"
+              >
+                {bulkAddMode ? '📝 Single Address' : '📋 Bulk Add'}
+              </button>
+            </div>
 
             <div className="bg-gray-50 rounded-lg p-4 mb-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
-                <div className="md:col-span-2">
+              {!bulkAddMode ? (
+                // Single Address Mode
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Address *
+                      </label>
+                      <GoogleAddressAutocomplete
+                        value={currentAddress.location}
+                        onChange={(address) => setCurrentAddress({ ...currentAddress, location: address })}
+                        placeholder="123 Main St, Hartford, CT"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Unit/Building Name
+                      </label>
+                      <input
+                        type="text"
+                        value={currentAddress.unitNumber}
+                        onChange={(e) => setCurrentAddress({ ...currentAddress, unitNumber: e.target.value })}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                        placeholder="Building A, Unit 101, etc."
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Special Instructions
+                    </label>
+                    <input
+                      type="text"
+                      value={currentAddress.specialInstructions}
+                      onChange={(e) => setCurrentAddress({ ...currentAddress, specialInstructions: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                      placeholder="Clear walkways first, salt all entrances, etc."
+                    />
+                  </div>
+
+                  <button
+                    onClick={handleAddAddress}
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
+                    disabled={newProperty.addresses.length >= 40}
+                  >
+                    + Add Address
+                  </button>
+                </>
+              ) : (
+                // Bulk Add Mode
+                <>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Address *
+                    Paste Addresses (one per line)
                   </label>
-                  <GoogleAddressAutocomplete
-                    value={currentAddress.location}
-                    onChange={(address) => setCurrentAddress({ ...currentAddress, location: address })}
-                    placeholder="123 Main St, Hartford, CT"
+                  <textarea
+                    value={bulkAddresses}
+                    onChange={(e) => setBulkAddresses(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                    placeholder="123 Main St, Hartford, CT&#10;456 Elm St, New Haven, CT&#10;789 Oak Ave, Stamford, CT"
+                    rows={8}
                   />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Unit/Building Name
-                  </label>
-                  <input
-                    type="text"
-                    value={currentAddress.unitNumber}
-                    onChange={(e) => setCurrentAddress({ ...currentAddress, unitNumber: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    placeholder="Building A, Unit 101, etc."
-                  />
-                </div>
-              </div>
-
-              <div className="mb-3">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Special Instructions
-                </label>
-                <input
-                  type="text"
-                  value={currentAddress.specialInstructions}
-                  onChange={(e) => setCurrentAddress({ ...currentAddress, specialInstructions: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  placeholder="Clear walkways first, salt all entrances, etc."
-                />
-              </div>
-
-              <button
-                onClick={handleAddAddress}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
-                disabled={newProperty.addresses.length >= 40}
-              >
-                + Add Address
-              </button>
+                  <p className="text-xs text-gray-500 mt-2 mb-3">
+                    💡 Paste each address on a new line. You can add up to {40 - newProperty.addresses.length} more addresses.
+                  </p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleBulkAddAddresses}
+                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
+                      disabled={newProperty.addresses.length >= 40 || !bulkAddresses.trim()}
+                    >
+                      ✓ Add All Addresses
+                    </button>
+                    <button
+                      onClick={() => {
+                        setBulkAddresses('');
+                        setBulkAddMode(false);
+                      }}
+                      className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 font-medium"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Address List */}
