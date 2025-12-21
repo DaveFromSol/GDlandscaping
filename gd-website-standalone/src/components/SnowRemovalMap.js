@@ -302,24 +302,25 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
     );
   }, [contracts, hoaCondoProperties, currentLocation, useCurrentLocation]);
 
-  // Auto-optimize route when contracts are loaded
+  // Auto-optimize route when contracts and location are ready
   useEffect(() => {
     // Check if we have contracts and Google Maps is loaded
     const hasContracts = (contracts && contracts.length > 0) || (hoaCondoProperties && hoaCondoProperties.length > 0);
     const googleMapsLoaded = window.google && window.google.maps;
 
-    if (hasContracts && !hasAutoOptimized && !isOptimizing && googleMapsLoaded) {
-      console.log('🎯 Auto-optimizing route...');
+    // Since we always use current location, wait for it to be acquired before auto-optimizing
+    if (hasContracts && !hasAutoOptimized && !isOptimizing && googleMapsLoaded && currentLocation) {
+      console.log('🎯 Auto-optimizing route with current location...');
       setHasAutoOptimized(true);
 
       // Small delay to ensure everything is ready
       const timer = setTimeout(() => {
         optimizeRoute();
-      }, 1500);
+      }, 500);
 
       return () => clearTimeout(timer);
     }
-  }, [contracts, hoaCondoProperties, hasAutoOptimized, isOptimizing, optimizeRoute]);
+  }, [contracts, hoaCondoProperties, hasAutoOptimized, isOptimizing, optimizeRoute, currentLocation]);
 
   const toggleStopCompletion = (stopId) => {
     setCompletedStops(prev => {
