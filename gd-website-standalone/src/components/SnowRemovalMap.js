@@ -36,22 +36,6 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Auto-optimize route when contracts are loaded
-  useEffect(() => {
-    // Check if we have contracts and haven't optimized yet
-    const hasContracts = (contracts && contracts.length > 0) || (hoaCondoProperties && hoaCondoProperties.length > 0);
-    const hasNotOptimized = !optimizedRoute || optimizedRoute.length === 0;
-
-    if (hasContracts && hasNotOptimized && !isOptimizing) {
-      // Small delay to ensure Google Maps is loaded
-      const timer = setTimeout(() => {
-        optimizeRoute();
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [contracts, hoaCondoProperties, optimizedRoute, isOptimizing, optimizeRoute]);
-
   const optimizeRoute = useCallback(() => {
     // Flatten HOA/Condo properties into individual addresses (from dedicated properties section)
     const hoaCondoAddresses = hoaCondoProperties.flatMap(property =>
@@ -296,6 +280,22 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
       }
     );
   }, [contracts, hoaCondoProperties, currentLocation, useCurrentLocation]);
+
+  // Auto-optimize route when contracts are loaded
+  useEffect(() => {
+    // Check if we have contracts and haven't optimized yet
+    const hasContracts = (contracts && contracts.length > 0) || (hoaCondoProperties && hoaCondoProperties.length > 0);
+    const hasNotOptimized = !optimizedRoute || optimizedRoute.length === 0;
+
+    if (hasContracts && hasNotOptimized && !isOptimizing) {
+      // Small delay to ensure Google Maps is loaded
+      const timer = setTimeout(() => {
+        optimizeRoute();
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [contracts, hoaCondoProperties, optimizedRoute, isOptimizing, optimizeRoute]);
 
   const exportRoute = () => {
     if (!optimizedRoute || optimizedRoute.length === 0) {
