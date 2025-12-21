@@ -22,11 +22,16 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const analytics = getAnalytics(app);
 
+// Create a secondary app instance for creating employee accounts without affecting current session
+const secondaryApp = initializeApp(firebaseConfig, 'secondary');
+const secondaryAuth = getAuth(secondaryApp);
+
 // Create Firebase context
 const FirebaseContext = createContext({
   auth: null,
   db: null,
   analytics: null,
+  secondaryAuth: null,
   user: null,
   loading: true
 });
@@ -66,6 +71,7 @@ export const FirebaseProvider = ({ children }) => {
     auth,
     db,
     analytics,
+    secondaryAuth,
     user,
     loading,
     error

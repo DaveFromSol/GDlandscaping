@@ -676,7 +676,7 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
 
               return (
                 <div
-                  key={contract.id}
+                  key={`optimized-${contract.id}`}
                   className={`flex items-center gap-3 ${isMobile ? 'p-4' : 'p-2'} rounded-lg border transition-all ${
                     isCompleted
                       ? 'bg-green-50 border-green-200 opacity-75'
@@ -744,7 +744,7 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
 
                   return (
                     <div
-                      key={contract.id}
+                      key={`excluded-${contract.id}`}
                       className={`flex items-center gap-3 ${isMobile ? 'p-4' : 'p-2'} rounded-lg border transition-all ${
                         isCompleted
                           ? 'bg-green-50 border-green-200 opacity-75'

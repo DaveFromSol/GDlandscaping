@@ -10,8 +10,9 @@ import {
   orderBy,
   serverTimestamp
 } from 'firebase/firestore';
+import { createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 
-const Employees = ({ db }) => {
+const Employees = ({ db, auth, secondaryAuth }) => {
   const [employees, setEmployees] = useState([]);
   const [showAddEmployee, setShowAddEmployee] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null);
@@ -48,7 +49,7 @@ const Employees = ({ db }) => {
   }, [db]);
 
   const handleSaveEmployee = async () => {
-    if (!db) return;
+    if (!db || !secondaryAuth) return;
 
     if (!newEmployee.name || !newEmployee.email) {
       alert('Please fill in name and email');
@@ -75,11 +76,34 @@ const Employees = ({ db }) => {
         alert('Employee updated successfully!');
       } else {
         // Add new employee
+        if (!newEmployee.password) {
+          alert('Password is required for new employees');
+          return;
+        }
+
+        // Create Firebase Auth user using secondary auth instance
+        // This won't affect the current admin session
+        const userCredential = await createUserWithEmailAndPassword(
+          secondaryAuth,
+          newEmployee.email,
+          newEmployee.password
+        );
+
+        // Save employee details to Firestore
         await addDoc(collection(db, 'employees'), {
-          ...newEmployee,
+          name: newEmployee.name,
+          email: newEmployee.email,
+          phone: newEmployee.phone,
+          role: newEmployee.role,
+          permissions: newEmployee.permissions,
+          uid: userCredential.user.uid,
           createdAt: serverTimestamp()
         });
-        alert('Employee added successfully!');
+
+        // Sign out the newly created user from secondary auth
+        await signOut(secondaryAuth);
+
+        alert('Employee added successfully! They can now login with their email and password.');
       }
 
       // Reset form
@@ -100,7 +124,20 @@ const Employees = ({ db }) => {
       setEditingEmployee(null);
     } catch (error) {
       console.error('Error saving employee:', error);
-      alert('Error saving employee');
+
+      // Provide user-friendly error messages
+      let errorMessage = 'Error saving employee';
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = 'This email is already registered. Please use a different email.';
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = 'Invalid email address. Please check and try again.';
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = 'Password must be at least 6 characters long.';
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      alert(errorMessage);
     }
   };
 

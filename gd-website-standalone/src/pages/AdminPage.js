@@ -25,7 +25,7 @@ import { signOut, createUserWithEmailAndPassword, fetchSignInMethodsForEmail } f
 import { useFirebase } from '../contexts/FirebaseContext';
 
 const AdminDashboard = ({ user, onLogout }) => {
-  const { db, auth } = useFirebase();
+  const { db, auth, secondaryAuth } = useFirebase();
   const [activeTab, setActiveTab] = useState('overview');
   const [userRole, setUserRole] = useState('admin'); // admin or employee
   const [userPermissions, setUserPermissions] = useState({
@@ -2006,7 +2006,7 @@ const AdminDashboard = ({ user, onLogout }) => {
         )}
 
         {activeTab === 'employees' && (
-          <Employees db={db} />
+          <Employees db={db} auth={auth} secondaryAuth={secondaryAuth} />
         )}
 
         {activeTab === 'bookings' && (
