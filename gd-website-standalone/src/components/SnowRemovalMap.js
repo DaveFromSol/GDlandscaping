@@ -316,7 +316,7 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db }) => {
           setRouteInfo({
             distance: (totalDistance / 1609.34).toFixed(2), // Convert to miles
             duration: Math.round(totalDuration / 60), // Convert to minutes
-            stops: stopsToRoute.length,
+            stops: optimized.length,
             totalStops: allStops.length,
             excluded: allStops.length - stopsToRoute.length
           });
