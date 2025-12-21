@@ -38,6 +38,27 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Auto-request location permission when component mounts
+  useEffect(() => {
+    if (navigator.geolocation && !currentLocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const location = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          setCurrentLocation(location);
+          console.log('✅ Auto-acquired location:', location);
+        },
+        (error) => {
+          console.log('Location permission denied or unavailable, will use first stop as origin');
+          setUseCurrentLocation(false);
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    }
+  }, [currentLocation]);
+
   const optimizeRoute = useCallback(() => {
     // Flatten HOA/Condo properties into individual addresses (from dedicated properties section)
     const hoaCondoAddresses = hoaCondoProperties.flatMap(property =>
