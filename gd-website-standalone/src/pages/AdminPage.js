@@ -3605,6 +3605,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                   <SnowRemovalMap
                     contracts={customers.filter(c => c.snowRemoval)}
                     hoaCondoProperties={hoaCondoProperties}
+                    db={db}
                   />
                 </div>
               </div>

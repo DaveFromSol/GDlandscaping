@@ -1,5 +1,14 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { GoogleMap, useLoadScript, DirectionsRenderer } from '@react-google-maps/api';
+import {
+  collection,
+  doc,
+  setDoc,
+  onSnapshot,
+  query,
+  orderBy,
+  serverTimestamp
+} from 'firebase/firestore';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyDiFzxddX5tpdulBf8YMVXFekxFUJ2ys-c';
 
@@ -20,7 +29,7 @@ const defaultCenter = {
   lng: -73.0877 // Connecticut center
 };
 
-const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
+const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db }) => {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
   });
@@ -34,6 +43,11 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [completedStops, setCompletedStops] = useState(new Set());
   const [hasAutoOptimized, setHasAutoOptimized] = useState(false);
+
+  // Firebase route management
+  const [savedRoutes, setSavedRoutes] = useState([]);
+  const [currentRouteId, setCurrentRouteId] = useState(null);
+  const [routeName, setRouteName] = useState('');
 
   // Detect mobile viewport changes
   useEffect(() => {
@@ -62,6 +76,41 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
       );
     }
   }, [currentLocation]);
+
+  // Listen for saved routes from Firebase
+  useEffect(() => {
+    if (!db) return;
+
+    const routesRef = collection(db, 'snowRoutes');
+    const q = query(routesRef, orderBy('createdAt', 'desc'));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const routes = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setSavedRoutes(routes);
+    });
+
+    return () => unsubscribe();
+  }, [db]);
+
+  // Listen for completion updates on current route
+  useEffect(() => {
+    if (!db || !currentRouteId) return;
+
+    const routeRef = doc(db, 'snowRoutes', currentRouteId);
+    const unsubscribe = onSnapshot(routeRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.data();
+        if (data.completedStops) {
+          setCompletedStops(new Set(data.completedStops));
+        }
+      }
+    });
+
+    return () => unsubscribe();
+  }, [db, currentRouteId]);
 
   const optimizeRoute = useCallback(() => {
     // Flatten HOA/Condo properties into individual addresses (from dedicated properties section)
@@ -325,16 +374,67 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
     }
   }, [contracts, hoaCondoProperties, hasAutoOptimized, isOptimizing, optimizeRoute, currentLocation, isLoaded]);
 
-  const toggleStopCompletion = (stopId) => {
-    setCompletedStops(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(stopId)) {
-        newSet.delete(stopId);
-      } else {
-        newSet.add(stopId);
+  const toggleStopCompletion = async (stopId) => {
+    const newSet = new Set(completedStops);
+    if (newSet.has(stopId)) {
+      newSet.delete(stopId);
+    } else {
+      newSet.add(stopId);
+    }
+    setCompletedStops(newSet);
+
+    // Save to Firebase if we have a current route
+    if (db && currentRouteId) {
+      try {
+        const routeRef = doc(db, 'snowRoutes', currentRouteId);
+        await setDoc(routeRef, {
+          completedStops: Array.from(newSet),
+          lastUpdated: serverTimestamp()
+        }, { merge: true });
+      } catch (error) {
+        console.error('Error updating completion status:', error);
       }
-      return newSet;
-    });
+    }
+  };
+
+  const saveRoute = async () => {
+    if (!db || !optimizedRoute || optimizedRoute.length === 0) {
+      alert('Please optimize a route first');
+      return;
+    }
+
+    const name = routeName.trim() || `Snow Route ${savedRoutes.length + 1}`;
+
+    try {
+      const routeData = {
+        name: name,
+        stops: optimizedRoute.map(stop => ({
+          id: stop.id,
+          name: stop.name,
+          address: formatFullAddress(stop),
+          priority: stop.priority || 'Normal'
+        })),
+        completedStops: Array.from(completedStops),
+        createdAt: serverTimestamp(),
+        lastUpdated: serverTimestamp()
+      };
+
+      const routeRef = doc(collection(db, 'snowRoutes'));
+      await setDoc(routeRef, routeData);
+
+      setCurrentRouteId(routeRef.id);
+      setRouteName('');
+      alert(`Route "${name}" saved successfully!`);
+    } catch (error) {
+      console.error('Error saving route:', error);
+      alert('Error saving route');
+    }
+  };
+
+  const loadRoute = (route) => {
+    setCurrentRouteId(route.id);
+    setCompletedStops(new Set(route.completedStops || []));
+    alert(`Loaded route: ${route.name}`);
   };
 
   const getCompletionPercentage = () => {
@@ -418,6 +518,52 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
           />
         )}
       </GoogleMap>
+
+      {/* Save/Load Routes */}
+      {db && (
+        <div className="bg-white border border-gray-200 rounded-lg p-4">
+          <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+            <div className="flex-1 w-full sm:w-auto">
+              <input
+                type="text"
+                value={routeName}
+                onChange={(e) => setRouteName(e.target.value)}
+                placeholder={`Snow Route ${savedRoutes.length + 1}`}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+            <button
+              onClick={saveRoute}
+              disabled={!optimizedRoute || optimizedRoute.length === 0}
+              className="w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 font-medium whitespace-nowrap"
+            >
+              💾 Save Route
+            </button>
+            {savedRoutes.length > 0 && (
+              <select
+                onChange={(e) => {
+                  const route = savedRoutes.find(r => r.id === e.target.value);
+                  if (route) loadRoute(route);
+                }}
+                className="w-full sm:w-auto px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                defaultValue=""
+              >
+                <option value="" disabled>Load Saved Route...</option>
+                {savedRoutes.map(route => (
+                  <option key={route.id} value={route.id}>
+                    {route.name} ({route.stops?.length || 0} stops)
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+          {currentRouteId && (
+            <p className="text-sm text-green-600 mt-2">
+              ✓ Currently tracking: {savedRoutes.find(r => r.id === currentRouteId)?.name || 'Active Route'}
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Route Controls */}
       <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-3`}>
