@@ -342,22 +342,21 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
     return Math.round((completedStops.size / optimizedRoute.length) * 100);
   };
 
+  const formatFullAddress = (contract) => {
+    const parts = [
+      contract.address,
+      contract.city,
+      contract.state,
+      contract.zip
+    ].filter(part => part && part.trim());
+    return parts.join(', ');
+  };
+
   const openInGoogleMaps = () => {
     if (!optimizedRoute || optimizedRoute.length === 0) {
       alert('Please optimize the route first');
       return;
     }
-
-    // Helper function to format complete address
-    const formatFullAddress = (contract) => {
-      const parts = [
-        contract.address,
-        contract.city,
-        contract.state,
-        contract.zip
-      ].filter(part => part && part.trim());
-      return parts.join(', ');
-    };
 
     // Build Google Maps URL with waypoints
     const origin = encodeURIComponent(formatFullAddress(optimizedRoute[0]));
@@ -368,6 +367,23 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
       .join('|');
 
     const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&waypoints=${waypoints}&travelmode=driving`;
+    window.open(url, '_blank');
+  };
+
+  const openInAppleMaps = () => {
+    if (!optimizedRoute || optimizedRoute.length === 0) {
+      alert('Please optimize the route first');
+      return;
+    }
+
+    // Apple Maps supports multiple waypoints via http://maps.apple.com
+    const origin = encodeURIComponent(formatFullAddress(optimizedRoute[0]));
+    const destination = encodeURIComponent(formatFullAddress(optimizedRoute[optimizedRoute.length - 1]));
+
+    // For Apple Maps, we'll create a URL with origin and destination
+    // Note: Apple Maps has limited waypoint support via URL, so we'll use the first and last stops
+    // Users will need to manually add intermediate stops or we navigate stop-by-stop
+    const url = `http://maps.apple.com/?saddr=${origin}&daddr=${destination}&dirflg=d`;
     window.open(url, '_blank');
   };
 
@@ -413,11 +429,18 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [] }) => {
           {isOptimizing ? '⏳ Optimizing...' : '🎯 Optimize Route'}
         </button>
         <button
+          onClick={openInAppleMaps}
+          disabled={!optimizedRoute || optimizedRoute.length === 0}
+          className={`${isMobile ? 'w-full text-lg py-4' : 'flex-1 py-3'} bg-gray-800 text-white px-4 rounded-lg hover:bg-gray-900 disabled:bg-gray-400 transition-colors font-semibold shadow-md active:scale-95`}
+        >
+          🍎 Apple Maps
+        </button>
+        <button
           onClick={openInGoogleMaps}
           disabled={!optimizedRoute || optimizedRoute.length === 0}
           className={`${isMobile ? 'w-full text-lg py-4' : 'flex-1 py-3'} bg-purple-600 text-white px-4 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 transition-colors font-semibold shadow-md active:scale-95`}
         >
-          🗺️ Open in Google Maps
+          🗺️ Google Maps
         </button>
       </div>
 
