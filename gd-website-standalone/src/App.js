@@ -229,20 +229,6 @@ const Navigation = () => {
   );
 };
 
-const FallBanner = () => (
-  <div className="fall-banner">
-    <div className="banner-content">
-      <span className="banner-icon">🍂</span>
-      <div className="banner-text">
-        <strong>Fall Discount on Instant Quotes!</strong> Save 20% - until December 1st!
-      </div>
-      <Link to="/instant-quote" className="banner-cta">
-        Get Quote
-      </Link>
-    </div>
-  </div>
-);
-
 // SEO Crawl Path Component - shows random town/service links
 const CrawlPathLinks = () => {
   const [links] = React.useState(() => {
@@ -327,7 +313,6 @@ function App() {
       <Router>
         <ScrollToTop />
         <div className="website">
-          <FallBanner />
           <Navigation />
 
           <main className="website-main">
