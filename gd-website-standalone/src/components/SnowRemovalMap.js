@@ -36,6 +36,7 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db }) => {
 
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [optimizedRoute, setOptimizedRoute] = useState([]);
+  const [excludedStops, setExcludedStops] = useState([]);
   const [routeInfo, setRouteInfo] = useState(null);
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -228,15 +229,17 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db }) => {
     const MAX_WAYPOINTS = 23;
     const maxStops = MAX_WAYPOINTS + 2; // +2 for origin and destination
     let stopsToRoute = prioritySorted;
+    let excludedStops = [];
 
     if (prioritySorted.length > maxStops) {
       const numExcluded = prioritySorted.length - maxStops;
       alert(
         `⚠️ Google Maps allows a maximum of 25 stops per route.\n\n` +
         `You have ${prioritySorted.length} stops. The route will include the first 25 stops based on priority.\n\n` +
-        `${numExcluded} lower-priority stops will be excluded from this route.`
+        `${numExcluded} lower-priority stops will be shown in the list but not on the map.`
       );
       stopsToRoute = prioritySorted.slice(0, maxStops);
+      excludedStops = prioritySorted.slice(maxStops);
     }
 
     // Determine origin based on whether we're using current location
@@ -302,6 +305,7 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db }) => {
             stopsToRoute[stopsToRoute.length - 1] // destination
           ];
           setOptimizedRoute(optimized);
+          setExcludedStops(excludedStops);
 
           // Calculate total distance and duration
           const route = result.routes[0];
@@ -438,8 +442,9 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db }) => {
   };
 
   const getCompletionPercentage = () => {
-    if (!optimizedRoute || optimizedRoute.length === 0) return 0;
-    return Math.round((completedStops.size / optimizedRoute.length) * 100);
+    const totalStops = optimizedRoute.length + excludedStops.length;
+    if (totalStops === 0) return 0;
+    return Math.round((completedStops.size / totalStops) * 100);
   };
 
   const formatFullAddress = (contract) => {
@@ -637,7 +642,7 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db }) => {
             >
               {getCompletionPercentage() > 10 && (
                 <span className="text-white font-bold text-sm drop-shadow">
-                  {completedStops.size} / {optimizedRoute.length}
+                  {completedStops.size} / {optimizedRoute.length + excludedStops.length}
                 </span>
               )}
             </div>
@@ -645,8 +650,8 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db }) => {
 
           {/* Summary Text */}
           <div className={`mt-3 text-center ${isMobile ? 'text-base' : 'text-sm'} text-gray-700`}>
-            <span className="font-semibold">{completedStops.size}</span> of <span className="font-semibold">{optimizedRoute.length}</span> stops completed
-            {completedStops.size === optimizedRoute.length && optimizedRoute.length > 0 && (
+            <span className="font-semibold">{completedStops.size}</span> of <span className="font-semibold">{optimizedRoute.length + excludedStops.length}</span> stops completed
+            {completedStops.size === (optimizedRoute.length + excludedStops.length) && (optimizedRoute.length + excludedStops.length) > 0 && (
               <span className="ml-2 text-green-600 font-bold">✓ All Done!</span>
             )}
           </div>
@@ -717,6 +722,75 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db }) => {
                 </div>
               );
             })}
+
+            {/* Excluded Stops (not on map, but shown in list) */}
+            {excludedStops && excludedStops.length > 0 && (
+              <>
+                <div className="my-4 border-t-2 border-yellow-300 pt-4">
+                  <p className="text-sm font-medium text-yellow-700 mb-2">
+                    ⚠️ Additional Stops (not on map due to 25-stop limit)
+                  </p>
+                </div>
+                {excludedStops.map((contract, index) => {
+                  const fullAddress = [
+                    contract.address,
+                    contract.city,
+                    contract.state,
+                    contract.zip
+                  ].filter(part => part && part.trim()).join(', ');
+
+                  const isCompleted = completedStops.has(contract.id);
+
+                  return (
+                    <div
+                      key={contract.id}
+                      className={`flex items-center gap-3 ${isMobile ? 'p-4' : 'p-2'} rounded-lg border transition-all ${
+                        isCompleted
+                          ? 'bg-green-50 border-green-200 opacity-75'
+                          : 'bg-yellow-50 border-yellow-200'
+                      }`}
+                      onClick={() => toggleStopCompletion(contract.id)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {/* Checkbox */}
+                      <input
+                        type="checkbox"
+                        checked={isCompleted}
+                        onChange={() => toggleStopCompletion(contract.id)}
+                        onClick={(e) => e.stopPropagation()}
+                        className={`flex-shrink-0 ${isMobile ? 'w-7 h-7' : 'w-5 h-5'} text-green-600 border-2 border-gray-300 rounded focus:ring-2 focus:ring-green-500 cursor-pointer`}
+                      />
+
+                      {/* Route Number */}
+                      <span className={`flex-shrink-0 ${isMobile ? 'w-12 h-12 text-lg' : 'w-8 h-8 text-sm'} ${
+                        isCompleted ? 'bg-green-600' : 'bg-yellow-600'
+                      } text-white rounded-full flex items-center justify-center font-bold shadow-sm`}>
+                        {optimizedRoute.length + index + 1}
+                      </span>
+
+                      {/* Address Info */}
+                      <div className="flex-1 min-w-0">
+                        <p className={`font-semibold ${isCompleted ? 'text-gray-500 line-through' : 'text-gray-900'} ${isMobile ? 'text-lg mb-1' : 'text-sm'}`}>
+                          {contract.name}
+                        </p>
+                        <p className={`${isCompleted ? 'text-gray-400' : 'text-gray-600'} ${isMobile ? 'text-sm' : 'text-xs'}`}>
+                          {fullAddress}
+                        </p>
+                      </div>
+
+                      {/* Priority Badge */}
+                      <span className={`flex-shrink-0 ${isMobile ? 'px-3 py-2 text-sm' : 'px-2 py-1 text-xs'} rounded-full font-medium ${
+                        contract.priority === 'High' ? 'bg-red-100 text-red-800' :
+                        contract.priority === 'Low' ? 'bg-gray-100 text-gray-800' :
+                        'bg-blue-100 text-blue-800'
+                      }`}>
+                        {contract.priority || 'Normal'}
+                      </span>
+                    </div>
+                  );
+                })}
+              </>
+            )}
           </div>
         </div>
       )}
