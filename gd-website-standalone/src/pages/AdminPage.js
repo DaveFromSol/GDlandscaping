@@ -27,6 +27,13 @@ import { useFirebase } from '../contexts/FirebaseContext';
 const AdminDashboard = ({ user, onLogout }) => {
   const { db, auth } = useFirebase();
   const [activeTab, setActiveTab] = useState('overview');
+  const [userRole, setUserRole] = useState('admin'); // admin or employee
+  const [userPermissions, setUserPermissions] = useState({
+    viewSnowRoutes: true,
+    markSnowComplete: true,
+    viewCustomers: true,
+    editCustomers: true
+  });
   const [stats, setStats] = useState({
     totalQuotes: 0,
     pendingQuotes: 0,
@@ -94,6 +101,54 @@ const AdminDashboard = ({ user, onLogout }) => {
 
   // HOA/Condo Properties state
   const [hoaCondoProperties, setHOACondoProperties] = useState([]);
+
+  // Fetch employee role and permissions on login
+  useEffect(() => {
+    if (!db || !user) return;
+
+    const fetchEmployeeData = async () => {
+      try {
+        const employeesRef = collection(db, 'employees');
+        const q = query(employeesRef);
+
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+          const employee = snapshot.docs
+            .map(doc => ({ id: doc.id, ...doc.data() }))
+            .find(emp => emp.email === user.email);
+
+          if (employee) {
+            setUserRole(employee.role || 'employee');
+            setUserPermissions(employee.permissions || {
+              viewSnowRoutes: true,
+              markSnowComplete: true,
+              viewCustomers: false,
+              editCustomers: false
+            });
+
+            // If employee has snow route permissions, default to snow tab
+            if (employee.permissions?.viewSnowRoutes && employee.role === 'employee') {
+              setActiveTab('snow-removal');
+            }
+          } else {
+            // Not in employees collection, assume admin
+            setUserRole('admin');
+            setUserPermissions({
+              viewSnowRoutes: true,
+              markSnowComplete: true,
+              viewCustomers: true,
+              editCustomers: true
+            });
+          }
+        });
+
+        return () => unsubscribe();
+      } catch (error) {
+        console.error('Error fetching employee data:', error);
+      }
+    };
+
+    fetchEmployeeData();
+  }, [db, user]);
 
   // Real-time Firebase listener for quotes
   useEffect(() => {
@@ -1278,91 +1333,107 @@ const AdminDashboard = ({ user, onLogout }) => {
         <div className="bg-white shadow-lg rounded-xl mb-6 border border-gray-100">
           <div className="border-b border-gray-200">
             <nav className="-mb-px flex overflow-x-auto space-x-2 sm:space-x-4 md:space-x-6 lg:space-x-8 px-2 sm:px-4 md:px-6 scrollbar-hide">
-              <button
-                onClick={() => setActiveTab('overview')}
-                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
-                  activeTab === 'overview'
-                    ? 'border-green-600 text-green-700 bg-green-50'
-                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
-                }`}
-              >
-                🏠 Overview
-              </button>
-              <button
-                onClick={() => setActiveTab('snow-removal')}
-                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
-                  activeTab === 'snow-removal'
-                    ? 'border-green-600 text-green-700 bg-green-50'
-                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
-                }`}
-              >
-                ❄️ Snow
-              </button>
-              <button
-                onClick={() => setActiveTab('leads')}
-                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
-                  activeTab === 'leads'
-                    ? 'border-green-600 text-green-700 bg-green-50'
-                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
-                }`}
-              >
-                🎯 Leads
-              </button>
-              <button
-                onClick={() => setActiveTab('bookings')}
-                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
-                  activeTab === 'bookings'
-                    ? 'border-green-600 text-green-700 bg-green-50'
-                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
-                }`}
-              >
-                📅 Bookings
-                {stats.pendingBookings > 0 && (
-                  <span className="ml-1 sm:ml-2 inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded-full text-xs font-bold bg-amber-400 text-amber-900 shadow-sm">
-                    {stats.pendingBookings}
-                  </span>
-                )}
-              </button>
-              <button
-                onClick={() => setActiveTab('quotes')}
-                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
-                  activeTab === 'quotes'
-                    ? 'border-green-600 text-green-700 bg-green-50'
-                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
-                }`}
-              >
-                📋 Quotes
-              </button>
-              <button
-                onClick={() => setActiveTab('customers')}
-                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
-                  activeTab === 'customers'
-                    ? 'border-green-600 text-green-700 bg-green-50'
-                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
-                }`}
-              >
-                👥 Customers
-              </button>
-              <button
-                onClick={() => setActiveTab('employees')}
-                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
-                  activeTab === 'employees'
-                    ? 'border-green-600 text-green-700 bg-green-50'
-                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
-                }`}
-              >
-                👨‍💼 Employees
-              </button>
-              <button
-                onClick={() => setActiveTab('routes')}
-                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
-                  activeTab === 'routes'
-                    ? 'border-green-600 text-green-700 bg-green-50'
-                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
-                }`}
-              >
-                🗺️ Routes
-              </button>
+              {userRole === 'admin' && (
+                <button
+                  onClick={() => setActiveTab('overview')}
+                  className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
+                    activeTab === 'overview'
+                      ? 'border-green-600 text-green-700 bg-green-50'
+                      : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
+                  }`}
+                >
+                  🏠 Overview
+                </button>
+              )}
+              {userPermissions.viewSnowRoutes && (
+                <button
+                  onClick={() => setActiveTab('snow-removal')}
+                  className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
+                    activeTab === 'snow-removal'
+                      ? 'border-green-600 text-green-700 bg-green-50'
+                      : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
+                  }`}
+                >
+                  ❄️ Snow
+                </button>
+              )}
+              {userRole === 'admin' && (
+                <button
+                  onClick={() => setActiveTab('leads')}
+                  className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
+                    activeTab === 'leads'
+                      ? 'border-green-600 text-green-700 bg-green-50'
+                      : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
+                  }`}
+                >
+                  🎯 Leads
+                </button>
+              )}
+              {userRole === 'admin' && (
+                <button
+                  onClick={() => setActiveTab('bookings')}
+                  className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
+                    activeTab === 'bookings'
+                      ? 'border-green-600 text-green-700 bg-green-50'
+                      : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
+                  }`}
+                >
+                  📅 Bookings
+                  {stats.pendingBookings > 0 && (
+                    <span className="ml-1 sm:ml-2 inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded-full text-xs font-bold bg-amber-400 text-amber-900 shadow-sm">
+                      {stats.pendingBookings}
+                    </span>
+                  )}
+                </button>
+              )}
+              {userRole === 'admin' && (
+                <button
+                  onClick={() => setActiveTab('quotes')}
+                  className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
+                    activeTab === 'quotes'
+                      ? 'border-green-600 text-green-700 bg-green-50'
+                      : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
+                  }`}
+                >
+                  📋 Quotes
+                </button>
+              )}
+              {(userRole === 'admin' || userPermissions.viewCustomers) && (
+                <button
+                  onClick={() => setActiveTab('customers')}
+                  className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
+                    activeTab === 'customers'
+                      ? 'border-green-600 text-green-700 bg-green-50'
+                      : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
+                  }`}
+                >
+                  👥 Customers
+                </button>
+              )}
+              {userRole === 'admin' && (
+                <button
+                  onClick={() => setActiveTab('employees')}
+                  className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
+                    activeTab === 'employees'
+                      ? 'border-green-600 text-green-700 bg-green-50'
+                      : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
+                  }`}
+                >
+                  👨‍💼 Employees
+                </button>
+              )}
+              {userRole === 'admin' && (
+                <button
+                  onClick={() => setActiveTab('routes')}
+                  className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
+                    activeTab === 'routes'
+                      ? 'border-green-600 text-green-700 bg-green-50'
+                      : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
+                  }`}
+                >
+                  🗺️ Routes
+                </button>
+              )}
             </nav>
           </div>
         </div>
@@ -3621,6 +3692,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                     contracts={customers.filter(c => c.snowRemoval)}
                     hoaCondoProperties={hoaCondoProperties}
                     db={db}
+                    userPermissions={userPermissions}
                   />
                 </div>
               </div>

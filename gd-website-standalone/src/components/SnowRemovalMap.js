@@ -29,7 +29,7 @@ const defaultCenter = {
   lng: -73.0877 // Connecticut center
 };
 
-const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db }) => {
+const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermissions = { markSnowComplete: true } }) => {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
   });
@@ -682,16 +682,17 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db }) => {
                       ? 'bg-green-50 border-green-200 opacity-75'
                       : 'bg-gray-50 border-gray-100'
                   }`}
-                  onClick={() => toggleStopCompletion(contract.id)}
-                  style={{ cursor: 'pointer' }}
+                  onClick={() => userPermissions.markSnowComplete && toggleStopCompletion(contract.id)}
+                  style={{ cursor: userPermissions.markSnowComplete ? 'pointer' : 'default' }}
                 >
                   {/* Checkbox */}
                   <input
                     type="checkbox"
                     checked={isCompleted}
-                    onChange={() => toggleStopCompletion(contract.id)}
+                    onChange={() => userPermissions.markSnowComplete && toggleStopCompletion(contract.id)}
                     onClick={(e) => e.stopPropagation()}
-                    className={`flex-shrink-0 ${isMobile ? 'w-7 h-7' : 'w-5 h-5'} text-green-600 border-2 border-gray-300 rounded focus:ring-2 focus:ring-green-500 cursor-pointer`}
+                    disabled={!userPermissions.markSnowComplete}
+                    className={`flex-shrink-0 ${isMobile ? 'w-7 h-7' : 'w-5 h-5'} text-green-600 border-2 border-gray-300 rounded focus:ring-2 focus:ring-green-500 ${userPermissions.markSnowComplete ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}`}
                   />
 
                   {/* Route Number */}
@@ -749,16 +750,17 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db }) => {
                           ? 'bg-green-50 border-green-200 opacity-75'
                           : 'bg-yellow-50 border-yellow-200'
                       }`}
-                      onClick={() => toggleStopCompletion(contract.id)}
-                      style={{ cursor: 'pointer' }}
+                      onClick={() => userPermissions.markSnowComplete && toggleStopCompletion(contract.id)}
+                      style={{ cursor: userPermissions.markSnowComplete ? 'pointer' : 'default' }}
                     >
                       {/* Checkbox */}
                       <input
                         type="checkbox"
                         checked={isCompleted}
-                        onChange={() => toggleStopCompletion(contract.id)}
+                        onChange={() => userPermissions.markSnowComplete && toggleStopCompletion(contract.id)}
                         onClick={(e) => e.stopPropagation()}
-                        className={`flex-shrink-0 ${isMobile ? 'w-7 h-7' : 'w-5 h-5'} text-green-600 border-2 border-gray-300 rounded focus:ring-2 focus:ring-green-500 cursor-pointer`}
+                        disabled={!userPermissions.markSnowComplete}
+                        className={`flex-shrink-0 ${isMobile ? 'w-7 h-7' : 'w-5 h-5'} text-green-600 border-2 border-gray-300 rounded focus:ring-2 focus:ring-green-500 ${userPermissions.markSnowComplete ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}`}
                       />
 
                       {/* Route Number */}
