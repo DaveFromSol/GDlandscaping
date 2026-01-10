@@ -586,6 +586,14 @@ const AdminDashboard = ({ user, onLogout }) => {
         startDate: startOfMonth.toISOString().split('T')[0],
         endDate: endOfMonth.toISOString().split('T')[0]
       };
+    } else if (type === 'year') {
+      const startOfYear = new Date(currentDate.getFullYear(), 0, 1);
+      const endOfYear = new Date(currentDate.getFullYear(), 11, 31);
+
+      return {
+        startDate: startOfYear.toISOString().split('T')[0],
+        endDate: endOfYear.toISOString().split('T')[0]
+      };
     }
 
     return { startDate: date, endDate: date };
@@ -1307,26 +1315,6 @@ const AdminDashboard = ({ user, onLogout }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-green-700 to-emerald-800 shadow-xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div>
-              <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-                <span className="text-4xl">🌱</span>
-                GD Landscaping Admin
-              </h1>
-              <p className="text-green-100 font-medium mt-1">Welcome back, {user.displayName || user.email}</p>
-            </div>
-            <button
-              onClick={onLogout}
-              className="bg-white text-green-700 hover:bg-green-50 px-6 py-2.5 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 border-2 border-green-100"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </div>
 
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         {/* Tab Navigation */}
@@ -1371,23 +1359,6 @@ const AdminDashboard = ({ user, onLogout }) => {
               )}
               {userRole === 'admin' && (
                 <button
-                  onClick={() => setActiveTab('bookings')}
-                  className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
-                    activeTab === 'bookings'
-                      ? 'border-green-600 text-green-700 bg-green-50'
-                      : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
-                  }`}
-                >
-                  📅 Bookings
-                  {stats.pendingBookings > 0 && (
-                    <span className="ml-1 sm:ml-2 inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded-full text-xs font-bold bg-amber-400 text-amber-900 shadow-sm">
-                      {stats.pendingBookings}
-                    </span>
-                  )}
-                </button>
-              )}
-              {userRole === 'admin' && (
-                <button
                   onClick={() => setActiveTab('quotes')}
                   className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
                     activeTab === 'quotes'
@@ -1396,6 +1367,11 @@ const AdminDashboard = ({ user, onLogout }) => {
                   }`}
                 >
                   📋 Quotes
+                  {stats.pendingBookings > 0 && (
+                    <span className="ml-1 sm:ml-2 inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded-full text-xs font-bold bg-amber-400 text-amber-900 shadow-sm">
+                      {stats.pendingBookings}
+                    </span>
+                  )}
                 </button>
               )}
               {(userRole === 'admin' || userPermissions.viewCustomers) && (
@@ -1469,13 +1445,21 @@ const AdminDashboard = ({ user, onLogout }) => {
                 background: 'rgba(255, 255, 255, 0.05)',
                 borderRadius: '50%'
               }}></div>
-              <div style={{ position: 'relative', zIndex: 1 }}>
-                <h2 style={{ fontSize: '28px', fontWeight: 'bold', marginBottom: '8px' }}>
-                  Welcome back! 👋
-                </h2>
-                <p style={{ fontSize: '16px', opacity: 0.9 }}>
-                  Here's what's happening with your business today
-                </p>
+              <div style={{ position: 'relative', zIndex: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <h2 style={{ fontSize: '28px', fontWeight: 'bold', marginBottom: '8px' }}>
+                    Welcome back! 👋
+                  </h2>
+                  <p style={{ fontSize: '16px', opacity: 0.9 }}>
+                    Here's what's happening with your business today
+                  </p>
+                </div>
+                <button
+                  onClick={onLogout}
+                  className="bg-white text-green-700 hover:bg-green-50 px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                >
+                  Logout
+                </button>
               </div>
             </div>
 
@@ -1563,7 +1547,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                 </button>
 
                 <button
-                  onClick={() => setActiveTab('bookings')}
+                  onClick={() => setActiveTab('quotes')}
                   style={{
                     padding: '20px',
                     borderRadius: '12px',
@@ -1585,7 +1569,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                   }}
                 >
                   <div style={{ fontSize: '32px', marginBottom: '8px' }}>📋</div>
-                  <div style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>Bookings</div>
+                  <div style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>Quotes</div>
                 </button>
 
                 <button
@@ -1853,7 +1837,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                           position: 'relative',
                           overflow: 'hidden'
                         }}
-                        onClick={() => setActiveTab('bookings')}
+                        onClick={() => setActiveTab('quotes')}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.transform = 'translateX(4px)';
                           e.currentTarget.style.boxShadow = '0 4px 12px rgba(251, 191, 36, 0.3)';
@@ -1941,7 +1925,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                     ))}
                     {bookings.length > 5 && (
                       <button
-                        onClick={() => setActiveTab('bookings')}
+                        onClick={() => setActiveTab('quotes')}
                         style={{
                           width: '100%',
                           padding: '14px',
@@ -1976,7 +1960,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                     <div style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px' }}>No recent bookings</div>
                     <div style={{ fontSize: '14px', marginBottom: '20px' }}>New customer inquiries will appear here</div>
                     <button
-                      onClick={() => setActiveTab('bookings')}
+                      onClick={() => setActiveTab('quotes')}
                       style={{
                         padding: '10px 20px',
                         background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
@@ -1988,7 +1972,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                         fontSize: '14px'
                       }}
                     >
-                      View All Bookings
+                      View All Quotes
                     </button>
                   </div>
                 )}
@@ -2009,141 +1993,138 @@ const AdminDashboard = ({ user, onLogout }) => {
           <Employees db={db} auth={auth} secondaryAuth={secondaryAuth} />
         )}
 
-        {activeTab === 'bookings' && (
-          <div className="bg-white shadow overflow-hidden sm:rounded-md">
-            <div className="px-4 py-5 sm:px-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
-                Customer Bookings
-              </h3>
-              <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                Manage all instant quote bookings from your website
-              </p>
-            </div>
-
-            {bookings.length === 0 ? (
-              <div className="text-center py-8">
-                <p className="text-gray-500">No bookings yet. Bookings from the instant quote system will appear here!</p>
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Customer
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Property
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Services
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Total
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Status
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Date
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {bookings.map((booking) => (
-                      <tr key={booking.id} className={booking.status === 'pending' ? 'bg-yellow-50' : ''}>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <div className="text-sm font-medium text-gray-900">{booking.name}</div>
-                              {booking.source === 'Instant Quote' && (
-                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                  ⚡ Instant
-                                </span>
-                              )}
-                            </div>
-                            {booking.email && <div className="text-sm text-gray-500">{booking.email}</div>}
-                            {booking.phone && <div className="text-sm text-gray-500">{booking.phone}</div>}
-                            {booking.preferredDate && (
-                              <div className="text-sm text-blue-600">📅 {booking.preferredDate}</div>
-                            )}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="text-sm text-gray-900">{booking.address}</div>
-                          {booking.propertySize && (
-                            <div className="text-sm text-gray-500">
-                              {booking.propertySize.acres} acres ({booking.propertySize.sqFt?.toLocaleString()} sq ft)
-                            </div>
-                          )}
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="text-sm text-gray-900">
-                            {booking.services?.map((service, idx) => (
-                              <div key={idx} className="mb-1">
-                                <span className="font-medium">{service.name}</span>
-                                <span className="text-gray-500"> - {service.frequency}</span>
-                                {service.bushes && (
-                                  <div className="text-xs text-gray-500 ml-2">
-                                    {service.bushes.small > 0 && `Small: ${service.bushes.small}, `}
-                                    {service.bushes.medium > 0 && `Medium: ${service.bushes.medium}, `}
-                                    {service.bushes.large > 0 && `Large: ${service.bushes.large}, `}
-                                    {service.bushes.xlarge > 0 && `XL: ${service.bushes.xlarge}`}
-                                  </div>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium text-green-600">
-                            ${booking.totalPrice?.toFixed(2)}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <select
-                            value={booking.status}
-                            onChange={(e) => updateBookingStatus(booking.id, e.target.value)}
-                            className={`text-xs px-2 py-1 rounded-full border-0 ${getStatusColor(booking.status)}`}
-                          >
-                            <option value="pending">Pending</option>
-                            <option value="confirmed">Confirmed</option>
-                            <option value="completed">Completed</option>
-                            <option value="cancelled">Cancelled</option>
-                          </select>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {booking.date}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <div className="flex flex-col">
-                            <button
-                              onClick={() => deleteBooking(booking.id)}
-                              className="text-red-600 hover:text-red-900"
-                            >
-                              Delete
-                            </button>
-                            {booking.notes && (
-                              <div className="mt-2 text-xs text-gray-500 max-w-xs">
-                                📝 {booking.notes}
-                              </div>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        )}
 
         {activeTab === 'quotes' && (
-          <>
+          <div className="space-y-6">
+            {/* Instant Quotes Section (Bookings) */}
+            <div className="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
+              <div className="px-6 py-5 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-100">
+                <div className="flex items-center gap-3">
+                  <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white p-2 rounded-lg">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">Instant Quotes</h3>
+                    <p className="text-sm text-gray-600 mt-1">From online instant quote system</p>
+                  </div>
+                  {stats.pendingBookings > 0 && (
+                    <span className="ml-auto inline-flex items-center px-4 py-2 rounded-xl text-sm font-bold bg-amber-400 text-amber-900 shadow-md">
+                      {stats.pendingBookings} Pending
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {bookings.length === 0 ? (
+                <div className="text-center py-16">
+                  <svg className="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  <p className="text-gray-500 font-medium">No instant quotes yet</p>
+                  <p className="text-sm text-gray-400 mt-1">Bookings from the instant quote system will appear here</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Customer</th>
+                        <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Property</th>
+                        <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Services</th>
+                        <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Total</th>
+                        <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Status</th>
+                        <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Date</th>
+                        <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {bookings.map((booking) => (
+                        <tr key={booking.id} className={`transition-colors ${booking.status === 'pending' ? 'bg-amber-50 hover:bg-amber-100' : 'hover:bg-gray-50'}`}>
+                          <td className="px-6 py-4">
+                            <div>
+                              <div className="flex items-center gap-2 mb-1">
+                                <div className="text-sm font-bold text-gray-900">{booking.name}</div>
+                                <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-sm">
+                                  INSTANT
+                                </span>
+                              </div>
+                              {booking.email && <div className="text-sm text-gray-600">{booking.email}</div>}
+                              {booking.phone && <div className="text-sm text-gray-600">{booking.phone}</div>}
+                              {booking.preferredDate && (
+                                <div className="text-sm text-blue-600 font-medium mt-1">Preferred: {booking.preferredDate}</div>
+                              )}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="text-sm font-medium text-gray-900">{booking.address}</div>
+                            {booking.propertySize && (
+                              <div className="text-sm text-gray-600">
+                                {booking.propertySize.acres} acres ({booking.propertySize.sqFt?.toLocaleString()} sq ft)
+                              </div>
+                            )}
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="text-sm">
+                              {booking.services?.map((service, idx) => (
+                                <div key={idx} className="mb-2">
+                                  <span className="font-bold text-gray-900">{service.name}</span>
+                                  <span className="text-gray-600"> - {service.frequency}</span>
+                                  {service.bushes && (
+                                    <div className="text-xs text-gray-500 ml-2 mt-1">
+                                      {service.bushes.small > 0 && `Small: ${service.bushes.small} `}
+                                      {service.bushes.medium > 0 && `Medium: ${service.bushes.medium} `}
+                                      {service.bushes.large > 0 && `Large: ${service.bushes.large} `}
+                                      {service.bushes.xlarge > 0 && `XL: ${service.bushes.xlarge}`}
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="text-lg font-bold text-green-600">
+                              ${booking.totalPrice?.toFixed(2)}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <select
+                              value={booking.status}
+                              onChange={(e) => updateBookingStatus(booking.id, e.target.value)}
+                              className={`text-xs px-3 py-1.5 rounded-lg border-0 font-bold ${getStatusColor(booking.status)}`}
+                            >
+                              <option value="pending">Pending</option>
+                              <option value="confirmed">Confirmed</option>
+                              <option value="completed">Completed</option>
+                              <option value="cancelled">Cancelled</option>
+                            </select>
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-600 font-medium">
+                            {booking.date}
+                          </td>
+                          <td className="px-6 py-4">
+                            <button
+                              onClick={() => deleteBooking(booking.id)}
+                              className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white text-xs font-bold rounded-lg transition-all shadow-sm hover:shadow-md"
+                            >
+                              DELETE
+                            </button>
+                            {booking.notes && (
+                              <div className="mt-2 text-xs text-gray-600 p-2 bg-blue-50 rounded-lg border border-blue-100 max-w-xs">
+                                {booking.notes}
+                              </div>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            {/* Regular Quotes Section */}
             {/* Add/Edit Quote Modal */}
         {showAddQuote && (
           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-[1001] flex items-start justify-center pt-20 pb-10">
@@ -2269,19 +2250,22 @@ const AdminDashboard = ({ user, onLogout }) => {
         )}
 
         {/* Quote Management Table */}
-        <div className="bg-white shadow overflow-hidden sm:rounded-md">
-          <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
-            <div>
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
-                Customer Quotes & Projects
-              </h3>
-              <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                Manage all customer inquiries and project status
-              </p>
+        <div className="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
+          <div className="px-6 py-5 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100 flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-2 rounded-lg">
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">Manual Quotes & Projects</h3>
+                <p className="text-sm text-gray-600 mt-1">Manage custom quotes and ongoing projects</p>
+              </div>
             </div>
             <button
               onClick={() => setShowAddQuote(true)}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg transform hover:scale-105"
             >
               + Add Quote
             </button>
@@ -2480,97 +2464,153 @@ const AdminDashboard = ({ user, onLogout }) => {
             </div>
           </div>
         </div>
-          </>
+          </div>
         )}
 
         {/* Route Planner Tab */}
         {activeTab === 'routes' && (
           <div className="space-y-6">
             {/* Calendar Header and Controls */}
-            <div className="bg-white shadow rounded-lg p-6">
-              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
-                <h2 className="text-lg font-semibold mb-4 lg:mb-0">🗓️ Schedule Planner</h2>
+            <div className="bg-white shadow-lg rounded-xl p-8 border border-gray-100">
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Route Planner</h2>
+                  <p className="text-sm text-gray-500">Manage and optimize your daily schedule</p>
+                </div>
 
                 {/* View Toggle */}
-                <div className="flex items-center gap-4">
-                  <div className="flex bg-gray-100 rounded-lg p-1">
+                <div className="flex items-center gap-3">
+                  {/* Previous/Next Navigation */}
+                  {(viewType === 'month' || viewType === 'year') && (
+                    <button
+                      onClick={() => {
+                        const date = new Date(selectedDate + 'T12:00:00');
+                        if (viewType === 'month') {
+                          date.setMonth(date.getMonth() - 1);
+                        } else {
+                          date.setFullYear(date.getFullYear() - 1);
+                        }
+                        setSelectedDate(date.toISOString().split('T')[0]);
+                      }}
+                      className="p-2.5 border-2 border-gray-300 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all"
+                      title={`Previous ${viewType}`}
+                    >
+                      <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                      </svg>
+                    </button>
+                  )}
+
+                  <div className="flex bg-gray-50 rounded-xl p-1.5 border border-gray-200">
                     <button
                       onClick={() => setViewType('day')}
-                      className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                      className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all ${
                         viewType === 'day'
-                          ? 'bg-white text-blue-600 shadow-sm'
-                          : 'text-gray-600 hover:text-gray-900'
+                          ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
+                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                       }`}
                     >
                       Day
                     </button>
                     <button
                       onClick={() => setViewType('week')}
-                      className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                      className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all ${
                         viewType === 'week'
-                          ? 'bg-white text-blue-600 shadow-sm'
-                          : 'text-gray-600 hover:text-gray-900'
+                          ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
+                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                       }`}
                     >
                       Week
                     </button>
                     <button
                       onClick={() => setViewType('month')}
-                      className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                      className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all ${
                         viewType === 'month'
-                          ? 'bg-white text-blue-600 shadow-sm'
-                          : 'text-gray-600 hover:text-gray-900'
+                          ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
+                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                       }`}
                     >
                       Month
                     </button>
+                    <button
+                      onClick={() => setViewType('year')}
+                      className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all ${
+                        viewType === 'year'
+                          ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
+                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                      }`}
+                    >
+                      Year
+                    </button>
                   </div>
+
+                  {(viewType === 'month' || viewType === 'year') && (
+                    <button
+                      onClick={() => {
+                        const date = new Date(selectedDate + 'T12:00:00');
+                        if (viewType === 'month') {
+                          date.setMonth(date.getMonth() + 1);
+                        } else {
+                          date.setFullYear(date.getFullYear() + 1);
+                        }
+                        setSelectedDate(date.toISOString().split('T')[0]);
+                      }}
+                      className="p-2.5 border-2 border-gray-300 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all"
+                      title={`Next ${viewType}`}
+                    >
+                      <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  )}
 
                   <input
                     type="date"
                     value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 font-medium text-gray-700"
                   />
                 </div>
               </div>
 
               {/* Date Display and Stats */}
-              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
                 <div>
-                  <p className="text-xl font-medium text-gray-900">
+                  <p className="text-sm font-medium text-gray-500 mb-1">Showing schedule for</p>
+                  <p className="text-2xl font-bold text-gray-900">
                     {viewType === 'day' && formatDate(selectedDate)}
                     {viewType === 'week' && `Week of ${formatDate(getWeekDays(selectedDate)[0])}`}
                     {viewType === 'month' && new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                    {viewType === 'year' && new Date(selectedDate + 'T12:00:00').getFullYear()}
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center mt-4 lg:mt-0">
-                  <div className="bg-blue-50 p-3 rounded-lg">
-                    <div className="text-xl font-bold text-blue-600">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
+                    <div className="text-2xl font-bold text-blue-700">
                       {viewType === 'day' ? jobs.length : allJobs.length}
                     </div>
-                    <div className="text-sm text-blue-600">Total Jobs</div>
+                    <div className="text-xs font-semibold text-blue-600 uppercase tracking-wide mt-1">Total Jobs</div>
                   </div>
-                  <div className="bg-green-50 p-3 rounded-lg">
-                    <div className="text-xl font-bold text-green-600">
+                  <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200">
+                    <div className="text-2xl font-bold text-green-700">
                       {viewType === 'day'
                         ? jobs.filter(j => j.status === 'completed').length
                         : allJobs.filter(j => j.status === 'completed').length}
                     </div>
-                    <div className="text-sm text-green-600">Completed</div>
+                    <div className="text-xs font-semibold text-green-600 uppercase tracking-wide mt-1">Completed</div>
                   </div>
-                  <div className="bg-orange-50 p-3 rounded-lg">
-                    <div className="text-xl font-bold text-orange-600">
+                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl border border-orange-200">
+                    <div className="text-2xl font-bold text-orange-700">
                       {formatTime(viewType === 'day' ? getTotalTime() : allJobs.reduce((total, job) => total + parseInt(job.estimatedTime), 0))}
                     </div>
-                    <div className="text-sm text-orange-600">Total Time</div>
+                    <div className="text-xs font-semibold text-orange-600 uppercase tracking-wide mt-1">Total Time</div>
                   </div>
-                  <div className="bg-yellow-50 p-3 rounded-lg">
-                    <div className="text-xl font-bold text-yellow-600">
+                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-xl border border-emerald-200">
+                    <div className="text-2xl font-bold text-emerald-700">
                       ${(viewType === 'day' ? getTotalRevenue() : getAllJobsRevenue()).toFixed(2)}
                     </div>
-                    <div className="text-sm text-yellow-600">Revenue</div>
+                    <div className="text-xs font-semibold text-emerald-600 uppercase tracking-wide mt-1">Revenue</div>
                   </div>
                 </div>
               </div>
@@ -2581,8 +2621,13 @@ const AdminDashboard = ({ user, onLogout }) => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Day view content - existing form and job list */}
               {/* Add Job Form */}
-              <div className="bg-white shadow rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-4">➕ Add New Job</h3>
+              <div className="bg-white shadow-lg rounded-xl p-6 border border-gray-100">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">Add New Job</h3>
+                    <p className="text-sm text-gray-500 mt-1">Schedule a job for this date</p>
+                  </div>
+                </div>
                 <form onSubmit={handleAddJob}>
                   <div className="space-y-4">
                     <div className="customer-autocomplete-container" style={{ position: 'relative' }}>
@@ -3138,15 +3183,18 @@ const AdminDashboard = ({ user, onLogout }) => {
               )}
 
               {/* Job List */}
-              <div className="bg-white shadow rounded-lg p-6">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-semibold">📋 Jobs for {formatDate(selectedDate)}</h3>
+              <div className="bg-white shadow-lg rounded-xl p-6 border border-gray-100">
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">Today's Jobs</h3>
+                    <p className="text-sm text-gray-500 mt-1">{formatDate(selectedDate)}</p>
+                  </div>
                   {jobs.length >= 2 && (
                     <button
                       onClick={optimizeRoute}
-                      className="bg-green-600 hover:bg-green-700 text-white text-sm font-medium py-2 px-3 rounded-md transition-colors"
+                      className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white text-sm font-semibold py-3 px-6 rounded-xl transition-all shadow-md hover:shadow-lg transform hover:scale-105"
                     >
-                      🗺️ Open Route
+                      Open in Maps
                     </button>
                   )}
                 </div>
@@ -3157,79 +3205,90 @@ const AdminDashboard = ({ user, onLogout }) => {
                     Loading jobs...
                   </div>
                 ) : jobs.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
-                    <div className="text-4xl mb-2">📅</div>
-                    No jobs scheduled for this date
+                  <div className="text-center py-16 text-gray-400">
+                    <svg className="mx-auto h-16 w-16 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <p className="text-lg font-medium">No jobs scheduled</p>
+                    <p className="text-sm mt-1">Add a job to get started</p>
                   </div>
                 ) : (
-                  <div className="space-y-3 max-h-96 overflow-y-auto">
+                  <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
                     {jobs.map((job, index) => (
-                      <div key={job.id} className={`border rounded-lg p-4 transition-all ${
+                      <div key={job.id} className={`border-2 rounded-xl p-5 transition-all hover:shadow-md ${
                         job.status === 'completed'
-                          ? 'border-green-300 bg-green-50'
-                          : 'border-gray-200 bg-white'
+                          ? 'border-green-200 bg-gradient-to-br from-green-50 to-emerald-50'
+                          : 'border-gray-200 bg-white hover:border-green-300'
                       }`}>
                         <div className="flex justify-between items-start">
                           <div className="flex items-start gap-3 flex-1">
                             <button
                               onClick={() => toggleJobStatus(job.id, job.status)}
-                              className={`mt-1 flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                              className={`mt-1 flex-shrink-0 w-7 h-7 rounded-lg border-2 flex items-center justify-center transition-all ${
                                 job.status === 'completed'
-                                  ? 'bg-green-500 border-green-500 text-white'
-                                  : 'border-gray-300 hover:border-green-500'
+                                  ? 'bg-gradient-to-br from-green-500 to-emerald-600 border-green-500 text-white shadow-md'
+                                  : 'border-gray-300 hover:border-green-500 hover:bg-green-50'
                               }`}
                               title={job.status === 'completed' ? 'Mark as incomplete' : 'Mark as complete'}
                             >
-                              {job.status === 'completed' && '✓'}
+                              {job.status === 'completed' && (
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                </svg>
+                              )}
                             </button>
 
                             <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-2">
-                                <span className="text-sm font-medium text-gray-500">#{index + 1}</span>
+                              <div className="flex items-center gap-2 mb-3">
+                                <span className="px-2.5 py-1 rounded-lg text-xs font-bold text-gray-600 bg-gray-100">#{index + 1}</span>
                                 <span
-                                  className="px-2 py-1 rounded-full text-xs font-medium text-white"
+                                  className="px-3 py-1 rounded-lg text-xs font-bold text-white shadow-sm"
                                   style={{ backgroundColor: getPriorityColor(job.priority) }}
                                 >
                                   {job.priority.toUpperCase()}
                                 </span>
                                 {job.isRecurring && (
-                                  <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-300" title="Recurring job">
-                                    🔄 {job.recurrenceType === 'weekly' ? 'Weekly' : job.recurrenceType === 'biweekly' ? 'Bi-weekly' : 'Monthly'}
+                                  <span className="px-3 py-1 rounded-lg text-xs font-bold bg-purple-100 text-purple-700 border-2 border-purple-200" title="Recurring job">
+                                    {job.recurrenceType === 'weekly' ? 'WEEKLY' : job.recurrenceType === 'biweekly' ? 'BI-WEEKLY' : 'MONTHLY'}
                                   </span>
                                 )}
-                                <span className="text-sm text-gray-500">{formatTime(parseInt(job.estimatedTime))}</span>
-                                {job.status === 'completed' && (
-                                  <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    COMPLETED
-                                  </span>
-                                )}
+                                <span className="text-sm font-semibold text-gray-500">{formatTime(parseInt(job.estimatedTime))}</span>
                               </div>
 
-                              <h4 className={`font-semibold ${job.status === 'completed' ? 'text-gray-600 line-through' : 'text-gray-800'}`}>
+                              <h4 className={`text-lg font-bold mb-1 ${job.status === 'completed' ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
                                 {job.customerName}
                               </h4>
-                              <p className="text-sm text-gray-600 mb-1">{job.address}</p>
-                              <p className="text-sm text-blue-600 capitalize">{job.serviceType.replace('-', ' ')}</p>
+                              <p className="text-sm text-gray-600 mb-1 flex items-center gap-2">
+                                <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                {job.address}
+                              </p>
+                              <p className="text-sm font-medium text-emerald-600 capitalize">{job.serviceType.replace('-', ' ')}</p>
 
                             {/* Payment Info */}
                             {(job.expectedPayment || job.actualPayment) && (
-                              <div className="flex items-center gap-2 mt-2">
-                                <span className="text-xs text-green-600">💰</span>
+                              <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-200">
                                 {job.actualPayment ? (
-                                  <span className="text-sm text-green-600 font-medium">
-                                    Paid: ${parseFloat(job.actualPayment).toFixed(2)}
+                                  <span className="text-sm text-green-700 font-bold flex items-center gap-1">
+                                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                      <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clipRule="evenodd" />
+                                    </svg>
+                                    Paid ${parseFloat(job.actualPayment).toFixed(2)}
                                   </span>
                                 ) : job.expectedPayment ? (
-                                  <span className="text-sm text-orange-600">
+                                  <span className="text-sm text-orange-600 font-semibold">
                                     Expected: ${parseFloat(job.expectedPayment).toFixed(2)}
                                   </span>
                                 ) : null}
                                 {job.paymentStatus && job.paymentStatus !== 'pending' && (
-                                  <span className={`text-xs px-2 py-1 rounded-full ${
-                                    job.paymentStatus === 'paid' ? 'bg-green-100 text-green-700' :
-                                    job.paymentStatus === 'partial' ? 'bg-yellow-100 text-yellow-700' :
-                                    job.paymentStatus === 'overdue' ? 'bg-red-100 text-red-700' :
-                                    'bg-gray-100 text-gray-600'
+                                  <span className={`text-xs px-3 py-1 rounded-lg font-bold uppercase ${
+                                    job.paymentStatus === 'paid' ? 'bg-green-100 text-green-700 border border-green-200' :
+                                    job.paymentStatus === 'partial' ? 'bg-yellow-100 text-yellow-700 border border-yellow-200' :
+                                    job.paymentStatus === 'overdue' ? 'bg-red-100 text-red-700 border border-red-200' :
+                                    'bg-gray-100 text-gray-600 border border-gray-200'
                                   }`}>
                                     {job.paymentStatus}
                                   </span>
@@ -3238,48 +3297,48 @@ const AdminDashboard = ({ user, onLogout }) => {
                             )}
 
                               {job.notes && (
-                                <p className="text-xs text-gray-500 mt-2 p-2 bg-gray-50 rounded">
-                                  📝 {job.notes}
+                                <p className="text-sm text-gray-600 mt-3 p-3 bg-blue-50 border border-blue-100 rounded-lg">
+                                  {job.notes}
                                 </p>
                               )}
                             </div>
                           </div>
 
-                          <div className="flex gap-2 ml-4">
+                          <div className="flex flex-col gap-2 ml-4">
                             {job.status === 'completed' && !job.isRecurring && (
                               <button
                                 onClick={() => {
                                   setRecurringModalJob(job);
                                   setRecurringSettings({ recurrenceType: 'weekly', recurrenceEndDate: '' });
                                 }}
-                                className="px-3 py-1 bg-purple-500 hover:bg-purple-600 text-white text-sm rounded-md transition-colors"
+                                className="px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white text-xs font-bold rounded-lg transition-all shadow-sm hover:shadow-md whitespace-nowrap"
                                 title="Make this job recurring"
                               >
-                                🔄 Make Recurring
+                                REPEAT
                               </button>
                             )}
                             {job.isRecurring && (
                               <button
                                 onClick={() => handleRemoveRecurring(job)}
-                                className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white text-sm rounded-md transition-colors"
+                                className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white text-xs font-bold rounded-lg transition-all shadow-sm hover:shadow-md whitespace-nowrap"
                                 title="Remove recurring status"
                               >
-                                ✕ Remove Recurring
+                                STOP
                               </button>
                             )}
                             <button
                               onClick={() => handleEditJob(job)}
-                              className="text-blue-500 hover:text-blue-700"
+                              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-xs font-bold rounded-lg transition-all shadow-sm hover:shadow-md"
                               title="Edit job"
                             >
-                              ✏️
+                              EDIT
                             </button>
                             <button
                               onClick={() => handleDeleteJob(job.id)}
-                              className="text-red-500 hover:text-red-700"
+                              className="px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white text-xs font-bold rounded-lg transition-all shadow-sm hover:shadow-md"
                               title="Delete job"
                             >
-                              🗑️
+                              DELETE
                             </button>
                           </div>
                         </div>
@@ -3318,8 +3377,22 @@ const AdminDashboard = ({ user, onLogout }) => {
 
             {/* Week View */}
             {viewType === 'week' && (
-              <div className="bg-white shadow rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-4">📅 Week View</h3>
+              <div className="bg-white shadow-lg rounded-xl p-6 border border-gray-100">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">Week View</h3>
+                    <p className="text-sm text-gray-500 mt-1">Click a day to select, double-click to view details</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setIsAddingJob(true);
+                      setViewType('day');
+                    }}
+                    className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white text-sm font-semibold py-3 px-6 rounded-xl transition-all shadow-md hover:shadow-lg transform hover:scale-105"
+                  >
+                    + Add Job
+                  </button>
+                </div>
                 <div className="grid grid-cols-7 gap-2">
                   {/* Week headers */}
                   {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
@@ -3337,12 +3410,12 @@ const AdminDashboard = ({ user, onLogout }) => {
                     return (
                       <div
                         key={date}
-                        className={`min-h-24 p-2 border rounded-lg cursor-pointer transition-colors ${
+                        className={`min-h-24 p-2 border-2 rounded-xl cursor-pointer transition-all hover:shadow-md ${
                           isSelected
-                            ? 'border-blue-500 bg-blue-50'
+                            ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100'
                             : isToday
-                            ? 'border-green-500 bg-green-50'
-                            : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-green-500 bg-gradient-to-br from-green-50 to-emerald-50'
+                            : 'border-gray-200 hover:border-green-300'
                         }`}
                         onClick={() => setSelectedDate(date)}
                         onDoubleClick={() => {
@@ -3449,8 +3522,22 @@ const AdminDashboard = ({ user, onLogout }) => {
 
             {/* Month View */}
             {viewType === 'month' && (
-              <div className="bg-white shadow rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-4">🗓️ Month View</h3>
+              <div className="bg-white shadow-lg rounded-xl p-6 border border-gray-100">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">Month View</h3>
+                    <p className="text-sm text-gray-500 mt-1">Click a day to select, double-click to view details</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setIsAddingJob(true);
+                      setViewType('day');
+                    }}
+                    className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white text-sm font-semibold py-3 px-6 rounded-xl transition-all shadow-md hover:shadow-lg transform hover:scale-105"
+                  >
+                    + Add Job
+                  </button>
+                </div>
                 <div className="grid grid-cols-7 gap-1">
                   {/* Month headers */}
                   {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
@@ -3467,14 +3554,14 @@ const AdminDashboard = ({ user, onLogout }) => {
                     return (
                       <div
                         key={date}
-                        className={`min-h-20 p-1 border rounded cursor-pointer transition-colors ${
+                        className={`min-h-20 p-1 border-2 rounded-lg cursor-pointer transition-all hover:shadow-sm ${
                           !isCurrentMonth
-                            ? 'bg-gray-50 text-gray-400'
+                            ? 'bg-gray-50 text-gray-400 border-gray-100'
                             : isSelected
-                            ? 'border-blue-500 bg-blue-50'
+                            ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100'
                             : isToday
-                            ? 'border-green-500 bg-green-50'
-                            : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-green-500 bg-gradient-to-br from-green-50 to-emerald-50'
+                            : 'border-gray-200 hover:border-green-300'
                         }`}
                         onClick={() => setSelectedDate(date)}
                         onDoubleClick={() => {
@@ -3582,6 +3669,109 @@ const AdminDashboard = ({ user, onLogout }) => {
                     </div>
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Year View */}
+            {viewType === 'year' && (
+              <div className="bg-white shadow-lg rounded-xl p-6 border border-gray-100">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">Year View</h3>
+                    <p className="text-sm text-gray-500 mt-1">Click a month to view details</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {Array.from({ length: 12 }, (_, monthIndex) => {
+                    const year = new Date(selectedDate + 'T12:00:00').getFullYear();
+                    const monthDate = new Date(year, monthIndex, 1);
+                    const monthName = monthDate.toLocaleDateString('en-US', { month: 'long' });
+                    const monthStr = `${year}-${String(monthIndex + 1).padStart(2, '0')}`;
+
+                    // Count jobs for this month
+                    const monthJobs = allJobs.filter(job => {
+                      const jobDate = job.date || job.scheduledDate;
+                      return jobDate && jobDate.startsWith(monthStr);
+                    });
+
+                    const completedCount = monthJobs.filter(j => j.status === 'completed').length;
+                    const currentMonth = new Date().getMonth() === monthIndex && new Date().getFullYear() === year;
+
+                    return (
+                      <div
+                        key={monthIndex}
+                        className={`p-6 border-2 rounded-xl cursor-pointer transition-all hover:shadow-lg ${
+                          currentMonth
+                            ? 'border-green-500 bg-gradient-to-br from-green-50 to-emerald-50'
+                            : 'border-gray-200 hover:border-green-300 bg-white'
+                        }`}
+                        onClick={() => {
+                          setSelectedDate(`${year}-${String(monthIndex + 1).padStart(2, '0')}-01`);
+                          setViewType('month');
+                        }}
+                      >
+                        <div className="text-center">
+                          <div className={`text-lg font-bold mb-2 ${currentMonth ? 'text-green-700' : 'text-gray-900'}`}>
+                            {monthName}
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-center gap-2">
+                              <div className="text-2xl font-bold text-blue-600">
+                                {monthJobs.length}
+                              </div>
+                              <div className="text-xs text-gray-600">
+                                {monthJobs.length === 1 ? 'job' : 'jobs'}
+                              </div>
+                            </div>
+                            {completedCount > 0 && (
+                              <div className="text-sm text-green-600 font-medium">
+                                {completedCount} completed
+                              </div>
+                            )}
+                            {monthJobs.length > 0 && (
+                              <div className="mt-3 w-full bg-gray-200 rounded-full h-2">
+                                <div
+                                  className="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full transition-all"
+                                  style={{ width: `${(completedCount / monthJobs.length) * 100}%` }}
+                                ></div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Year Summary */}
+                <div className="mt-8 pt-6 border-t border-gray-200">
+                  <h4 className="font-bold text-gray-900 mb-4">Year Summary</h4>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
+                      <div className="text-2xl font-bold text-blue-700">{allJobs.length}</div>
+                      <div className="text-xs font-semibold text-blue-600 uppercase tracking-wide mt-1">Total Jobs</div>
+                    </div>
+                    <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200">
+                      <div className="text-2xl font-bold text-green-700">
+                        {allJobs.filter(j => j.status === 'completed').length}
+                      </div>
+                      <div className="text-xs font-semibold text-green-600 uppercase tracking-wide mt-1">Completed</div>
+                    </div>
+                    <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl border border-orange-200">
+                      <div className="text-2xl font-bold text-orange-700">
+                        {formatTime(allJobs.reduce((total, job) => total + parseInt(job.estimatedTime), 0))}
+                      </div>
+                      <div className="text-xs font-semibold text-orange-600 uppercase tracking-wide mt-1">Total Time</div>
+                    </div>
+                    <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-xl border border-emerald-200">
+                      <div className="text-2xl font-bold text-emerald-700">
+                        ${getAllJobsRevenue().toFixed(2)}
+                      </div>
+                      <div className="text-xs font-semibold text-emerald-600 uppercase tracking-wide mt-1">Revenue</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
