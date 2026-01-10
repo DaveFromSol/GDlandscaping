@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyDiFzxddX5tpdulBf8YMVXFekxFUJ2ys-c';
 
@@ -6,10 +6,12 @@ const GoogleAddressAutocomplete = ({ value, onChange, onPlaceSelected, placehold
   const inputRef = useRef(null);
   const autocompleteRef = useRef(null);
   const [scriptLoaded, setScriptLoaded] = useState(false);
+  const [apiError, setApiError] = useState(null);
 
   useEffect(() => {
     // Check if Google Maps API is already loaded
     if (window.google && window.google.maps && window.google.maps.places) {
+      console.log('Google Maps API already loaded');
       setScriptLoaded(true);
       return;
     }
@@ -17,54 +19,42 @@ const GoogleAddressAutocomplete = ({ value, onChange, onPlaceSelected, placehold
     // Check if script is already being loaded
     const existingScript = document.querySelector(`script[src*="maps.googleapis.com"]`);
     if (existingScript) {
-      existingScript.addEventListener('load', () => setScriptLoaded(true));
-      return;
+      console.log('Google Maps script found, waiting for load...');
+      const handleLoad = () => {
+        console.log('Google Maps API loaded via existing script');
+        setScriptLoaded(true);
+      };
+      existingScript.addEventListener('load', handleLoad);
+      return () => existingScript.removeEventListener('load', handleLoad);
     }
 
     // Load Google Maps API
+    console.log('Loading Google Maps API...');
     const script = document.createElement('script');
     script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
     script.async = true;
     script.defer = true;
-    script.onload = () => setScriptLoaded(true);
-    script.onerror = () => console.error('Failed to load Google Maps API');
+    script.onload = () => {
+      console.log('Google Maps API loaded successfully');
+      setScriptLoaded(true);
+    };
+    script.onerror = (error) => {
+      console.error('Failed to load Google Maps API:', error);
+      setApiError('Failed to load Google Maps. Please check your internet connection.');
+    };
     document.head.appendChild(script);
-  }, []);
-
-  useEffect(() => {
-    if (!scriptLoaded || !inputRef.current) return;
-
-    initializeAutocomplete();
 
     return () => {
-      if (autocompleteRef.current && window.google) {
-        window.google.maps.event.clearInstanceListeners(autocompleteRef.current);
+      // Cleanup if component unmounts before script loads
+      if (script && script.parentNode) {
+        script.parentNode.removeChild(script);
       }
     };
-  }, [scriptLoaded]);
+  }, []);
 
-  const initializeAutocomplete = () => {
-    if (!inputRef.current || !window.google || !window.google.maps || !window.google.maps.places) {
-      console.error('Google Maps API not loaded');
-      return;
-    }
+  const handlePlaceSelect = useCallback(() => {
+    if (!autocompleteRef.current) return;
 
-    try {
-      // Create autocomplete instance
-      autocompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, {
-        types: ['address'],
-        componentRestrictions: { country: 'us' }, // Restrict to US addresses
-        fields: ['address_components', 'formatted_address', 'geometry', 'name']
-      });
-
-      // Listen for place selection
-      autocompleteRef.current.addListener('place_changed', handlePlaceSelect);
-    } catch (error) {
-      console.error('Error initializing autocomplete:', error);
-    }
-  };
-
-  const handlePlaceSelect = () => {
     const place = autocompleteRef.current.getPlace();
 
     if (!place.address_components) {
@@ -110,11 +100,48 @@ const GoogleAddressAutocomplete = ({ value, onChange, onPlaceSelected, placehold
 
     console.log('Address selected:', addressData);
 
-    // Call the callback with parsed address data first
+    // Call the callback with parsed address data
     if (onPlaceSelected) {
       onPlaceSelected(addressData);
     }
-  };
+  }, [onPlaceSelected]);
+
+  const initializeAutocomplete = useCallback(() => {
+    if (!inputRef.current || !window.google || !window.google.maps || !window.google.maps.places) {
+      console.error('Google Maps API not loaded properly');
+      setApiError('Google Maps not ready. Please refresh the page.');
+      return;
+    }
+
+    try {
+      console.log('Initializing autocomplete on input...');
+      // Create autocomplete instance
+      autocompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, {
+        types: ['address'],
+        componentRestrictions: { country: 'us' }, // Restrict to US addresses
+        fields: ['address_components', 'formatted_address', 'geometry', 'name']
+      });
+
+      // Listen for place selection
+      autocompleteRef.current.addListener('place_changed', handlePlaceSelect);
+      console.log('Autocomplete initialized successfully');
+    } catch (error) {
+      console.error('Error initializing autocomplete:', error);
+      setApiError('Error setting up address autocomplete: ' + error.message);
+    }
+  }, [handlePlaceSelect]);
+
+  useEffect(() => {
+    if (!scriptLoaded || !inputRef.current) return;
+
+    initializeAutocomplete();
+
+    return () => {
+      if (autocompleteRef.current && window.google) {
+        window.google.maps.event.clearInstanceListeners(autocompleteRef.current);
+      }
+    };
+  }, [scriptLoaded, initializeAutocomplete]);
 
   const handleInputChange = (e) => {
     if (onChange) {
@@ -133,15 +160,22 @@ const GoogleAddressAutocomplete = ({ value, onChange, onPlaceSelected, placehold
   }, [value]);
 
   return (
-    <input
-      ref={inputRef}
-      type="text"
-      defaultValue={value}
-      onChange={handleInputChange}
-      placeholder={placeholder}
-      className={className}
-      autoComplete="off"
-    />
+    <>
+      <input
+        ref={inputRef}
+        type="text"
+        defaultValue={value}
+        onChange={handleInputChange}
+        placeholder={placeholder}
+        className={className}
+        autoComplete="off"
+      />
+      {apiError && (
+        <div className="text-xs text-red-600 mt-1">
+          {apiError}
+        </div>
+      )}
+    </>
   );
 };
 

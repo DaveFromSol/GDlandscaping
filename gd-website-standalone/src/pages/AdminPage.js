@@ -2471,113 +2471,115 @@ const AdminDashboard = ({ user, onLogout }) => {
         {activeTab === 'routes' && (
           <div className="space-y-6">
             {/* Calendar Header and Controls */}
-            <div className="bg-white shadow-lg rounded-xl p-8 border border-gray-100">
-              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
+            <div className="bg-white shadow-lg rounded-xl p-4 sm:p-6 md:p-8 border border-gray-100">
+              <div className="flex flex-col gap-4 sm:gap-6 mb-6 sm:mb-8">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Route Planner</h2>
-                  <p className="text-sm text-gray-500">Manage and optimize your daily schedule</p>
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">Route Planner</h2>
+                  <p className="text-xs sm:text-sm text-gray-500">Manage and optimize your daily schedule</p>
                 </div>
 
-                {/* View Toggle */}
-                <div className="flex items-center gap-3">
-                  {/* Previous/Next Navigation */}
-                  {(viewType === 'month' || viewType === 'year') && (
-                    <button
-                      onClick={() => {
-                        const date = new Date(selectedDate + 'T12:00:00');
-                        if (viewType === 'month') {
-                          date.setMonth(date.getMonth() - 1);
-                        } else {
-                          date.setFullYear(date.getFullYear() - 1);
-                        }
-                        setSelectedDate(date.toISOString().split('T')[0]);
-                      }}
-                      className="p-2.5 border-2 border-gray-300 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all"
-                      title={`Previous ${viewType}`}
-                    >
-                      <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                      </svg>
-                    </button>
-                  )}
+                {/* View Toggle - Mobile Optimized */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  <div className="flex items-center gap-2 order-2 sm:order-1">
+                    {/* Previous/Next Navigation */}
+                    {(viewType === 'month' || viewType === 'year') && (
+                      <button
+                        onClick={() => {
+                          const date = new Date(selectedDate + 'T12:00:00');
+                          if (viewType === 'month') {
+                            date.setMonth(date.getMonth() - 1);
+                          } else {
+                            date.setFullYear(date.getFullYear() - 1);
+                          }
+                          setSelectedDate(date.toISOString().split('T')[0]);
+                        }}
+                        className="p-2 sm:p-2.5 border-2 border-gray-300 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all flex-shrink-0"
+                        title={`Previous ${viewType}`}
+                      >
+                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                      </button>
+                    )}
 
-                  <div className="flex bg-gray-50 rounded-xl p-1.5 border border-gray-200">
-                    <button
-                      onClick={() => setViewType('day')}
-                      className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-                        viewType === 'day'
-                          ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
-                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                      }`}
-                    >
-                      Day
-                    </button>
-                    <button
-                      onClick={() => setViewType('week')}
-                      className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-                        viewType === 'week'
-                          ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
-                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                      }`}
-                    >
-                      Week
-                    </button>
-                    <button
-                      onClick={() => setViewType('month')}
-                      className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-                        viewType === 'month'
-                          ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
-                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                      }`}
-                    >
-                      Month
-                    </button>
-                    <button
-                      onClick={() => setViewType('year')}
-                      className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-                        viewType === 'year'
-                          ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
-                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                      }`}
-                    >
-                      Year
-                    </button>
+                    <div className="grid grid-cols-4 bg-gray-50 rounded-xl p-1 sm:p-1.5 border border-gray-200 flex-1 sm:flex-none">
+                      <button
+                        onClick={() => setViewType('day')}
+                        className={`px-2 sm:px-4 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
+                          viewType === 'day'
+                            ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
+                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                        }`}
+                      >
+                        Day
+                      </button>
+                      <button
+                        onClick={() => setViewType('week')}
+                        className={`px-2 sm:px-4 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
+                          viewType === 'week'
+                            ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
+                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                        }`}
+                      >
+                        Week
+                      </button>
+                      <button
+                        onClick={() => setViewType('month')}
+                        className={`px-2 sm:px-4 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
+                          viewType === 'month'
+                            ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
+                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                        }`}
+                      >
+                        Month
+                      </button>
+                      <button
+                        onClick={() => setViewType('year')}
+                        className={`px-2 sm:px-4 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
+                          viewType === 'year'
+                            ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
+                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                        }`}
+                      >
+                        Year
+                      </button>
+                    </div>
+
+                    {(viewType === 'month' || viewType === 'year') && (
+                      <button
+                        onClick={() => {
+                          const date = new Date(selectedDate + 'T12:00:00');
+                          if (viewType === 'month') {
+                            date.setMonth(date.getMonth() + 1);
+                          } else {
+                            date.setFullYear(date.getFullYear() + 1);
+                          }
+                          setSelectedDate(date.toISOString().split('T')[0]);
+                        }}
+                        className="p-2 sm:p-2.5 border-2 border-gray-300 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all flex-shrink-0"
+                        title={`Next ${viewType}`}
+                      >
+                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </button>
+                    )}
                   </div>
-
-                  {(viewType === 'month' || viewType === 'year') && (
-                    <button
-                      onClick={() => {
-                        const date = new Date(selectedDate + 'T12:00:00');
-                        if (viewType === 'month') {
-                          date.setMonth(date.getMonth() + 1);
-                        } else {
-                          date.setFullYear(date.getFullYear() + 1);
-                        }
-                        setSelectedDate(date.toISOString().split('T')[0]);
-                      }}
-                      className="p-2.5 border-2 border-gray-300 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all"
-                      title={`Next ${viewType}`}
-                    >
-                      <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </button>
-                  )}
 
                   <input
                     type="date"
                     value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
-                    className="px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 font-medium text-gray-700"
+                    className="px-3 sm:px-4 py-2 sm:py-2.5 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 font-medium text-gray-700 text-sm sm:text-base order-1 sm:order-2"
                   />
                 </div>
               </div>
 
               {/* Date Display and Stats */}
-              <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+              <div className="flex flex-col gap-4 sm:gap-6">
                 <div>
-                  <p className="text-sm font-medium text-gray-500 mb-1">Showing schedule for</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-xs sm:text-sm font-medium text-gray-500 mb-1">Showing schedule for</p>
+                  <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
                     {viewType === 'day' && formatDate(selectedDate)}
                     {viewType === 'week' && `Week of ${formatDate(getWeekDays(selectedDate)[0])}`}
                     {viewType === 'month' && new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
@@ -2585,32 +2587,32 @@ const AdminDashboard = ({ user, onLogout }) => {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
-                    <div className="text-2xl font-bold text-blue-700">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-3 sm:p-4 rounded-xl border border-blue-200">
+                    <div className="text-xl sm:text-2xl font-bold text-blue-700">
                       {viewType === 'day' ? jobs.length : allJobs.length}
                     </div>
-                    <div className="text-xs font-semibold text-blue-600 uppercase tracking-wide mt-1">Total Jobs</div>
+                    <div className="text-[10px] sm:text-xs font-semibold text-blue-600 uppercase tracking-wide mt-1">Total Jobs</div>
                   </div>
-                  <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200">
-                    <div className="text-2xl font-bold text-green-700">
+                  <div className="bg-gradient-to-br from-green-50 to-green-100 p-3 sm:p-4 rounded-xl border border-green-200">
+                    <div className="text-xl sm:text-2xl font-bold text-green-700">
                       {viewType === 'day'
                         ? jobs.filter(j => j.status === 'completed').length
                         : allJobs.filter(j => j.status === 'completed').length}
                     </div>
-                    <div className="text-xs font-semibold text-green-600 uppercase tracking-wide mt-1">Completed</div>
+                    <div className="text-[10px] sm:text-xs font-semibold text-green-600 uppercase tracking-wide mt-1">Completed</div>
                   </div>
-                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl border border-orange-200">
-                    <div className="text-2xl font-bold text-orange-700">
+                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-3 sm:p-4 rounded-xl border border-orange-200">
+                    <div className="text-xl sm:text-2xl font-bold text-orange-700">
                       {formatTime(viewType === 'day' ? getTotalTime() : allJobs.reduce((total, job) => total + parseInt(job.estimatedTime), 0))}
                     </div>
-                    <div className="text-xs font-semibold text-orange-600 uppercase tracking-wide mt-1">Total Time</div>
+                    <div className="text-[10px] sm:text-xs font-semibold text-orange-600 uppercase tracking-wide mt-1">Total Time</div>
                   </div>
-                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-xl border border-emerald-200">
-                    <div className="text-2xl font-bold text-emerald-700">
+                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-3 sm:p-4 rounded-xl border border-emerald-200">
+                    <div className="text-xl sm:text-2xl font-bold text-emerald-700">
                       ${(viewType === 'day' ? getTotalRevenue() : getAllJobsRevenue()).toFixed(2)}
                     </div>
-                    <div className="text-xs font-semibold text-emerald-600 uppercase tracking-wide mt-1">Revenue</div>
+                    <div className="text-[10px] sm:text-xs font-semibold text-emerald-600 uppercase tracking-wide mt-1">Revenue</div>
                   </div>
                 </div>
               </div>
@@ -3213,18 +3215,18 @@ const AdminDashboard = ({ user, onLogout }) => {
                     <p className="text-sm mt-1">Add a job to get started</p>
                   </div>
                 ) : (
-                  <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
+                  <div className="space-y-3 max-h-96 overflow-y-auto pr-1 sm:pr-2">
                     {jobs.map((job, index) => (
-                      <div key={job.id} className={`border-2 rounded-xl p-5 transition-all hover:shadow-md ${
+                      <div key={job.id} className={`border-2 rounded-xl p-3 sm:p-5 transition-all hover:shadow-md ${
                         job.status === 'completed'
                           ? 'border-green-200 bg-gradient-to-br from-green-50 to-emerald-50'
                           : 'border-gray-200 bg-white hover:border-green-300'
                       }`}>
-                        <div className="flex justify-between items-start">
-                          <div className="flex items-start gap-3 flex-1">
+                        <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
+                          <div className="flex items-start gap-2 sm:gap-3 flex-1 w-full">
                             <button
                               onClick={() => toggleJobStatus(job.id, job.status)}
-                              className={`mt-1 flex-shrink-0 w-7 h-7 rounded-lg border-2 flex items-center justify-center transition-all ${
+                              className={`mt-1 flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-lg border-2 flex items-center justify-center transition-all ${
                                 job.status === 'completed'
                                   ? 'bg-gradient-to-br from-green-500 to-emerald-600 border-green-500 text-white shadow-md'
                                   : 'border-gray-300 hover:border-green-500 hover:bg-green-50'
@@ -3232,40 +3234,40 @@ const AdminDashboard = ({ user, onLogout }) => {
                               title={job.status === 'completed' ? 'Mark as incomplete' : 'Mark as complete'}
                             >
                               {job.status === 'completed' && (
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                                 </svg>
                               )}
                             </button>
 
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-3">
-                                <span className="px-2.5 py-1 rounded-lg text-xs font-bold text-gray-600 bg-gray-100">#{index + 1}</span>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3 flex-wrap">
+                                <span className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg text-[10px] sm:text-xs font-bold text-gray-600 bg-gray-100">#{index + 1}</span>
                                 <span
-                                  className="px-3 py-1 rounded-lg text-xs font-bold text-white shadow-sm"
+                                  className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-lg text-[10px] sm:text-xs font-bold text-white shadow-sm"
                                   style={{ backgroundColor: getPriorityColor(job.priority) }}
                                 >
                                   {job.priority.toUpperCase()}
                                 </span>
                                 {job.isRecurring && (
-                                  <span className="px-3 py-1 rounded-lg text-xs font-bold bg-purple-100 text-purple-700 border-2 border-purple-200" title="Recurring job">
+                                  <span className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-lg text-[10px] sm:text-xs font-bold bg-purple-100 text-purple-700 border border-purple-200 sm:border-2" title="Recurring job">
                                     {job.recurrenceType === 'weekly' ? 'WEEKLY' : job.recurrenceType === 'biweekly' ? 'BI-WEEKLY' : 'MONTHLY'}
                                   </span>
                                 )}
-                                <span className="text-sm font-semibold text-gray-500">{formatTime(parseInt(job.estimatedTime))}</span>
+                                <span className="text-xs sm:text-sm font-semibold text-gray-500">{formatTime(parseInt(job.estimatedTime))}</span>
                               </div>
 
-                              <h4 className={`text-lg font-bold mb-1 ${job.status === 'completed' ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
+                              <h4 className={`text-base sm:text-lg font-bold mb-1 ${job.status === 'completed' ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
                                 {job.customerName}
                               </h4>
-                              <p className="text-sm text-gray-600 mb-1 flex items-center gap-2">
-                                <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <p className="text-xs sm:text-sm text-gray-600 mb-1 flex items-start gap-1.5 sm:gap-2">
+                                <svg className="w-3 h-3 sm:w-4 sm:h-4 mt-0.5 flex-shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                                {job.address}
+                                <span className="break-words">{job.address}</span>
                               </p>
-                              <p className="text-sm font-medium text-emerald-600 capitalize">{job.serviceType.replace('-', ' ')}</p>
+                              <p className="text-xs sm:text-sm font-medium text-emerald-600 capitalize">{job.serviceType.replace('-', ' ')}</p>
 
                             {/* Payment Info */}
                             {(job.expectedPayment || job.actualPayment) && (
@@ -3304,14 +3306,14 @@ const AdminDashboard = ({ user, onLogout }) => {
                             </div>
                           </div>
 
-                          <div className="flex flex-col gap-2 ml-4">
+                          <div className="flex flex-row sm:flex-col gap-2 w-full sm:w-auto sm:ml-4">
                             {job.status === 'completed' && !job.isRecurring && (
                               <button
                                 onClick={() => {
                                   setRecurringModalJob(job);
                                   setRecurringSettings({ recurrenceType: 'weekly', recurrenceEndDate: '' });
                                 }}
-                                className="px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white text-xs font-bold rounded-lg transition-all shadow-sm hover:shadow-md whitespace-nowrap"
+                                className="flex-1 sm:flex-none px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-all shadow-sm hover:shadow-md whitespace-nowrap"
                                 title="Make this job recurring"
                               >
                                 REPEAT
@@ -3320,7 +3322,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                             {job.isRecurring && (
                               <button
                                 onClick={() => handleRemoveRecurring(job)}
-                                className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white text-xs font-bold rounded-lg transition-all shadow-sm hover:shadow-md whitespace-nowrap"
+                                className="flex-1 sm:flex-none px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-all shadow-sm hover:shadow-md whitespace-nowrap"
                                 title="Remove recurring status"
                               >
                                 STOP
@@ -3328,14 +3330,14 @@ const AdminDashboard = ({ user, onLogout }) => {
                             )}
                             <button
                               onClick={() => handleEditJob(job)}
-                              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-xs font-bold rounded-lg transition-all shadow-sm hover:shadow-md"
+                              className="flex-1 sm:flex-none px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-all shadow-sm hover:shadow-md"
                               title="Edit job"
                             >
                               EDIT
                             </button>
                             <button
                               onClick={() => handleDeleteJob(job.id)}
-                              className="px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white text-xs font-bold rounded-lg transition-all shadow-sm hover:shadow-md"
+                              className="flex-1 sm:flex-none px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-all shadow-sm hover:shadow-md"
                               title="Delete job"
                             >
                               DELETE
@@ -3349,12 +3351,12 @@ const AdminDashboard = ({ user, onLogout }) => {
 
                 {jobs.length >= 2 && (
                   <div className="mt-4 pt-4 border-t border-gray-200">
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                       <button
                         onClick={optimizeRoute}
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
+                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 sm:py-2 px-4 rounded-lg sm:rounded-md transition-colors text-sm"
                       >
-                        🗺️ Open Route in Google Maps
+                        Open Route in Google Maps
                       </button>
 
                       <button
@@ -3363,10 +3365,10 @@ const AdminDashboard = ({ user, onLogout }) => {
                           navigator.clipboard.writeText(addresses);
                           alert('Addresses copied to clipboard!');
                         }}
-                        className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-md transition-colors"
+                        className="sm:flex-none px-4 py-2.5 sm:py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg sm:rounded-md transition-colors text-sm"
                         title="Copy all addresses"
                       >
-                        📋
+                        Copy Addresses
                       </button>
                     </div>
                   </div>
