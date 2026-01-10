@@ -125,11 +125,34 @@ const SnowRemovalPage = () => {
     "@type": "Service",
     "name": "Snow Removal Services - GD Landscaping",
     "description": "Professional snow removal and winter maintenance services in Berlin CT and surrounding areas. Seasonal packages available.",
+    "image": [
+      {
+        "@type": "ImageObject",
+        "url": "https://www.gdlandscapingllc.com/GD_Landscaping_LLC_Snow_removal.JPG",
+        "description": "GD Landscaping professional snow plow truck clearing driveway during winter storm in Connecticut",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "@type": "ImageObject",
+        "url": "https://www.gdlandscapingllc.com/Gabe_Eltman_GD_Landscaping_LLC.JPG",
+        "description": "Gabe Eltman of GD Landscaping LLC snow removal team member with professional equipment in Berlin CT",
+        "width": 800,
+        "height": 600
+      },
+      {
+        "@type": "ImageObject",
+        "url": "https://www.gdlandscapingllc.com/snow-plow-clearing-driveway-connecticut.webp",
+        "description": "Snow plow clearing driveway during heavy snowfall in Hartford County Connecticut",
+        "width": 600,
+        "height": 400
+      }
+    ],
     "provider": {
       "@type": "LocalBusiness",
       "name": "GD Landscaping",
       "logo": "https://www.gdlandscapingllc.com/GD.png",
-      "image": "https://www.gdlandscapingllc.com/GD.png",
+      "image": "https://www.gdlandscapingllc.com/GD_Landscaping_LLC_Snow_removal.JPG",
       "telephone": "(860) 526-7583",
       "address": {
         "@type": "PostalAddress",
@@ -160,8 +183,21 @@ const SnowRemovalPage = () => {
       />
 
       <div className="snow-removal-section">
-        {/* Hero Section */}
-        <div className="snow-hero">
+        {/* Hero Section with Real Photo */}
+        <div className="snow-hero" style={{
+          backgroundImage: 'linear-gradient(rgba(30, 58, 138, 0.7), rgba(59, 130, 246, 0.7)), url(/GD_Landscaping_LLC_Snow_removal.JPG)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}>
+          {/* SEO Image */}
+          <img
+            src="/GD_Landscaping_LLC_Snow_removal.JPG"
+            alt="GD Landscaping professional snow plow truck clearing driveway during winter storm in Connecticut"
+            style={{display: 'none'}}
+            width="1920"
+            height="1080"
+          />
           <div className="snow-hero-overlay"></div>
           <div className="snow-hero-content">
             <div className="container">
@@ -299,6 +335,61 @@ const SnowRemovalPage = () => {
                   <span className="town">Manchester</span>
                   <span className="town">Bristol</span>
                   <span className="town">Farmington</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Photo Gallery Section */}
+          <section className="snow-gallery-section">
+            <div className="section-header">
+              <h2>Our Snow Removal Team & Equipment</h2>
+              <p className="section-subtitle">Professional equipment and experienced crew ready to handle Connecticut winters</p>
+            </div>
+
+            <div className="gallery-grid">
+              <div className="gallery-item gallery-large">
+                <img
+                  src="/Gabe_Eltman_GD_Landscaping_LLC.JPG"
+                  alt="Gabe Eltman of GD Landscaping LLC snow removal team member with professional equipment in Berlin CT"
+                  loading="lazy"
+                  width="800"
+                  height="600"
+                  className="gallery-image"
+                />
+                <div className="gallery-caption">
+                  <h3>Professional Team</h3>
+                  <p>Experienced snow removal specialists serving Central Connecticut</p>
+                </div>
+              </div>
+
+              <div className="gallery-item">
+                <img
+                  src="/GD_Landscaping_LLC_Snow_removal.JPG"
+                  alt="GD Landscaping professional snow plow truck clearing residential driveway in Connecticut winter"
+                  loading="lazy"
+                  width="600"
+                  height="400"
+                  className="gallery-image"
+                />
+                <div className="gallery-caption">
+                  <h3>State-of-the-Art Equipment</h3>
+                  <p>Modern plows and salt spreaders for efficient snow removal</p>
+                </div>
+              </div>
+
+              <div className="gallery-item">
+                <img
+                  src="/snow-plow-clearing-driveway-connecticut.webp"
+                  alt="Snow plow clearing driveway during heavy snowfall in Hartford County Connecticut"
+                  loading="lazy"
+                  width="600"
+                  height="400"
+                  className="gallery-image"
+                />
+                <div className="gallery-caption">
+                  <h3>Residential Services</h3>
+                  <p>Keeping driveways and walkways clear and safe</p>
                 </div>
               </div>
             </div>

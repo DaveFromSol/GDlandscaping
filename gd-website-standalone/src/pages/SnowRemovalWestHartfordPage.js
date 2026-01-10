@@ -116,7 +116,11 @@ const SnowRemovalWestHartfordPage = () => {
       "@type": "LocalBusiness",
       "name": "GD Landscaping",
       "logo": "https://www.gdlandscapingllc.com/GD.png",
-      "image": "https://www.gdlandscapingllc.com/GD.png",
+      "image": [
+      "https://www.gdlandscapingllc.com/GD_Landscaping_LLC_Snow_removal.JPG",
+      "https://www.gdlandscapingllc.com/Gabe_Eltman_GD_Landscaping_LLC.JPG",
+      "https://www.gdlandscapingllc.com/snow-plow-clearing-driveway-connecticut.webp"
+    ],
       "telephone": "(860) 526-7583",
       "address": {
         "@type": "PostalAddress",
@@ -153,7 +157,20 @@ const SnowRemovalWestHartfordPage = () => {
 
       <div className="snow-removal-section">
         {/* Hero Section */}
-        <div className="snow-hero">
+        <div className="snow-hero" style={{
+          backgroundImage: 'linear-gradient(rgba(30, 58, 138, 0.7), rgba(59, 130, 246, 0.7)), url(/GD_Landscaping_LLC_Snow_removal.JPG)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}>
+          {/* SEO Image */}
+          <img
+            src="/GD_Landscaping_LLC_Snow_removal.JPG"
+            alt="GD Landscaping professional snow removal service in Connecticut"
+            style={{display: 'none'}}
+            width="1920"
+            height="1080"
+          />
           <div className="snow-hero-overlay"></div>
           <div className="snow-hero-content">
             <div className="container">
