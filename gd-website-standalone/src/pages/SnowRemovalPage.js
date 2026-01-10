@@ -343,53 +343,52 @@ const SnowRemovalPage = () => {
           {/* Photo Gallery Section */}
           <section className="snow-gallery-section">
             <div className="section-header">
-              <h2>Our Snow Removal Team & Equipment</h2>
-              <p className="section-subtitle">Professional equipment and experienced crew ready to handle Connecticut winters</p>
+              <h2>Meet Our Snow Removal Team & Equipment</h2>
+              <p className="section-subtitle">Local crew and professional equipment standing by 24/7 to keep your property safe and accessible throughout Connecticut winters</p>
             </div>
 
-            <div className="gallery-grid">
-              <div className="gallery-item gallery-large">
-                <img
-                  src="/Gabe_Eltman_GD_Landscaping_LLC.JPG"
-                  alt="Gabe Eltman of GD Landscaping LLC snow removal team member with professional equipment in Berlin CT"
-                  loading="lazy"
-                  width="800"
-                  height="600"
-                  className="gallery-image"
-                />
-                <div className="gallery-caption">
-                  <h3>Professional Team</h3>
-                  <p>Experienced snow removal specialists serving Central Connecticut</p>
+            <div className="gallery-grid-two">
+              <div className="gallery-item-featured">
+                <div className="gallery-image-wrapper">
+                  <img
+                    src="/Gabe_Eltman_GD_Landscaping_LLC.JPG"
+                    alt="Gabe Eltman of GD Landscaping LLC snow removal team member with professional equipment in Berlin CT"
+                    loading="lazy"
+                    width="800"
+                    height="600"
+                    className="gallery-image"
+                  />
+                </div>
+                <div className="gallery-caption-enhanced">
+                  <div className="caption-header">
+                    <svg className="caption-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <h3>Experienced Team</h3>
+                  </div>
+                  <p>Our certified crew members are trained in commercial and residential snow removal, with years of experience handling Connecticut's toughest winter storms</p>
                 </div>
               </div>
 
-              <div className="gallery-item">
-                <img
-                  src="/GD_Landscaping_LLC_Snow_removal.JPG"
-                  alt="GD Landscaping professional snow plow truck clearing residential driveway in Connecticut winter"
-                  loading="lazy"
-                  width="600"
-                  height="400"
-                  className="gallery-image"
-                />
-                <div className="gallery-caption">
-                  <h3>State-of-the-Art Equipment</h3>
-                  <p>Modern plows and salt spreaders for efficient snow removal</p>
+              <div className="gallery-item-featured">
+                <div className="gallery-image-wrapper">
+                  <img
+                    src="/GD_Landscaping_LLC_Snow_removal.JPG"
+                    alt="GD Landscaping professional snow plow truck clearing residential driveway in Connecticut winter"
+                    loading="lazy"
+                    width="800"
+                    height="600"
+                    className="gallery-image"
+                  />
                 </div>
-              </div>
-
-              <div className="gallery-item">
-                <img
-                  src="/snow-plow-clearing-driveway-connecticut.webp"
-                  alt="Snow plow clearing driveway during heavy snowfall in Hartford County Connecticut"
-                  loading="lazy"
-                  width="600"
-                  height="400"
-                  className="gallery-image"
-                />
-                <div className="gallery-caption">
-                  <h3>Residential Services</h3>
-                  <p>Keeping driveways and walkways clear and safe</p>
+                <div className="gallery-caption-enhanced">
+                  <div className="caption-header">
+                    <svg className="caption-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    <h3>Professional Equipment</h3>
+                  </div>
+                  <p>Modern fleet of plow trucks, salt spreaders, and snow blowers maintained and ready for immediate deployment when winter weather strikes</p>
                 </div>
               </div>
             </div>
