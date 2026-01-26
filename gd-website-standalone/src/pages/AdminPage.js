@@ -10,6 +10,7 @@ import GoogleAddressAutocomplete from '../components/GoogleAddressAutocomplete';
 import {
   collection,
   addDoc,
+  setDoc,
   updateDoc,
   deleteDoc,
   doc,
@@ -101,6 +102,19 @@ const AdminDashboard = ({ user, onLogout }) => {
 
   // HOA/Condo Properties state
   const [hoaCondoProperties, setHOACondoProperties] = useState([]);
+
+  // Snow Removal Team Assignment state
+  const [teamAssignments, setTeamAssignments] = useState({});
+  const [showAssignmentModal, setShowAssignmentModal] = useState(false);
+  const [selectedTeam, setSelectedTeam] = useState(null);
+  const [assignmentDate, setAssignmentDate] = useState(new Date().toISOString().split('T')[0]);
+  const [selectedContractForAssignment, setSelectedContractForAssignment] = useState(null);
+
+  const teams = [
+    { id: 'alpha', name: 'Team Alpha', lead: 'John D.', color: 'blue', truck: 'Truck 1' },
+    { id: 'bravo', name: 'Team Bravo', lead: 'Mike S.', color: 'green', truck: 'Truck 2' },
+    { id: 'charlie', name: 'Team Charlie', lead: 'Dave P.', color: 'purple', truck: 'Truck 3' }
+  ];
 
   // Fetch employee role and permissions on login
   useEffect(() => {
@@ -238,6 +252,25 @@ const AdminDashboard = ({ user, onLogout }) => {
       setHOACondoProperties(propertiesData);
     }, (error) => {
       console.error('Error fetching HOA/Condo properties:', error);
+    });
+
+    return () => unsubscribe();
+  }, [db]);
+
+  // Real-time Firebase listener for team assignments
+  useEffect(() => {
+    if (!db) return;
+
+    const assignmentsRef = collection(db, 'snowTeamAssignments');
+
+    const unsubscribe = onSnapshot(assignmentsRef, (snapshot) => {
+      const assignmentsData = {};
+      snapshot.forEach((doc) => {
+        assignmentsData[doc.id] = doc.data();
+      });
+      setTeamAssignments(assignmentsData);
+    }, (error) => {
+      console.error('Error fetching team assignments:', error);
     });
 
     return () => unsubscribe();
@@ -1243,6 +1276,133 @@ const AdminDashboard = ({ user, onLogout }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Team Assignment Functions
+  const openAssignmentModal = (team) => {
+    setSelectedTeam(team);
+    setShowAssignmentModal(true);
+  };
+
+  const openContractAssignmentModal = (contract) => {
+    setSelectedContractForAssignment(contract);
+    setShowAssignmentModal(true);
+  };
+
+  const handleAssignContract = async (contractId, teamId) => {
+    try {
+      const assignmentKey = `${assignmentDate}_${teamId}`;
+      const currentAssignments = teamAssignments[assignmentKey]?.contracts || [];
+
+      // Check if contract is already assigned to this team on this date
+      if (currentAssignments.includes(contractId)) {
+        alert('This contract is already assigned to this team for the selected date.');
+        return;
+      }
+
+      // Update or create assignment document
+      const assignmentRef = doc(db, 'snowTeamAssignments', assignmentKey);
+      const assignmentDoc = await getDoc(assignmentRef);
+
+      if (assignmentDoc.exists()) {
+        await updateDoc(assignmentRef, {
+          contracts: [...currentAssignments, contractId],
+          updatedAt: serverTimestamp()
+        });
+      } else {
+        await setDoc(assignmentRef, {
+          date: assignmentDate,
+          teamId: teamId,
+          contracts: [contractId],
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+      }
+
+      console.log(`✅ Assigned contract ${contractId} to team ${teamId} for ${assignmentDate}`);
+      setShowAssignmentModal(false);
+      setSelectedContractForAssignment(null);
+    } catch (error) {
+      console.error('Error assigning contract:', error);
+      alert('Error assigning contract. Please try again.');
+    }
+  };
+
+  const handleUnassignContract = async (contractId, teamId) => {
+    if (!window.confirm('Remove this contract from the team assignment?')) {
+      return;
+    }
+
+    try {
+      const assignmentKey = `${assignmentDate}_${teamId}`;
+      const currentAssignments = teamAssignments[assignmentKey]?.contracts || [];
+      const updatedAssignments = currentAssignments.filter(id => id !== contractId);
+
+      const assignmentRef = doc(db, 'snowTeamAssignments', assignmentKey);
+
+      if (updatedAssignments.length === 0) {
+        // If no contracts left, delete the assignment document
+        await deleteDoc(assignmentRef);
+      } else {
+        // Update with remaining contracts
+        await updateDoc(assignmentRef, {
+          contracts: updatedAssignments,
+          updatedAt: serverTimestamp()
+        });
+      }
+
+      console.log(`✅ Removed contract ${contractId} from team ${teamId}`);
+    } catch (error) {
+      console.error('Error unassigning contract:', error);
+      alert('Error removing assignment. Please try again.');
+    }
+  };
+
+  const getTeamAssignments = (teamId, date) => {
+    const assignmentKey = `${date}_${teamId}`;
+    return teamAssignments[assignmentKey]?.contracts || [];
+  };
+
+  const getAssignedContracts = (teamId, date) => {
+    const contractIds = getTeamAssignments(teamId, date);
+    return customers.filter(c => contractIds.includes(c.id));
+  };
+
+  // Helper function to get team color classes for Tailwind
+  const getTeamColorClasses = (color) => {
+    const colorMap = {
+      blue: {
+        border: 'border-blue-200',
+        bg: 'bg-blue-50',
+        avatar: 'bg-blue-600',
+        button: 'bg-blue-600 hover:bg-blue-700',
+        hoverBorder: 'hover:border-blue-400',
+        hoverBg: 'hover:bg-blue-50',
+        lightBorder: 'border-blue-300',
+        lightBg: 'bg-blue-50'
+      },
+      green: {
+        border: 'border-green-200',
+        bg: 'bg-green-50',
+        avatar: 'bg-green-600',
+        button: 'bg-green-600 hover:bg-green-700',
+        hoverBorder: 'hover:border-green-400',
+        hoverBg: 'hover:bg-green-50',
+        lightBorder: 'border-green-300',
+        lightBg: 'bg-green-50'
+      },
+      purple: {
+        border: 'border-purple-200',
+        bg: 'bg-purple-50',
+        avatar: 'bg-purple-600',
+        button: 'bg-purple-600 hover:bg-purple-700',
+        hoverBorder: 'hover:border-purple-400',
+        hoverBg: 'hover:bg-purple-50',
+        lightBorder: 'border-purple-300',
+        lightBg: 'bg-purple-50'
+      }
+    };
+    return colorMap[color] || colorMap.blue;
   };
 
   const optimizeRoute = () => {
@@ -3846,7 +4006,10 @@ const AdminDashboard = ({ user, onLogout }) => {
                                 )}
                               </div>
                               <div className="flex flex-col gap-2">
-                                <button className="px-3 py-1 bg-green-100 text-green-700 rounded text-xs font-medium hover:bg-green-200">
+                                <button
+                                  onClick={() => openContractAssignmentModal(customer)}
+                                  className="px-3 py-1 bg-green-100 text-green-700 rounded text-xs font-medium hover:bg-green-200"
+                                >
                                   Assign Team
                                 </button>
                                 <button className="px-3 py-1 bg-gray-100 text-gray-700 rounded text-xs font-medium hover:bg-gray-200">
@@ -3893,103 +4056,87 @@ const AdminDashboard = ({ user, onLogout }) => {
             {/* Team Assignments */}
             <div className="bg-white rounded-lg shadow">
               <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900">Team Assignments</h3>
-                <p className="text-sm text-gray-500 mt-1">Assign contracts to teams for today's snow removal</p>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">Team Assignments</h3>
+                    <p className="text-sm text-gray-500 mt-1">Assign contracts to teams and trucks</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <label className="text-sm font-medium text-gray-700">Date:</label>
+                    <input
+                      type="date"
+                      value={assignmentDate}
+                      onChange={(e) => setAssignmentDate(e.target.value)}
+                      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                    />
+                  </div>
+                </div>
               </div>
               <div className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {/* Team 1 */}
-                  <div className="border-2 border-blue-200 rounded-lg p-4 bg-blue-50">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-2">
-                        <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
-                          A
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-gray-900">Team Alpha</h4>
-                          <p className="text-xs text-gray-500">Lead: John D.</p>
-                        </div>
-                      </div>
-                      <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
-                        Active
-                      </span>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="text-sm">
-                        <span className="text-gray-600">Assigned: </span>
-                        <span className="font-semibold text-gray-900">0 contracts</span>
-                      </div>
-                      <div className="text-sm">
-                        <span className="text-gray-600">Est. Time: </span>
-                        <span className="font-semibold text-gray-900">0h</span>
-                      </div>
-                    </div>
-                    <button className="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium">
-                      Assign Contracts
-                    </button>
-                  </div>
+                  {teams.map((team, index) => {
+                    const assignedContracts = getAssignedContracts(team.id, assignmentDate);
+                    const teamLetter = ['A', 'B', 'C'][index];
+                    const colorClasses = getTeamColorClasses(team.color);
 
-                  {/* Team 2 */}
-                  <div className="border-2 border-green-200 rounded-lg p-4 bg-green-50">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-2">
-                        <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-bold">
-                          B
+                    return (
+                      <div key={team.id} className={`border-2 ${colorClasses.border} rounded-lg p-4 ${colorClasses.bg}`}>
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center gap-2">
+                            <div className={`w-10 h-10 ${colorClasses.avatar} rounded-full flex items-center justify-center text-white font-bold`}>
+                              {teamLetter}
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-gray-900">{team.name}</h4>
+                              <p className="text-xs text-gray-500">Lead: {team.lead}</p>
+                              <p className="text-xs text-gray-600 font-medium">{team.truck}</p>
+                            </div>
+                          </div>
+                          <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                            Active
+                          </span>
                         </div>
-                        <div>
-                          <h4 className="font-semibold text-gray-900">Team Bravo</h4>
-                          <p className="text-xs text-gray-500">Lead: Mike S.</p>
-                        </div>
-                      </div>
-                      <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
-                        Active
-                      </span>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="text-sm">
-                        <span className="text-gray-600">Assigned: </span>
-                        <span className="font-semibold text-gray-900">0 contracts</span>
-                      </div>
-                      <div className="text-sm">
-                        <span className="text-gray-600">Est. Time: </span>
-                        <span className="font-semibold text-gray-900">0h</span>
-                      </div>
-                    </div>
-                    <button className="w-full mt-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
-                      Assign Contracts
-                    </button>
-                  </div>
 
-                  {/* Team 3 */}
-                  <div className="border-2 border-purple-200 rounded-lg p-4 bg-purple-50">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-2">
-                        <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold">
-                          C
+                        <div className="space-y-2 mb-4">
+                          <div className="text-sm">
+                            <span className="text-gray-600">Assigned: </span>
+                            <span className="font-semibold text-gray-900">{assignedContracts.length} contracts</span>
+                          </div>
                         </div>
-                        <div>
-                          <h4 className="font-semibold text-gray-900">Team Charlie</h4>
-                          <p className="text-xs text-gray-500">Lead: Dave P.</p>
-                        </div>
+
+                        {/* Assigned Contracts List */}
+                        {assignedContracts.length > 0 && (
+                          <div className="mb-4 space-y-2 max-h-48 overflow-y-auto">
+                            <div className="text-xs font-semibold text-gray-700 mb-2">Assigned Contracts:</div>
+                            {assignedContracts.map(contract => (
+                              <div key={contract.id} className="bg-white rounded p-2 text-xs border border-gray-200">
+                                <div className="flex items-start justify-between">
+                                  <div className="flex-1 min-w-0">
+                                    <div className="font-semibold text-gray-900 truncate">{contract.name}</div>
+                                    <div className="text-gray-600 text-xs truncate">📍 {contract.address}</div>
+                                  </div>
+                                  <button
+                                    onClick={() => handleUnassignContract(contract.id, team.id)}
+                                    className="ml-2 text-red-600 hover:text-red-800 font-bold flex-shrink-0"
+                                    title="Remove from team"
+                                  >
+                                    ✕
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        <button
+                          onClick={() => openAssignmentModal(team)}
+                          className={`w-full px-4 py-2 ${colorClasses.button} text-white rounded-lg text-sm font-medium`}
+                        >
+                          {assignedContracts.length > 0 ? 'Manage Assignments' : 'Assign Contracts'}
+                        </button>
                       </div>
-                      <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
-                        Active
-                      </span>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="text-sm">
-                        <span className="text-gray-600">Assigned: </span>
-                        <span className="font-semibold text-gray-900">0 contracts</span>
-                      </div>
-                      <div className="text-sm">
-                        <span className="text-gray-600">Est. Time: </span>
-                        <span className="font-semibold text-gray-900">0h</span>
-                      </div>
-                    </div>
-                    <button className="w-full mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm font-medium">
-                      Assign Contracts
-                    </button>
-                  </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -4273,6 +4420,161 @@ const AdminDashboard = ({ user, onLogout }) => {
                     </span>
                   </button>
                 </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Team Assignment Modal */}
+        {showAssignmentModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-[1001] flex items-center justify-center p-4 overflow-y-auto">
+            <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto my-8">
+              {/* Modal Header */}
+              <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-4 rounded-t-xl z-10">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                    <span>🚚</span>
+                    {selectedTeam ? `Assign Contracts to ${selectedTeam.name}` : 'Select Team'}
+                  </h2>
+                  <button
+                    onClick={() => {
+                      setShowAssignmentModal(false);
+                      setSelectedTeam(null);
+                      setSelectedContractForAssignment(null);
+                    }}
+                    className="text-white hover:bg-white hover:bg-opacity-20 rounded-lg p-2 transition-colors"
+                  >
+                    <span className="text-2xl">✕</span>
+                  </button>
+                </div>
+                {selectedTeam && (
+                  <p className="text-white text-opacity-90 text-sm mt-1">
+                    {selectedTeam.truck} - Lead: {selectedTeam.lead} - Date: {assignmentDate}
+                  </p>
+                )}
+              </div>
+
+              <div className="p-6">
+                {selectedContractForAssignment ? (
+                  /* Quick assign from contract list */
+                  <div>
+                    <div className="mb-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                      <h3 className="font-semibold text-gray-900 mb-1">{selectedContractForAssignment.name}</h3>
+                      <p className="text-sm text-gray-600">📍 {selectedContractForAssignment.address}</p>
+                    </div>
+
+                    <h4 className="font-semibold text-gray-900 mb-3">Select Team/Truck:</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {teams.map((team, index) => {
+                        const teamLetter = ['A', 'B', 'C'][index];
+                        const isAssigned = getTeamAssignments(team.id, assignmentDate).includes(selectedContractForAssignment.id);
+                        const colorClasses = getTeamColorClasses(team.color);
+
+                        return (
+                          <button
+                            key={team.id}
+                            onClick={() => handleAssignContract(selectedContractForAssignment.id, team.id)}
+                            disabled={isAssigned}
+                            className={`border-2 rounded-lg p-4 text-left transition-all ${
+                              isAssigned
+                                ? 'border-gray-300 bg-gray-100 opacity-50 cursor-not-allowed'
+                                : `${colorClasses.border} ${colorClasses.hoverBorder} ${colorClasses.hoverBg}`
+                            }`}
+                          >
+                            <div className="flex items-center gap-3 mb-2">
+                              <div className={`w-10 h-10 ${colorClasses.avatar} rounded-full flex items-center justify-center text-white font-bold`}>
+                                {teamLetter}
+                              </div>
+                              <div>
+                                <div className="font-semibold text-gray-900">{team.name}</div>
+                                <div className="text-xs text-gray-600">{team.truck}</div>
+                              </div>
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              Lead: {team.lead}
+                            </div>
+                            <div className="text-xs text-gray-600 mt-1">
+                              {getTeamAssignments(team.id, assignmentDate).length} contracts assigned
+                            </div>
+                            {isAssigned && (
+                              <div className="text-xs text-green-600 font-medium mt-2">✓ Already Assigned</div>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : selectedTeam ? (
+                  /* Manage team assignments */
+                  <div>
+                    <div className="mb-4 flex items-center justify-between">
+                      <h4 className="font-semibold text-gray-900">Available Contracts:</h4>
+                      <div className="text-sm text-gray-600">
+                        {customers.filter(c => c.snowRemoval).length} total snow removal contracts
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 max-h-[60vh] overflow-y-auto">
+                      {customers.filter(c => c.snowRemoval).length > 0 ? (
+                        customers.filter(c => c.snowRemoval).map(contract => {
+                          const isAssigned = getTeamAssignments(selectedTeam.id, assignmentDate).includes(contract.id);
+                          const colorClasses = getTeamColorClasses(selectedTeam.color);
+
+                          return (
+                            <div
+                              key={contract.id}
+                              className={`border rounded-lg p-4 transition-all ${
+                                isAssigned
+                                  ? `${colorClasses.lightBorder} ${colorClasses.lightBg}`
+                                  : 'border-gray-200 hover:border-gray-300 hover:shadow-sm'
+                              }`}
+                            >
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <h5 className="font-semibold text-gray-900">{contract.name}</h5>
+                                    {contract.priority && (
+                                      <span className="px-2 py-0.5 bg-orange-100 text-orange-800 text-xs font-medium rounded-full">
+                                        Priority {contract.priority}
+                                      </span>
+                                    )}
+                                  </div>
+                                  <p className="text-sm text-gray-600">📍 {contract.address}</p>
+                                  {contract.phone && (
+                                    <p className="text-xs text-gray-500 mt-1">📞 {contract.phone}</p>
+                                  )}
+                                  {contract.notes && (
+                                    <p className="text-xs text-gray-500 mt-1 italic">{contract.notes}</p>
+                                  )}
+                                </div>
+                                <button
+                                  onClick={() =>
+                                    isAssigned
+                                      ? handleUnassignContract(contract.id, selectedTeam.id)
+                                      : handleAssignContract(contract.id, selectedTeam.id)
+                                  }
+                                  className={`ml-4 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                    isAssigned
+                                      ? 'bg-red-100 text-red-700 hover:bg-red-200'
+                                      : `${colorClasses.button} text-white`
+                                  }`}
+                                >
+                                  {isAssigned ? 'Remove' : 'Assign'}
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <div className="text-center py-12">
+                          <div className="text-gray-400 text-4xl mb-3">❄️</div>
+                          <p className="text-gray-600">No snow removal contracts available</p>
+                          <p className="text-sm text-gray-500 mt-1">Add customers with snow removal service first</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>

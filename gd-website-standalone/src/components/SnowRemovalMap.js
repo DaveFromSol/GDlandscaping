@@ -1,9 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { GoogleMap, useLoadScript, DirectionsRenderer } from '@react-google-maps/api';
+import GoogleAddressAutocomplete from './GoogleAddressAutocomplete';
 import {
   collection,
   doc,
   setDoc,
+  getDoc,
   onSnapshot,
   query,
   orderBy,
@@ -29,21 +31,29 @@ const defaultCenter = {
   lng: -73.0877 // Connecticut center
 };
 
+const libraries = ['places'];
+
 const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermissions = { markSnowComplete: true } }) => {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    libraries: libraries,
   });
 
   const [directionsResponse, setDirectionsResponse] = useState(null);
+  const [displayedDirections, setDisplayedDirections] = useState(null);
   const [optimizedRoute, setOptimizedRoute] = useState([]);
   const [excludedStops, setExcludedStops] = useState([]);
+  const [invalidAddresses, setInvalidAddresses] = useState([]);
   const [routeInfo, setRouteInfo] = useState(null);
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [useCurrentLocation] = useState(true); // Always use current location
+  const [startPointOption, setStartPointOption] = useState('gps'); // 'gps', 'manual', or 'first-stop'
+  const [manualStartAddress, setManualStartAddress] = useState('');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [completedStops, setCompletedStops] = useState(new Set());
   const [hasAutoOptimized, setHasAutoOptimized] = useState(false);
+  const [stopNotes, setStopNotes] = useState({}); // { stopId: "note text" }
+  const [editingNoteId, setEditingNoteId] = useState(null);
 
   // Firebase route management
   const [savedRoutes, setSavedRoutes] = useState([]);
@@ -96,7 +106,7 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
     return () => unsubscribe();
   }, [db]);
 
-  // Listen for completion updates on current route
+  // Listen for completion updates and notes on current route
   useEffect(() => {
     if (!db || !currentRouteId) return;
 
@@ -105,7 +115,11 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
       if (snapshot.exists()) {
         const data = snapshot.data();
         if (data.completedStops) {
-          setCompletedStops(new Set(data.completedStops));
+          const completedSet = new Set(data.completedStops);
+          setCompletedStops(completedSet);
+        }
+        if (data.stopNotes) {
+          setStopNotes(data.stopNotes);
         }
       }
     });
@@ -172,11 +186,12 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
       return;
     }
 
-    // Get current location if enabled
-    if (useCurrentLocation && !currentLocation) {
+    // Get current location if GPS option is selected and we don't have it yet
+    if (startPointOption === 'gps' && !currentLocation) {
       if (!navigator.geolocation) {
-        console.log('Geolocation is not supported, starting from first contract instead.');
-        // Continue with route optimization using first stop
+        console.log('Geolocation is not supported, please use manual address or start from first stop.');
+        alert('Geolocation not supported. Please enter a manual start address or choose "Start from First Stop".');
+        return;
       } else {
         console.log('📍 Getting your current location...');
         navigator.geolocation.getCurrentPosition(
@@ -192,13 +207,19 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
           },
           (error) => {
             console.error('❌ Error getting location:', error);
-            console.log('Starting from first contract instead.');
-            setCurrentLocation(null);
+            alert('Could not get your location. Please enter a manual start address or choose "Start from First Stop".');
+            return;
           },
           { enableHighAccuracy: true, timeout: 10000 }
         );
         return;
       }
+    }
+
+    // Check if manual address is provided when manual option is selected
+    if (startPointOption === 'manual' && !manualStartAddress.trim()) {
+      alert('Please enter a start address.');
+      return;
     }
 
     setIsOptimizing(true);
@@ -242,23 +263,33 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
       excludedStops = prioritySorted.slice(maxStops);
     }
 
-    // Determine origin based on whether we're using current location
+    // Determine origin based on the selected start point option
     let origin;
     let destination;
     let waypoints;
 
-    if (useCurrentLocation && currentLocation) {
-      // Start from current location
+    if (startPointOption === 'gps' && currentLocation) {
+      // Start from GPS current location
       origin = `${currentLocation.lat},${currentLocation.lng}`;
       // Last contract is destination
       destination = formatAddress(stopsToRoute[stopsToRoute.length - 1]);
-      // All other contracts are waypoints
+      // All contracts are waypoints
+      waypoints = stopsToRoute.slice(0, -1).map(contract => ({
+        location: formatAddress(contract),
+        stopover: true
+      }));
+    } else if (startPointOption === 'manual' && manualStartAddress.trim()) {
+      // Start from manual address
+      origin = manualStartAddress.trim();
+      // Last contract is destination
+      destination = formatAddress(stopsToRoute[stopsToRoute.length - 1]);
+      // All contracts are waypoints
       waypoints = stopsToRoute.slice(0, -1).map(contract => ({
         location: formatAddress(contract),
         stopover: true
       }));
     } else {
-      // Original behavior: start from first contract
+      // Start from first contract (first-stop option or fallback)
       origin = formatAddress(stopsToRoute[0]);
       destination = formatAddress(stopsToRoute[stopsToRoute.length - 1]);
       waypoints = stopsToRoute.slice(1, -1).map(contract => ({
@@ -268,10 +299,14 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
     }
 
     console.log('🗺️ Optimizing route with:');
-    console.log('Using current location:', useCurrentLocation && currentLocation ? 'YES' : 'NO');
-    console.log('Origin:', origin, useCurrentLocation && currentLocation ? '(Your Location)' : '');
+    console.log('Start point option:', startPointOption);
+    console.log('Origin:', origin,
+      startPointOption === 'gps' ? '(GPS Location)' :
+      startPointOption === 'manual' ? '(Manual Address)' :
+      '(First Stop)');
     console.log('Destination:', destination);
-    console.log('Waypoints:', waypoints);
+    console.log('Number of waypoints:', waypoints.length);
+    console.log('Total stops to route:', stopsToRoute.length);
     console.log('Stops in route:', stopsToRoute.map(c => ({
       name: c.name,
       address: formatAddress(c),
@@ -296,6 +331,8 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
         if (status === window.google.maps.DirectionsStatus.OK) {
           console.log('✅ Route optimized successfully!');
           setDirectionsResponse(result);
+          setDisplayedDirections(result); // Initially show the full route
+          setInvalidAddresses([]); // Clear any previous invalid addresses
 
           // Get optimized order
           const waypointOrder = result.routes[0].waypoint_order;
@@ -328,45 +365,290 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
           console.error('❌ Directions request failed with status:', status);
           console.error('Full result:', result);
 
-          // Provide more specific error messages
-          let errorMessage = 'Failed to optimize route. ';
-          switch (status) {
-            case 'ZERO_RESULTS':
-              errorMessage += 'No route could be found between these addresses. Please verify all addresses are correct and accessible.';
-              break;
-            case 'NOT_FOUND':
-              errorMessage += 'One or more addresses could not be found. Please check that all addresses are complete and valid.';
-              break;
-            case 'INVALID_REQUEST':
-              errorMessage += 'Invalid request. Please ensure all addresses are properly formatted.';
-              break;
-            case 'OVER_QUERY_LIMIT':
-              errorMessage += 'Too many requests. Please try again in a moment.';
-              break;
-            case 'REQUEST_DENIED':
-              errorMessage += 'Request denied. Please check the API key permissions.';
-              break;
-            case 'UNKNOWN_ERROR':
-              errorMessage += 'Server error. Please try again.';
-              break;
-            default:
-              errorMessage += `Error: ${status}. Please check addresses.`;
-          }
+          // Handle address-related errors by trying to identify and exclude problematic addresses
+          if (status === 'NOT_FOUND' || status === 'ZERO_RESULTS') {
+            console.log('🔍 Attempting to identify and exclude invalid addresses...');
 
-          alert(errorMessage);
+            // Try to validate addresses one by one using Geocoding
+            const geocoder = new window.google.maps.Geocoder();
+            const validatePromises = stopsToRoute.map((stop, index) => {
+              const address = formatAddress(stop);
+              return new Promise((resolve) => {
+                geocoder.geocode({ address: address }, (results, geocodeStatus) => {
+                  if (geocodeStatus === 'OK') {
+                    resolve({ stop, valid: true, index });
+                  } else {
+                    console.log(`❌ Invalid address: ${stop.name} - ${address}`);
+                    resolve({ stop, valid: false, index });
+                  }
+                });
+              });
+            });
+
+            Promise.all(validatePromises).then((validationResults) => {
+              const validStops = validationResults.filter(r => r.valid).map(r => r.stop);
+              const invalidStops = validationResults.filter(r => !r.valid).map(r => r.stop);
+
+              setInvalidAddresses(invalidStops);
+
+              if (validStops.length < 2) {
+                alert(`Unable to create route: Only ${validStops.length} valid address(es) found. Need at least 2 valid addresses.\n\n${invalidStops.length} address(es) marked as invalid - please review and correct them.`);
+                setIsOptimizing(false);
+                return;
+              }
+
+              // If no invalid addresses found, the issue is likely with the start point or connectivity
+              if (invalidStops.length === 0) {
+                console.log('⚠️ All addresses are valid, but route failed. Issue may be with start point or connectivity.');
+
+                // Try with first stop as origin
+                if (startPointOption === 'gps' || startPointOption === 'manual') {
+                  alert('⚠️ Your start point may be too far or unreachable.\n\nTrying route from first stop instead...');
+
+                  const fallbackOrigin = formatAddress(validStops[0]);
+                  const fallbackDestination = formatAddress(validStops[validStops.length - 1]);
+                  const fallbackWaypoints = validStops.slice(1, -1).map(contract => ({
+                    location: formatAddress(contract),
+                    stopover: true
+                  }));
+
+                  directionsService.route(
+                    {
+                      origin: fallbackOrigin,
+                      destination: fallbackDestination,
+                      waypoints: fallbackWaypoints,
+                      optimizeWaypoints: true,
+                      travelMode: window.google.maps.TravelMode.DRIVING,
+                    },
+                    (fallbackResult, fallbackStatus) => {
+                      setIsOptimizing(false);
+                      if (fallbackStatus === window.google.maps.DirectionsStatus.OK) {
+                        console.log('✅ Route created starting from first stop!');
+                        setDirectionsResponse(fallbackResult);
+                        setDisplayedDirections(fallbackResult);
+
+                        const waypointOrder = fallbackResult.routes[0].waypoint_order;
+                        const optimized = [
+                          validStops[0],
+                          ...waypointOrder.map(i => validStops[i + 1]),
+                          validStops[validStops.length - 1]
+                        ];
+                        setOptimizedRoute(optimized);
+                        setExcludedStops([...excludedStops]);
+
+                        const route = fallbackResult.routes[0];
+                        let totalDistance = 0;
+                        let totalDuration = 0;
+                        route.legs.forEach(leg => {
+                          totalDistance += leg.distance.value;
+                          totalDuration += leg.duration.value;
+                        });
+
+                        setRouteInfo({
+                          distance: (totalDistance / 1609.34).toFixed(2),
+                          duration: Math.round(totalDuration / 60),
+                          stops: optimized.length,
+                          totalStops: allStops.length,
+                          excluded: allStops.length - validStops.length
+                        });
+                      } else {
+                        console.error('❌ Fallback also failed:', fallbackStatus);
+                        alert('Unable to create route. The stops may be too far apart or not connected by roads.');
+                      }
+                    }
+                  );
+                  return;
+                } else {
+                  alert('Unable to create route. The stops may be too far apart or not connected by roads.');
+                  setIsOptimizing(false);
+                  return;
+                }
+              }
+
+              alert(`⚠️ Found ${invalidStops.length} invalid address(es).\n\nCreating route with ${validStops.length} valid addresses.\n\nInvalid addresses will be listed separately below the route.`);
+
+              // Retry optimization with only valid stops
+              console.log(`🔄 Retrying with ${validStops.length} valid addresses...`);
+
+              // Reconstruct route parameters with valid stops only
+              let newOrigin, newDestination, newWaypoints;
+
+              if (startPointOption === 'gps' && currentLocation) {
+                newOrigin = `${currentLocation.lat},${currentLocation.lng}`;
+                newDestination = formatAddress(validStops[validStops.length - 1]);
+                newWaypoints = validStops.slice(0, -1).map(contract => ({
+                  location: formatAddress(contract),
+                  stopover: true
+                }));
+              } else if (startPointOption === 'manual' && manualStartAddress.trim()) {
+                newOrigin = manualStartAddress.trim();
+                newDestination = formatAddress(validStops[validStops.length - 1]);
+                newWaypoints = validStops.slice(0, -1).map(contract => ({
+                  location: formatAddress(contract),
+                  stopover: true
+                }));
+              } else {
+                newOrigin = formatAddress(validStops[0]);
+                newDestination = formatAddress(validStops[validStops.length - 1]);
+                newWaypoints = validStops.slice(1, -1).map(contract => ({
+                  location: formatAddress(contract),
+                  stopover: true
+                }));
+              }
+
+              // Retry the route request with valid addresses
+              directionsService.route(
+                {
+                  origin: newOrigin,
+                  destination: newDestination,
+                  waypoints: newWaypoints,
+                  optimizeWaypoints: true,
+                  travelMode: window.google.maps.TravelMode.DRIVING,
+                },
+                (retryResult, retryStatus) => {
+                  if (retryStatus === window.google.maps.DirectionsStatus.OK) {
+                    setIsOptimizing(false);
+                    console.log('✅ Route created successfully with valid addresses!');
+                    setDirectionsResponse(retryResult);
+                    setDisplayedDirections(retryResult);
+
+                    const waypointOrder = retryResult.routes[0].waypoint_order;
+                    const optimized = [
+                      validStops[0],
+                      ...waypointOrder.map(i => validStops[i + 1]),
+                      validStops[validStops.length - 1]
+                    ];
+                    setOptimizedRoute(optimized);
+                    setExcludedStops([...excludedStops]);
+
+                    const route = retryResult.routes[0];
+                    let totalDistance = 0;
+                    let totalDuration = 0;
+                    route.legs.forEach(leg => {
+                      totalDistance += leg.distance.value;
+                      totalDuration += leg.duration.value;
+                    });
+
+                    setRouteInfo({
+                      distance: (totalDistance / 1609.34).toFixed(2),
+                      duration: Math.round(totalDuration / 60),
+                      stops: optimized.length,
+                      totalStops: allStops.length,
+                      excluded: allStops.length - validStops.length
+                    });
+                  } else if (retryStatus === 'ZERO_RESULTS' && (startPointOption === 'gps' || startPointOption === 'manual')) {
+                    // If still failing and we're using GPS or manual start, try starting from first stop instead
+                    console.log('⚠️ Starting point may be unreachable. Trying route from first stop...');
+
+                    const fallbackOrigin = formatAddress(validStops[0]);
+                    const fallbackDestination = formatAddress(validStops[validStops.length - 1]);
+                    const fallbackWaypoints = validStops.slice(1, -1).map(contract => ({
+                      location: formatAddress(contract),
+                      stopover: true
+                    }));
+
+                    // Final retry with first stop as origin
+                    directionsService.route(
+                      {
+                        origin: fallbackOrigin,
+                        destination: fallbackDestination,
+                        waypoints: fallbackWaypoints,
+                        optimizeWaypoints: true,
+                        travelMode: window.google.maps.TravelMode.DRIVING,
+                      },
+                      (fallbackResult, fallbackStatus) => {
+                        setIsOptimizing(false);
+                        if (fallbackStatus === window.google.maps.DirectionsStatus.OK) {
+                          console.log('✅ Route created starting from first stop!');
+                          alert(`⚠️ Your selected start point could not connect to the stops.\n\nRoute created starting from first stop instead:\n${validStops[0].name}`);
+
+                          setDirectionsResponse(fallbackResult);
+                        setDisplayedDirections(fallbackResult);
+
+                          const waypointOrder = fallbackResult.routes[0].waypoint_order;
+                          const optimized = [
+                            validStops[0],
+                            ...waypointOrder.map(i => validStops[i + 1]),
+                            validStops[validStops.length - 1]
+                          ];
+                          setOptimizedRoute(optimized);
+                          setExcludedStops([...excludedStops]);
+
+                          const route = fallbackResult.routes[0];
+                          let totalDistance = 0;
+                          let totalDuration = 0;
+                          route.legs.forEach(leg => {
+                            totalDistance += leg.distance.value;
+                            totalDuration += leg.duration.value;
+                          });
+
+                          setRouteInfo({
+                            distance: (totalDistance / 1609.34).toFixed(2),
+                            duration: Math.round(totalDuration / 60),
+                            stops: optimized.length,
+                            totalStops: allStops.length,
+                            excluded: allStops.length - validStops.length
+                          });
+                        } else {
+                          console.error('❌ All retry attempts failed with status:', fallbackStatus);
+                          alert(`Failed to create route. Status: ${fallbackStatus}\n\nPlease verify:\n1. Addresses are complete and correct\n2. Start point is within a reasonable distance\n3. Locations are accessible by road`);
+                        }
+                      }
+                    );
+                  } else {
+                    setIsOptimizing(false);
+                    console.error('❌ Retry also failed with status:', retryStatus);
+                    alert(`Failed to create route. Status: ${retryStatus}\n\nPlease check that all addresses are complete, correct, and accessible by road.`);
+                  }
+                }
+              );
+            });
+          } else {
+            // Other errors - show standard error message
+            let errorMessage = 'Failed to optimize route. ';
+            switch (status) {
+              case 'INVALID_REQUEST':
+                errorMessage += 'Invalid request. Please ensure all addresses are properly formatted.';
+                break;
+              case 'OVER_QUERY_LIMIT':
+                errorMessage += 'Too many requests. Please try again in a moment.';
+                break;
+              case 'REQUEST_DENIED':
+                errorMessage += 'Request denied. Please check the API key permissions.';
+                break;
+              case 'UNKNOWN_ERROR':
+                errorMessage += 'Server error. Please try again.';
+                break;
+              default:
+                errorMessage += `Error: ${status}. Please check addresses.`;
+            }
+            alert(errorMessage);
+          }
         }
       }
     );
-  }, [contracts, hoaCondoProperties, currentLocation, useCurrentLocation]);
+  }, [contracts, hoaCondoProperties, currentLocation, startPointOption, manualStartAddress]);
 
-  // Auto-optimize route when contracts and location are ready
+  // Auto-optimize route when contracts and necessary data are ready
   useEffect(() => {
     // Check if we have contracts and Google Maps is loaded
     const hasContracts = (contracts && contracts.length > 0) || (hoaCondoProperties && hoaCondoProperties.length > 0);
 
-    // Since we always use current location, wait for it to be acquired before auto-optimizing
-    if (hasContracts && !hasAutoOptimized && !isOptimizing && isLoaded && currentLocation) {
-      console.log('🎯 Auto-optimizing route with current location...');
+    // Determine if we're ready to auto-optimize based on start point option
+    let isReady = false;
+    if (startPointOption === 'gps') {
+      // Wait for GPS location
+      isReady = hasContracts && !hasAutoOptimized && !isOptimizing && isLoaded && currentLocation;
+    } else if (startPointOption === 'manual') {
+      // Wait for manual address
+      isReady = hasContracts && !hasAutoOptimized && !isOptimizing && isLoaded && manualStartAddress.trim();
+    } else {
+      // first-stop option - no waiting needed
+      isReady = hasContracts && !hasAutoOptimized && !isOptimizing && isLoaded;
+    }
+
+    if (isReady) {
+      console.log('🎯 Auto-optimizing route...');
       setHasAutoOptimized(true);
 
       // Small delay to ensure everything is ready
@@ -376,7 +658,60 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
 
       return () => clearTimeout(timer);
     }
-  }, [contracts, hoaCondoProperties, hasAutoOptimized, isOptimizing, optimizeRoute, currentLocation, isLoaded]);
+  }, [contracts, hoaCondoProperties, hasAutoOptimized, isOptimizing, optimizeRoute, currentLocation, manualStartAddress, startPointOption, isLoaded]);
+
+  const updateDisplayedRoute = useCallback((completedIds) => {
+    if (!directionsResponse || !optimizedRoute || optimizedRoute.length === 0) {
+      return;
+    }
+
+    // Filter out completed stops
+    const remainingStops = optimizedRoute.filter(stop => !completedIds.has(stop.id));
+
+    if (remainingStops.length === 0) {
+      // All stops completed - clear the route
+      setDisplayedDirections(null);
+      return;
+    }
+
+    if (remainingStops.length === 1) {
+      // Only one stop left - just show that location, no route needed
+      setDisplayedDirections(null);
+      return;
+    }
+
+    // Create new route with only remaining stops
+    const directionsService = new window.google.maps.DirectionsService();
+    const formatAddress = (contract) => {
+      const parts = [contract.address, contract.city, contract.state, contract.zip].filter(part => part && part.trim());
+      return parts.join(', ');
+    };
+
+    const origin = formatAddress(remainingStops[0]);
+    const destination = formatAddress(remainingStops[remainingStops.length - 1]);
+    const waypoints = remainingStops.slice(1, -1).map(contract => ({
+      location: formatAddress(contract),
+      stopover: true
+    }));
+
+    directionsService.route(
+      {
+        origin: origin,
+        destination: destination,
+        waypoints: waypoints,
+        optimizeWaypoints: false, // Keep the order we already have
+        travelMode: window.google.maps.TravelMode.DRIVING,
+      },
+      (result, status) => {
+        if (status === window.google.maps.DirectionsStatus.OK) {
+          setDisplayedDirections(result);
+        } else {
+          console.log('Could not update displayed route:', status);
+          // Keep showing the old route if update fails
+        }
+      }
+    );
+  }, [directionsResponse, optimizedRoute]);
 
   const toggleStopCompletion = async (stopId) => {
     const newSet = new Set(completedStops);
@@ -386,6 +721,9 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
       newSet.add(stopId);
     }
     setCompletedStops(newSet);
+
+    // Update the displayed route to hide completed stops
+    updateDisplayedRoute(newSet);
 
     // Save to Firebase if we have a current route
     if (db && currentRouteId) {
@@ -399,6 +737,39 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
         console.error('Error updating completion status:', error);
       }
     }
+  };
+
+  const saveStopNote = async (stopId, note) => {
+    const updatedNotes = {
+      ...stopNotes,
+      [stopId]: note
+    };
+    setStopNotes(updatedNotes);
+
+    // Save to Firebase if we have a current route
+    if (db && currentRouteId) {
+      try {
+        const routeRef = doc(db, 'snowRoutes', currentRouteId);
+        await setDoc(routeRef, {
+          stopNotes: updatedNotes,
+          lastUpdated: serverTimestamp()
+        }, { merge: true });
+      } catch (error) {
+        console.error('Error saving note:', error);
+      }
+    }
+  };
+
+  const handleNoteChange = (stopId, value) => {
+    setStopNotes({
+      ...stopNotes,
+      [stopId]: value
+    });
+  };
+
+  const handleNoteSave = async (stopId) => {
+    await saveStopNote(stopId, stopNotes[stopId] || '');
+    setEditingNoteId(null);
   };
 
   const saveRoute = async () => {
@@ -419,6 +790,7 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
           priority: stop.priority || 'Normal'
         })),
         completedStops: Array.from(completedStops),
+        stopNotes: stopNotes,
         createdAt: serverTimestamp(),
         lastUpdated: serverTimestamp()
       };
@@ -438,6 +810,7 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
   const loadRoute = (route) => {
     setCurrentRouteId(route.id);
     setCompletedStops(new Set(route.completedStops || []));
+    setStopNotes(route.stopNotes || {});
     alert(`Loaded route: ${route.name}`);
   };
 
@@ -463,10 +836,25 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
       return;
     }
 
-    // Build Google Maps URL with waypoints
-    const origin = encodeURIComponent(formatFullAddress(optimizedRoute[0]));
-    const destination = encodeURIComponent(formatFullAddress(optimizedRoute[optimizedRoute.length - 1]));
-    const waypoints = optimizedRoute
+    // Filter out completed stops
+    const remainingStops = optimizedRoute.filter(stop => !completedStops.has(stop.id));
+
+    if (remainingStops.length === 0) {
+      alert('All stops have been completed!');
+      return;
+    }
+
+    if (remainingStops.length === 1) {
+      // Just open the single remaining location
+      const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(formatFullAddress(remainingStops[0]))}`;
+      window.open(url, '_blank');
+      return;
+    }
+
+    // Build Google Maps URL with waypoints (only uncompleted stops)
+    const origin = encodeURIComponent(formatFullAddress(remainingStops[0]));
+    const destination = encodeURIComponent(formatFullAddress(remainingStops[remainingStops.length - 1]));
+    const waypoints = remainingStops
       .slice(1, -1)
       .map(c => encodeURIComponent(formatFullAddress(c)))
       .join('|');
@@ -481,9 +869,24 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
       return;
     }
 
+    // Filter out completed stops
+    const remainingStops = optimizedRoute.filter(stop => !completedStops.has(stop.id));
+
+    if (remainingStops.length === 0) {
+      alert('All stops have been completed!');
+      return;
+    }
+
+    if (remainingStops.length === 1) {
+      // Just open the single remaining location
+      const url = `http://maps.apple.com/?q=${encodeURIComponent(formatFullAddress(remainingStops[0]))}`;
+      window.open(url, '_blank');
+      return;
+    }
+
     // Apple Maps supports multiple waypoints via http://maps.apple.com
-    const origin = encodeURIComponent(formatFullAddress(optimizedRoute[0]));
-    const destination = encodeURIComponent(formatFullAddress(optimizedRoute[optimizedRoute.length - 1]));
+    const origin = encodeURIComponent(formatFullAddress(remainingStops[0]));
+    const destination = encodeURIComponent(formatFullAddress(remainingStops[remainingStops.length - 1]));
 
     // For Apple Maps, we'll create a URL with origin and destination
     // Note: Apple Maps has limited waypoint support via URL, so we'll use the first and last stops
@@ -509,10 +912,10 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
           return null; // We'll rely on DirectionsRenderer to show the route
         })}
 
-        {/* Display optimized route */}
-        {directionsResponse && (
+        {/* Display optimized route (excluding completed stops) */}
+        {displayedDirections && (
           <DirectionsRenderer
-            directions={directionsResponse}
+            directions={displayedDirections}
             options={{
               suppressMarkers: false,
               polylineOptions: {
@@ -570,6 +973,87 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
         </div>
       )}
 
+      {/* Start Point Selection */}
+      <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <h4 className="font-semibold text-gray-900 mb-3">📍 Route Start Point</h4>
+        <div className="space-y-3">
+          {/* Radio Options */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="startPoint"
+                value="gps"
+                checked={startPointOption === 'gps'}
+                onChange={(e) => setStartPointOption(e.target.value)}
+                className="w-4 h-4 text-blue-600"
+              />
+              <span className="text-sm font-medium text-gray-700">📱 Use GPS Location</span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="startPoint"
+                value="manual"
+                checked={startPointOption === 'manual'}
+                onChange={(e) => setStartPointOption(e.target.value)}
+                className="w-4 h-4 text-blue-600"
+              />
+              <span className="text-sm font-medium text-gray-700">✏️ Manual Address</span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="startPoint"
+                value="first-stop"
+                checked={startPointOption === 'first-stop'}
+                onChange={(e) => setStartPointOption(e.target.value)}
+                className="w-4 h-4 text-blue-600"
+              />
+              <span className="text-sm font-medium text-gray-700">🏁 Start from First Stop</span>
+            </label>
+          </div>
+
+          {/* Manual Address Input */}
+          {startPointOption === 'manual' && (
+            <div>
+              <GoogleAddressAutocomplete
+                value={manualStartAddress}
+                onChange={(value) => {
+                  setManualStartAddress(value);
+                  setHasAutoOptimized(false); // Allow re-optimization with new address
+                }}
+                onPlaceSelected={(addressData) => {
+                  setManualStartAddress(addressData.fullAddress);
+                  setHasAutoOptimized(false); // Allow re-optimization with new address
+                  console.log('Start address selected:', addressData);
+                }}
+                placeholder="Enter starting address (e.g., 123 Main St, Hartford, CT)"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                💡 Start typing your shop/office address, home, or any starting location
+              </p>
+            </div>
+          )}
+
+          {/* GPS Status */}
+          {startPointOption === 'gps' && (
+            <div className="text-sm">
+              {currentLocation ? (
+                <p className="text-green-600 flex items-center gap-2">
+                  ✅ GPS location acquired ({currentLocation.lat.toFixed(4)}, {currentLocation.lng.toFixed(4)})
+                </p>
+              ) : (
+                <p className="text-gray-600 flex items-center gap-2">
+                  ⏳ Waiting for GPS location...
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* Route Controls */}
       <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-3`}>
         <button
@@ -618,6 +1102,14 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
               <span className="text-yellow-800 font-medium">
                 ⚠️ {routeInfo.excluded} stop{routeInfo.excluded > 1 ? 's' : ''} excluded (Google Maps 25-stop limit).
                 Total available: {routeInfo.totalStops}
+              </span>
+            </div>
+          )}
+          {invalidAddresses && invalidAddresses.length > 0 && (
+            <div className={`mt-3 p-3 bg-red-50 border border-red-200 rounded ${isMobile ? 'text-base' : 'text-sm'}`}>
+              <span className="text-red-800 font-medium">
+                ❌ {invalidAddresses.length} invalid address{invalidAddresses.length > 1 ? 'es' : ''} could not be included.
+                Please review and correct {invalidAddresses.length > 1 ? 'them' : 'it'} below.
               </span>
             </div>
           )}
@@ -673,53 +1165,134 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
               ].filter(part => part && part.trim()).join(', ');
 
               const isCompleted = completedStops.has(contract.id);
+              const hasNote = stopNotes[contract.id];
+              const isEditingNote = editingNoteId === contract.id;
 
               return (
                 <div
                   key={`optimized-${contract.id}`}
-                  className={`flex items-center gap-3 ${isMobile ? 'p-4' : 'p-2'} rounded-lg border transition-all ${
+                  className={`rounded-lg border transition-all ${
                     isCompleted
                       ? 'bg-green-50 border-green-200 opacity-75'
                       : 'bg-gray-50 border-gray-100'
                   }`}
-                  onClick={() => userPermissions.markSnowComplete && toggleStopCompletion(contract.id)}
-                  style={{ cursor: userPermissions.markSnowComplete ? 'pointer' : 'default' }}
                 >
-                  {/* Checkbox */}
-                  <input
-                    type="checkbox"
-                    checked={isCompleted}
-                    onChange={() => userPermissions.markSnowComplete && toggleStopCompletion(contract.id)}
-                    onClick={(e) => e.stopPropagation()}
-                    disabled={!userPermissions.markSnowComplete}
-                    className={`flex-shrink-0 ${isMobile ? 'w-7 h-7' : 'w-5 h-5'} text-green-600 border-2 border-gray-300 rounded focus:ring-2 focus:ring-green-500 ${userPermissions.markSnowComplete ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}`}
-                  />
+                  {/* Main Stop Row */}
+                  <div
+                    className={`flex items-center gap-3 ${isMobile ? 'p-4' : 'p-2'}`}
+                    onClick={(e) => {
+                      // Only toggle if not clicking on note area
+                      if (!e.target.closest('.note-area') && userPermissions.markSnowComplete) {
+                        toggleStopCompletion(contract.id);
+                      }
+                    }}
+                    style={{ cursor: userPermissions.markSnowComplete ? 'pointer' : 'default' }}
+                  >
+                    {/* Checkbox */}
+                    <input
+                      type="checkbox"
+                      checked={isCompleted}
+                      onChange={() => userPermissions.markSnowComplete && toggleStopCompletion(contract.id)}
+                      onClick={(e) => e.stopPropagation()}
+                      disabled={!userPermissions.markSnowComplete}
+                      className={`flex-shrink-0 ${isMobile ? 'w-7 h-7' : 'w-5 h-5'} text-green-600 border-2 border-gray-300 rounded focus:ring-2 focus:ring-green-500 ${userPermissions.markSnowComplete ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}`}
+                    />
 
-                  {/* Route Number */}
-                  <span className={`flex-shrink-0 ${isMobile ? 'w-12 h-12 text-lg' : 'w-8 h-8 text-sm'} ${
-                    isCompleted ? 'bg-green-600' : 'bg-blue-600'
-                  } text-white rounded-full flex items-center justify-center font-bold shadow-sm`}>
-                    {index + 1}
-                  </span>
+                    {/* Route Number */}
+                    <span className={`flex-shrink-0 ${isMobile ? 'w-12 h-12 text-lg' : 'w-8 h-8 text-sm'} ${
+                      isCompleted ? 'bg-green-600' : 'bg-blue-600'
+                    } text-white rounded-full flex items-center justify-center font-bold shadow-sm`}>
+                      {index + 1}
+                    </span>
 
-                  {/* Address Info */}
-                  <div className="flex-1 min-w-0">
-                    <p className={`font-semibold ${isCompleted ? 'text-gray-500 line-through' : 'text-gray-900'} ${isMobile ? 'text-lg mb-1' : 'text-sm'}`}>
-                      {contract.name}
-                    </p>
-                    <p className={`${isCompleted ? 'text-gray-400' : 'text-gray-600'} ${isMobile ? 'text-sm' : 'text-xs'}`}>
-                      {fullAddress}
-                    </p>
+                    {/* Address Info */}
+                    <div className="flex-1 min-w-0">
+                      <p className={`font-semibold ${isCompleted ? 'text-gray-500 line-through' : 'text-gray-900'} ${isMobile ? 'text-lg mb-1' : 'text-sm'}`}>
+                        {contract.name}
+                      </p>
+                      <p className={`${isCompleted ? 'text-gray-400' : 'text-gray-600'} ${isMobile ? 'text-sm' : 'text-xs'}`}>
+                        {fullAddress}
+                      </p>
+                    </div>
+
+                    {/* Priority Badge */}
+                    <span className={`flex-shrink-0 ${isMobile ? 'px-3 py-2 text-sm' : 'px-2 py-1 text-xs'} rounded-full font-medium ${
+                      contract.priority === 'High' ? 'bg-red-100 text-red-800' :
+                      contract.priority === 'Low' ? 'bg-gray-100 text-gray-800' :
+                      'bg-blue-100 text-blue-800'
+                    }`}>
+                      {contract.priority || 'Normal'}
+                    </span>
                   </div>
 
-                  {/* Priority Badge */}
-                  <span className={`flex-shrink-0 ${isMobile ? 'px-3 py-2 text-sm' : 'px-2 py-1 text-xs'} rounded-full font-medium ${
-                    contract.priority === 'High' ? 'bg-red-100 text-red-800' :
-                    contract.priority === 'Low' ? 'bg-gray-100 text-gray-800' :
-                    'bg-blue-100 text-blue-800'
-                  }`}>
-                    {contract.priority || 'Normal'}
-                  </span>
+                  {/* Notes Section */}
+                  <div className={`note-area border-t ${isCompleted ? 'border-green-200' : 'border-gray-200'} ${isMobile ? 'p-4 pt-3' : 'p-2 pt-2'}`}>
+                    {isEditingNote ? (
+                      <div className="flex gap-2">
+                        <textarea
+                          value={stopNotes[contract.id] || ''}
+                          onChange={(e) => handleNoteChange(contract.id, e.target.value)}
+                          onClick={(e) => e.stopPropagation()}
+                          placeholder="Add notes for team (e.g., 'Side door access', 'Call on arrival', 'Extra salt needed')"
+                          className={`flex-1 ${isMobile ? 'text-sm' : 'text-xs'} px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none`}
+                          rows="2"
+                          autoFocus
+                        />
+                        <div className="flex flex-col gap-1">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleNoteSave(contract.id);
+                            }}
+                            className={`${isMobile ? 'px-3 py-2 text-sm' : 'px-2 py-1 text-xs'} bg-blue-600 text-white rounded hover:bg-blue-700 font-medium whitespace-nowrap`}
+                          >
+                            Save
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEditingNoteId(null);
+                              // Revert changes
+                              if (db && currentRouteId) {
+                                const routeRef = doc(db, 'snowRoutes', currentRouteId);
+                                getDoc(routeRef).then(snapshot => {
+                                  if (snapshot.exists() && snapshot.data().stopNotes) {
+                                    setStopNotes(snapshot.data().stopNotes);
+                                  }
+                                });
+                              }
+                            }}
+                            className={`${isMobile ? 'px-3 py-2 text-sm' : 'px-2 py-1 text-xs'} bg-gray-200 text-gray-700 rounded hover:bg-gray-300 font-medium`}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex items-start gap-2">
+                        <div className="flex-1">
+                          {hasNote ? (
+                            <p className={`${isMobile ? 'text-sm' : 'text-xs'} text-gray-700 italic bg-white p-2 rounded border border-gray-200`}>
+                              💬 {stopNotes[contract.id]}
+                            </p>
+                          ) : (
+                            <p className={`${isMobile ? 'text-sm' : 'text-xs'} text-gray-400 italic`}>
+                              No team notes yet
+                            </p>
+                          )}
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setEditingNoteId(contract.id);
+                          }}
+                          className={`${isMobile ? 'px-3 py-2 text-sm' : 'px-2 py-1 text-xs'} bg-blue-100 text-blue-700 rounded hover:bg-blue-200 font-medium whitespace-nowrap flex-shrink-0`}
+                        >
+                          {hasNote ? 'Edit Note' : 'Add Note'}
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -787,6 +1360,55 @@ const SnowRemovalMap = ({ contracts, hoaCondoProperties = [], db, userPermission
                         'bg-blue-100 text-blue-800'
                       }`}>
                         {contract.priority || 'Normal'}
+                      </span>
+                    </div>
+                  );
+                })}
+              </>
+            )}
+
+            {/* Invalid Addresses (addresses that couldn't be geocoded) */}
+            {invalidAddresses && invalidAddresses.length > 0 && (
+              <>
+                <div className="my-4 border-t-2 border-red-300 pt-4">
+                  <p className="text-sm font-medium text-red-700 mb-2">
+                    ❌ Invalid Addresses (not included in route - please verify and correct)
+                  </p>
+                </div>
+                {invalidAddresses.map((contract, index) => {
+                  const fullAddress = [
+                    contract.address,
+                    contract.city,
+                    contract.state,
+                    contract.zip
+                  ].filter(part => part && part.trim()).join(', ');
+
+                  return (
+                    <div
+                      key={`invalid-${contract.id}`}
+                      className={`flex items-center gap-3 ${isMobile ? 'p-4' : 'p-2'} rounded-lg border bg-red-50 border-red-200`}
+                    >
+                      {/* Warning Icon */}
+                      <span className={`flex-shrink-0 ${isMobile ? 'w-12 h-12 text-lg' : 'w-8 h-8 text-sm'} bg-red-600 text-white rounded-full flex items-center justify-center font-bold shadow-sm`}>
+                        !
+                      </span>
+
+                      {/* Address Info */}
+                      <div className="flex-1 min-w-0">
+                        <p className={`font-semibold text-red-900 ${isMobile ? 'text-lg mb-1' : 'text-sm'}`}>
+                          {contract.name}
+                        </p>
+                        <p className={`text-red-700 ${isMobile ? 'text-sm' : 'text-xs'}`}>
+                          📍 {fullAddress || 'Address incomplete'}
+                        </p>
+                        <p className={`text-red-600 ${isMobile ? 'text-xs' : 'text-[10px]'} mt-1 italic`}>
+                          This address could not be found by Google Maps. Please verify and correct it in the customer details.
+                        </p>
+                      </div>
+
+                      {/* Priority Badge */}
+                      <span className={`flex-shrink-0 ${isMobile ? 'px-3 py-2 text-sm' : 'px-2 py-1 text-xs'} rounded-full font-medium bg-red-100 text-red-800`}>
+                        Invalid
                       </span>
                     </div>
                   );
