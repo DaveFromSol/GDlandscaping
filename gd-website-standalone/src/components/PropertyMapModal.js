@@ -10,10 +10,50 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
   const [drawing, setDrawing] = useState(false);
   const [drawnArea, setDrawnArea] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingStep, setLoadingStep] = useState(0);
   const [error, setError] = useState(null);
   const [dataSource, setDataSource] = useState('estimate'); // 'cadastre', 'building', or 'estimate'
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   console.log('PropertyMapModal rendered with:', { address, coordinates });
+
+  // Minimum loading time (3.2 seconds total for 4 steps)
+  // Hide loading screen only after BOTH map loads AND minimum time passes
+  useEffect(() => {
+    const minLoadingTimer = setTimeout(() => {
+      if (mapLoaded) {
+        setIsLoading(false);
+      }
+    }, 3200); // 800ms per step * 4 steps
+
+    return () => clearTimeout(minLoadingTimer);
+  }, [mapLoaded]);
+
+  // Also check if map finished loading after minimum time
+  useEffect(() => {
+    if (mapLoaded) {
+      const checkTimer = setTimeout(() => {
+        setIsLoading(false);
+      }, 3200);
+      return () => clearTimeout(checkTimer);
+    }
+  }, [mapLoaded]);
+
+  // Progressive loading animation
+  useEffect(() => {
+    if (!isLoading) return;
+
+    const stepDuration = 800;
+    const maxSteps = 4;
+    let currentStep = 0;
+
+    const interval = setInterval(() => {
+      currentStep = (currentStep + 1) % maxSteps;
+      setLoadingStep(currentStep);
+    }, stepDuration);
+
+    return () => clearInterval(interval);
+  }, [isLoading]);
 
   useEffect(() => {
     if (!coordinates || map.current) return;
@@ -47,7 +87,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
       // Handle map load event
       map.current.on('load', () => {
         console.log('Map loaded successfully');
-        setIsLoading(false);
+        setMapLoaded(true);
 
         // Add marker at the address
         new mapboxgl.Marker({ color: '#2d5016' })
@@ -1340,7 +1380,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
       right: 0,
       bottom: 0,
       backgroundColor: 'rgba(0, 0, 0, 0.75)',
-      zIndex: 10000,
+      zIndex: 999999,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -1348,10 +1388,10 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
     }}>
       <div style={{
         backgroundColor: 'white',
-        borderRadius: '12px',
+        borderRadius: '16px',
         width: '100%',
-        maxWidth: '900px',
-        maxHeight: '90vh',
+        maxWidth: window.innerWidth <= 768 ? '95vw' : '1200px',
+        maxHeight: '95vh',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'auto',
@@ -1441,9 +1481,9 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
         <div style={{
           flex: 1,
           position: 'relative',
-          minHeight: '300px',
-          height: window.innerWidth <= 768 ? '40vh' : '60vh',
-          maxHeight: window.innerWidth <= 768 ? '50vh' : 'none'
+          minHeight: window.innerWidth <= 768 ? '400px' : '600px',
+          height: window.innerWidth <= 768 ? '50vh' : '70vh',
+          maxHeight: window.innerWidth <= 768 ? '60vh' : 'none'
         }}>
           {isLoading && (
             <div style={{
@@ -1455,20 +1495,404 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundColor: '#f3f4f6',
-              zIndex: 10
+              background: 'linear-gradient(135deg, #1a3d0f 0%, #2d5016 50%, #4a7c2c 100%)',
+              zIndex: 10,
+              padding: '20px',
+              overflow: 'hidden'
             }}>
-              <div style={{ textAlign: 'center' }}>
+              {/* Animated Background Elements */}
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'radial-gradient(circle at 20% 50%, rgba(74, 124, 44, 0.4) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(45, 80, 22, 0.4) 0%, transparent 50%)',
+                animation: 'pulse 4s ease-in-out infinite'
+              }}></div>
+
+              {/* Main Loading Card */}
+              <div style={{
+                textAlign: 'center',
+                maxWidth: '580px',
+                width: '100%',
+                background: 'rgba(255, 255, 255, 0.98)',
+                backdropFilter: 'blur(20px)',
+                borderRadius: '24px',
+                padding: window.innerWidth <= 768 ? '36px 24px 32px' : '48px 40px 40px',
+                boxShadow: '0 24px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+                position: 'relative',
+                zIndex: 1,
+                border: '3px solid rgba(251, 191, 36, 0.3)',
+                animation: 'fadeInScale 0.5s ease-out'
+              }}>
+
+                {/* Premium Badge */}
                 <div style={{
-                  width: '50px',
-                  height: '50px',
-                  border: '4px solid #e5e7eb',
-                  borderTop: '4px solid #2d5016',
-                  borderRadius: '50%',
-                  animation: 'spin 1s linear infinite',
-                  margin: '0 auto 16px'
-                }}></div>
-                <p style={{ color: '#6b7280', fontSize: '14px' }}>Loading map...</p>
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+                  color: '#1f2937',
+                  padding: '8px 20px',
+                  borderRadius: '50px',
+                  fontSize: window.innerWidth <= 768 ? '11px' : '12px',
+                  fontWeight: '700',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.8px',
+                  marginBottom: '24px',
+                  boxShadow: '0 4px 16px rgba(251, 191, 36, 0.4)',
+                  animation: 'shimmer 2s ease-in-out infinite'
+                }}>
+                  INSTANT QUOTE SYSTEM
+                </div>
+
+                {/* Satellite Icon with Orbit Animation */}
+                <div style={{
+                  position: 'relative',
+                  width: window.innerWidth <= 768 ? '100px' : '120px',
+                  height: window.innerWidth <= 768 ? '100px' : '120px',
+                  margin: '0 auto 28px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  {/* Orbit Ring */}
+                  <div style={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    border: '2px dashed rgba(45, 80, 22, 0.2)',
+                    borderRadius: '50%',
+                    animation: 'rotate 8s linear infinite'
+                  }}></div>
+
+                  {/* Center Circle with Icon */}
+                  <div style={{
+                    width: window.innerWidth <= 768 ? '80px' : '96px',
+                    height: window.innerWidth <= 768 ? '80px' : '96px',
+                    background: 'linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%)',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 8px 32px rgba(45, 80, 22, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.2)',
+                    animation: 'float 3s ease-in-out infinite',
+                    border: '3px solid rgba(251, 191, 36, 0.5)',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}>
+                    {/* Scanning Lines Effect */}
+                    <div style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: '2px',
+                      background: 'linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.8), transparent)',
+                      animation: 'scanDown 2s ease-in-out infinite'
+                    }}></div>
+
+                    {/* Map Pin Icon */}
+                    <svg
+                      width={window.innerWidth <= 768 ? "36" : "44"}
+                      height={window.innerWidth <= 768 ? "36" : "44"}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="white"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                  </div>
+
+                  {/* Orbiting Dots */}
+                  <div style={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    animation: 'rotate 4s linear infinite'
+                  }}>
+                    <div style={{
+                      position: 'absolute',
+                      top: '0',
+                      left: '50%',
+                      width: '8px',
+                      height: '8px',
+                      background: '#fbbf24',
+                      borderRadius: '50%',
+                      transform: 'translateX(-50%)',
+                      boxShadow: '0 0 12px rgba(251, 191, 36, 0.8)'
+                    }}></div>
+                  </div>
+
+                  {/* Corner Dots for Tech Feel */}
+                  <div style={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    animation: 'rotate 6s linear infinite reverse'
+                  }}>
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '0',
+                      left: '50%',
+                      width: '6px',
+                      height: '6px',
+                      background: '#4a7c2c',
+                      borderRadius: '50%',
+                      transform: 'translateX(-50%)',
+                      boxShadow: '0 0 8px rgba(74, 124, 44, 0.6)'
+                    }}></div>
+                  </div>
+                </div>
+
+                {/* Main Title with Gradient */}
+                <h3 style={{
+                  fontSize: window.innerWidth <= 768 ? '24px' : '32px',
+                  fontWeight: '900',
+                  background: 'linear-gradient(135deg, #1a3d0f 0%, #2d5016 50%, #4a7c2c 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  margin: '0 0 12px 0',
+                  letterSpacing: '-0.5px'
+                }}>
+                  Mapping Your Property
+                </h3>
+
+                <p style={{
+                  fontSize: window.innerWidth <= 768 ? '14px' : '16px',
+                  color: '#6b7280',
+                  margin: '0 0 36px 0',
+                  lineHeight: '1.6',
+                  fontWeight: '500'
+                }}>
+                  Analyzing <strong style={{ color: '#2d5016', fontWeight: '700' }}>satellite data</strong> and <strong style={{ color: '#2d5016', fontWeight: '700' }}>property records</strong> to measure your lawn
+                </p>
+
+                {/* Premium Loading Steps */}
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '12px',
+                  textAlign: 'left',
+                  marginBottom: '32px'
+                }}>
+                  {[
+                    { icon: 'SAT', text: 'Loading satellite imagery', color: '#3b82f6' },
+                    { icon: 'MAP', text: 'Detecting property boundaries', color: '#8b5cf6' },
+                    { icon: 'CAL', text: 'Calculating property dimensions', color: '#ec4899' },
+                    { icon: 'GEN', text: 'Generating your instant quote', color: '#f59e0b' }
+                  ].map((step, index) => {
+                    const isActive = loadingStep === index;
+                    const isCompleted = loadingStep > index;
+
+                    return (
+                      <div key={index} style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '14px',
+                        padding: '14px 18px',
+                        background: isActive
+                          ? 'linear-gradient(135deg, rgba(45, 80, 22, 0.1) 0%, rgba(74, 124, 44, 0.05) 100%)'
+                          : isCompleted
+                          ? 'rgba(34, 197, 94, 0.05)'
+                          : 'transparent',
+                        borderRadius: '12px',
+                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                        border: isActive
+                          ? '2px solid rgba(251, 191, 36, 0.5)'
+                          : isCompleted
+                          ? '2px solid rgba(34, 197, 94, 0.3)'
+                          : '2px solid rgba(229, 231, 235, 0.5)',
+                        transform: isActive ? 'scale(1.02)' : 'scale(1)',
+                        boxShadow: isActive ? '0 4px 16px rgba(45, 80, 22, 0.15)' : 'none'
+                      }}>
+                        {/* Icon Container */}
+                        <div style={{
+                          width: window.innerWidth <= 768 ? '36px' : '40px',
+                          height: window.innerWidth <= 768 ? '36px' : '40px',
+                          borderRadius: '10px',
+                          background: isActive
+                            ? `linear-gradient(135deg, ${step.color}15 0%, ${step.color}25 100%)`
+                            : isCompleted
+                            ? 'rgba(34, 197, 94, 0.1)'
+                            : 'rgba(229, 231, 235, 0.3)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: window.innerWidth <= 768 ? '9px' : '10px',
+                          fontWeight: '800',
+                          color: isActive ? step.color : isCompleted ? '#22c55e' : '#9ca3af',
+                          flexShrink: 0,
+                          transition: 'all 0.4s ease',
+                          transform: isActive ? 'rotate(0deg)' : 'rotate(-5deg)',
+                          filter: isCompleted ? 'none' : !isActive ? 'grayscale(80%) opacity(0.5)' : 'none',
+                          letterSpacing: '-0.5px'
+                        }}>
+                          {isCompleted ? '✓' : step.icon}
+                        </div>
+
+                        {/* Text */}
+                        <span style={{
+                          fontSize: window.innerWidth <= 768 ? '13px' : '15px',
+                          color: isActive ? '#1f2937' : isCompleted ? '#22c55e' : '#9ca3af',
+                          fontWeight: isActive ? '700' : isCompleted ? '600' : '500',
+                          transition: 'all 0.4s ease',
+                          flex: 1
+                        }}>
+                          {step.text}
+                        </span>
+
+                        {/* Status Indicator */}
+                        {isActive && (
+                          <div style={{
+                            display: 'flex',
+                            gap: '3px',
+                            alignItems: 'center'
+                          }}>
+                            <div style={{
+                              width: '6px',
+                              height: '6px',
+                              borderRadius: '50%',
+                              background: step.color,
+                              animation: 'pulse 1.5s ease-in-out infinite',
+                              boxShadow: `0 0 8px ${step.color}`
+                            }}></div>
+                            <div style={{
+                              width: '6px',
+                              height: '6px',
+                              borderRadius: '50%',
+                              background: step.color,
+                              animation: 'pulse 1.5s ease-in-out 0.2s infinite',
+                              boxShadow: `0 0 8px ${step.color}`
+                            }}></div>
+                            <div style={{
+                              width: '6px',
+                              height: '6px',
+                              borderRadius: '50%',
+                              background: step.color,
+                              animation: 'pulse 1.5s ease-in-out 0.4s infinite',
+                              boxShadow: `0 0 8px ${step.color}`
+                            }}></div>
+                          </div>
+                        )}
+
+                        {isCompleted && (
+                          <div style={{
+                            width: '20px',
+                            height: '20px',
+                            borderRadius: '50%',
+                            background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: 'white',
+                            fontSize: '12px',
+                            fontWeight: '700',
+                            boxShadow: '0 2px 8px rgba(34, 197, 94, 0.4)'
+                          }}>
+                            ✓
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Premium Progress Bar */}
+                <div style={{
+                  width: '100%',
+                  marginBottom: '20px'
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '10px'
+                  }}>
+                    <span style={{
+                      fontSize: window.innerWidth <= 768 ? '12px' : '13px',
+                      fontWeight: '600',
+                      color: '#6b7280',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>
+                      Progress
+                    </span>
+                    <span style={{
+                      fontSize: window.innerWidth <= 768 ? '13px' : '14px',
+                      fontWeight: '700',
+                      background: 'linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text'
+                    }}>
+                      {Math.round(((loadingStep + 1) / 4) * 100)}%
+                    </span>
+                  </div>
+
+                  <div style={{
+                    width: '100%',
+                    height: '8px',
+                    backgroundColor: 'rgba(229, 231, 235, 0.5)',
+                    borderRadius: '50px',
+                    overflow: 'hidden',
+                    boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.1)',
+                    position: 'relative'
+                  }}>
+                    {/* Background Shimmer */}
+                    <div style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
+                      animation: 'shimmerMove 2s infinite'
+                    }}></div>
+
+                    {/* Progress Fill */}
+                    <div style={{
+                      height: '100%',
+                      background: 'linear-gradient(90deg, #2d5016 0%, #4a7c2c 50%, #fbbf24 100%)',
+                      width: `${((loadingStep + 1) / 4) * 100}%`,
+                      transition: 'width 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                      borderRadius: '50px',
+                      boxShadow: '0 0 12px rgba(251, 191, 36, 0.5)',
+                      position: 'relative'
+                    }}>
+                      {/* Glowing Tip */}
+                      <div style={{
+                        position: 'absolute',
+                        right: 0,
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: '12px',
+                        height: '12px',
+                        background: '#fbbf24',
+                        borderRadius: '50%',
+                        boxShadow: '0 0 16px rgba(251, 191, 36, 0.8)',
+                        animation: 'pulse 1s ease-in-out infinite'
+                      }}></div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Footer Text */}
+                <p style={{
+                  fontSize: window.innerWidth <= 768 ? '11px' : '12px',
+                  color: '#9ca3af',
+                  margin: '0',
+                  fontWeight: '500',
+                  letterSpacing: '0.3px'
+                }}>
+                  Accessing satellite imagery and official property records
+                </p>
               </div>
             </div>
           )}
@@ -1514,6 +1938,74 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
             @keyframes spin {
               0% { transform: rotate(0deg); }
               100% { transform: rotate(360deg); }
+            }
+
+            @keyframes float {
+              0%, 100% {
+                transform: translateY(0px) scale(1);
+              }
+              50% {
+                transform: translateY(-12px) scale(1.05);
+              }
+            }
+
+            @keyframes rotate {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+
+            @keyframes pulse {
+              0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+              }
+              50% {
+                opacity: 0.4;
+                transform: scale(0.9);
+              }
+            }
+
+            @keyframes fadeInScale {
+              0% {
+                opacity: 0;
+                transform: scale(0.95);
+              }
+              100% {
+                opacity: 1;
+                transform: scale(1);
+              }
+            }
+
+            @keyframes shimmer {
+              0%, 100% {
+                box-shadow: 0 4px 16px rgba(251, 191, 36, 0.4);
+              }
+              50% {
+                box-shadow: 0 4px 24px rgba(251, 191, 36, 0.7);
+              }
+            }
+
+            @keyframes shimmerMove {
+              0% {
+                transform: translateX(-100%);
+              }
+              100% {
+                transform: translateX(200%);
+              }
+            }
+
+            @keyframes scanDown {
+              0% {
+                top: 0;
+                opacity: 0;
+              }
+              50% {
+                opacity: 1;
+              }
+              100% {
+                top: 100%;
+                opacity: 0;
+              }
             }
           `}</style>
 
