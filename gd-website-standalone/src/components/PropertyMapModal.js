@@ -17,14 +17,14 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
 
   console.log('PropertyMapModal rendered with:', { address, coordinates });
 
-  // Minimum loading time (3.2 seconds total for 4 steps)
+  // Minimum loading time (3 seconds total for 3 steps)
   // Hide loading screen only after BOTH map loads AND minimum time passes
   useEffect(() => {
     const minLoadingTimer = setTimeout(() => {
       if (mapLoaded) {
         setIsLoading(false);
       }
-    }, 3200); // 800ms per step * 4 steps
+    }, 3000); // 1000ms per step * 3 steps
 
     return () => clearTimeout(minLoadingTimer);
   }, [mapLoaded]);
@@ -34,17 +34,17 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
     if (mapLoaded) {
       const checkTimer = setTimeout(() => {
         setIsLoading(false);
-      }, 3200);
+      }, 3000);
       return () => clearTimeout(checkTimer);
     }
   }, [mapLoaded]);
 
-  // Progressive loading animation
+  // Progressive loading animation - simpler, just 3 steps
   useEffect(() => {
     if (!isLoading) return;
 
-    const stepDuration = 800;
-    const maxSteps = 4;
+    const stepDuration = 1000;
+    const maxSteps = 3;
     let currentStep = 0;
 
     const interval = setInterval(() => {
@@ -1514,12 +1514,12 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
               {/* Main Loading Card */}
               <div style={{
                 textAlign: 'center',
-                maxWidth: '580px',
+                maxWidth: '500px',
                 width: '100%',
                 background: 'rgba(255, 255, 255, 0.98)',
                 backdropFilter: 'blur(20px)',
                 borderRadius: '24px',
-                padding: window.innerWidth <= 768 ? '36px 24px 32px' : '48px 40px 40px',
+                padding: window.innerWidth <= 768 ? '48px 32px' : '64px 48px',
                 boxShadow: '0 24px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)',
                 position: 'relative',
                 zIndex: 1,
@@ -1527,32 +1527,12 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
                 animation: 'fadeInScale 0.5s ease-out'
               }}>
 
-                {/* Premium Badge */}
-                <div style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
-                  color: '#1f2937',
-                  padding: '8px 20px',
-                  borderRadius: '50px',
-                  fontSize: window.innerWidth <= 768 ? '11px' : '12px',
-                  fontWeight: '700',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.8px',
-                  marginBottom: '24px',
-                  boxShadow: '0 4px 16px rgba(251, 191, 36, 0.4)',
-                  animation: 'shimmer 2s ease-in-out infinite'
-                }}>
-                  INSTANT QUOTE SYSTEM
-                </div>
-
-                {/* Satellite Icon with Orbit Animation */}
+                {/* Big Spinning Circle */}
                 <div style={{
                   position: 'relative',
-                  width: window.innerWidth <= 768 ? '100px' : '120px',
-                  height: window.innerWidth <= 768 ? '100px' : '120px',
-                  margin: '0 auto 28px',
+                  width: window.innerWidth <= 768 ? '180px' : '220px',
+                  height: window.innerWidth <= 768 ? '180px' : '220px',
+                  margin: '0 auto 40px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center'
@@ -1562,23 +1542,23 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
                     position: 'absolute',
                     width: '100%',
                     height: '100%',
-                    border: '2px dashed rgba(45, 80, 22, 0.2)',
+                    border: '3px dashed rgba(45, 80, 22, 0.25)',
                     borderRadius: '50%',
-                    animation: 'rotate 8s linear infinite'
+                    animation: 'rotate 6s linear infinite'
                   }}></div>
 
                   {/* Center Circle with Icon */}
                   <div style={{
-                    width: window.innerWidth <= 768 ? '80px' : '96px',
-                    height: window.innerWidth <= 768 ? '80px' : '96px',
+                    width: window.innerWidth <= 768 ? '150px' : '180px',
+                    height: window.innerWidth <= 768 ? '150px' : '180px',
                     background: 'linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%)',
                     borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    boxShadow: '0 8px 32px rgba(45, 80, 22, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.2)',
+                    boxShadow: '0 12px 48px rgba(45, 80, 22, 0.5), inset 0 2px 12px rgba(255, 255, 255, 0.2)',
                     animation: 'float 3s ease-in-out infinite',
-                    border: '3px solid rgba(251, 191, 36, 0.5)',
+                    border: '4px solid rgba(251, 191, 36, 0.6)',
                     position: 'relative',
                     overflow: 'hidden'
                   }}>
@@ -1588,15 +1568,15 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
                       top: 0,
                       left: 0,
                       right: 0,
-                      height: '2px',
-                      background: 'linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.8), transparent)',
-                      animation: 'scanDown 2s ease-in-out infinite'
+                      height: '3px',
+                      background: 'linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.9), transparent)',
+                      animation: 'scanDown 2.5s ease-in-out infinite'
                     }}></div>
 
                     {/* Map Pin Icon */}
                     <svg
-                      width={window.innerWidth <= 768 ? "36" : "44"}
-                      height={window.innerWidth <= 768 ? "36" : "44"}
+                      width={window.innerWidth <= 768 ? "60" : "72"}
+                      height={window.innerWidth <= 768 ? "60" : "72"}
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="white"
@@ -1620,12 +1600,12 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
                       position: 'absolute',
                       top: '0',
                       left: '50%',
-                      width: '8px',
-                      height: '8px',
+                      width: '12px',
+                      height: '12px',
                       background: '#fbbf24',
                       borderRadius: '50%',
                       transform: 'translateX(-50%)',
-                      boxShadow: '0 0 12px rgba(251, 191, 36, 0.8)'
+                      boxShadow: '0 0 16px rgba(251, 191, 36, 0.9)'
                     }}></div>
                   </div>
 
@@ -1634,265 +1614,53 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
                     position: 'absolute',
                     width: '100%',
                     height: '100%',
-                    animation: 'rotate 6s linear infinite reverse'
+                    animation: 'rotate 5s linear infinite reverse'
                   }}>
                     <div style={{
                       position: 'absolute',
                       bottom: '0',
                       left: '50%',
-                      width: '6px',
-                      height: '6px',
+                      width: '10px',
+                      height: '10px',
                       background: '#4a7c2c',
                       borderRadius: '50%',
                       transform: 'translateX(-50%)',
-                      boxShadow: '0 0 8px rgba(74, 124, 44, 0.6)'
+                      boxShadow: '0 0 12px rgba(74, 124, 44, 0.8)'
                     }}></div>
                   </div>
                 </div>
 
-                {/* Main Title with Gradient */}
-                <h3 style={{
-                  fontSize: window.innerWidth <= 768 ? '24px' : '32px',
-                  fontWeight: '900',
-                  background: 'linear-gradient(135deg, #1a3d0f 0%, #2d5016 50%, #4a7c2c 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  margin: '0 0 12px 0',
-                  letterSpacing: '-0.5px'
-                }}>
-                  Mapping Your Property
-                </h3>
-
-                <p style={{
-                  fontSize: window.innerWidth <= 768 ? '14px' : '16px',
-                  color: '#6b7280',
-                  margin: '0 0 36px 0',
-                  lineHeight: '1.6',
-                  fontWeight: '500'
-                }}>
-                  Analyzing <strong style={{ color: '#2d5016', fontWeight: '700' }}>satellite data</strong> and <strong style={{ color: '#2d5016', fontWeight: '700' }}>property records</strong> to measure your lawn
-                </p>
-
-                {/* Premium Loading Steps */}
+                {/* Simple Rotating Text Messages */}
                 <div style={{
+                  minHeight: '80px',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '12px',
-                  textAlign: 'left',
-                  marginBottom: '32px'
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}>
                   {[
-                    { icon: 'SAT', text: 'Loading satellite imagery', color: '#3b82f6' },
-                    { icon: 'MAP', text: 'Detecting property boundaries', color: '#8b5cf6' },
-                    { icon: 'CAL', text: 'Calculating property dimensions', color: '#ec4899' },
-                    { icon: 'GEN', text: 'Generating your instant quote', color: '#f59e0b' }
-                  ].map((step, index) => {
-                    const isActive = loadingStep === index;
-                    const isCompleted = loadingStep > index;
-
-                    return (
-                      <div key={index} style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '14px',
-                        padding: '14px 18px',
-                        background: isActive
-                          ? 'linear-gradient(135deg, rgba(45, 80, 22, 0.1) 0%, rgba(74, 124, 44, 0.05) 100%)'
-                          : isCompleted
-                          ? 'rgba(34, 197, 94, 0.05)'
-                          : 'transparent',
-                        borderRadius: '12px',
-                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                        border: isActive
-                          ? '2px solid rgba(251, 191, 36, 0.5)'
-                          : isCompleted
-                          ? '2px solid rgba(34, 197, 94, 0.3)'
-                          : '2px solid rgba(229, 231, 235, 0.5)',
-                        transform: isActive ? 'scale(1.02)' : 'scale(1)',
-                        boxShadow: isActive ? '0 4px 16px rgba(45, 80, 22, 0.15)' : 'none'
-                      }}>
-                        {/* Icon Container */}
-                        <div style={{
-                          width: window.innerWidth <= 768 ? '36px' : '40px',
-                          height: window.innerWidth <= 768 ? '36px' : '40px',
-                          borderRadius: '10px',
-                          background: isActive
-                            ? `linear-gradient(135deg, ${step.color}15 0%, ${step.color}25 100%)`
-                            : isCompleted
-                            ? 'rgba(34, 197, 94, 0.1)'
-                            : 'rgba(229, 231, 235, 0.3)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: window.innerWidth <= 768 ? '9px' : '10px',
-                          fontWeight: '800',
-                          color: isActive ? step.color : isCompleted ? '#22c55e' : '#9ca3af',
-                          flexShrink: 0,
-                          transition: 'all 0.4s ease',
-                          transform: isActive ? 'rotate(0deg)' : 'rotate(-5deg)',
-                          filter: isCompleted ? 'none' : !isActive ? 'grayscale(80%) opacity(0.5)' : 'none',
-                          letterSpacing: '-0.5px'
-                        }}>
-                          {isCompleted ? '✓' : step.icon}
-                        </div>
-
-                        {/* Text */}
-                        <span style={{
-                          fontSize: window.innerWidth <= 768 ? '13px' : '15px',
-                          color: isActive ? '#1f2937' : isCompleted ? '#22c55e' : '#9ca3af',
-                          fontWeight: isActive ? '700' : isCompleted ? '600' : '500',
-                          transition: 'all 0.4s ease',
-                          flex: 1
-                        }}>
-                          {step.text}
-                        </span>
-
-                        {/* Status Indicator */}
-                        {isActive && (
-                          <div style={{
-                            display: 'flex',
-                            gap: '3px',
-                            alignItems: 'center'
-                          }}>
-                            <div style={{
-                              width: '6px',
-                              height: '6px',
-                              borderRadius: '50%',
-                              background: step.color,
-                              animation: 'pulse 1.5s ease-in-out infinite',
-                              boxShadow: `0 0 8px ${step.color}`
-                            }}></div>
-                            <div style={{
-                              width: '6px',
-                              height: '6px',
-                              borderRadius: '50%',
-                              background: step.color,
-                              animation: 'pulse 1.5s ease-in-out 0.2s infinite',
-                              boxShadow: `0 0 8px ${step.color}`
-                            }}></div>
-                            <div style={{
-                              width: '6px',
-                              height: '6px',
-                              borderRadius: '50%',
-                              background: step.color,
-                              animation: 'pulse 1.5s ease-in-out 0.4s infinite',
-                              boxShadow: `0 0 8px ${step.color}`
-                            }}></div>
-                          </div>
-                        )}
-
-                        {isCompleted && (
-                          <div style={{
-                            width: '20px',
-                            height: '20px',
-                            borderRadius: '50%',
-                            background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: 'white',
-                            fontSize: '12px',
-                            fontWeight: '700',
-                            boxShadow: '0 2px 8px rgba(34, 197, 94, 0.4)'
-                          }}>
-                            ✓
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* Premium Progress Bar */}
-                <div style={{
-                  width: '100%',
-                  marginBottom: '20px'
-                }}>
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginBottom: '10px'
-                  }}>
-                    <span style={{
-                      fontSize: window.innerWidth <= 768 ? '12px' : '13px',
-                      fontWeight: '600',
-                      color: '#6b7280',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
-                    }}>
-                      Progress
-                    </span>
-                    <span style={{
-                      fontSize: window.innerWidth <= 768 ? '13px' : '14px',
-                      fontWeight: '700',
-                      background: 'linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%)',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text'
-                    }}>
-                      {Math.round(((loadingStep + 1) / 4) * 100)}%
-                    </span>
-                  </div>
-
-                  <div style={{
-                    width: '100%',
-                    height: '8px',
-                    backgroundColor: 'rgba(229, 231, 235, 0.5)',
-                    borderRadius: '50px',
-                    overflow: 'hidden',
-                    boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.1)',
-                    position: 'relative'
-                  }}>
-                    {/* Background Shimmer */}
-                    <div style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
-                      animation: 'shimmerMove 2s infinite'
-                    }}></div>
-
-                    {/* Progress Fill */}
-                    <div style={{
-                      height: '100%',
-                      background: 'linear-gradient(90deg, #2d5016 0%, #4a7c2c 50%, #fbbf24 100%)',
-                      width: `${((loadingStep + 1) / 4) * 100}%`,
-                      transition: 'width 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-                      borderRadius: '50px',
-                      boxShadow: '0 0 12px rgba(251, 191, 36, 0.5)',
-                      position: 'relative'
-                    }}>
-                      {/* Glowing Tip */}
-                      <div style={{
-                        position: 'absolute',
-                        right: 0,
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        width: '12px',
-                        height: '12px',
-                        background: '#fbbf24',
-                        borderRadius: '50%',
-                        boxShadow: '0 0 16px rgba(251, 191, 36, 0.8)',
-                        animation: 'pulse 1s ease-in-out infinite'
-                      }}></div>
+                    'Analyzing satellite imagery...',
+                    'Measuring property boundaries...',
+                    'Calculating lawn dimensions...'
+                  ].map((text, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        position: loadingStep === index ? 'relative' : 'absolute',
+                        opacity: loadingStep === index ? 1 : 0,
+                        transform: loadingStep === index ? 'translateY(0)' : 'translateY(10px)',
+                        transition: 'all 0.5s ease-in-out',
+                        fontSize: window.innerWidth <= 768 ? '16px' : '18px',
+                        fontWeight: '600',
+                        color: '#2d5016',
+                        textAlign: 'center',
+                        padding: '0 20px'
+                      }}
+                    >
+                      {text}
                     </div>
-                  </div>
+                  ))}
                 </div>
-
-                {/* Footer Text */}
-                <p style={{
-                  fontSize: window.innerWidth <= 768 ? '11px' : '12px',
-                  color: '#9ca3af',
-                  margin: '0',
-                  fontWeight: '500',
-                  letterSpacing: '0.3px'
-                }}>
-                  Accessing satellite imagery and official property records
-                </p>
               </div>
             </div>
           )}
@@ -2028,20 +1796,21 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
           )}
         </div>
 
-        {/* Footer - Sticky buttons */}
-        <div style={{
-          padding: window.innerWidth <= 768 ? '10px 12px' : '20px 24px',
-          borderTop: '1px solid #e5e7eb',
-          display: 'flex',
-          gap: window.innerWidth <= 768 ? '8px' : '12px',
-          justifyContent: window.innerWidth <= 768 ? 'stretch' : 'flex-end',
-          flexDirection: window.innerWidth <= 768 ? 'row' : 'row',
-          backgroundColor: 'white',
-          position: 'sticky',
-          bottom: 0,
-          zIndex: 10,
-          boxShadow: '0 -2px 8px rgba(0,0,0,0.05)'
-        }}>
+        {/* Footer - Sticky buttons - Only show after loading completes */}
+        {!isLoading && (
+          <div style={{
+            padding: window.innerWidth <= 768 ? '10px 12px' : '20px 24px',
+            borderTop: '1px solid #e5e7eb',
+            display: 'flex',
+            gap: window.innerWidth <= 768 ? '8px' : '12px',
+            justifyContent: window.innerWidth <= 768 ? 'stretch' : 'flex-end',
+            flexDirection: window.innerWidth <= 768 ? 'row' : 'row',
+            backgroundColor: 'white',
+            position: 'sticky',
+            bottom: 0,
+            zIndex: 10,
+            boxShadow: '0 -2px 8px rgba(0,0,0,0.05)'
+          }}>
           <button
             onClick={onClose}
             style={{
@@ -2083,6 +1852,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
             Continue to Quote
           </button>
         </div>
+        )}
       </div>
     </div>
   );
