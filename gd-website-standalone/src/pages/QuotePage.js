@@ -352,27 +352,51 @@ const QuotePage = () => {
     return total;
   };
 
-  // Service display names and descriptions
+  // Service display names and descriptions with benefits
   const serviceInfo = {
     lawnMowing: {
       name: 'Lawn Mowing',
-      description: 'Professional mowing with edging and cleanup',
-      icon: '🌱'
+      description: 'Professional mowing with precise edging, trimming, and complete cleanup',
+      icon: '🌱',
+      benefits: [
+        'Weekly mowing gets 20% discount',
+        'Includes edging and weed eating',
+        'Grass clippings mulched back into lawn',
+        'Professional equipment for perfect stripes'
+      ]
     },
     bushTrimming: {
       name: 'Bush Trimming',
-      description: 'Precision trimming and shaping of shrubs',
-      icon: '✂️'
+      description: 'Expert shrub shaping and hedge trimming for a polished landscape',
+      icon: '✂️',
+      benefits: [
+        'Priced per bush by size',
+        'Professional shaping techniques',
+        'All clippings hauled away',
+        'Promotes healthy plant growth'
+      ]
     },
     leafCleanup: {
       name: 'Leaf Cleanup',
-      description: 'Complete leaf removal and disposal',
-      icon: '🍂'
+      description: 'Thorough fall cleanup with blowing, raking, and removal',
+      icon: '🍂',
+      benefits: [
+        '20% fall discount available',
+        'Optional hauling service',
+        'Clears lawn, beds, and gutters',
+        'Prepares lawn for winter'
+      ]
     },
     fertilization: {
       name: 'Fertilization',
-      description: 'Professional lawn fertilization treatment',
-      icon: '🌿'
+      description: 'Premium lawn treatment for lush, healthy grass all season',
+      icon: '🌿',
+      benefits: [
+        'Professional-grade products',
+        'Customized nutrient blend',
+        'Promotes thick, green growth',
+        'Weed & feed options available'
+      ]
     }
   };
 
@@ -546,11 +570,14 @@ const QuotePage = () => {
       <div className="quote-container">
         <div className="quote-header">
           <div className="header-content">
-            <h1 style={{ color: 'white' }}>Lawn Care Instant Quote</h1>
+            <h1>Your Custom Lawn Care Quote</h1>
+            <p className="header-subtitle">
+              Select your services below and get instant pricing based on your {propertySize.acres} acre property
+            </p>
           </div>
 
           {/* Property Map with info banner overlay */}
-          <div style={{ position: 'relative', marginTop: '20px' }}>
+          <div className="property-map-container">
             <div
               ref={mapContainerRef}
               className="property-map"
