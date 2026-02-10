@@ -60,15 +60,15 @@ const QuotePage = () => {
   });
 
   // Calculate base lawn mowing price based on property size
-  // $40 minimum, then $5 per 0.1 acre above 0.2 acres
+  // $60 minimum, then $5 per 0.1 acre above 0.2 acres
   const calculateBaseLawnPrice = () => {
-    if (!propertySize?.acres) return 40;
+    if (!propertySize?.acres) return 60;
 
     const acres = parseFloat(propertySize.acres);
 
-    // Minimum price is $40 for properties up to 0.2 acres
+    // Minimum price is $60 for properties up to 0.2 acres
     if (acres <= 0.2) {
-      return 40;
+      return 60;
     }
 
     // Above 0.2 acres: add $5 for every 0.1 acre
@@ -76,7 +76,7 @@ const QuotePage = () => {
     const additionalIncrements = Math.ceil(additionalAcres / 0.1);
     const additionalPrice = additionalIncrements * 5;
 
-    return 40 + additionalPrice;
+    return 60 + additionalPrice;
   };
 
   // Calculate leaf cleanup price based on property size
@@ -324,7 +324,16 @@ const QuotePage = () => {
       if (service.enabled) {
         let price = service.price;
 
-        // Apply 20% fall cleanup discount if selected
+        // Apply frequency modifiers (per-service pricing)
+        if (service.frequency === 'weekly') {
+          price = price * 0.8; // 20% discount per cut
+        } else if (service.frequency === 'bi-weekly') {
+          price = price * 1.1; // 10% surcharge per cut
+        } else if (service.frequency === 'one-time' || service.frequency === 'monthly') {
+          price = price * 1.3; // 30% surcharge for one-time and monthly
+        }
+
+        // Apply 20% fall cleanup discount if selected (after frequency modifier)
         if (name === 'leafCleanup' && service.applyFallDiscount) {
           price = price * 0.8; // 20% off
         }
@@ -333,14 +342,6 @@ const QuotePage = () => {
         if (name === 'leafCleanup' && service.includeHauling) {
           price += service.haulingFee || 0;
         }
-
-        // Apply frequency modifiers (per-service pricing)
-        if (service.frequency === 'weekly') {
-          price = price * 0.8; // 20% discount per cut
-        } else if (service.frequency === 'bi-weekly') {
-          price = price * 1.1; // 10% surcharge per cut
-        }
-        // monthly and one-time stay at base price
 
         total += price;
       }
@@ -811,11 +812,11 @@ const QuotePage = () => {
                                 <>
                                   {service.applyFallDiscount && (
                                     <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '14px' }}>
-                                      ${service.price}
+                                      ${Math.round(service.price * 1.3)}
                                     </span>
                                   )}
                                   <span className="price" style={{ color: service.applyFallDiscount ? '#16a34a' : '#000' }}>
-                                    ${Math.round((service.applyFallDiscount ? service.price * 0.8 : service.price) + (service.includeHauling ? service.haulingFee : 0))}
+                                    ${Math.round((service.applyFallDiscount ? service.price * 1.3 * 0.8 : service.price * 1.3) + (service.includeHauling ? service.haulingFee : 0))}
                                   </span>
                                   {service.applyFallDiscount && (
                                     <span className="discount-badge">
@@ -834,7 +835,7 @@ const QuotePage = () => {
                                 </>
                               ) : (
                                 <>
-                                  <span className="price">${service.price}</span>
+                                  <span className="price">${Math.round(service.price * 1.3)}</span>
                                   <span className="price-label">per service</span>
                                 </>
                               )}
@@ -863,8 +864,11 @@ const QuotePage = () => {
                                 </>
                               ) : (
                                 <>
-                                  <span className="price">${service.price}</span>
+                                  <span className="price">${Math.round(service.price * 1.3)}</span>
                                   <span className="price-label">per cut</span>
+                                  <span style={{ fontSize: '11px', color: '#ef4444', marginTop: '4px' }}>
+                                    +30% monthly surcharge
+                                  </span>
                                 </>
                               )}
                             </div>
@@ -909,7 +913,16 @@ const QuotePage = () => {
                         ${(() => {
                           let price = service.price;
 
-                          // Apply fall discount for leaf cleanup
+                          // Apply frequency modifiers first
+                          if (service.frequency === 'weekly') {
+                            price = Math.round(price * 0.8);
+                          } else if (service.frequency === 'bi-weekly') {
+                            price = Math.round(price * 1.1);
+                          } else if (service.frequency === 'one-time' || service.frequency === 'monthly') {
+                            price = Math.round(price * 1.3);
+                          }
+
+                          // Apply fall discount for leaf cleanup (after frequency)
                           if (serviceName === 'leafCleanup' && service.applyFallDiscount) {
                             price = Math.round(price * 0.8);
                           }
@@ -917,13 +930,6 @@ const QuotePage = () => {
                           // Apply hauling for leaf cleanup
                           if (serviceName === 'leafCleanup' && service.includeHauling) {
                             price += service.haulingFee || 0;
-                          }
-
-                          // Apply frequency modifiers
-                          if (service.frequency === 'weekly') {
-                            price = Math.round(price * 0.8);
-                          } else if (service.frequency === 'bi-weekly') {
-                            price = Math.round(price * 1.1);
                           }
 
                           return price;
