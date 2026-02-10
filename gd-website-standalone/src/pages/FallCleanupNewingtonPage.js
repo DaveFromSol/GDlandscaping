@@ -72,14 +72,14 @@ const FallCleanupNewingtonPage = () => {
   return (
     <FallCleanupTemplate
       townName="Newington, CT"
-      seoTitle="Fall Cleanup Newington CT | Leaf Removal & Seasonal Cleanup | GD Landscaping"
+      seoTitle="Fall Cleanup Newington CT | Leaf Removal & Seasonal Cleanup | G&D Landscaping"
       seoDescription="Leaf removal, pruning, and yard cleanups for Newington Center, Maple Hill, Cedar Mountain, and Berlin Turnpike corridors."
       seoKeywords="fall cleanup Newington CT, leaf removal Newington, yard cleanup Newington Connecticut"
       canonicalUrl="https://www.gdlandscapingllc.com/fall-cleanup-newington-ct"
       structuredData={{
         '@context': 'https://schema.org',
         '@type': 'Service',
-        name: 'Fall Cleanup Newington CT - GD Landscaping',
+        name: 'Fall Cleanup Newington CT - G&D Landscaping',
         description:
           'Professional fall cleanup and leaf removal services for residential and commercial properties throughout Newington, Connecticut.',
         areaServed: {
@@ -88,7 +88,7 @@ const FallCleanupNewingtonPage = () => {
         },
         provider: {
           '@type': 'LocalBusiness',
-          name: 'GD Landscaping',
+          name: 'G&D Landscaping',
           telephone: phoneNumber
         },
         serviceType: 'Fall Cleanup'

@@ -6,14 +6,14 @@ import './NotFoundPage.css';
 const NotFoundPage = () => {
   useEffect(() => {
     // Set document title for 404
-    document.title = '404 - Page Not Found | GD Landscaping';
+    document.title = '404 - Page Not Found | G&D Landscaping';
   }, []);
 
   return (
     <>
       <SEOHead
         title="404 - Page Not Found"
-        description="The page you're looking for doesn't exist. Return to GD Landscaping homepage or explore our services."
+        description="The page you're looking for doesn't exist. Return to G&D Landscaping homepage or explore our services."
         keywords="404, page not found"
         canonicalUrl="https://www.gdlandscapingllc.com/404"
         robots="noindex, nofollow"

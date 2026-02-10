@@ -72,14 +72,14 @@ const FallCleanupRockyHillPage = () => {
   return (
     <FallCleanupTemplate
       townName="Rocky Hill, CT"
-      seoTitle="Fall Cleanup Rocky Hill CT | Leaf Removal & Yard Cleanups | GD Landscaping"
+      seoTitle="Fall Cleanup Rocky Hill CT | Leaf Removal & Yard Cleanups | G&D Landscaping"
       seoDescription="Leaf removal, pruning, and seasonal cleanup services for Rocky Hill neighborhoods including Dividend, Ferry Landing, and Cromwell Avenue districts."
       seoKeywords="fall cleanup Rocky Hill CT, leaf removal Rocky Hill, yard cleanup Rocky Hill Connecticut"
       canonicalUrl="https://www.gdlandscapingllc.com/fall-cleanup-rocky-hill-ct"
       structuredData={{
         '@context': 'https://schema.org',
         '@type': 'Service',
-        name: 'Fall Cleanup Rocky Hill CT - GD Landscaping',
+        name: 'Fall Cleanup Rocky Hill CT - G&D Landscaping',
         description:
           'Professional fall cleanup, leaf removal, and property winterization in Rocky Hill, Connecticut.',
         areaServed: {
@@ -88,7 +88,7 @@ const FallCleanupRockyHillPage = () => {
         },
         provider: {
           '@type': 'LocalBusiness',
-          name: 'GD Landscaping',
+          name: 'G&D Landscaping',
           telephone: phoneNumber
         },
         serviceType: 'Fall Cleanup'

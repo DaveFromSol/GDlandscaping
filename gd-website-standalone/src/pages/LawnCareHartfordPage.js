@@ -71,7 +71,7 @@ const LawnCareHartfordPage = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "Lawn Care Service Hartford CT - GD Landscaping",
+    "name": "Lawn Care Service Hartford CT - G&D Landscaping",
     "description": "Professional lawn care and maintenance services in Hartford, Connecticut. Weekly mowing, fertilization, and complete yard care for homes and businesses.",
     "address": {
       "@type": "PostalAddress",
@@ -107,7 +107,7 @@ const LawnCareHartfordPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care Hartford CT | Professional Lawn Maintenance Services | GD Landscaping"
+        title="Lawn Care Hartford CT | Professional Lawn Maintenance Services | G&D Landscaping"
         description="Professional lawn care services in Hartford, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance. Serving all Hartford neighborhoods."
         keywords="lawn care Hartford CT, lawn mowing Hartford Connecticut, landscaping Hartford, yard maintenance Hartford CT, fertilization Hartford, weed control Hartford"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-hartford-ct"
@@ -129,7 +129,7 @@ const LawnCareHartfordPage = () => {
                 <span>🌱 Serving Hartford, CT</span>
               </div>
               <h1>Lawn Care Service Hartford CT</h1>
-              <p className="hero-subtitle">Professional lawn maintenance for Hartford residents and businesses. Keep Connecticut's capital city properties looking their best year-round with GD Landscaping's expert lawn care services.</p>
+              <p className="hero-subtitle">Professional lawn maintenance for Hartford residents and businesses. Keep Connecticut's capital city properties looking their best year-round with G&D Landscaping's expert lawn care services.</p>
 
               <div style={{
                 margin: '30px 0',
@@ -198,7 +198,7 @@ const LawnCareHartfordPage = () => {
         <div className="container">
           <section className="location-benefits">
             <div className="section-header">
-              <h2>Why Hartford Chooses GD Landscaping</h2>
+              <h2>Why Hartford Chooses G&D Landscaping</h2>
               <p className="section-subtitle">We understand Hartford's unique urban landscaping needs</p>
             </div>
 
@@ -323,7 +323,7 @@ const LawnCareHartfordPage = () => {
           <section className="lawn-cta">
             <div className="cta-content">
               <h2>Ready for a Beautiful Lawn in Hartford?</h2>
-              <p>Join Hartford residents and businesses who trust GD Landscaping for professional lawn care. Get your free quote today!</p>
+              <p>Join Hartford residents and businesses who trust G&D Landscaping for professional lawn care. Get your free quote today!</p>
               <div className="cta-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Your Hartford Quote

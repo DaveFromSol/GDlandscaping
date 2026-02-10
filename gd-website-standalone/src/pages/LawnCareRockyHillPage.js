@@ -55,7 +55,7 @@ const LawnCareRockyHillPage = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "Lawn Care Service Rocky Hill CT - GD Landscaping",
+    "name": "Lawn Care Service Rocky Hill CT - G&D Landscaping",
     "description": "Professional lawn care and maintenance services in Rocky Hill, Connecticut. Weekly mowing, fertilization, and complete yard care for homes and businesses.",
     "address": {
       "@type": "PostalAddress",
@@ -82,7 +82,7 @@ const LawnCareRockyHillPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care Rocky Hill CT | Professional Lawn Maintenance Services | GD Landscaping"
+        title="Lawn Care Rocky Hill CT | Professional Lawn Maintenance Services | G&D Landscaping"
         description="Professional lawn care services in Rocky Hill, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for Rocky Hill properties."
         keywords="lawn care Rocky Hill CT, lawn mowing Rocky Hill Connecticut, landscaping Rocky Hill, yard maintenance Rocky Hill CT, fertilization Rocky Hill"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-rocky-hill-ct"
@@ -216,7 +216,7 @@ const LawnCareRockyHillPage = () => {
           <section className="lawn-cta">
             <div className="cta-content">
               <h2>Ready for a Beautiful Lawn in Rocky Hill?</h2>
-              <p>Join your Rocky Hill neighbors who trust GD Landscaping for professional lawn care.</p>
+              <p>Join your Rocky Hill neighbors who trust G&D Landscaping for professional lawn care.</p>
               <div className="cta-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Your Rocky Hill Quote

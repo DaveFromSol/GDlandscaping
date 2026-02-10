@@ -9,12 +9,12 @@ const AboutPage = () => {
     "@type": "AboutPage",
     "mainEntity": {
       "@type": "LocalBusiness",
-      "name": "GD Landscaping",
+      "name": "G&D Landscaping",
       "description": "Professional landscaping company serving Berlin CT and surrounding areas with expert lawn care, landscape design, tree services, and hardscaping solutions",
       "foundingDate": "2024",
       "founder": {
         "@type": "Person",
-        "name": "GD Landscaping Team"
+        "name": "G&D Landscaping Team"
       },
       "address": {
         "@type": "PostalAddress",
@@ -39,9 +39,9 @@ const AboutPage = () => {
   return (
     <>
       <SEOHead
-        title="About GD Landscaping - Professional Landscaping Team | Berlin CT Lawn Care Experts"
-        description="Learn about GD Landscaping's team of professional landscapers serving Berlin CT and Hartford County. Expert lawn care, landscape design, and tree services since 2024."
-        keywords="about GD Landscaping, professional landscapers Berlin CT, landscaping company Hartford County, lawn care experts Connecticut, licensed landscaping Berlin CT"
+        title="About G&D Landscaping - Professional Landscaping Team | Berlin CT Lawn Care Experts"
+        description="Learn about G&D Landscaping's team of professional landscapers serving Berlin CT and Hartford County. Expert lawn care, landscape design, and tree services since 2024."
+        keywords="about G&D Landscaping, professional landscapers Berlin CT, landscaping company Hartford County, lawn care experts Connecticut, licensed landscaping Berlin CT"
         canonicalUrl="https://www.gdlandscapingllc.com/about"
         structuredData={structuredData}
       />
@@ -53,7 +53,7 @@ const AboutPage = () => {
               <div className="about-badge">
                 <span>🏆 Berlin CT's Premier Landscaping</span>
               </div>
-              <h1>About GD Landscaping</h1>
+              <h1>About G&D Landscaping</h1>
               <p className="hero-subtitle">Your trusted partners in creating and maintaining beautiful outdoor spaces throughout Berlin CT and surrounding communities.</p>
               <div className="hero-stats">
                 <div className="hero-stat">
@@ -74,7 +74,7 @@ const AboutPage = () => {
               <div className="logo-container">
                 <OptimizedImage
                   src="/GD.png"
-                  alt="GD Landscaping Logo"
+                  alt="G&D Landscaping Logo"
                   width={300}
                   height={300}
                   priority={true}
@@ -94,7 +94,7 @@ const AboutPage = () => {
                 <div className="story-text">
                   <div className="story-highlight">
                     <h3>🚀 Our Mission</h3>
-                    <p>GD Landscaping was founded with a simple mission: to transform outdoor spaces into beautiful, functional environments that our clients can enjoy year-round.</p>
+                    <p>G&D Landscaping was founded with a simple mission: to transform outdoor spaces into beautiful, functional environments that our clients can enjoy year-round.</p>
                   </div>
                   
                   <p>Based in Berlin, Connecticut, we've quickly established ourselves as the area's premier landscaping service provider. What sets us apart is our commitment to quality craftsmanship, personalized service, and deep understanding of Connecticut's unique climate and soil conditions.</p>
@@ -277,7 +277,7 @@ const AboutPage = () => {
           <div className="cta-section">
             <div className="cta-content">
               <h2>Ready to Get Started?</h2>
-              <p>Experience the GD Landscaping difference. Contact us today for your free consultation and discover how we can transform your outdoor space.</p>
+              <p>Experience the G&D Landscaping difference. Contact us today for your free consultation and discover how we can transform your outdoor space.</p>
               <div className="cta-buttons">
                 <Link to="/contact" className="cta-primary">Get Free Quote</Link>
                 <Link to="/services" className="cta-secondary">View Our Services</Link>

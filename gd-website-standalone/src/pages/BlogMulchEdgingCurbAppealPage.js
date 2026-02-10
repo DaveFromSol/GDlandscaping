@@ -9,7 +9,7 @@ const sections = [
     heading: 'Choose the Right Mulch Texture and Color',
     paragraphs: [
       'Dark brown or black mulch delivers the strongest contrast against Connecticut greenery, while shredded bark locks in moisture longer than nuggets. Aim for a two-inch layer—anything deeper suffocates roots. Refresh high-traffic beds every spring and color-intensive display beds twice per season.',
-      'GD Landscaping sources mulch from local mills and blows it in place for a uniform, never-streaky finish.'
+      'G&D Landscaping sources mulch from local mills and blows it in place for a uniform, never-streaky finish.'
     ],
     points: [
       'Avoid dyed mulch near vegetable beds or play areas',
@@ -28,7 +28,7 @@ const sections = [
     heading: 'Layer Plant Material for Instant Dimension',
     paragraphs: [
       'Combine evergreen anchors, mid-height flowering shrubs, and seasonal color to create depth. Repeat plant groupings in odd numbers for a designer look, and leave space for annual color pots near walkways and entry stoops.',
-      'If design isn’t your thing, GD Landscaping’s enhancement team can create a phased plan so you can upgrade beds gradually without sacrificing curb appeal.'
+      'If design isn’t your thing, G&D Landscaping’s enhancement team can create a phased plan so you can upgrade beds gradually without sacrificing curb appeal.'
     ],
     points: [
       'Add low-voltage lighting to highlight clean edges at night',

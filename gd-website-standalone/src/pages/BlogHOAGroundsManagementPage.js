@@ -9,7 +9,7 @@ const sections = [
     heading: 'Build a Seasonal Scope and Stick to It',
     paragraphs: [
       'HOAs juggle mowing, pruning, irrigation, snow, and enhancement work. Break the year into quarters with clear deliverables so residents know what to expect. Publish the calendar and recap progress during monthly meetings to keep communication transparent.',
-      'GD Landscaping assigns a dedicated account manager who attends board meetings, shares before/after photos, and tracks open tasks in one dashboard.'
+      'G&D Landscaping assigns a dedicated account manager who attends board meetings, shares before/after photos, and tracks open tasks in one dashboard.'
     ]
   },
   {
@@ -28,7 +28,7 @@ const sections = [
     heading: 'Proactive Communication Keeps Residents Happy',
     paragraphs: [
       'Send email or text alerts before major projects—tree work, aeration, sealcoating—so homeowners can plan around crews. After storms, share status reports with ETAs for snow removal or debris cleanup. Transparency builds trust and reduces complaint calls to the board.',
-      'GD Landscaping provides storm alerts, route tracking links, and end-of-season reports HOAs can file for their records.'
+      'G&D Landscaping provides storm alerts, route tracking links, and end-of-season reports HOAs can file for their records.'
     ]
   }
 ];

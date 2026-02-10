@@ -37,7 +37,7 @@ const BushTrimmingNewBritainPage = () => {
     <BushTrimmingTemplate
       townName="New Britain, CT"
       seo={{
-        title: 'Bush Trimming New Britain CT - GD Landscaping',
+        title: 'Bush Trimming New Britain CT - G&D Landscaping',
         description:
           'Professional bush trimming and shrub care in New Britain, CT. Serving Little Poland, Belvedere, Sloper, and surrounding neighborhoods.',
         keywords: 'bush trimming New Britain CT, hedge trimming New Britain, shrub pruning New Britain Connecticut',
@@ -45,9 +45,9 @@ const BushTrimmingNewBritainPage = () => {
         structuredData: {
           '@context': 'https://schema.org',
           '@type': 'Service',
-          name: 'Bush Trimming New Britain CT - GD Landscaping',
+          name: 'Bush Trimming New Britain CT - G&D Landscaping',
           areaServed: { '@type': 'City', name: 'New Britain' },
-          provider: { '@type': 'LocalBusiness', name: 'GD Landscaping', telephone: phoneNumber },
+          provider: { '@type': 'LocalBusiness', name: 'G&D Landscaping', telephone: phoneNumber },
           serviceType: 'Bush & Hedge Trimming',
           description: 'Shrub and hedge trimming services for residential and commercial properties in New Britain, CT.'
         }

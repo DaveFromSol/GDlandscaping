@@ -9,7 +9,7 @@ const sections = [
     heading: 'Timing and Growth Cycles Matter',
     paragraphs: [
       'Deciduous hedges prefer a heavy cut in late winter and a light touch-up mid-summer. Evergreens do best with two lighter trims once new growth flushes out. Always start cuts at the base and work upward, keeping the hedge slightly wider at the bottom so sunlight reaches every branch.',
-      'GD Landscaping trains crews on each species so lilacs, privet, and boxwood all get the technique they deserve.'
+      'G&D Landscaping trains crews on each species so lilacs, privet, and boxwood all get the technique they deserve.'
     ]
   },
   {
@@ -28,7 +28,7 @@ const sections = [
     heading: 'Finish with Pro-Level Cleanup and Care',
     paragraphs: [
       'Blow debris from beds, re-edge the drip line, and inspect irrigation heads that sit inside hedges. Apply a slow-release shrub fertilizer in spring and a dose of anti-desiccant on exposed evergreens before winter winds arrive.',
-      'Want turnkey care? GD Landscaping bundles trimming, feeding, and seasonal spraying so your hedges stay dense and lush without the DIY learning curve.'
+      'Want turnkey care? G&D Landscaping bundles trimming, feeding, and seasonal spraying so your hedges stay dense and lush without the DIY learning curve.'
     ]
   }
 ];

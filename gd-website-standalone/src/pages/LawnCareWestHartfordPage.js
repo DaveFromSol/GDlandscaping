@@ -10,7 +10,7 @@ const LawnCareWestHartfordPage = () => {
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      "name": "GD Landscaping - Lawn Care West Hartford CT",
+      "name": "G&D Landscaping - Lawn Care West Hartford CT",
       "description": "Professional lawn care and landscaping services in West Hartford CT - lawn mowing, maintenance, and complete yard care. Serving West Hartford Center, Elmwood, and surrounding areas.",
       "logo": "https://www.gdlandscapingllc.com/GD.png",
       "image": "https://www.gdlandscapingllc.com/GD.png",
@@ -94,7 +94,7 @@ const LawnCareWestHartfordPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care West Hartford CT | Professional Lawn Maintenance Services | GD Landscaping"
+        title="Lawn Care West Hartford CT | Professional Lawn Maintenance Services | G&D Landscaping"
         description="Professional lawn care services in West Hartford, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for West Hartford homes and businesses."
         keywords="lawn care West Hartford CT, lawn mowing West Hartford Connecticut, landscaping West Hartford, yard maintenance West Hartford CT, fertilization West Hartford, weed control West Hartford, West Hartford Center lawn care, Elmwood landscaping"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-west-hartford-ct"
@@ -122,14 +122,14 @@ const LawnCareWestHartfordPage = () => {
             <div>
               <OptimizedImage
                 src="/GD.png"
-                alt="GD Landscaping - Professional Lawn Care Services in West Hartford Connecticut"
+                alt="G&D Landscaping - Professional Lawn Care Services in West Hartford Connecticut"
                 width={200}
                 height={200}
                 priority={true}
                 style={{height: '200px', marginBottom: '2rem'}}
               />
               <h1>Professional Lawn Care in West Hartford, CT</h1>
-              <p>GD Landscaping provides expert lawn maintenance and landscaping services throughout West Hartford Center, Elmwood, Bishop's Corner, and all West Hartford neighborhoods. Beautiful, healthy lawns for West Hartford homes and businesses.</p>
+              <p>G&D Landscaping provides expert lawn maintenance and landscaping services throughout West Hartford Center, Elmwood, Bishop's Corner, and all West Hartford neighborhoods. Beautiful, healthy lawns for West Hartford homes and businesses.</p>
 
               <div style={{
                 margin: '30px 0',
@@ -152,7 +152,7 @@ const LawnCareWestHartfordPage = () => {
 
         <div className="features">
           <div className="container">
-            <h2>Why West Hartford Chooses GD Landscaping</h2>
+            <h2>Why West Hartford Chooses G&D Landscaping</h2>
             <div className="features-grid">
               <div className="feature">
                 <div className="feature-icon">⭐</div>
@@ -188,7 +188,7 @@ const LawnCareWestHartfordPage = () => {
             <div className="testimonials-grid">
               <div className="testimonial">
                 <div className="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p>"GD Landscaping transformed our West Hartford backyard into a beautiful oasis. Professional, reliable, and fantastic results!"</p>
+                <p>"G&D Landscaping transformed our West Hartford backyard into a beautiful oasis. Professional, reliable, and fantastic results!"</p>
                 <div className="testimonial-author">
                   <strong>Sarah Johnson</strong>
                   <span>West Hartford Homeowner</span>
@@ -226,7 +226,7 @@ const LawnCareWestHartfordPage = () => {
           <div className="container">
             <div className="areas-header">
               <h2>Serving West Hartford and Surrounding Areas</h2>
-              <p>GD Landscaping proudly serves West Hartford, CT and all surrounding neighborhoods. Professional lawn care services for residential and commercial properties throughout West Hartford and Central Connecticut.</p>
+              <p>G&D Landscaping proudly serves West Hartford, CT and all surrounding neighborhoods. Professional lawn care services for residential and commercial properties throughout West Hartford and Central Connecticut.</p>
             </div>
 
             <div className="areas-grid">

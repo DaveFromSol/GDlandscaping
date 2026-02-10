@@ -37,16 +37,16 @@ const BushTrimmingCromwellPage = () => {
     <BushTrimmingTemplate
       townName="Cromwell, CT"
       seo={{
-        title: 'Bush Trimming Cromwell CT - GD Landscaping',
+        title: 'Bush Trimming Cromwell CT - G&D Landscaping',
         description: 'Professional bush and hedge trimming services in Cromwell, CT. Serving Main Street, River Highlands, Nooks Hill, and more.',
         keywords: 'bush trimming Cromwell CT, hedge trimming Cromwell, shrub pruning Cromwell Connecticut',
         canonicalUrl: 'https://www.gdlandscapingllc.com/bush-trimming-cromwell-ct',
         structuredData: {
           '@context': 'https://schema.org',
           '@type': 'Service',
-          name: 'Bush Trimming Cromwell CT - GD Landscaping',
+          name: 'Bush Trimming Cromwell CT - G&D Landscaping',
           areaServed: { '@type': 'City', name: 'Cromwell' },
-          provider: { '@type': 'LocalBusiness', name: 'GD Landscaping', telephone: phoneNumber },
+          provider: { '@type': 'LocalBusiness', name: 'G&D Landscaping', telephone: phoneNumber },
           serviceType: 'Bush & Hedge Trimming',
           description: 'Shrub and hedge trimming services for residential and commercial properties in Cromwell, CT.'
         }

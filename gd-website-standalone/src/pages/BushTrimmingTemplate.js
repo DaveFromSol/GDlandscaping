@@ -79,7 +79,7 @@ const BushTrimmingTemplate = ({
   const localBusinessSchema = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    name: 'GD Landscaping LLC',
+    name: 'G&D Landscaping LLC',
     url: seo.canonicalUrl,
     telephone: hero?.ctaSecondaryText?.replace('Call ', '') || defaultPhoneNumber,
     serviceType: hero?.title || `Bush Trimming ${townName}`,
@@ -199,7 +199,7 @@ const BushTrimmingTemplate = ({
 
           <section className="location-benefits">
             <div className="section-header">
-              <h2>Why {townName.split(',')[0]} Chooses GD Landscaping</h2>
+              <h2>Why {townName.split(',')[0]} Chooses G&D Landscaping</h2>
               <p className="section-subtitle">Licensed crews, sharp equipment, and dependable schedules.</p>
             </div>
             <div className="benefits-grid">

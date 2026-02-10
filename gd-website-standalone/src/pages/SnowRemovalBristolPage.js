@@ -110,11 +110,11 @@ const SnowRemovalBristolPage = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "name": "Snow Removal Services Bristol CT - GD Landscaping",
+    "name": "Snow Removal Services Bristol CT - G&D Landscaping",
     "description": "Professional snow removal and winter maintenance services in Bristol, Connecticut. Seasonal packages available for homes and businesses.",
     "provider": {
       "@type": "LocalBusiness",
-      "name": "GD Landscaping",
+      "name": "G&D Landscaping",
       "logo": "https://www.gdlandscapingllc.com/GD.png",
       "image": [
       "https://www.gdlandscapingllc.com/GD_Landscaping_LLC_Snow_removal.JPG",
@@ -148,7 +148,7 @@ const SnowRemovalBristolPage = () => {
   return (
     <>
       <SEOHead
-        title="Snow Removal Bristol CT | Professional Winter Services | GD Landscaping"
+        title="Snow Removal Bristol CT | Professional Winter Services | G&D Landscaping"
         description="Reliable snow removal services in Bristol, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Bristol CT, snow plowing Bristol Connecticut, winter services Bristol, ice management Bristol CT, residential snow removal Bristol, commercial snow plowing Bristol"
         canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-bristol-ct"
@@ -166,7 +166,7 @@ const SnowRemovalBristolPage = () => {
           {/* SEO Image */}
           <img
             src="/GD_Landscaping_LLC_Snow_removal.JPG"
-            alt="GD Landscaping professional snow removal service in Connecticut"
+            alt="G&D Landscaping professional snow removal service in Connecticut"
             style={{display: 'none'}}
             width="1920"
             height="1080"
@@ -280,7 +280,7 @@ const SnowRemovalBristolPage = () => {
           {/* Why Choose Us */}
           <section className="location-benefits">
             <div className="section-header">
-              <h2>Why Bristol Trusts GD Landscaping</h2>
+              <h2>Why Bristol Trusts G&D Landscaping</h2>
               <p className="section-subtitle">Serving Bristol with professional winter maintenance expertise</p>
             </div>
 
@@ -374,7 +374,7 @@ const SnowRemovalBristolPage = () => {
           <section className="snow-cta">
             <div className="cta-content">
               <h2>Ready for Winter in Bristol?</h2>
-              <p>Join your Bristol neighbors who trust GD Landscaping for reliable snow removal. Get your seasonal package today and enjoy peace of mind all winter long!</p>
+              <p>Join your Bristol neighbors who trust G&D Landscaping for reliable snow removal. Get your seasonal package today and enjoy peace of mind all winter long!</p>
               <div className="cta-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Your Bristol Winter Quote

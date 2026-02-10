@@ -37,7 +37,7 @@ const BushTrimmingFarmingtonPage = () => {
     <BushTrimmingTemplate
       townName="Farmington, CT"
       seo={{
-        title: 'Bush Trimming Farmington CT - GD Landscaping',
+        title: 'Bush Trimming Farmington CT - G&D Landscaping',
         description:
           'Professional bush trimming and hedge shaping in Farmington, CT. Serving Unionville, Devonwood, Talcott Mountain, and surrounding neighborhoods.',
         keywords: 'bush trimming Farmington CT, hedge trimming Farmington, shrub pruning Farmington Connecticut',
@@ -45,9 +45,9 @@ const BushTrimmingFarmingtonPage = () => {
         structuredData: {
           '@context': 'https://schema.org',
           '@type': 'Service',
-          name: 'Bush Trimming Farmington CT - GD Landscaping',
+          name: 'Bush Trimming Farmington CT - G&D Landscaping',
           areaServed: { '@type': 'City', name: 'Farmington' },
-          provider: { '@type': 'LocalBusiness', name: 'GD Landscaping', telephone: phoneNumber },
+          provider: { '@type': 'LocalBusiness', name: 'G&D Landscaping', telephone: phoneNumber },
           serviceType: 'Bush & Hedge Trimming',
           description: 'Shrub and hedge trimming services for residential and commercial properties in Farmington, CT.'
         }

@@ -84,14 +84,14 @@ const FallCleanupMiddletownPage = () => {
   return (
     <FallCleanupTemplate
       townName="Middletown, CT"
-      seoTitle="Fall Cleanup Middletown CT | Leaf Removal & Yard Cleanups | GD Landscaping"
+      seoTitle="Fall Cleanup Middletown CT | Leaf Removal & Yard Cleanups | G&D Landscaping"
       seoDescription="Middletown fall cleanup pros. Leaf removal, pruning, and disposal for downtown, Wesleyan, and riverfront properties."
       seoKeywords="fall cleanup Middletown CT, leaf removal Middletown, yard cleanup Middletown Connecticut"
       canonicalUrl="https://www.gdlandscapingllc.com/fall-cleanup-middletown-ct"
       structuredData={{
         '@context': 'https://schema.org',
         '@type': 'Service',
-        name: 'Fall Cleanup Middletown CT - GD Landscaping',
+        name: 'Fall Cleanup Middletown CT - G&D Landscaping',
         description:
           'Leaf removal, yard cleanups, and property winterization for Middletown, Connecticut homeowners and businesses.',
         areaServed: {
@@ -100,7 +100,7 @@ const FallCleanupMiddletownPage = () => {
         },
         provider: {
           '@type': 'LocalBusiness',
-          name: 'GD Landscaping',
+          name: 'G&D Landscaping',
           telephone: phoneNumber
         },
         serviceType: 'Fall Cleanup'

@@ -9,7 +9,7 @@ const sections = [
     heading: 'Start with Smart Timing and Water Shutoff',
     paragraphs: [
       'The first frost typically hits Hartford County in late October, but underground pipes can freeze even earlier. Shut off the irrigation supply inside your basement or mechanical room, then open the outdoor drain to relieve pressure. Label the valve so nobody accidentally turns it back on mid-winter.',
-      'GD Landscaping techs photograph each step and tag valves for quick spring startups—no guesswork required.'
+      'G&D Landscaping techs photograph each step and tag valves for quick spring startups—no guesswork required.'
     ]
   },
   {
@@ -28,7 +28,7 @@ const sections = [
     heading: 'Finish with Controller, Sensor, and Backflow Prep',
     paragraphs: [
       'Turn the controller to “off” or “rain mode,” remove controller batteries, and store rain sensors indoors. Wrap exposed pipes and backflow assemblies with insulated covers to block wind chill. Bonus: take photos of each zone map so you can hand them to your lawn crew next year.',
-      'Prefer not to crawl around the basement? GD Landscaping offers turnkey irrigation winterization bundled with fall cleanup and snow staking.'
+      'Prefer not to crawl around the basement? G&D Landscaping offers turnkey irrigation winterization bundled with fall cleanup and snow staking.'
     ],
     points: [
       'Label wiring and valves for easy troubleshooting later',

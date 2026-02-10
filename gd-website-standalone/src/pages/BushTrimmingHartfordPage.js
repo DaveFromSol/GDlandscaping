@@ -37,7 +37,7 @@ const BushTrimmingHartfordPage = () => {
     <BushTrimmingTemplate
       townName="Hartford, CT"
       seo={{
-        title: 'Bush Trimming Hartford CT - GD Landscaping',
+        title: 'Bush Trimming Hartford CT - G&D Landscaping',
         description:
           'Professional hedge and shrub trimming in Hartford, CT. Serving downtown, Parkville, Asylum Hill, West End, and South End neighborhoods.',
         keywords: 'bush trimming Hartford CT, hedge trimming Hartford, shrub trimming Hartford Connecticut',
@@ -45,9 +45,9 @@ const BushTrimmingHartfordPage = () => {
         structuredData: {
           '@context': 'https://schema.org',
           '@type': 'Service',
-          name: 'Bush Trimming Hartford CT - GD Landscaping',
+          name: 'Bush Trimming Hartford CT - G&D Landscaping',
           areaServed: { '@type': 'City', name: 'Hartford' },
-          provider: { '@type': 'LocalBusiness', name: 'GD Landscaping', telephone: phoneNumber },
+          provider: { '@type': 'LocalBusiness', name: 'G&D Landscaping', telephone: phoneNumber },
           serviceType: 'Bush & Hedge Trimming',
           description: 'Shrub and hedge trimming for residential, commercial, and multifamily properties across Hartford, CT.'
         }

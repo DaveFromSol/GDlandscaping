@@ -62,7 +62,7 @@ const BlogPostTemplate = ({
           <section className="blog-cta-card">
             <h3>Need help putting this into action?</h3>
             <p>
-              GD Landscaping can handle the heavy lifting so you can relax and enjoy the results. From weekly lawn care to seasonal cleanup and snow removal, we
+              G&D Landscaping can handle the heavy lifting so you can relax and enjoy the results. From weekly lawn care to seasonal cleanup and snow removal, we
               treat your property like our own.
             </p>
             <div className="cta-buttons">

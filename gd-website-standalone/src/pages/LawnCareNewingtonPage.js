@@ -55,7 +55,7 @@ const LawnCareNewingtonPage = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "Lawn Care Service Newington CT - GD Landscaping",
+    "name": "Lawn Care Service Newington CT - G&D Landscaping",
     "description": "Professional lawn care and maintenance services in Newington, Connecticut. Weekly mowing, fertilization, and complete yard care for homes and businesses.",
     "address": {
       "@type": "PostalAddress",
@@ -82,7 +82,7 @@ const LawnCareNewingtonPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care Newington CT | Professional Lawn Maintenance Services | GD Landscaping"
+        title="Lawn Care Newington CT | Professional Lawn Maintenance Services | G&D Landscaping"
         description="Professional lawn care services in Newington, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for all Newington properties."
         keywords="lawn care Newington CT, lawn mowing Newington Connecticut, landscaping Newington, yard maintenance Newington CT, fertilization Newington"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-newington-ct"
@@ -216,7 +216,7 @@ const LawnCareNewingtonPage = () => {
           <section className="lawn-cta">
             <div className="cta-content">
               <h2>Ready for a Beautiful Lawn in Newington?</h2>
-              <p>Join your Newington neighbors who trust GD Landscaping for professional lawn care.</p>
+              <p>Join your Newington neighbors who trust G&D Landscaping for professional lawn care.</p>
               <div className="cta-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Your Newington Quote

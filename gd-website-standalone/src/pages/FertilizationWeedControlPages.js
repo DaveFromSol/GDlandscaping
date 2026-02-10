@@ -8,7 +8,7 @@ const galleryImage = '/IMG_5078 (1).avif';
 const createStructuredData = (town, slug) => ({
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
-  name: `GD Landscaping - Fertilization & Weed Control ${town}`,
+  name: `G&D Landscaping - Fertilization & Weed Control ${town}`,
   url: `https://www.gdlandscapingllc.com/fertilization-weed-control-${slug}-ct`,
   telephone: phoneNumber,
   serviceType: 'Fertilization & Weed Control',
@@ -799,7 +799,7 @@ const configs = [
 const createPage = (config) => () => (
   <FertilizationWeedControlTemplate
     seo={{
-      title: `Fertilization & Weed Control ${config.townName} | GD Landscaping`,
+      title: `Fertilization & Weed Control ${config.townName} | G&D Landscaping`,
       description: config.introCopy,
       keywords: `lawn fertilization ${config.townName.split(',')[0]} CT, weed control ${config.townName.split(',')[0]} CT, lawn care programs ${config.townName.split(',')[0]}, weed prevention ${config.townName.split(',')[0]} CT`,
       canonicalUrl: `https://www.gdlandscapingllc.com/fertilization-weed-control-${config.slug}-ct`,

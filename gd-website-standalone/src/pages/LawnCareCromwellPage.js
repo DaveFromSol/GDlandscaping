@@ -56,7 +56,7 @@ const LawnCareCromwellPage = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "Lawn Care Service Cromwell CT - GD Landscaping",
+    "name": "Lawn Care Service Cromwell CT - G&D Landscaping",
     "description": "Professional lawn care and maintenance services in Cromwell, Connecticut. Weekly mowing, fertilization, and complete yard care for homes and businesses.",
     "address": {
       "@type": "PostalAddress",
@@ -83,7 +83,7 @@ const LawnCareCromwellPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care Cromwell CT | Professional Lawn Maintenance Services | GD Landscaping"
+        title="Lawn Care Cromwell CT | Professional Lawn Maintenance Services | G&D Landscaping"
         description="Professional lawn care services in Cromwell, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for all Cromwell neighborhoods."
         keywords="lawn care Cromwell CT, lawn mowing Cromwell Connecticut, landscaping Cromwell, yard maintenance Cromwell CT, fertilization Cromwell, weed control Cromwell"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-cromwell-ct"
@@ -174,7 +174,7 @@ const LawnCareCromwellPage = () => {
         <div className="container">
           <section className="location-benefits">
             <div className="section-header">
-              <h2>Why Cromwell Chooses GD Landscaping</h2>
+              <h2>Why Cromwell Chooses G&D Landscaping</h2>
               <p className="section-subtitle">We understand Cromwell's riverfront environment and unique growing conditions</p>
             </div>
 
@@ -247,7 +247,7 @@ const LawnCareCromwellPage = () => {
           <section className="lawn-cta">
             <div className="cta-content">
               <h2>Ready for a Beautiful Lawn in Cromwell?</h2>
-              <p>Join your Cromwell neighbors who trust GD Landscaping for professional lawn care.</p>
+              <p>Join your Cromwell neighbors who trust G&D Landscaping for professional lawn care.</p>
               <div className="cta-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Your Cromwell Quote

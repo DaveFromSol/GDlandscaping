@@ -84,14 +84,14 @@ const FallCleanupNewBritainPage = () => {
   return (
     <FallCleanupTemplate
       townName="New Britain, CT"
-      seoTitle="Fall Cleanup New Britain CT | Leaf Removal & Seasonal Cleanup | GD Landscaping"
+      seoTitle="Fall Cleanup New Britain CT | Leaf Removal & Seasonal Cleanup | G&D Landscaping"
       seoDescription="Leaf removal and fall cleanups across New Britain, CT. Serving Little Poland, Belvedere, Sloper, and downtown corridors."
       seoKeywords="fall cleanup New Britain CT, leaf removal New Britain, yard cleanup New Britain Connecticut"
       canonicalUrl="https://www.gdlandscapingllc.com/fall-cleanup-new-britain-ct"
       structuredData={{
         '@context': 'https://schema.org',
         '@type': 'Service',
-        name: 'Fall Cleanup New Britain CT - GD Landscaping',
+        name: 'Fall Cleanup New Britain CT - G&D Landscaping',
         description:
           'Leaf removal, yard cleanups, and property winterization for homes and businesses throughout New Britain, Connecticut.',
         areaServed: {
@@ -100,7 +100,7 @@ const FallCleanupNewBritainPage = () => {
         },
         provider: {
           '@type': 'LocalBusiness',
-          name: 'GD Landscaping',
+          name: 'G&D Landscaping',
           telephone: phoneNumber
         },
         serviceType: 'Fall Cleanup'

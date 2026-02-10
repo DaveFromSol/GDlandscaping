@@ -37,7 +37,7 @@ const BushTrimmingBerlinPage = () => {
     <BushTrimmingTemplate
       townName="Berlin, CT"
       seo={{
-        title: 'Bush Trimming Berlin CT - GD Landscaping',
+        title: 'Bush Trimming Berlin CT - G&D Landscaping',
         description:
           'Professional bush trimming and hedge shaping in Berlin, CT. Serving Kensington, East Berlin, Worthington Ridge, and surrounding neighborhoods.',
         keywords: 'bush trimming Berlin CT, hedge trimming Berlin, shrub pruning Berlin Connecticut',
@@ -45,9 +45,9 @@ const BushTrimmingBerlinPage = () => {
         structuredData: {
           '@context': 'https://schema.org',
           '@type': 'Service',
-          name: 'Bush Trimming Berlin CT - GD Landscaping',
+          name: 'Bush Trimming Berlin CT - G&D Landscaping',
           areaServed: { '@type': 'City', name: 'Berlin' },
-          provider: { '@type': 'LocalBusiness', name: 'GD Landscaping', telephone: phoneNumber },
+          provider: { '@type': 'LocalBusiness', name: 'G&D Landscaping', telephone: phoneNumber },
           serviceType: 'Bush & Hedge Trimming',
           description: 'Shrub and hedge trimming services for residential and commercial properties in Berlin, CT.'
         }

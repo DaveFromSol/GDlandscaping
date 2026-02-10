@@ -11,7 +11,7 @@ const InstantQuotePage = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "GD Landscaping Instant Quote System",
+    "name": "G&D Landscaping Instant Quote System",
     "description": "Get an instant lawn care quote in 30 seconds with property boundary detection and accurate pricing for Berlin CT and surrounding areas",
     "url": "https://www.gdlandscapingllc.com/instant-quote",
     "applicationCategory": "BusinessApplication",
@@ -23,7 +23,7 @@ const InstantQuotePage = () => {
     },
     "provider": {
       "@type": "LocalBusiness",
-      "name": "GD Landscaping",
+      "name": "G&D Landscaping",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Berlin",
@@ -37,7 +37,7 @@ const InstantQuotePage = () => {
   return (
     <>
       <SEOHead
-        title="Instant Lawn Care Quote | GD Landscaping - Free 30-Second Property Quote Berlin CT"
+        title="Instant Lawn Care Quote | G&D Landscaping - Free 30-Second Property Quote Berlin CT"
         description="Get your lawn care quote in 30 seconds! See your property boundary on a map + instant accurate pricing. All CT supported. No credit card required. 100% free."
         keywords="instant lawn quote, free lawn care estimate, property boundary detection, lawn mowing quote Berlin CT, instant landscaping quote Connecticut, lawn care pricing Berlin"
         canonicalUrl="https://www.gdlandscapingllc.com/instant-quote"
@@ -53,7 +53,7 @@ const InstantQuotePage = () => {
           <div className="logo-container">
             <OptimizedImage
               src="/GD.png"
-              alt="GD Landscaping"
+              alt="G&D Landscaping"
               width={200}
               height={200}
               priority={true}
@@ -144,7 +144,7 @@ const InstantQuotePage = () => {
                 <div className="showcase-image-wrapper">
                   <OptimizedImage
                     src="/residential-lawn-service-berlin-ct.jpeg"
-                    alt="Residential Lawn Service - Professional Landscaping Work in Berlin CT by GD Landscaping"
+                    alt="Residential Lawn Service - Professional Landscaping Work in Berlin CT by G&D Landscaping"
                     width={600}
                     height={400}
                   />
@@ -239,7 +239,7 @@ const InstantQuotePage = () => {
       {/* Footer */}
       <footer className="landing-footer">
         <div className="footer-content">
-          <p>© 2025 GD Landscaping LLC</p>
+          <p>© 2025 G&D Landscaping LLC</p>
           <p>Professional lawn care services in Connecticut</p>
           <p className="footer-phone">📞 (860) 526-7583</p>
         </div>

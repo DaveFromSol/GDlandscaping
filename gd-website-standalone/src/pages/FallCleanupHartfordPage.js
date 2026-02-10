@@ -84,14 +84,14 @@ const FallCleanupHartfordPage = () => {
   return (
     <FallCleanupTemplate
       townName="Hartford, CT"
-      seoTitle="Fall Cleanup Hartford CT | Leaf Removal & Seasonal Cleanup | GD Landscaping"
+      seoTitle="Fall Cleanup Hartford CT | Leaf Removal & Seasonal Cleanup | G&D Landscaping"
       seoDescription="Full-service fall cleanup in Hartford, CT. Leaf removal, pruning, and cleanup for downtown, Asylum Hill, Parkville, and West End properties."
       seoKeywords="fall cleanup Hartford CT, leaf removal Hartford, Hartford yard cleanup, fall landscaping Hartford"
       canonicalUrl="https://www.gdlandscapingllc.com/fall-cleanup-hartford-ct"
       structuredData={{
         '@context': 'https://schema.org',
         '@type': 'Service',
-        name: 'Fall Cleanup Hartford CT - GD Landscaping',
+        name: 'Fall Cleanup Hartford CT - G&D Landscaping',
         description:
           'Professional fall cleanup, leaf removal, and property winterization services throughout Hartford, Connecticut.',
         areaServed: {
@@ -100,7 +100,7 @@ const FallCleanupHartfordPage = () => {
         },
         provider: {
           '@type': 'LocalBusiness',
-          name: 'GD Landscaping',
+          name: 'G&D Landscaping',
           telephone: phoneNumber
         },
         serviceType: 'Fall Cleanup'

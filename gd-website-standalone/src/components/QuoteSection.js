@@ -59,7 +59,7 @@ const QuoteSection = ({
             </div>
 
             <div className="quote-why-card">
-              <h3>Why Choose GD Landscaping?</h3>
+              <h3>Why Choose G&D Landscaping?</h3>
               <ul>
                 <li>
                   <span>✓</span>

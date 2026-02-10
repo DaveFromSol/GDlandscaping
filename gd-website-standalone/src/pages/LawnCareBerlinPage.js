@@ -79,7 +79,7 @@ const LawnCareBerlinPage = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "Lawn Care Service Berlin CT - GD Landscaping",
+    "name": "Lawn Care Service Berlin CT - G&D Landscaping",
     "description": "Professional lawn care and maintenance services in Berlin, Connecticut. Weekly mowing, fertilization, and complete yard care for homes and businesses.",
     "address": {
       "@type": "PostalAddress",
@@ -103,7 +103,7 @@ const LawnCareBerlinPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care Berlin CT | Professional Lawn Maintenance Services | GD Landscaping"
+        title="Lawn Care Berlin CT | Professional Lawn Maintenance Services | G&D Landscaping"
         description="Professional lawn care services in Berlin, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance. Serving all Berlin neighborhoods."
         keywords="lawn care Berlin CT, lawn mowing Berlin Connecticut, landscaping Berlin, yard maintenance Berlin CT, fertilization Berlin, weed control Berlin"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-berlin-ct"
@@ -196,7 +196,7 @@ const LawnCareBerlinPage = () => {
           {/* Berlin Specific Benefits */}
           <section className="location-benefits">
             <div className="section-header">
-              <h2>Why Berlin Chooses GD Landscaping</h2>
+              <h2>Why Berlin Chooses G&D Landscaping</h2>
               <p className="section-subtitle">We're based right here in Berlin - your local lawn care experts</p>
             </div>
 
@@ -326,7 +326,7 @@ const LawnCareBerlinPage = () => {
           <section className="lawn-cta">
             <div className="cta-content">
               <h2>Ready for a Beautiful Lawn in Berlin?</h2>
-              <p>Join your Berlin neighbors who trust GD Landscaping for professional lawn care. Get your free quote today!</p>
+              <p>Join your Berlin neighbors who trust G&D Landscaping for professional lawn care. Get your free quote today!</p>
               <div className="cta-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Your Berlin Quote

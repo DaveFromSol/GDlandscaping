@@ -93,7 +93,7 @@ const SnowRemovalFarmingtonPage = () => {
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    name: 'Snow Removal Service Farmington CT - GD Landscaping',
+    name: 'Snow Removal Service Farmington CT - G&D Landscaping',
     description:
       'Professional snow removal services in Farmington, Connecticut. Reliable plowing, shoveling, and ice management for homes, HOAs, and businesses.',
     logo: 'https://www.gdlandscapingllc.com/GD.png',
@@ -111,7 +111,7 @@ const SnowRemovalFarmingtonPage = () => {
   return (
     <>
       <SEOHead
-        title="Snow Removal Farmington CT | Professional Winter Services | GD Landscaping"
+        title="Snow Removal Farmington CT | Professional Winter Services | G&D Landscaping"
         description="Reliable snow removal services in Farmington, Connecticut. Seasonal packages for homes and businesses across Unionville, Devonwood, and Talcott Mountain."
         keywords="snow removal Farmington CT, snow plowing Farmington Connecticut, winter services Farmington, ice management Farmington CT"
         canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-farmington-ct"
@@ -128,7 +128,7 @@ const SnowRemovalFarmingtonPage = () => {
           {/* SEO Image */}
           <img
             src="/GD_Landscaping_LLC_Snow_removal.JPG"
-            alt="GD Landscaping professional snow removal service in Connecticut"
+            alt="G&D Landscaping professional snow removal service in Connecticut"
             style={{display: 'none'}}
             width="1920"
             height="1080"
@@ -228,7 +228,7 @@ const SnowRemovalFarmingtonPage = () => {
 
           <section className="location-benefits">
             <div className="section-header">
-              <h2>Why Farmington Chooses GD Landscaping</h2>
+              <h2>Why Farmington Chooses G&D Landscaping</h2>
               <p className="section-subtitle">Local crews who know every cul-de-sac, condo loop, and commercial plaza.</p>
             </div>
 
@@ -272,7 +272,7 @@ const SnowRemovalFarmingtonPage = () => {
           <section className="snow-cta">
             <div className="cta-content">
               <h2>Ready for Winter in Farmington?</h2>
-              <p>Join your Farmington neighbors who trust GD Landscaping for reliable snow removal.</p>
+              <p>Join your Farmington neighbors who trust G&D Landscaping for reliable snow removal.</p>
               <div className="cta-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Your Farmington Quote

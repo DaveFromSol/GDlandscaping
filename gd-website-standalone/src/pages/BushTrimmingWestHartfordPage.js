@@ -37,7 +37,7 @@ const BushTrimmingWestHartfordPage = () => {
     <BushTrimmingTemplate
       townName="West Hartford, CT"
       seo={{
-        title: 'Bush Trimming West Hartford CT - GD Landscaping',
+        title: 'Bush Trimming West Hartford CT - G&D Landscaping',
         description:
           'Premium bush trimming and hedge shaping in West Hartford, CT. Serving West Hartford Center, Elmwood, Bishop’s Corner, and beyond.',
         keywords: 'bush trimming West Hartford CT, hedge trimming West Hartford, shrub pruning West Hartford Connecticut',
@@ -45,9 +45,9 @@ const BushTrimmingWestHartfordPage = () => {
         structuredData: {
           '@context': 'https://schema.org',
           '@type': 'Service',
-          name: 'Bush Trimming West Hartford CT - GD Landscaping',
+          name: 'Bush Trimming West Hartford CT - G&D Landscaping',
           areaServed: { '@type': 'City', name: 'West Hartford' },
-          provider: { '@type': 'LocalBusiness', name: 'GD Landscaping', telephone: phoneNumber },
+          provider: { '@type': 'LocalBusiness', name: 'G&D Landscaping', telephone: phoneNumber },
           serviceType: 'Bush & Hedge Trimming',
           description: 'Luxury-level hedge and shrub trimming services in West Hartford, Connecticut.'
         }

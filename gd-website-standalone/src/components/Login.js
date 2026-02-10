@@ -68,7 +68,7 @@ const Login = ({ onLogin }) => {
     <div className="login-container">
       <div className="login-card">
         <div className="login-header">
-          <h1>GD Landscaping</h1>
+          <h1>G&D Landscaping</h1>
           <p>Professional Landscape Solutions</p>
         </div>
 

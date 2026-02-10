@@ -157,8 +157,8 @@ const AccountPage = () => {
   return (
     <>
       <SEOHead
-        title="My Account - GD Landscaping | Manage Bookings & Profile"
-        description="Manage your GD Landscaping account, view bookings, and update your profile information."
+        title="My Account - G&D Landscaping | Manage Bookings & Profile"
+        description="Manage your G&D Landscaping account, view bookings, and update your profile information."
         keywords="account dashboard, manage bookings, lawn care account"
         canonicalUrl="https://www.gdlandscapingllc.com/account"
         robots="noindex, nofollow"

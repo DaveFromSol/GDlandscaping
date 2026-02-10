@@ -95,7 +95,7 @@ const SnowRemovalNewingtonPage = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "Snow Removal Service Newington CT - GD Landscaping",
+    "name": "Snow Removal Service Newington CT - G&D Landscaping",
     "description": "Professional snow removal services in Newington, Connecticut. Reliable snow plowing, ice management, and winter maintenance for homes and businesses.",
     "logo": "https://www.gdlandscapingllc.com/GD.png",
     "image": [
@@ -116,7 +116,7 @@ const SnowRemovalNewingtonPage = () => {
   return (
     <>
       <SEOHead
-        title="Snow Removal Newington CT | Professional Winter Services | GD Landscaping"
+        title="Snow Removal Newington CT | Professional Winter Services | G&D Landscaping"
         description="Reliable snow removal services in Newington, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Newington CT, snow plowing Newington Connecticut, winter services Newington, ice management Newington CT, residential snow removal Newington"
         canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-newington-ct"
@@ -133,7 +133,7 @@ const SnowRemovalNewingtonPage = () => {
           {/* SEO Image */}
           <img
             src="/GD_Landscaping_LLC_Snow_removal.JPG"
-            alt="GD Landscaping professional snow removal service in Connecticut"
+            alt="G&D Landscaping professional snow removal service in Connecticut"
             style={{display: 'none'}}
             width="1920"
             height="1080"
@@ -227,7 +227,7 @@ const SnowRemovalNewingtonPage = () => {
 
           <section className="location-benefits">
             <div className="section-header">
-              <h2>Why Newington Chooses GD Landscaping</h2>
+              <h2>Why Newington Chooses G&D Landscaping</h2>
               <p className="section-subtitle">Local crews who know every cul-de-sac, condo loop, and commercial plaza.</p>
             </div>
 
@@ -269,7 +269,7 @@ const SnowRemovalNewingtonPage = () => {
           <section className="snow-cta">
             <div className="cta-content">
               <h2>Ready for Winter in Newington?</h2>
-              <p>Join your Newington neighbors who trust GD Landscaping for reliable snow removal.</p>
+              <p>Join your Newington neighbors who trust G&D Landscaping for reliable snow removal.</p>
               <div className="cta-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Your Newington Quote

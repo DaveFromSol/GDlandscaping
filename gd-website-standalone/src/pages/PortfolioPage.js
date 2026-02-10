@@ -65,11 +65,11 @@ const PortfolioPage = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "ImageGallery",
-    "name": "GD Landscaping Portfolio",
+    "name": "G&D Landscaping Portfolio",
     "description": "Professional landscaping project gallery showcasing our work in Berlin CT and surrounding areas",
     "author": {
       "@type": "LocalBusiness",
-      "name": "GD Landscaping",
+      "name": "G&D Landscaping",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Berlin",
@@ -88,7 +88,7 @@ const PortfolioPage = () => {
   return (
     <>
       <SEOHead
-        title="GD Landscaping Portfolio - Before & After Photos | Berlin CT Landscaping Projects"
+        title="G&D Landscaping Portfolio - Before & After Photos | Berlin CT Landscaping Projects"
         description="View our landscaping portfolio featuring residential and commercial projects in Berlin CT and Hartford County. See lawn maintenance, landscape design, and hardscaping transformations."
         keywords="landscaping portfolio Berlin CT, before after landscaping photos Hartford County, residential landscape design Connecticut, hardscaping projects Berlin CT, lawn transformation photos"
         canonicalUrl="https://www.gdlandscapingllc.com/portfolio"
@@ -98,7 +98,7 @@ const PortfolioPage = () => {
       <div className="portfolio-section">
         <div className="container">
           <h1>Our Recent Work</h1>
-          <p className="section-subtitle">Professional landscaping projects completed in Berlin CT and surrounding areas. See the quality and craftsmanship that sets GD Landscaping apart.</p>
+          <p className="section-subtitle">Professional landscaping projects completed in Berlin CT and surrounding areas. See the quality and craftsmanship that sets G&D Landscaping apart.</p>
 
           {/* Category Filter */}
           <div style={{
@@ -157,7 +157,7 @@ const PortfolioPage = () => {
                 <div className="portfolio-image">
                   <img 
                     src={project.image} 
-                    alt={`${project.title} - Professional Landscaping Work in Berlin CT by GD Landscaping`}
+                    alt={`${project.title} - Professional Landscaping Work in Berlin CT by G&D Landscaping`}
                     className="portfolio-img"
                     onError={(e) => {
                       e.target.style.display = 'none';
@@ -181,7 +181,7 @@ const PortfolioPage = () => {
 
           <div className="portfolio-cta">
             <h2>Ready to Transform Your Outdoor Space?</h2>
-            <p>Contact GD Landscaping today for your free consultation and quote.</p>
+            <p>Contact G&D Landscaping today for your free consultation and quote.</p>
             <div className="cta-buttons">
               <Link to="/contact" className="cta-primary">Get Free Quote</Link>
               <Link to="/services" className="cta-secondary">View Our Services</Link>

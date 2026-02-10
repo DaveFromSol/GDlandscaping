@@ -10,7 +10,7 @@ const LawnCareBristolPage = () => {
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      "name": "GD Landscaping - Lawn Care Bristol CT",
+      "name": "G&D Landscaping - Lawn Care Bristol CT",
       "description": "Professional lawn care and landscaping services in Bristol CT with focused crews delivering mowing, maintenance, and full yard care.",
       "logo": "https://www.gdlandscapingllc.com/GD.png",
       "image": "https://www.gdlandscapingllc.com/GD.png",
@@ -106,7 +106,7 @@ const LawnCareBristolPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care Bristol CT | Professional Lawn Maintenance Services | GD Landscaping"
+        title="Lawn Care Bristol CT | Professional Lawn Maintenance Services | G&D Landscaping"
         description="Professional lawn care services in Bristol, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for homes and businesses."
         keywords="lawn care Bristol CT, lawn mowing Bristol Connecticut, landscaping Bristol, yard maintenance Bristol CT, fertilization Bristol, weed control Bristol"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-bristol-ct"
@@ -134,14 +134,14 @@ const LawnCareBristolPage = () => {
             <div>
               <OptimizedImage
                 src="/GD.png"
-                alt="GD Landscaping - Professional Lawn Care Services in Bristol Connecticut"
+                alt="G&D Landscaping - Professional Lawn Care Services in Bristol Connecticut"
                 width={200}
                 height={200}
                 priority={true}
                 style={{height: '200px', marginBottom: '2rem'}}
               />
               <h1>Professional Lawn Care in Bristol, CT</h1>
-              <p>GD Landscaping provides expert lawn maintenance and landscaping services throughout Bristol. Expect clean lines, reliable scheduling, and lawns that look great all season.</p>
+              <p>G&D Landscaping provides expert lawn maintenance and landscaping services throughout Bristol. Expect clean lines, reliable scheduling, and lawns that look great all season.</p>
 
               <div style={{
                 margin: '30px 0',
@@ -164,7 +164,7 @@ const LawnCareBristolPage = () => {
 
         <div className="features">
           <div className="container">
-            <h2>Why Bristol Chooses GD Landscaping</h2>
+            <h2>Why Bristol Chooses G&D Landscaping</h2>
             <div className="features-grid">
               <div className="feature">
                 <div className="feature-icon">⭐</div>
@@ -231,7 +231,7 @@ const LawnCareBristolPage = () => {
             <div className="testimonials-grid">
               <div className="testimonial">
                 <div className="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p>"GD Landscaping transformed our Bristol backyard into a beautiful oasis. Professional, reliable, and fantastic results!"</p>
+                <p>"G&D Landscaping transformed our Bristol backyard into a beautiful oasis. Professional, reliable, and fantastic results!"</p>
                 <div className="testimonial-author">
                   <strong>Sarah Johnson</strong>
                   <span>Bristol Homeowner</span>
@@ -269,7 +269,7 @@ const LawnCareBristolPage = () => {
           <div className="container">
             <div className="areas-header">
               <h2>Serving Bristol and Surrounding Areas</h2>
-              <p>GD Landscaping proudly serves Bristol, CT and all surrounding neighborhoods. Professional lawn care services for residential and commercial properties throughout Bristol and Central Connecticut.</p>
+              <p>G&D Landscaping proudly serves Bristol, CT and all surrounding neighborhoods. Professional lawn care services for residential and commercial properties throughout Bristol and Central Connecticut.</p>
             </div>
 
             <div className="areas-grid">

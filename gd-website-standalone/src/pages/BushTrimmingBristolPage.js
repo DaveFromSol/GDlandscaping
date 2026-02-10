@@ -37,7 +37,7 @@ const BushTrimmingBristolPage = () => {
     <BushTrimmingTemplate
       townName="Bristol, CT"
       seo={{
-        title: 'Bush Trimming Bristol CT - GD Landscaping',
+        title: 'Bush Trimming Bristol CT - G&D Landscaping',
         description:
           'Professional bush trimming and hedge shaping in Bristol, CT with attentive crews and precision equipment.',
         keywords: 'bush trimming Bristol CT, hedge trimming Bristol, shrub trimming Bristol Connecticut',
@@ -45,10 +45,10 @@ const BushTrimmingBristolPage = () => {
         structuredData: {
           '@context': 'https://schema.org',
           '@type': 'Service',
-          name: 'Bush Trimming Bristol CT - GD Landscaping',
+          name: 'Bush Trimming Bristol CT - G&D Landscaping',
           areaServed: { '@type': 'City', name: 'Bristol' },
           serviceType: 'Bush & Hedge Trimming',
-          provider: { '@type': 'LocalBusiness', name: 'GD Landscaping', telephone: phoneNumber },
+          provider: { '@type': 'LocalBusiness', name: 'G&D Landscaping', telephone: phoneNumber },
           description: 'Shrub and hedge trimming services across Bristol, Connecticut.'
         }
       }}

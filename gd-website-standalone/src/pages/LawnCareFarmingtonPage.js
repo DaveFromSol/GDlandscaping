@@ -56,7 +56,7 @@ const LawnCareFarmingtonPage = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "Lawn Care Service Farmington CT - GD Landscaping",
+    "name": "Lawn Care Service Farmington CT - G&D Landscaping",
     "description": "Professional lawn care and maintenance services in Farmington, Connecticut. Weekly mowing, fertilization, and complete yard care for homes and businesses.",
     "address": {
       "@type": "PostalAddress",
@@ -83,7 +83,7 @@ const LawnCareFarmingtonPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care Farmington CT | Professional Lawn Maintenance Services | GD Landscaping"
+        title="Lawn Care Farmington CT | Professional Lawn Maintenance Services | G&D Landscaping"
         description="Professional lawn care services in Farmington, CT. Weekly mowing, fertilization, weed control, and complete yard maintenance for Unionville, Devonwood, and surrounding neighborhoods."
         keywords="lawn care Farmington CT, lawn mowing Farmington Connecticut, landscaping Farmington, yard maintenance Farmington CT"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-farmington-ct"
@@ -217,7 +217,7 @@ const LawnCareFarmingtonPage = () => {
           <section className="lawn-cta">
             <div className="cta-content">
               <h2>Ready for a Beautiful Lawn in Farmington?</h2>
-              <p>Join your Farmington neighbors who trust GD Landscaping for professional lawn care.</p>
+              <p>Join your Farmington neighbors who trust G&D Landscaping for professional lawn care.</p>
               <div className="cta-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Your Farmington Quote

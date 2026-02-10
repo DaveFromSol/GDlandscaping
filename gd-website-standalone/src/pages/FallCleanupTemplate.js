@@ -73,7 +73,7 @@ const FallCleanupTemplate = ({
 
   const resolvedCta = cta || {
     title: `Ready for Fall Cleanup in ${townName}?`,
-    body: `Join your ${townName} neighbors who trust GD Landscaping for thorough fall cleanups, leaf removal, and property winterization.`,
+    body: `Join your ${townName} neighbors who trust G&D Landscaping for thorough fall cleanups, leaf removal, and property winterization.`,
     primaryText: `Get Your ${townName} Quote`,
     secondaryText: 'Call (860) 526-7583'
   };
@@ -83,7 +83,7 @@ const FallCleanupTemplate = ({
   const localBusinessSchema = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    name: 'GD Landscaping LLC',
+    name: 'G&D Landscaping LLC',
     url: canonicalUrl,
     telephone: phoneNumber,
     serviceType: hero?.title || `Fall Cleanup ${townName}`,
@@ -248,7 +248,7 @@ const FallCleanupTemplate = ({
 
           <section className="location-benefits">
             <div className="section-header">
-              <h2>Why {townName.split(',')[0]} Trusts GD Landscaping</h2>
+              <h2>Why {townName.split(',')[0]} Trusts G&D Landscaping</h2>
               <p className="section-subtitle">Local crews, pro equipment, and reliable scheduling all season.</p>
             </div>
 

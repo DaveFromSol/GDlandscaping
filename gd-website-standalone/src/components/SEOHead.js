@@ -8,7 +8,7 @@ const SEOHead = ({
   ogImage = '/GD.png',
   ogType = 'website',
   twitterCard = 'summary_large_image',
-  author = 'GD Landscaping',
+  author = 'G&D Landscaping',
   robots = 'index, follow',
   structuredData,
   geoRegion = 'US-CT',
@@ -67,26 +67,26 @@ const SEOHead = ({
     updateMetaTag('property', 'og:url', canonicalUrl);
     updateMetaTag('property', 'og:image', fullOgImage);
     updateMetaTag('property', 'og:type', ogType);
-    updateMetaTag('property', 'og:site_name', 'GD Landscaping');
+    updateMetaTag('property', 'og:site_name', 'G&D Landscaping');
     updateMetaTag('property', 'og:locale', 'en_US');
     updateMetaTag('property', 'og:image:width', '1200');
     updateMetaTag('property', 'og:image:height', '630');
-    updateMetaTag('property', 'og:image:alt', 'GD Landscaping - Professional Lawn Care and Snow Removal Services');
+    updateMetaTag('property', 'og:image:alt', 'G&D Landscaping - Professional Lawn Care and Snow Removal Services');
 
     // Update Twitter Card tags (complete set)
     updateMetaTag('name', 'twitter:card', twitterCard);
     updateMetaTag('name', 'twitter:title', title);
     updateMetaTag('name', 'twitter:description', description);
     updateMetaTag('name', 'twitter:image', fullOgImage);
-    updateMetaTag('name', 'twitter:image:alt', 'GD Landscaping - Professional Lawn Care and Snow Removal Services');
+    updateMetaTag('name', 'twitter:image:alt', 'G&D Landscaping - Professional Lawn Care and Snow Removal Services');
     
     // Add structured data with base Organization schema
     // Base Organization schema that appears on every page
     const baseOrganizationSchema = {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "GD Landscaping LLC",
-      "legalName": "GD Landscaping LLC",
+      "name": "G&D Landscaping LLC",
+      "legalName": "G&D Landscaping LLC",
       "url": "https://www.gdlandscapingllc.com",
       "logo": "https://www.gdlandscapingllc.com/GD.png",
       "image": "https://www.gdlandscapingllc.com/GD.png",

@@ -81,7 +81,7 @@ const SnowRemovalHartfordPage = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "Snow Removal Service Hartford CT - GD Landscaping",
+    "name": "Snow Removal Service Hartford CT - G&D Landscaping",
     "description": "Professional snow removal services in Hartford, Connecticut. Reliable snow plowing, ice management, and winter maintenance for homes and businesses.",
     "logo": "https://www.gdlandscapingllc.com/GD.png",
     "image": [
@@ -111,7 +111,7 @@ const SnowRemovalHartfordPage = () => {
   return (
     <>
       <SEOHead
-        title="Snow Removal Hartford CT | Professional Winter Services | GD Landscaping"
+        title="Snow Removal Hartford CT | Professional Winter Services | G&D Landscaping"
         description="Reliable snow removal services in Hartford, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Hartford CT, snow plowing Hartford Connecticut, winter services Hartford, ice management Hartford CT, residential snow removal Hartford, commercial snow plowing Hartford"
         canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-hartford-ct"
@@ -128,7 +128,7 @@ const SnowRemovalHartfordPage = () => {
           {/* SEO Image */}
           <img
             src="/GD_Landscaping_LLC_Snow_removal.JPG"
-            alt="GD Landscaping professional snow removal service in Connecticut"
+            alt="G&D Landscaping professional snow removal service in Connecticut"
             style={{display: 'none'}}
             width="1920"
             height="1080"
@@ -187,7 +187,7 @@ const SnowRemovalHartfordPage = () => {
         <div className="container">
           <section className="location-benefits">
             <div className="section-header">
-              <h2>Why Hartford Chooses GD Landscaping</h2>
+              <h2>Why Hartford Chooses G&D Landscaping</h2>
               <p className="section-subtitle">We understand Hartford's unique urban winter challenges</p>
             </div>
 
@@ -312,7 +312,7 @@ const SnowRemovalHartfordPage = () => {
           <section className="snow-cta">
             <div className="cta-content">
               <h2>Ready for Winter in Hartford?</h2>
-              <p>Join Hartford residents and businesses who trust GD Landscaping for reliable snow removal. Get your seasonal package today!</p>
+              <p>Join Hartford residents and businesses who trust G&D Landscaping for reliable snow removal. Get your seasonal package today!</p>
               <div className="cta-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Your Hartford Quote

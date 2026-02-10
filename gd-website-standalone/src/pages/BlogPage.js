@@ -7,8 +7,8 @@ const BlogPage = () => {
   return (
     <>
       <SEOHead
-        title="Landscaping Tips & Seasonal Guides | GD Landscaping Blog"
-        description="Actionable lawn care, snow removal, and landscaping advice for Connecticut property owners. Brought to you by GD Landscaping in Berlin, CT."
+        title="Landscaping Tips & Seasonal Guides | G&D Landscaping Blog"
+        description="Actionable lawn care, snow removal, and landscaping advice for Connecticut property owners. Brought to you by G&D Landscaping in Berlin, CT."
         canonicalUrl="https://www.gdlandscapingllc.com/blog"
         keywords="Connecticut landscaping blog, lawn care tips CT, snow removal advice"
       />

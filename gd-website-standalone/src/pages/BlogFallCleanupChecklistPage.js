@@ -9,7 +9,7 @@ const sections = [
     heading: 'Step 1: Remove Leaves Before They Smother Turf',
     paragraphs: [
       'Leaves left more than a week trap moisture, block sunlight, and invite snow mold. Start with a high-mow to chop light debris, then break out backpack blowers or vacuums for heavier layers. Don’t forget decks, patios, and AC units.',
-      'GD Landscaping runs weekly leaf routes in Hartford County so lawns stay breathable even during peak drop. We can haul debris away or stage it curbside per town rules.'
+      'G&D Landscaping runs weekly leaf routes in Hartford County so lawns stay breathable even during peak drop. We can haul debris away or stage it curbside per town rules.'
     ],
     points: [
       'Schedule cleanup every 7–10 days during peak fall',
@@ -33,7 +33,7 @@ const sections = [
     heading: 'Step 3: Final Mow, Gutter Check, and Equipment Winterization',
     paragraphs: [
       'Drop mowing height a half inch on the final pass to discourage matting, then blow out gutters so thawing snow doesn’t overflow onto walks. Winterize irrigation lines and fuel-stabilize small equipment so spring start-up is painless.',
-      'Want the easy button? Bundle fall cleanup, gutter work, and irrigation blowouts with GD Landscaping and our project manager handles every appointment.'
+      'Want the easy button? Bundle fall cleanup, gutter work, and irrigation blowouts with G&D Landscaping and our project manager handles every appointment.'
     ],
     points: [
       'Mark driveway edges for the snow crew before the first storm',

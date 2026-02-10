@@ -10,7 +10,7 @@ const HomePage = () => {
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      "name": "GD Landscaping",
+      "name": "G&D Landscaping",
       "description": "Professional year-round landscaping services in Berlin CT - lawn care in summer, snow removal in winter. Serving Hartford County and surrounding Connecticut communities.",
       "logo": "https://www.gdlandscapingllc.com/GD.png",
       "image": "https://www.gdlandscapingllc.com/GD.png",
@@ -144,7 +144,7 @@ const HomePage = () => {
             "name": "Michael Thompson"
           },
           "datePublished": "2024-11-15",
-          "reviewBody": "GD Landscaping has been taking care of our lawn for two years now. Always on time, professional crew, and our yard looks amazing. Highly recommend for anyone in Berlin or Hartford County.",
+          "reviewBody": "G&D Landscaping has been taking care of our lawn for two years now. Always on time, professional crew, and our yard looks amazing. Highly recommend for anyone in Berlin or Hartford County.",
           "reviewRating": {
             "@type": "Rating",
             "ratingValue": "5",
@@ -189,7 +189,7 @@ const HomePage = () => {
             "name": "Jennifer Lee"
           },
           "datePublished": "2024-08-14",
-          "reviewBody": "We've tried several landscaping companies in Hartford and GD Landscaping is by far the best. They transformed our overgrown yard into something beautiful. Weekly maintenance has been perfect.",
+          "reviewBody": "We've tried several landscaping companies in Hartford and G&D Landscaping is by far the best. They transformed our overgrown yard into something beautiful. Weekly maintenance has been perfect.",
           "reviewRating": {
             "@type": "Rating",
             "ratingValue": "5",
@@ -234,8 +234,8 @@ const HomePage = () => {
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "GD Landscaping",
-      "alternateName": "GD Landscaping LLC",
+      "name": "G&D Landscaping",
+      "alternateName": "G&D Landscaping LLC",
       "logo": "https://www.gdlandscapingllc.com/GD.png",
       "url": "https://www.gdlandscapingllc.com",
       "sameAs": [
@@ -255,8 +255,8 @@ const HomePage = () => {
   return (
     <>
       <SEOHead
-        title="Professional Landscaping in Berlin CT | GD Landscaping - Lawn Care & Snow Removal"
-        description="Beautiful lawns in summer, clear driveways in winter. GD Landscaping provides year-round landscaping and snow removal services in Berlin, Hartford County CT."
+        title="Professional Landscaping in Berlin CT | G&D Landscaping - Lawn Care & Snow Removal"
+        description="Beautiful lawns in summer, clear driveways in winter. G&D Landscaping provides year-round landscaping and snow removal services in Berlin, Hartford County CT."
         keywords="landscaping Berlin CT, lawn care Connecticut, snow removal Berlin, lawn mowing Hartford County, landscape design Berlin CT, hardscaping Connecticut, bush trimming Berlin, leaf cleanup Hartford County, fertilization services CT"
         canonicalUrl="https://www.gdlandscapingllc.com/"
         ogImage="/GD.png"
@@ -346,7 +346,7 @@ const HomePage = () => {
           <div className="hero-content">
             <div>
               <h1>Beautiful Lawns in Summer, Clear Driveways in Winter</h1>
-              <p>GD Landscaping keeps your property beautiful year-round — from lawn care to snow removal. Serving Berlin, Hartford County, and surrounding Connecticut communities within 25 miles.</p>
+              <p>G&D Landscaping keeps your property beautiful year-round — from lawn care to snow removal. Serving Berlin, Hartford County, and surrounding Connecticut communities within 25 miles.</p>
 
               <div className="homepage-address-input-container">
                 <div className="homepage-input-badge">⚡ GET INSTANT QUOTE ⚡</div>
@@ -373,7 +373,7 @@ const HomePage = () => {
 
         <div className="features">
           <div className="container">
-            <h2>Why Choose GD Landscaping?</h2>
+            <h2>Why Choose G&D Landscaping?</h2>
             <div className="features-grid">
               <div className="feature">
                 <div className="feature-icon">⭐</div>
@@ -407,7 +407,7 @@ const HomePage = () => {
             }}>
               <OptimizedImage
                 src="/commercial-property-landscaping-connecticut.jpeg"
-                alt="Commercial property landscaping and lawn maintenance services in Connecticut by GD Landscaping"
+                alt="Commercial property landscaping and lawn maintenance services in Connecticut by G&D Landscaping"
                 width={300}
                 height={200}
                 style={{
@@ -507,7 +507,7 @@ const HomePage = () => {
             <div className="testimonials-grid">
               <div className="testimonial">
                 <div className="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p>"GD Landscaping transformed our backyard into a beautiful oasis. Professional, reliable, and fantastic results!"</p>
+                <p>"G&D Landscaping transformed our backyard into a beautiful oasis. Professional, reliable, and fantastic results!"</p>
                 <div className="testimonial-author">
                   <strong>Sarah Johnson</strong>
                   <span>Homeowner</span>
@@ -550,7 +550,7 @@ const HomePage = () => {
               <figure className="before-card">
                 <OptimizedImage
                   src="/images/before-farmington.jpg"
-                  alt="Overgrown hedges and bushes before professional trimming service in Newington CT by GD Landscaping"
+                  alt="Overgrown hedges and bushes before professional trimming service in Newington CT by G&D Landscaping"
                   width={600}
                   height={400}
                 />
@@ -572,7 +572,7 @@ const HomePage = () => {
           <div className="container">
             <div className="areas-header">
               <h2>Where We Operate</h2>
-              <p>GD Landscaping proudly serves Berlin, CT and surrounding communities within a 25-mile radius. Professional landscaping services for residential and commercial properties throughout Central Connecticut.</p>
+              <p>G&D Landscaping proudly serves Berlin, CT and surrounding communities within a 25-mile radius. Professional landscaping services for residential and commercial properties throughout Central Connecticut.</p>
             </div>
             
             <div className="areas-grid">

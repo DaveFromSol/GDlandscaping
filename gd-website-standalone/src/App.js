@@ -117,8 +117,8 @@ const Navigation = () => {
         <div className="nav-container">
           <div className="logo">
             <Link to="/">
-              <img src="/GD.png" alt="GD Landscaping - Professional Landscaping Services Berlin CT" style={{height: '70px', marginRight: '10px'}} />
-              <h2>GD Landscaping</h2>
+              <img src="/GD.png" alt="G&D Landscaping - Professional Landscaping Services Berlin CT" style={{height: '70px', marginRight: '10px'}} />
+              <h2>G&D Landscaping</h2>
             </Link>
           </div>
 
@@ -465,7 +465,7 @@ function App() {
             <div className="container">
               <div className="footer-content">
                 <div className="footer-section">
-                  <h3>GD Landscaping</h3>
+                  <h3>G&D Landscaping</h3>
                   <p>Professional landscape solutions for residential and commercial properties.</p>
                   <div className="footer-nav-links">
                     <Link to="/">Home</Link>
@@ -504,7 +504,7 @@ function App() {
               </div>
 
               <div className="footer-bottom">
-                <p>&copy; 2025 GD Landscaping. All rights reserved.</p>
+                <p>&copy; 2025 G&D Landscaping. All rights reserved.</p>
               </div>
             </div>
           </footer>

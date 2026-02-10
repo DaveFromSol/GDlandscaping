@@ -67,7 +67,7 @@ const LawnCareNewBritainPage = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "Lawn Care Service New Britain CT - GD Landscaping",
+    "name": "Lawn Care Service New Britain CT - G&D Landscaping",
     "description": "Professional lawn care and maintenance services in New Britain, Connecticut. Weekly mowing, fertilization, and complete yard care for homes and businesses.",
     "address": {
       "@type": "PostalAddress",
@@ -103,7 +103,7 @@ const LawnCareNewBritainPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care New Britain CT | Professional Lawn Maintenance Services | GD Landscaping"
+        title="Lawn Care New Britain CT | Professional Lawn Maintenance Services | G&D Landscaping"
         description="Professional lawn care services in New Britain, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance. Serving all New Britain neighborhoods."
         keywords="lawn care New Britain CT, lawn mowing New Britain Connecticut, landscaping New Britain, yard maintenance New Britain CT, fertilization New Britain, weed control New Britain"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-new-britain-ct"
@@ -126,7 +126,7 @@ const LawnCareNewBritainPage = () => {
                 <span>🌱 Serving New Britain, CT</span>
               </div>
               <h1>Lawn Care Service New Britain CT</h1>
-              <p className="hero-subtitle">Professional lawn maintenance for New Britain residents and businesses. Keep your Hardware City property looking its best year-round with GD Landscaping's expert lawn care services.</p>
+              <p className="hero-subtitle">Professional lawn maintenance for New Britain residents and businesses. Keep your Hardware City property looking its best year-round with G&D Landscaping's expert lawn care services.</p>
 
               <div style={{
                 margin: '30px 0',
@@ -196,7 +196,7 @@ const LawnCareNewBritainPage = () => {
           {/* New Britain Specific Benefits */}
           <section className="location-benefits">
             <div className="section-header">
-              <h2>Why New Britain Chooses GD Landscaping</h2>
+              <h2>Why New Britain Chooses G&D Landscaping</h2>
               <p className="section-subtitle">We understand New Britain's unique soil conditions and growing environment</p>
             </div>
 
@@ -325,7 +325,7 @@ const LawnCareNewBritainPage = () => {
           <section className="lawn-cta">
             <div className="cta-content">
               <h2>Ready for a Beautiful Lawn in New Britain?</h2>
-              <p>Join your New Britain neighbors who trust GD Landscaping for professional lawn care. Get your free quote today!</p>
+              <p>Join your New Britain neighbors who trust G&D Landscaping for professional lawn care. Get your free quote today!</p>
               <div className="cta-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Your New Britain Quote

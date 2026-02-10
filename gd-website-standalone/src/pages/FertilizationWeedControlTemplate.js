@@ -111,7 +111,7 @@ const FertilizationWeedControlTemplate = ({
                 </div>
               </div>
               <div className="fert-overview-highlights">
-                <h3>Why {townName.split(',')[0]} Lawns Trust GD Landscaping</h3>
+                <h3>Why {townName.split(',')[0]} Lawns Trust G&D Landscaping</h3>
                 <ul>
                   {highlights.map((item, index) => (
                     <li key={`fert-highlight-${index}`}>

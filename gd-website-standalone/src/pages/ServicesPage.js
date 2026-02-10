@@ -6,7 +6,7 @@ import FAQSection from '../components/FAQSection';
 const ServicesPage = () => {
   const faqs = [
     {
-      question: "What services does GD Landscaping offer in Connecticut?",
+      question: "What services does G&D Landscaping offer in Connecticut?",
       answer: "We offer comprehensive landscaping services including lawn maintenance, landscape design, tree services, hardscaping, irrigation systems, seasonal cleanup, snow removal, bush trimming, fertilization & weed control, and mulching. All services are available across Berlin, Hartford, and surrounding Connecticut areas."
     },
     {
@@ -15,7 +15,7 @@ const ServicesPage = () => {
     },
     {
       question: "Are you licensed and insured?",
-      answer: "Absolutely. GD Landscaping is fully licensed and insured in Connecticut. We carry comprehensive liability insurance to protect your property and our team members during all projects."
+      answer: "Absolutely. G&D Landscaping is fully licensed and insured in Connecticut. We carry comprehensive liability insurance to protect your property and our team members during all projects."
     },
     {
       question: "What areas do you serve in Connecticut?",
@@ -150,7 +150,7 @@ const ServicesPage = () => {
     "serviceType": "Landscaping Services",
     "provider": {
       "@type": "LocalBusiness",
-      "name": "GD Landscaping",
+      "name": "G&D Landscaping",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Berlin",
@@ -184,7 +184,7 @@ const ServicesPage = () => {
   return (
     <>
       <SEOHead
-        title="Landscaping Services Berlin CT | GD Landscaping - Lawn Care, Snow Removal, Hardscaping"
+        title="Landscaping Services Berlin CT | G&D Landscaping - Lawn Care, Snow Removal, Hardscaping"
         description="Complete landscaping services in Berlin CT: lawn maintenance, snow removal, tree services, hardscaping & more. Serving Hartford County. Free estimates available."
         keywords="landscaping services Berlin CT, lawn maintenance Berlin, snow removal Hartford County, tree services Connecticut, hardscaping Berlin CT, irrigation systems Connecticut, seasonal cleanup Berlin, lawn fertilization CT, mulching services Berlin"
         canonicalUrl="https://www.gdlandscapingllc.com/services"
@@ -346,7 +346,7 @@ const ServicesPage = () => {
           <div className="services-cta">
             <div className="cta-content">
               <h2>Ready to Transform Your Outdoor Space?</h2>
-              <p>Contact GD Landscaping today for your free consultation and discover how our professional services can enhance your property.</p>
+              <p>Contact G&D Landscaping today for your free consultation and discover how our professional services can enhance your property.</p>
               <div className="cta-buttons">
                 <Link to="/contact" className="cta-primary">Get Free Quote</Link>
                 <Link to="/portfolio" className="cta-secondary">View Our Work</Link>

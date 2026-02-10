@@ -152,7 +152,7 @@ Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}`,
     "@type": "ContactPage",
     "mainEntity": {
       "@type": "LocalBusiness",
-      "name": "GD Landscaping",
+      "name": "G&D Landscaping",
       "description": "Professional landscaping services in Berlin CT and surrounding areas",
       "address": {
         "@type": "PostalAddress",
@@ -170,9 +170,9 @@ Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}`,
   return (
     <>
       <SEOHead
-        title="Contact GD Landscaping | Free Quotes - Berlin CT Lawn Care & Snow Removal Services"
-        description="Get your free landscaping quote today! Contact GD Landscaping in Berlin CT for lawn care, snow removal, and landscaping services. Same-day response guaranteed."
-        keywords="contact GD Landscaping Berlin CT, free landscaping quote Connecticut, lawn care estimate Hartford County, snow removal quote Berlin, landscaping consultation CT, instant lawn quote Berlin"
+        title="Contact G&D Landscaping | Free Quotes - Berlin CT Lawn Care & Snow Removal Services"
+        description="Get your free landscaping quote today! Contact G&D Landscaping in Berlin CT for lawn care, snow removal, and landscaping services. Same-day response guaranteed."
+        keywords="contact G&D Landscaping Berlin CT, free landscaping quote Connecticut, lawn care estimate Hartford County, snow removal quote Berlin, landscaping consultation CT, instant lawn quote Berlin"
         canonicalUrl="https://www.gdlandscapingllc.com/contact"
         ogImage="/GD.png"
         ogType="website"
@@ -187,7 +187,7 @@ Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}`,
               <div className="contact-badge">
                 <span>📞 Get Your Free Quote Today</span>
               </div>
-              <h1>Contact GD Landscaping</h1>
+              <h1>Contact G&D Landscaping</h1>
               <p className="section-subtitle">Ready to transform your outdoor space? Get in touch for a free consultation and quote.</p>
               <div className="contact-highlights">
                 <div className="highlight-item">
@@ -493,7 +493,7 @@ Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}`,
           <div className="contact-cta">
             <div className="cta-content">
               <h2>Ready to Start Your Project?</h2>
-              <p>Join hundreds of satisfied customers who trust GD Landscaping for their outdoor needs.</p>
+              <p>Join hundreds of satisfied customers who trust G&D Landscaping for their outdoor needs.</p>
               <div className="cta-stats">
                 <div className="cta-stat">
                   <span className="stat-number">100+</span>

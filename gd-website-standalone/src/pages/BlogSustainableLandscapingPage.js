@@ -9,7 +9,7 @@ const sections = [
     heading: 'Prioritize Pollinator-Ready Planting',
     paragraphs: [
       'Swap a portion of traditional turf for native meadows or pollinator strips. Coneflower, milkweed, and bee balm thrive in Connecticut and invite beneficial insects. Layer these beds with stone edging and drip irrigation for a clean, low-maintenance finish.',
-      'GD Landscaping designs pollinator habitats that still fit within HOA and municipal guidelines so you enjoy ecology and elegance.'
+      'G&D Landscaping designs pollinator habitats that still fit within HOA and municipal guidelines so you enjoy ecology and elegance.'
     ]
   },
   {
@@ -28,7 +28,7 @@ const sections = [
     heading: 'Smarter Water Management = Healthier Plants',
     paragraphs: [
       'Install smart controllers, soil moisture sensors, and rainwater harvesting barrels to reduce potable water use. In planting beds, use subsurface drip or micro emitters to deliver water directly to roots. Mulch and compost improve soil health so plants need fewer resources overall.',
-      'GD Landscaping’s irrigation techs can retrofit systems and connect them to weather-based controllers that update automatically.'
+      'G&D Landscaping’s irrigation techs can retrofit systems and connect them to weather-based controllers that update automatically.'
     ],
     points: [
       'Audit irrigation zones every spring for leaks',

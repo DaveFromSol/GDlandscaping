@@ -9,7 +9,7 @@ const sections = [
     heading: 'Document Every Square Foot Before Flurries Fly',
     paragraphs: [
       'Walk parking lots with your snow contractor to photograph hazards, speed bumps, and fire hydrants. Mark islands and curbs with reflective stakes so plows avoid costly damage. Update your lot map with snow pile locations that won’t block sightlines or drains.',
-      'GD Landscaping provides digital site maps and keeps them on every plow truck so new operators have instant context.'
+      'G&D Landscaping provides digital site maps and keeps them on every plow truck so new operators have instant context.'
     ],
     points: [
       'Measure lot square footage to ensure you’re billed accurately',
@@ -28,7 +28,7 @@ const sections = [
     heading: 'Bundle Sidewalk, Loader, and Hauling Services',
     paragraphs: [
       'Commercial lots often require simultaneous plow, sidewalk, and loader work. Bundle those services under one provider so liability stays with a single team. When piles grow too large, schedule hauling to off-site snow dumps before freeze–thaw cycles turn them into concrete.',
-      'GD Landscaping’s fleet includes loaders, skid steers, sidewalk crews, and salt trucks, so you only need one point of contact all winter.'
+      'G&D Landscaping’s fleet includes loaders, skid steers, sidewalk crews, and salt trucks, so you only need one point of contact all winter.'
     ]
   }
 ];

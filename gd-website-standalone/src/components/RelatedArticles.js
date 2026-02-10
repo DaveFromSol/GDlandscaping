@@ -117,7 +117,7 @@ const RelatedArticles = ({ serviceType }) => {
       <div className="container">
         <div className="related-articles-header">
           <h2>Helpful Resources</h2>
-          <p>Expert tips and guides from GD Landscaping</p>
+          <p>Expert tips and guides from G&D Landscaping</p>
         </div>
         <div className="related-articles-grid">
           {articles.map((article, index) => (

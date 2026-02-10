@@ -77,7 +77,7 @@ const SnowRemovalNewBritainPage = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "Snow Removal Service New Britain CT - GD Landscaping",
+    "name": "Snow Removal Service New Britain CT - G&D Landscaping",
     "description": "Professional snow removal services in New Britain, Connecticut. Reliable snow plowing, ice management, and winter maintenance for homes and businesses.",
     "logo": "https://www.gdlandscapingllc.com/GD.png",
     "image": [
@@ -120,7 +120,7 @@ const SnowRemovalNewBritainPage = () => {
   return (
     <>
       <SEOHead
-        title="Snow Removal New Britain CT | Professional Winter Services | GD Landscaping"
+        title="Snow Removal New Britain CT | Professional Winter Services | G&D Landscaping"
         description="Reliable snow removal services in New Britain, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal New Britain CT, snow plowing New Britain Connecticut, winter services New Britain, ice management New Britain CT, residential snow removal New Britain, commercial snow plowing New Britain"
         canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-new-britain-ct"
@@ -138,7 +138,7 @@ const SnowRemovalNewBritainPage = () => {
           {/* SEO Image */}
           <img
             src="/GD_Landscaping_LLC_Snow_removal.JPG"
-            alt="GD Landscaping professional snow removal service in Connecticut"
+            alt="G&D Landscaping professional snow removal service in Connecticut"
             style={{display: 'none'}}
             width="1920"
             height="1080"
@@ -197,7 +197,7 @@ const SnowRemovalNewBritainPage = () => {
           {/* New Britain Specific Benefits */}
           <section className="location-benefits">
             <div className="section-header">
-              <h2>Why New Britain Chooses GD Landscaping</h2>
+              <h2>Why New Britain Chooses G&D Landscaping</h2>
               <p className="section-subtitle">We understand New Britain's unique winter challenges and city requirements</p>
             </div>
 
@@ -326,7 +326,7 @@ const SnowRemovalNewBritainPage = () => {
           <section className="snow-cta">
             <div className="cta-content">
               <h2>Ready for Winter in New Britain?</h2>
-              <p>Join your New Britain neighbors who trust GD Landscaping for reliable snow removal. Get your seasonal package today!</p>
+              <p>Join your New Britain neighbors who trust G&D Landscaping for reliable snow removal. Get your seasonal package today!</p>
               <div className="cta-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Your New Britain Quote

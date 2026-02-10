@@ -203,9 +203,9 @@ const LoginPage = () => {
   return (
     <>
       <SEOHead
-        title={`${isSignUp ? 'Sign Up' : 'Login'} - GD Landscaping | Customer Account`}
-        description="Sign in to your GD Landscaping account to manage bookings, view quotes, and track service history. Quick login with Google or Apple."
-        keywords="lawn care login, customer account, manage bookings, GD Landscaping account"
+        title={`${isSignUp ? 'Sign Up' : 'Login'} - G&D Landscaping | Customer Account`}
+        description="Sign in to your G&D Landscaping account to manage bookings, view quotes, and track service history. Quick login with Google or Apple."
+        keywords="lawn care login, customer account, manage bookings, G&D Landscaping account"
         canonicalUrl="https://www.gdlandscapingllc.com/login"
         robots="noindex, nofollow"
       />
@@ -215,14 +215,14 @@ const LoginPage = () => {
           <div className="login-card">
             {/* Logo */}
             <div className="login-logo">
-              <img src="/GD.png" alt="GD Landscaping" />
+              <img src="/GD.png" alt="G&D Landscaping" />
               <h1>{showResetPassword ? 'Reset Password' : isSignUp ? 'Create Account' : 'Welcome Back'}</h1>
               <p className="login-subtitle">
                 {showResetPassword
                   ? 'Enter your email to receive a password reset link'
                   : isSignUp
                     ? 'Sign up to manage your lawn care services'
-                    : 'Sign in to your GD Landscaping account'}
+                    : 'Sign in to your G&D Landscaping account'}
               </p>
             </div>
 

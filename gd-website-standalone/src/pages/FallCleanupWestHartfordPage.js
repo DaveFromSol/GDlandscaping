@@ -72,14 +72,14 @@ const FallCleanupWestHartfordPage = () => {
   return (
     <FallCleanupTemplate
       townName="West Hartford, CT"
-      seoTitle="Fall Cleanup West Hartford CT | Leaf Removal & Yard Cleanups | GD Landscaping"
+      seoTitle="Fall Cleanup West Hartford CT | Leaf Removal & Yard Cleanups | G&D Landscaping"
       seoDescription="Leaf removal, pruning, and seasonal cleanup for West Hartford Center, Elmwood, Bishop's Corner, and Blue Back Square neighborhoods."
       seoKeywords="fall cleanup West Hartford CT, leaf removal West Hartford, West Hartford yard cleanup"
       canonicalUrl="https://www.gdlandscapingllc.com/fall-cleanup-west-hartford-ct"
       structuredData={{
         '@context': 'https://schema.org',
         '@type': 'Service',
-        name: 'Fall Cleanup West Hartford CT - GD Landscaping',
+        name: 'Fall Cleanup West Hartford CT - G&D Landscaping',
         description:
           'Professional fall cleanup, leaf removal, and property winterization across West Hartford, Connecticut.',
         areaServed: {
@@ -88,7 +88,7 @@ const FallCleanupWestHartfordPage = () => {
         },
         provider: {
           '@type': 'LocalBusiness',
-          name: 'GD Landscaping',
+          name: 'G&D Landscaping',
           telephone: phoneNumber
         },
         serviceType: 'Fall Cleanup'

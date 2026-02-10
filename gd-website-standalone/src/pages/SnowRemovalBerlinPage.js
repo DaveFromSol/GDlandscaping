@@ -77,7 +77,7 @@ const SnowRemovalBerlinPage = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "Snow Removal Service Berlin CT - GD Landscaping",
+    "name": "Snow Removal Service Berlin CT - G&D Landscaping",
     "description": "Professional snow removal services in Berlin, Connecticut. Reliable snow plowing, ice management, and winter maintenance for homes and businesses.",
     "logo": "https://www.gdlandscapingllc.com/GD.png",
     "image": [
@@ -107,7 +107,7 @@ const SnowRemovalBerlinPage = () => {
   return (
     <>
       <SEOHead
-        title="Snow Removal Berlin CT | Professional Winter Services | GD Landscaping"
+        title="Snow Removal Berlin CT | Professional Winter Services | G&D Landscaping"
         description="Reliable snow removal services in Berlin, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Berlin CT, snow plowing Berlin Connecticut, winter services Berlin, ice management Berlin CT, residential snow removal Berlin, commercial snow plowing Berlin"
         canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-berlin-ct"
@@ -125,7 +125,7 @@ const SnowRemovalBerlinPage = () => {
           {/* SEO Image */}
           <img
             src="/GD_Landscaping_LLC_Snow_removal.JPG"
-            alt="GD Landscaping snow removal service clearing driveways and parking lots in Berlin CT"
+            alt="G&D Landscaping snow removal service clearing driveways and parking lots in Berlin CT"
             style={{display: 'none'}}
             width="1920"
             height="1080"
@@ -185,7 +185,7 @@ const SnowRemovalBerlinPage = () => {
           {/* Berlin Specific Benefits */}
           <section className="location-benefits">
             <div className="section-header">
-              <h2>Why Berlin Chooses GD Landscaping</h2>
+              <h2>Why Berlin Chooses G&D Landscaping</h2>
               <p className="section-subtitle">We're based right here in Berlin - your local winter maintenance experts</p>
             </div>
 
@@ -314,7 +314,7 @@ const SnowRemovalBerlinPage = () => {
           <section className="snow-cta">
             <div className="cta-content">
               <h2>Ready for Winter in Berlin?</h2>
-              <p>Join your Berlin neighbors who trust GD Landscaping for reliable snow removal. Get your seasonal package today!</p>
+              <p>Join your Berlin neighbors who trust G&D Landscaping for reliable snow removal. Get your seasonal package today!</p>
               <div className="cta-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Your Berlin Quote

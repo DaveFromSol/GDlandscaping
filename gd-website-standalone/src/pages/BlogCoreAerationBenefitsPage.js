@@ -9,7 +9,7 @@ const sections = [
     heading: 'Compaction Creeps In Faster Than You Think',
     paragraphs: [
       'Heavy rains, pets, and weekly mowing compress the top few inches of soil. Once pores close, air, water, and fertilizer stop reaching the roots and grass thins almost overnight. Core aeration pops out plugs, relieves that pressure, and lets the root zone breathe again.',
-      'GD Landscaping uses commercial aerators that pull 2- to 3-inch plugs, then cross-pattern each lawn. We follow up by dragging the plugs to redisperse topsoil, acting like a mini topdressing treatment.'
+      'G&D Landscaping uses commercial aerators that pull 2- to 3-inch plugs, then cross-pattern each lawn. We follow up by dragging the plugs to redisperse topsoil, acting like a mini topdressing treatment.'
     ],
     points: [
       'Plan aeration at least once per year for cool-season turf',
@@ -30,7 +30,7 @@ const sections = [
     ]
   },
   {
-    heading: 'Let GD Landscaping Handle the Mess',
+    heading: 'Let G&D Landscaping Handle the Mess',
     paragraphs: [
       'Aeration equipment is heavy, loud, and unforgiving on slopes. Our crews handle logistics, mark irrigation heads, and clean up plugs so you can enjoy the payoff without the mud.',
       'Bonus: book aeration with overseeding or topdressing and we’ll sync the schedules automatically. One call, three pro services, zero guesswork.'

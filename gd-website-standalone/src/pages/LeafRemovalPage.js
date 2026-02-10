@@ -169,7 +169,7 @@ const LeafRemovalPage = () => {
     serviceType: 'Leaf Removal',
     provider: {
       '@type': 'LocalBusiness',
-      name: 'GD Landscaping',
+      name: 'G&D Landscaping',
       telephone: phoneNumber,
       url: 'https://www.gdlandscapingllc.com',
       address: {
@@ -203,8 +203,8 @@ const LeafRemovalPage = () => {
   return (
     <>
       <SEOHead
-        title="Leaf Removal Services CT | Fast Fall Cleanup | GD Landscaping"
-        description="Need leaves gone fast? GD Landscaping delivers professional leaf removal, curbside vacuuming, and fall cleanup crews across Central Connecticut. Same-week scheduling."
+        title="Leaf Removal Services CT | Fast Fall Cleanup | G&D Landscaping"
+        description="Need leaves gone fast? G&D Landscaping delivers professional leaf removal, curbside vacuuming, and fall cleanup crews across Central Connecticut. Same-week scheduling."
         keywords="leaf removal CT, fall cleanup Connecticut, leaf vacuum service, leaf pickup Berlin CT, fall clean up company, yard waste removal CT"
         canonicalUrl="https://www.gdlandscapingllc.com/leaf-removal"
         structuredData={structuredData}
@@ -335,7 +335,7 @@ const LeafRemovalPage = () => {
             <div className="section-header">
               <h2>Trusted by Central Connecticut Property Owners</h2>
               <p className="section-subtitle">
-                Real feedback from clients who count on GD Landscaping to keep their properties leaf-free all season long.
+                Real feedback from clients who count on G&D Landscaping to keep their properties leaf-free all season long.
               </p>
             </div>
             <div className="leaf-testimonial-grid">

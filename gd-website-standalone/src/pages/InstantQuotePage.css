@@ -179,6 +179,7 @@
   box-shadow: 0 4px 16px rgba(239, 68, 68, 0.5);
   animation: wiggle 1s ease-in-out infinite;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  z-index: 1;
 }
 
 .input-icon {

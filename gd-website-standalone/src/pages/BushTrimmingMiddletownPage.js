@@ -37,7 +37,7 @@ const BushTrimmingMiddletownPage = () => {
     <BushTrimmingTemplate
       townName="Middletown, CT"
       seo={{
-        title: 'Bush Trimming Middletown CT - GD Landscaping',
+        title: 'Bush Trimming Middletown CT - G&D Landscaping',
         description:
           'Professional bush trimming, hedge shaping, and shrub care in Middletown, CT. Serving Wesleyan, South Farms, Highland, and more.',
         keywords: 'bush trimming Middletown CT, hedge trimming Middletown, shrub pruning Middletown Connecticut',
@@ -45,9 +45,9 @@ const BushTrimmingMiddletownPage = () => {
         structuredData: {
           '@context': 'https://schema.org',
           '@type': 'Service',
-          name: 'Bush Trimming Middletown CT - GD Landscaping',
+          name: 'Bush Trimming Middletown CT - G&D Landscaping',
           areaServed: { '@type': 'City', name: 'Middletown' },
-          provider: { '@type': 'LocalBusiness', name: 'GD Landscaping', telephone: phoneNumber },
+          provider: { '@type': 'LocalBusiness', name: 'G&D Landscaping', telephone: phoneNumber },
           serviceType: 'Bush & Hedge Trimming',
           description: 'Shrub and hedge trimming for residential and commercial properties in Middletown, CT.'
         }

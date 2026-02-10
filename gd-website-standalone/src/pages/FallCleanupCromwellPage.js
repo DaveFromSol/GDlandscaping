@@ -84,14 +84,14 @@ const FallCleanupCromwellPage = () => {
   return (
     <FallCleanupTemplate
       townName="Cromwell, CT"
-      seoTitle="Fall Cleanup Cromwell CT | Leaf Removal & Yard Cleanups | GD Landscaping"
+      seoTitle="Fall Cleanup Cromwell CT | Leaf Removal & Yard Cleanups | G&D Landscaping"
       seoDescription="Cromwell fall cleanup pros. Leaf removal, bed cutbacks, and disposal for River Highlands, Nooks Hill, and Cromwell Center properties."
       seoKeywords="fall cleanup Cromwell CT, leaf removal Cromwell, yard cleanup Cromwell Connecticut, fall landscaping Cromwell"
       canonicalUrl="https://www.gdlandscapingllc.com/fall-cleanup-cromwell-ct"
       structuredData={{
         '@context': 'https://schema.org',
         '@type': 'Service',
-        name: 'Fall Cleanup Cromwell CT - GD Landscaping',
+        name: 'Fall Cleanup Cromwell CT - G&D Landscaping',
         description:
           'Professional fall cleanup, leaf removal, and property winterization services for Cromwell, Connecticut.',
         areaServed: {
@@ -100,7 +100,7 @@ const FallCleanupCromwellPage = () => {
         },
         provider: {
           '@type': 'LocalBusiness',
-          name: 'GD Landscaping',
+          name: 'G&D Landscaping',
           telephone: phoneNumber
         },
         serviceType: 'Fall Cleanup'

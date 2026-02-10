@@ -84,14 +84,14 @@ const FallCleanupBristolPage = () => {
   return (
     <FallCleanupTemplate
       townName="Bristol, CT"
-      seoTitle="Fall Cleanup Bristol CT | Leaf Removal & Yard Cleanups | GD Landscaping"
+      seoTitle="Fall Cleanup Bristol CT | Leaf Removal & Yard Cleanups | G&D Landscaping"
       seoDescription="Bristol CT fall cleanup services: leaf removal, gutter policing, shrub cutbacks, and haul-away from attentive local crews."
       seoKeywords="fall cleanup Bristol CT, leaf removal Bristol, yard cleanups Bristol Connecticut, fall landscaping Bristol"
       canonicalUrl="https://www.gdlandscapingllc.com/fall-cleanup-bristol-ct"
       structuredData={{
         '@context': 'https://schema.org',
         '@type': 'Service',
-        name: 'Fall Cleanup Bristol CT - GD Landscaping',
+        name: 'Fall Cleanup Bristol CT - G&D Landscaping',
         description:
           'Professional leaf removal, yard cleanups, and seasonal prep for residential and commercial properties throughout Bristol, Connecticut.',
         areaServed: {
@@ -100,7 +100,7 @@ const FallCleanupBristolPage = () => {
         },
         provider: {
           '@type': 'LocalBusiness',
-          name: 'GD Landscaping',
+          name: 'G&D Landscaping',
           telephone: phoneNumber
         },
         serviceType: 'Fall Cleanup'
