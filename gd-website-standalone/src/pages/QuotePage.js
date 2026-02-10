@@ -599,10 +599,12 @@ const QuotePage = () => {
 
         <div className="quote-content">
           <div className="services-section">
-            <h2>Select Your Services</h2>
-            <p className="section-description">
-              Choose from our services below and select if you want them as a one-time service or on a recurring schedule.
-            </p>
+            <div className="services-header-banner">
+              <h2>Select Your Services</h2>
+              <p className="section-description">
+                Choose from our services below and select if you want them as a one-time service or on a recurring schedule.
+              </p>
+            </div>
 
             <div className="services-list">
               {Object.entries(services).map(([serviceName, service]) => (
