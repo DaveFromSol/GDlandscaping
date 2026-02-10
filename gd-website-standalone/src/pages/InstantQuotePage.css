@@ -96,39 +96,142 @@
   animation: fadeInUp 0.8s ease-out 0.4s both;
 }
 
-/* Quote Input Section - Enhanced */
+/* Quote Input Section - Super Enhanced & Eye-Catching */
 .quote-input-section {
-  background: white;
-  border-radius: 20px;
-  padding: 48px;
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  border-radius: 24px;
+  padding: 56px;
   margin: 0 auto 80px;
-  max-width: 800px;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
-  animation: fadeInUp 0.8s ease-out 0.5s both;
-  border: 3px solid rgba(251, 191, 36, 0.3);
+  max-width: 850px;
+  box-shadow:
+    0 0 0 4px rgba(251, 191, 36, 0.6),
+    0 0 40px rgba(251, 191, 36, 0.5),
+    0 24px 80px rgba(0, 0, 0, 0.4);
+  animation: fadeInUp 0.8s ease-out 0.5s both, glowPulse 3s ease-in-out infinite;
+  border: 6px solid transparent;
+  background-clip: padding-box;
   overflow: visible !important;
   position: relative;
   z-index: 100;
+  transform: scale(1);
+  transition: transform 0.3s ease;
+}
+
+/* Animated gradient border */
+.quote-input-section::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  background: linear-gradient(45deg,
+    #fbbf24, #f59e0b, #fbbf24, #4a7c2c, #fbbf24);
+  background-size: 300% 300%;
+  border-radius: 24px;
+  z-index: -1;
+  animation: gradientShift 4s ease infinite;
+}
+
+/* Spotlight effect */
+.quote-input-section::after {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200%;
+  height: 200px;
+  background: radial-gradient(ellipse at center,
+    rgba(251, 191, 36, 0.3) 0%,
+    transparent 60%);
+  pointer-events: none;
+  animation: spotlightPulse 3s ease-in-out infinite;
+}
+
+.quote-input-section:hover {
+  transform: scale(1.02);
 }
 
 .input-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: 16px;
+  margin-bottom: 28px;
+  position: relative;
+}
+
+/* Attention badge above input */
+.input-header::before {
+  content: '👇 START HERE 👇';
+  position: absolute;
+  top: -45px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.5);
+  animation: wiggle 1s ease-in-out infinite;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .input-icon {
-  font-size: 32px;
+  font-size: 40px;
   animation: bounce 2s infinite;
+  filter: drop-shadow(0 4px 8px rgba(251, 191, 36, 0.4));
 }
 
 .input-label {
-  font-size: 28px;
-  font-weight: 700;
-  color: #1f2937;
+  font-size: 32px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #1a3d0f 0%, #2d5016 50%, #4a7c2c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin: 0;
+  letter-spacing: -0.5px;
+}
+
+/* Glow pulse animation */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 4px rgba(251, 191, 36, 0.6),
+      0 0 40px rgba(251, 191, 36, 0.5),
+      0 24px 80px rgba(0, 0, 0, 0.4);
+  }
+  50% {
+    box-shadow:
+      0 0 0 6px rgba(251, 191, 36, 0.8),
+      0 0 60px rgba(251, 191, 36, 0.7),
+      0 24px 80px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* Gradient border animation */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Spotlight pulse */
+@keyframes spotlightPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Wiggle animation for badge */
+@keyframes wiggle {
+  0%, 100% { transform: translateX(-50%) rotate(-2deg); }
+  25% { transform: translateX(-50%) rotate(2deg); }
+  75% { transform: translateX(-50%) rotate(-2deg); }
 }
 
 /* Trust Indicators */
