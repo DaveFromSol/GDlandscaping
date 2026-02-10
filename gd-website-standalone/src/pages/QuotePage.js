@@ -316,7 +316,7 @@ const QuotePage = () => {
     }));
   };
 
-  // Calculate total price
+  // Calculate total price (per-service, not monthly)
   const calculateTotal = () => {
     let total = 0;
 
@@ -334,22 +334,19 @@ const QuotePage = () => {
           price += service.haulingFee || 0;
         }
 
-        // Apply frequency multiplier for recurring services
+        // Apply frequency modifiers (per-service pricing)
         if (service.frequency === 'weekly') {
-          price = price * 4; // Monthly cost (4 weeks)
-          price = price * 0.8; // 20% discount for weekly service
+          price = price * 0.8; // 20% discount per cut
         } else if (service.frequency === 'bi-weekly') {
-          price = price * 2; // Monthly cost (2 services)
-          price = price * 1.1; // 10% surcharge for bi-weekly
+          price = price * 1.1; // 10% surcharge per cut
         }
-        // monthly stays as-is
-        // one-time is just added once
+        // monthly and one-time stay at base price
 
         total += price;
       }
     });
 
-    return total;
+    return Math.round(total);
   };
 
   // Service display names and descriptions with benefits
@@ -821,14 +818,7 @@ const QuotePage = () => {
                                     ${Math.round((service.applyFallDiscount ? service.price * 0.8 : service.price) + (service.includeHauling ? service.haulingFee : 0))}
                                   </span>
                                   {service.applyFallDiscount && (
-                                    <span className="discount-badge" style={{
-                                      background: '#dcfce7',
-                                      color: '#16a34a',
-                                      padding: '2px 8px',
-                                      borderRadius: '4px',
-                                      fontSize: '12px',
-                                      marginTop: '4px'
-                                    }}>
+                                    <span className="discount-badge">
                                       20% off
                                     </span>
                                   )}
@@ -843,36 +833,38 @@ const QuotePage = () => {
                                   )}
                                 </>
                               ) : (
-                                <span className="price">${service.price}</span>
+                                <>
+                                  <span className="price">${service.price}</span>
+                                  <span className="price-label">per service</span>
+                                </>
                               )}
                             </div>
                           ) : (
                             <div className="recurring-price">
                               {service.frequency === 'weekly' ? (
                                 <>
-                                  <span className="price" style={{ fontSize: '24px', fontWeight: 'bold' }}>
-                                    ${Math.round(service.price * 4 * 0.8)}/month
+                                  <span className="price">
+                                    ${Math.round(service.price * 0.8)}
                                   </span>
-                                  <span className="discount-badge" style={{
-                                    background: '#dcfce7',
-                                    color: '#16a34a',
-                                    padding: '4px 8px',
-                                    borderRadius: '4px',
-                                    fontSize: '12px',
-                                    marginTop: '4px',
-                                    display: 'inline-block'
-                                  }}>
-                                    Weekly Service - 20% off
+                                  <span className="price-label">per cut</span>
+                                  <span className="discount-badge">
+                                    20% weekly discount
+                                  </span>
+                                </>
+                              ) : service.frequency === 'bi-weekly' ? (
+                                <>
+                                  <span className="price">
+                                    ${Math.round(service.price * 1.1)}
+                                  </span>
+                                  <span className="price-label">per cut</span>
+                                  <span style={{ fontSize: '11px', color: '#ef4444', marginTop: '4px' }}>
+                                    +10% bi-weekly surcharge
                                   </span>
                                 </>
                               ) : (
                                 <>
-                                  <span className="price-label">
-                                    ${service.price} per service
-                                  </span>
-                                  <span className="monthly-price">
-                                    ${service.frequency === 'bi-weekly' ? service.price * 2 : service.price}/month
-                                  </span>
+                                  <span className="price">${service.price}</span>
+                                  <span className="price-label">per cut</span>
                                 </>
                               )}
                             </div>
@@ -922,15 +914,25 @@ const QuotePage = () => {
                             price = Math.round(price * 0.8);
                           }
 
-                          // Apply frequency multiplier
+                          // Apply hauling for leaf cleanup
+                          if (serviceName === 'leafCleanup' && service.includeHauling) {
+                            price += service.haulingFee || 0;
+                          }
+
+                          // Apply frequency modifiers
                           if (service.frequency === 'weekly') {
-                            price = Math.round(price * 4 * 0.8);
+                            price = Math.round(price * 0.8);
                           } else if (service.frequency === 'bi-weekly') {
-                            price = price * 2;
+                            price = Math.round(price * 1.1);
                           }
 
                           return price;
                         })()}
+                        {service.frequency !== 'one-time' && (
+                          <span style={{ fontSize: '11px', color: '#6b7280', marginLeft: '4px' }}>
+                            /cut
+                          </span>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -942,21 +944,30 @@ const QuotePage = () => {
 
               <div className="summary-total">
                 <div className="total-label">
-                  {Object.values(services).some(s => s.enabled && s.frequency !== 'one-time')
-                    ? 'Monthly Total'
-                    : 'Total'}
+                  Estimated Total
                 </div>
                 <div className="total-amount">${calculateTotal()}</div>
               </div>
 
               {!showBookingForm ? (
-                <button
-                  className="proceed-btn"
-                  onClick={() => setShowBookingForm(true)}
-                  disabled={Object.values(services).filter(s => s.enabled).length === 0}
-                >
-                  Book Service
-                </button>
+                <>
+                  <p style={{
+                    textAlign: 'center',
+                    fontSize: '14px',
+                    color: '#6b7280',
+                    margin: '0 0 20px 0',
+                    fontWeight: '500'
+                  }}>
+                    Ready to schedule? Fill out your details to book your services
+                  </p>
+                  <button
+                    className="proceed-btn"
+                    onClick={() => setShowBookingForm(true)}
+                    disabled={Object.values(services).filter(s => s.enabled).length === 0}
+                  >
+                    Continue to Booking
+                  </button>
+                </>
               ) : (
                 <div className="booking-form">
                   <h3>Your Information</h3>
