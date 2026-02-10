@@ -835,36 +835,244 @@ input:checked + .toggle-slider:before {
 
 @media (max-width: 768px) {
   .quote-page {
-    padding: 40px 16px 30px;
+    padding: 30px 12px 24px;
   }
 
   .quote-header h1 {
-    font-size: 32px;
+    font-size: 28px;
+  }
+
+  .header-subtitle {
+    font-size: 14px;
   }
 
   .property-map {
-    height: 220px;
+    height: 200px;
   }
 
+  .property-info-banner {
+    padding: 12px 16px;
+  }
+
+  .property-info-banner .address {
+    font-size: 14px;
+  }
+
+  .property-info-banner .size {
+    font-size: 11px;
+  }
+
+  /* Services header banner mobile */
+  .services-header-banner {
+    padding: 24px 20px;
+    margin-bottom: 24px;
+  }
+
+  .services-section h2 {
+    font-size: 24px;
+  }
+
+  .section-description {
+    font-size: 14px;
+  }
+
+  /* Service cards mobile */
   .service-card {
-    padding: 20px;
+    padding: 16px;
   }
 
   .service-icon {
-    width: 56px;
-    height: 56px;
+    width: 48px;
+    height: 48px;
+    font-size: 28px;
+  }
+
+  .service-name-desc h3 {
+    font-size: 18px;
+  }
+
+  .service-name-desc p {
+    font-size: 13px;
+  }
+
+  /* Toggle switch mobile */
+  .toggle-switch {
+    width: 52px;
+    height: 28px;
+  }
+
+  .toggle-slider:before {
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+  }
+
+  input:checked + .toggle-slider:before {
+    transform: translateX(24px);
+  }
+
+  /* Frequency buttons mobile */
+  .frequency-buttons {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .frequency-btn {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  /* Bush options mobile */
+  .bush-size-options {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .bush-size-input input {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+  /* Pricing mobile */
+  .price {
+    font-size: 24px;
+  }
+
+  .price-label {
+    font-size: 11px;
+  }
+
+  .discount-badge {
+    font-size: 10px;
+    padding: 3px 10px;
+  }
+
+  /* Summary card mobile */
+  .summary-card {
+    padding: 20px;
+  }
+
+  .summary-card h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .summary-item {
+    padding: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .item-name {
+    font-size: 14px;
+    flex-wrap: wrap;
+  }
+
+  .item-price {
+    font-size: 16px;
+    align-self: flex-end;
+  }
+
+  .summary-total {
+    padding: 20px;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .total-label {
+    font-size: 16px;
+  }
+
+  .total-amount {
     font-size: 32px;
   }
 
+  /* Booking form mobile */
+  .booking-form {
+    gap: 14px;
+  }
+
+  .booking-form h3 {
+    font-size: 18px;
+  }
+
+  .booking-form input,
+  .booking-form textarea {
+    padding: 12px 14px;
+    font-size: 16px;
+  }
+
+  .date-picker-container {
+    padding: 16px;
+  }
+
+  .date-picker-label {
+    font-size: 14px;
+  }
+
+  .date-picker-input {
+    padding: 14px 16px !important;
+    font-size: 16px !important;
+  }
+
+  .proceed-btn {
+    padding: 16px 24px;
+    font-size: 16px;
+  }
+
+  .password-section h4 {
+    font-size: 15px;
+  }
+
+  .password-note {
+    font-size: 12px;
+  }
+}
+
+/* Extra small mobile */
+@media (max-width: 480px) {
+  .quote-header h1 {
+    font-size: 24px;
+  }
+
+  .header-subtitle {
+    font-size: 13px;
+  }
+
+  .services-section h2 {
+    font-size: 20px;
+  }
+
+  .service-card {
+    padding: 14px;
+  }
+
+  .service-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .toggle-switch {
+    align-self: flex-end;
+  }
+
   .frequency-buttons {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 
   .bush-size-options {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 
   .summary-card {
-    padding: 24px;
+    padding: 16px;
+  }
+
+  .summary-card h2 {
+    font-size: 20px;
   }
 }

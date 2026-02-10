@@ -1650,7 +1650,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
                         opacity: loadingStep === index ? 1 : 0,
                         transform: loadingStep === index ? 'translateY(0)' : 'translateY(10px)',
                         transition: 'all 0.5s ease-in-out',
-                        fontSize: window.innerWidth <= 768 ? '16px' : '18px',
+                        fontSize: window.innerWidth <= 768 ? '14px' : '18px',
                         fontWeight: '600',
                         color: '#2d5016',
                         textAlign: 'center',
