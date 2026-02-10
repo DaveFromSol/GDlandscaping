@@ -20,7 +20,6 @@ const QuotePage = () => {
   const { address, coordinates, propertySize, parcelGeometry } = location.state || {};
 
   // Booking form state
-  const [showBookingForm, setShowBookingForm] = useState(false);
   const [bookingData, setBookingData] = useState({
     name: '',
     email: '',
@@ -955,126 +954,97 @@ const QuotePage = () => {
                 <div className="total-amount">${calculateTotal()}</div>
               </div>
 
-              {!showBookingForm ? (
-                <>
-                  <p style={{
-                    textAlign: 'center',
-                    fontSize: '14px',
-                    color: '#6b7280',
-                    margin: '0 0 20px 0',
-                    fontWeight: '500'
-                  }}>
-                    Ready to schedule? Fill out your details to book your services
-                  </p>
-                  <button
-                    className="proceed-btn"
-                    onClick={() => setShowBookingForm(true)}
-                    disabled={Object.values(services).filter(s => s.enabled).length === 0}
-                  >
-                    Continue to Booking
-                  </button>
-                </>
-              ) : (
-                <div className="booking-form">
-                  <h3>Your Information</h3>
+              <div className="booking-form">
+                <h3>Your Information</h3>
 
-                  {formError && (
-                    <div className="form-error">
-                      {formError}
-                    </div>
-                  )}
+                {formError && (
+                  <div className="form-error">
+                    {formError}
+                  </div>
+                )}
 
-                  <input
-                    type="text"
-                    placeholder="Full Name *"
-                    value={bookingData.name}
-                    onChange={(e) => setBookingData({...bookingData, name: e.target.value})}
-                    required
-                    disabled={!!user}
-                  />
-                  <input
-                    type="email"
-                    placeholder="Email *"
-                    value={bookingData.email}
-                    onChange={(e) => setBookingData({...bookingData, email: e.target.value})}
-                    required
-                    disabled={!!user}
-                  />
-                  <input
-                    type="tel"
-                    placeholder="Phone Number *"
-                    value={bookingData.phone}
-                    onChange={(e) => setBookingData({...bookingData, phone: e.target.value})}
-                    required
-                  />
+                <input
+                  type="text"
+                  placeholder="Full Name *"
+                  value={bookingData.name}
+                  onChange={(e) => setBookingData({...bookingData, name: e.target.value})}
+                  required
+                  disabled={!!user}
+                />
+                <input
+                  type="email"
+                  placeholder="Email *"
+                  value={bookingData.email}
+                  onChange={(e) => setBookingData({...bookingData, email: e.target.value})}
+                  required
+                  disabled={!!user}
+                />
+                <input
+                  type="tel"
+                  placeholder="Phone Number *"
+                  value={bookingData.phone}
+                  onChange={(e) => setBookingData({...bookingData, phone: e.target.value})}
+                  required
+                />
+
+                <div className="date-picker-container">
+                  <label className="date-picker-label">Preferred Start Date *</label>
                   <input
                     type="date"
-                    placeholder="Preferred Start Date *"
+                    className="date-picker-input"
                     value={bookingData.preferredDate}
                     onChange={(e) => setBookingData({...bookingData, preferredDate: e.target.value})}
                     min={new Date().toISOString().split('T')[0]}
                     required
                   />
-
-                  {!user && (
-                    <>
-                      <div className="password-section">
-                        <h4>Create Your Account</h4>
-                        <p className="password-note">Create a password to save your booking and access it later</p>
-                      </div>
-                      <input
-                        type="password"
-                        placeholder="Create Password (min 6 characters) *"
-                        value={bookingData.password}
-                        onChange={(e) => setBookingData({...bookingData, password: e.target.value})}
-                        required
-                        minLength="6"
-                      />
-                      <input
-                        type="password"
-                        placeholder="Confirm Password *"
-                        value={bookingData.confirmPassword}
-                        onChange={(e) => setBookingData({...bookingData, confirmPassword: e.target.value})}
-                        required
-                        minLength="6"
-                      />
-                    </>
-                  )}
-
-                  <textarea
-                    placeholder="Additional notes or special requests (optional)"
-                    value={bookingData.notes}
-                    onChange={(e) => setBookingData({...bookingData, notes: e.target.value})}
-                    rows="3"
-                  />
-
-                  {submitSuccess ? (
-                    <div className="success-message">
-                      Booking submitted successfully! Redirecting to your account...
-                    </div>
-                  ) : (
-                    <>
-                      <button
-                        className="proceed-btn"
-                        onClick={handleBookService}
-                        disabled={isSubmitting}
-                      >
-                        {isSubmitting ? 'Creating Account & Booking...' : 'Confirm Booking'}
-                      </button>
-                      <button
-                        className="back-btn"
-                        onClick={() => {
-                          setShowBookingForm(false);
-                          setFormError('');
-                        }}
-                        disabled={isSubmitting}
-                      >
-                        Back to Quote
-                      </button>
-                    </>
-                  )}
                 </div>
-              )}
+
+                {!user && (
+                  <>
+                    <div className="password-section">
+                      <h4>Create Your Account</h4>
+                      <p className="password-note">Create a password to save your booking and access it later</p>
+                    </div>
+                    <input
+                      type="password"
+                      placeholder="Create Password (min 6 characters) *"
+                      value={bookingData.password}
+                      onChange={(e) => setBookingData({...bookingData, password: e.target.value})}
+                      required
+                      minLength="6"
+                    />
+                    <input
+                      type="password"
+                      placeholder="Confirm Password *"
+                      value={bookingData.confirmPassword}
+                      onChange={(e) => setBookingData({...bookingData, confirmPassword: e.target.value})}
+                      required
+                      minLength="6"
+                    />
+                  </>
+                )}
+
+                <textarea
+                  placeholder="Additional notes or special requests (optional)"
+                  value={bookingData.notes}
+                  onChange={(e) => setBookingData({...bookingData, notes: e.target.value})}
+                  rows="3"
+                />
+
+                {submitSuccess ? (
+                  <div className="success-message">
+                    Booking submitted successfully! Redirecting to your account...
+                  </div>
+                ) : (
+                  <button
+                    className="proceed-btn"
+                    onClick={handleBookService}
+                    disabled={isSubmitting || Object.values(services).filter(s => s.enabled).length === 0}
+                  >
+                    {isSubmitting ? 'Creating Account & Booking...' : 'Confirm Booking'}
+                  </button>
+                )}
+              </div>
 
               <p className="quote-note">
                 No payment required at this time.

@@ -651,7 +651,7 @@ input:checked + .toggle-slider:before {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-top: 24px;
+  margin-top: 0;
   padding-top: 24px;
   border-top: 2px solid #e5e7eb;
 }
@@ -678,6 +678,80 @@ input:checked + .toggle-slider:before {
   outline: none;
   border-color: #2d5016;
   box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.1);
+}
+
+/* Premium Date Picker */
+.date-picker-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-radius: 16px;
+  border: 2px solid #bbf7d0;
+  position: relative;
+  overflow: hidden;
+}
+
+.date-picker-container::before {
+  content: '📅';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 32px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.date-picker-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a3d0f;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.date-picker-input {
+  padding: 16px 20px !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  border: 3px solid #2d5016 !important;
+  border-radius: 12px !important;
+  background: white !important;
+  color: #1a3d0f !important;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 12px rgba(45, 80, 22, 0.1);
+}
+
+.date-picker-input:hover {
+  border-color: #4a7c2c !important;
+  box-shadow: 0 6px 20px rgba(45, 80, 22, 0.2);
+  transform: translateY(-2px);
+}
+
+.date-picker-input:focus {
+  outline: none !important;
+  border-color: #fbbf24 !important;
+  box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.3), 0 8px 24px rgba(45, 80, 22, 0.3) !important;
+  transform: translateY(-2px);
+}
+
+/* Date input calendar icon styling */
+.date-picker-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(23%) sepia(20%) saturate(2500%) hue-rotate(85deg) brightness(92%) contrast(93%);
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.date-picker-input::-webkit-calendar-picker-indicator:hover {
+  background: rgba(45, 80, 22, 0.1);
+  transform: scale(1.1);
 }
 
 .password-section {
