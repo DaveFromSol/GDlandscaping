@@ -1390,7 +1390,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
         backgroundColor: 'white',
         borderRadius: '16px',
         width: '100%',
-        maxWidth: window.innerWidth <= 768 ? '95vw' : '1200px',
+        maxWidth: window.innerWidth <= 768 ? '95vw' : '1400px',
         maxHeight: '95vh',
         display: 'flex',
         flexDirection: 'column',
@@ -1481,8 +1481,8 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
         <div style={{
           flex: 1,
           position: 'relative',
-          minHeight: window.innerWidth <= 768 ? '400px' : '600px',
-          height: window.innerWidth <= 768 ? '50vh' : '70vh',
+          minHeight: window.innerWidth <= 768 ? '400px' : '700px',
+          height: window.innerWidth <= 768 ? '50vh' : '75vh',
           maxHeight: window.innerWidth <= 768 ? '60vh' : 'none'
         }}>
           {isLoading && (

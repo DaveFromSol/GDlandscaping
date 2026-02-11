@@ -62,6 +62,19 @@ const AddressAutocomplete = () => {
     };
   }, []);
 
+  // Add/remove body class when modal opens/closes to hide the START HERE badge
+  useEffect(() => {
+    if (showMap) {
+      document.body.classList.add('map-modal-open');
+    } else {
+      document.body.classList.remove('map-modal-open');
+    }
+
+    return () => {
+      document.body.classList.remove('map-modal-open');
+    };
+  }, [showMap]);
+
   const handleMapClose = () => {
     setShowMap(false);
   };

@@ -182,6 +182,11 @@
   z-index: 1;
 }
 
+/* Hide the START HERE badge when map modal is open */
+body.map-modal-open .input-header::before {
+  display: none;
+}
+
 .input-icon {
   font-size: 40px;
   animation: bounce 2s infinite;
