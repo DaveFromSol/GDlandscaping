@@ -65,23 +65,9 @@ const AddressAutocomplete = () => {
   // Add/remove body class when modal opens/closes to hide badges and lock scrolling
   useEffect(() => {
     if (showMap) {
-      // Always scroll to a fixed position that centers the modal perfectly
-      // Modal is 85vh tall, so we need 7.5vh of space at top to center it
-      const viewportHeight = window.innerHeight;
-
-      // Calculate absolute scroll position to center modal
-      // Modal needs 7.5vh space at top (since it's 85vh tall in a 100vh viewport)
-      // We want the modal to start at roughly 7.5vh from the top of the viewport
-      // So scroll to 0 (top of page) to ensure consistent positioning
-      const targetScroll = 0;
-
-      window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-
       document.body.classList.add('map-modal-open');
-      // Lock body scrolling after scroll completes
-      setTimeout(() => {
-        document.body.style.overflow = 'hidden';
-      }, 300);
+      // Lock body scrolling immediately - modal is position: fixed so it's already centered
+      document.body.style.overflow = 'hidden';
     } else {
       document.body.classList.remove('map-modal-open');
       // Restore body scrolling
