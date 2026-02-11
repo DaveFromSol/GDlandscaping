@@ -65,14 +65,16 @@ const AddressAutocomplete = () => {
   // Add/remove body class when modal opens/closes to hide badges and lock scrolling
   useEffect(() => {
     if (showMap) {
-      // Calculate scroll position to center the modal in viewport
-      // Modal is 85vh tall, so we want to ensure it's centered
+      // Calculate scroll position to ensure modal is fully visible
+      // Modal is 85vh tall, so we need to scroll up enough to show the entire modal
       const viewportHeight = window.innerHeight;
       const currentScroll = window.pageYOffset;
+      const isMobile = window.innerWidth <= 768;
 
-      // Scroll to a position where modal will be perfectly centered
-      // This ensures the entire modal is visible without going all the way to top
-      const targetScroll = Math.max(0, currentScroll - (viewportHeight * 0.075)); // Slight adjustment for centering
+      // On desktop, scroll up more to ensure top isn't cut off
+      // On mobile, use less aggressive scrolling
+      const scrollAdjustment = isMobile ? viewportHeight * 0.1 : viewportHeight * 0.2;
+      const targetScroll = Math.max(0, currentScroll - scrollAdjustment);
 
       window.scrollTo({ top: targetScroll, behavior: 'smooth' });
 
