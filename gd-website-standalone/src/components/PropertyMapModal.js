@@ -1395,7 +1395,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
         maxHeight: '90vh',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
+        overflow: 'auto',
         boxShadow: '0 20px 60px rgba(0,0,0,0.3)'
       }}>
         {/* Header */}
