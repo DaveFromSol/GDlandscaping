@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import './App.css';
 import { Analytics } from '@vercel/analytics/react';
@@ -93,6 +93,8 @@ import {
 
 const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [navVisible, setNavVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const location = useLocation();
   const { user } = useFirebase();
 
@@ -101,6 +103,29 @@ const Navigation = () => {
     if (path !== '/' && location.pathname.startsWith(path)) return true;
     return false;
   };
+
+  // Hide nav on scroll down, show on scroll up
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Show nav when at top of page
+      if (currentScrollY < 10) {
+        setNavVisible(true);
+      }
+      // Hide nav when scrolling down, show when scrolling up
+      else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setNavVisible(false);
+      } else if (currentScrollY < lastScrollY) {
+        setNavVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
 
   return (
@@ -113,7 +138,7 @@ const Navigation = () => {
         ></div>
       )}
 
-      <nav className="website-nav">
+      <nav className={`website-nav ${navVisible ? 'nav-visible' : 'nav-hidden'}`}>
         <div className="nav-container">
           <div className="logo">
             <Link to="/">

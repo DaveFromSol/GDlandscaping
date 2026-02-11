@@ -135,7 +135,17 @@
   top: 0;
   z-index: 1000;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, all 0.3s ease;
+}
+
+/* Hide nav when scrolling down */
+.website-nav.nav-hidden {
+  transform: translateY(-100%);
+}
+
+/* Show nav when scrolling up */
+.website-nav.nav-visible {
+  transform: translateY(0);
 }
 
 .website-nav::before {
