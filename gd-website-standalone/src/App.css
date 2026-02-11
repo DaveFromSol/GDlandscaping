@@ -148,6 +148,11 @@
   transform: translateY(0);
 }
 
+/* Hide nav when map modal is open */
+body.map-modal-open .website-nav {
+  transform: translateY(-100%);
+}
+
 .website-nav::before {
   content: '';
   position: absolute;
