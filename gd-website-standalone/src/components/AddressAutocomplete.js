@@ -62,21 +62,17 @@ const AddressAutocomplete = () => {
     };
   }, []);
 
-  // Add/remove body class when modal opens/closes to hide badges and lock scrolling
+  // Add/remove body class when modal opens/closes to hide badges
   useEffect(() => {
     if (showMap) {
       document.body.classList.add('map-modal-open');
-      // Lock body scrolling immediately - modal is position: fixed so it's already centered
-      document.body.style.overflow = 'hidden';
+      // Allow background scrolling - don't lock body overflow
     } else {
       document.body.classList.remove('map-modal-open');
-      // Restore body scrolling
-      document.body.style.overflow = '';
     }
 
     return () => {
       document.body.classList.remove('map-modal-open');
-      document.body.style.overflow = '';
     };
   }, [showMap]);
 
