@@ -65,14 +65,9 @@ const AddressAutocomplete = () => {
   // Add/remove body class when modal opens/closes to hide badges and lock scrolling
   useEffect(() => {
     if (showMap) {
-      // Scroll to top to ensure modal is visible
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-
       document.body.classList.add('map-modal-open');
-      // Lock body scrolling after a short delay to allow scroll to complete
-      setTimeout(() => {
-        document.body.style.overflow = 'hidden';
-      }, 100);
+      // Lock body scrolling - modal uses position: fixed so it stays in viewport
+      document.body.style.overflow = 'hidden';
     } else {
       document.body.classList.remove('map-modal-open');
       // Restore body scrolling
