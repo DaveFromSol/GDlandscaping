@@ -62,16 +62,21 @@ const AddressAutocomplete = () => {
     };
   }, []);
 
-  // Add/remove body class when modal opens/closes to hide the START HERE badge
+  // Add/remove body class when modal opens/closes to hide badges and lock scrolling
   useEffect(() => {
     if (showMap) {
       document.body.classList.add('map-modal-open');
+      // Lock body scrolling
+      document.body.style.overflow = 'hidden';
     } else {
       document.body.classList.remove('map-modal-open');
+      // Restore body scrolling
+      document.body.style.overflow = '';
     }
 
     return () => {
       document.body.classList.remove('map-modal-open');
+      document.body.style.overflow = '';
     };
   }, [showMap]);
 
