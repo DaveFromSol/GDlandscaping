@@ -1389,9 +1389,10 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
       <div style={{
         backgroundColor: 'white',
         borderRadius: '16px',
-        width: window.innerWidth <= 768 ? '100%' : '90vw',
-        height: window.innerWidth <= 768 ? '95vh' : '85vh',
-        maxWidth: window.innerWidth <= 768 ? '100%' : '1600px',
+        width: window.innerWidth <= 768 ? '95%' : '90vw',
+        height: window.innerWidth <= 768 ? '90vh' : '80vh',
+        maxWidth: window.innerWidth <= 768 ? '95%' : '1600px',
+        maxHeight: '90vh',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
