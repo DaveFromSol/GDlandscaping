@@ -59,23 +59,23 @@ const QuotePage = () => {
   });
 
   // Calculate base lawn mowing price based on property size
-  // $60 minimum, then $5 per 0.1 acre above 0.2 acres
+  // $72 minimum, then $6 per 0.1 acre above 0.2 acres
   const calculateBaseLawnPrice = () => {
-    if (!propertySize?.acres) return 60;
+    if (!propertySize?.acres) return 72;
 
     const acres = parseFloat(propertySize.acres);
 
-    // Minimum price is $60 for properties up to 0.2 acres
+    // Minimum price is $72 for properties up to 0.2 acres
     if (acres <= 0.2) {
-      return 60;
+      return 72;
     }
 
-    // Above 0.2 acres: add $5 for every 0.1 acre
+    // Above 0.2 acres: add $6 for every 0.1 acre
     const additionalAcres = acres - 0.2;
     const additionalIncrements = Math.ceil(additionalAcres / 0.1);
-    const additionalPrice = additionalIncrements * 5;
+    const additionalPrice = additionalIncrements * 6;
 
-    return 60 + additionalPrice;
+    return 72 + additionalPrice;
   };
 
   // Calculate leaf cleanup price based on property size
