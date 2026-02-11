@@ -1384,17 +1384,17 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: '20px'
+      padding: window.innerWidth <= 768 ? '10px' : '20px'
     }}>
       <div style={{
         backgroundColor: 'white',
         borderRadius: '16px',
-        width: '100%',
-        maxWidth: window.innerWidth <= 768 ? '95vw' : '1400px',
-        maxHeight: '95vh',
+        width: window.innerWidth <= 768 ? '100%' : '90vw',
+        height: window.innerWidth <= 768 ? '95vh' : '90vh',
+        maxWidth: window.innerWidth <= 768 ? '100%' : '1600px',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'auto',
+        overflow: 'hidden',
         boxShadow: '0 20px 60px rgba(0,0,0,0.3)'
       }}>
         {/* Header */}
@@ -1481,9 +1481,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
         <div style={{
           flex: 1,
           position: 'relative',
-          minHeight: window.innerWidth <= 768 ? '400px' : '700px',
-          height: window.innerWidth <= 768 ? '50vh' : '75vh',
-          maxHeight: window.innerWidth <= 768 ? '60vh' : 'none'
+          overflow: 'hidden'
         }}>
           {isLoading && (
             <div style={{

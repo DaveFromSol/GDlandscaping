@@ -628,6 +628,11 @@
   position: relative;
 }
 
+/* Hide the GET INSTANT QUOTE badge when map modal is open */
+body.map-modal-open .homepage-input-badge {
+  display: none;
+}
+
 .homepage-input-wrapper {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.08) 100%);
   backdrop-filter: blur(20px);
