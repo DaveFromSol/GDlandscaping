@@ -106,20 +106,24 @@ const LawnCareNewingtonPage = () => {
               <h1>Lawn Care Service Newington CT</h1>
               <p className="hero-subtitle">Professional lawn maintenance for Newington residents and businesses. Keep your community property looking pristine with expert lawn care services.</p>
 
-              <div style={{
-                margin: '30px 0',
-                padding: '0 20px'
-              }}>
-                <h2 style={{
-                  color: 'black',
-                  fontSize: '24px',
-                  fontWeight: '600',
-                  marginBottom: '15px',
-                  textShadow: '1px 1px 2px rgba(255,255,255,0.5)'
-                }}>
-                  Type Your Newington Address for Instant Lawn Care Quote
-                </h2>
-                <AddressAutocomplete />
+              <div className="homepage-address-input-container">
+                <div className="homepage-input-badge">⚡ GET INSTANT QUOTE ⚡</div>
+                <div className="homepage-input-wrapper">
+                  <div className="homepage-input-header">
+                    <span className="homepage-input-icon">📍</span>
+                    <h2 className="homepage-input-title">
+                      Type Your Newington Address for Instant Quote
+                    </h2>
+                  </div>
+                  <div className="homepage-input-field">
+                    <AddressAutocomplete />
+                  </div>
+                  <div className="homepage-input-benefits">
+                    <span className="homepage-benefit-item">✓ See Property Size</span>
+                    <span className="homepage-benefit-item">✓ Instant Pricing</span>
+                    <span className="homepage-benefit-item">✓ Book Online</span>
+                  </div>
+                </div>
               </div>
 
               <div className="hero-buttons">
