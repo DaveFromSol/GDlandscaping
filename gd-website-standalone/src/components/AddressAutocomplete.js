@@ -19,7 +19,7 @@ const AddressAutocomplete = () => {
     if (geocoderRef.current) return;
 
     const geocoder = new MapboxGeocoder({
-      accessToken: 'pk.eyJ1IjoiZHJpY2h0ZXIwNiIsImEiOiJjbWd0anR3ZXEwNTUwMnNwdDRmaDZ5ZndiIn0.UbCV_Y8l1Duq9B2Q77OFCw',
+      accessToken: process.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
       types: 'address',
       countries: 'us',
       bbox: [-73.2, 41.2, -71.3, 42.7], // CT and Central MA bounding box

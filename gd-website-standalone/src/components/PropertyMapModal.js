@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import ParcelService from '../services/ParcelService';
 
 const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
   const mapContainer = useRef(null);
   const map = useRef(null);
+  const parcelService = useRef(new ParcelService());
   const [propertySize, setPropertySize] = useState(null);
   const [parcelGeometry, setParcelGeometry] = useState(null);
   const [drawing, setDrawing] = useState(false);
@@ -61,7 +63,7 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
     console.log('Initializing map with coordinates:', coordinates);
 
     try {
-      mapboxgl.accessToken = 'pk.eyJ1IjoiZHJpY2h0ZXIwNiIsImEiOiJjbWd0anR3ZXEwNTUwMnNwdDRmaDZ5ZndiIn0.UbCV_Y8l1Duq9B2Q77OFCw';
+      mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
       // Completely disable Mapbox telemetry to prevent CORS errors
       if (typeof mapboxgl.prewarm === 'function') {
@@ -127,6 +129,39 @@ const PropertyMapModal = ({ address, coordinates, onClose, onConfirm }) => {
     console.log('Address:', address);
 
     try {
+      // PRIORITY 1: Try new simplified ParcelService (CT DEEP statewide coverage)
+      console.log('🚀 Trying ParcelService (CT DEEP statewide layer)...');
+      try {
+        const parcelData = await parcelService.current.getParcelData(coords[1], coords[0], address);
+
+        if (parcelData && !parcelData.isEstimate && parcelData.boundaryCoordinates) {
+          console.log('✅ ParcelService SUCCESS:', parcelData);
+
+          // Set property size
+          const sqFt = Math.round(parcelData.areaSquareFeet);
+          const acres = parcelData.areaAcres.toFixed(2);
+          console.log('Official CT DEEP parcel size:', { sqFt, acres });
+          setPropertySize({ sqFt, acres });
+          setDataSource('cadastre');
+
+          // Set geometry for passing to quote page
+          if (parcelData.geometry) {
+            setParcelGeometry(parcelData.geometry);
+          }
+
+          // Draw the boundary
+          drawPropertyPolygon(parcelData.boundaryCoordinates, coords);
+          return; // Success! Exit early
+        } else {
+          console.log('⚠️ ParcelService returned estimate, trying fallback methods...');
+        }
+      } catch (parcelError) {
+        console.log('⚠️ ParcelService failed:', parcelError.message, '- trying fallback methods...');
+      }
+
+      // FALLBACK: Use existing complex logic for edge cases
+      console.log('📍 Falling back to legacy parcel lookup methods...');
+
       // Parse town from address
       const detectTown = (addressString) => {
         const addressLower = addressString.toLowerCase();
