@@ -6,34 +6,6 @@ const PortfolioPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const portfolioItems = [
     {
-      id: 1,
-      title: 'Backyard Landscape Transformation',
-      description: 'Complete backyard transformation with native plantings and stone pathways',
-      image: '/backyard-landscape-transformation-berlin-ct.png',
-      category: 'Landscape Design'
-    },
-    {
-      id: 2,
-      title: 'Custom Stone Patio',
-      description: 'Elegant hardscaping and outdoor living space installation',
-      image: '/custom-stone-patio-hardscaping-ct.png',
-      category: 'Hardscaping'
-    },
-    {
-      id: 4,
-      title: 'Property Landscaping Project',
-      description: 'Professional landscaping transformation in Berlin CT',
-      image: '/IMG_5078 (1).avif',
-      category: 'Landscape Design'
-    },
-    {
-      id: 5,
-      title: 'Seasonal Landscape Maintenance',
-      description: 'Year-round property care and landscape management',
-      image: '/seasonal-lawn-maintenance-berlin-ct.jpeg',
-      category: 'Maintenance'
-    },
-    {
       id: 6,
       title: 'Commercial Property Care',
       description: 'Professional landscaping for commercial properties',
