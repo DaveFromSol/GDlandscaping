@@ -566,6 +566,64 @@ body.map-modal-open .input-header::before {
   color: #1f2937;
 }
 
+/* Unavailable notice */
+.unavailable-notice {
+  text-align: center;
+  padding: 16px 0;
+}
+
+.unavailable-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.unavailable-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1f2937;
+  margin: 0 0 14px;
+}
+
+.unavailable-text {
+  font-size: 17px;
+  color: #4b5563;
+  margin: 0 0 28px;
+  line-height: 1.6;
+}
+
+.contact-scroll-btn-primary {
+  display: block;
+  width: 100%;
+  background: linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%);
+  color: white !important;
+  border: none !important;
+  padding: 16px 32px !important;
+  font-size: 18px !important;
+  border-radius: 10px !important;
+  box-shadow: 0 6px 20px rgba(45, 80, 22, 0.3);
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.contact-scroll-btn-primary:hover {
+  background: linear-gradient(135deg, #1a3d0f 0%, #2d5016 100%) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(45, 80, 22, 0.4) !important;
+}
+
+.unavailable-call {
+  display: block;
+  color: #6b7280;
+  font-size: 15px;
+  text-decoration: none;
+  margin-top: 8px;
+}
+
+.unavailable-call:hover {
+  color: #2d5016;
+}
+
 /* Contact Fallback (button below quote input) */
 .contact-fallback {
   text-align: center;

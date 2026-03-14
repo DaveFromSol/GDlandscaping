@@ -106,23 +106,16 @@ const InstantQuotePage = () => {
             See your exact property boundary on a map + get accurate pricing instantly
           </p>
 
-          {/* Address Input - Prominent */}
+          {/* Temporary Unavailable Notice */}
           <div className="quote-input-section">
-            <div className="input-header">
-              <span className="input-icon">📍</span>
-              <h2 className="input-label">Enter Your Address to Start</h2>
-            </div>
-            <AddressAutocomplete />
-            <div className="trust-indicators">
-              <span className="trust-item">✓ No Credit Card Required</span>
-              <span className="trust-item">✓ 100% Free Quote</span>
-              <span className="trust-item">✓ Instant Results</span>
-            </div>
-            <div className="contact-fallback">
-              <p className="contact-fallback-text">Prefer to talk to someone?</p>
-              <button className="contact-scroll-btn" onClick={scrollToContact}>
-                Get in Contact
+            <div className="unavailable-notice">
+              <span className="unavailable-icon">🔧</span>
+              <h2 className="unavailable-title">Instant Quote Temporarily Unavailable</h2>
+              <p className="unavailable-text">We're working on getting this back up. In the meantime, fill out our contact form and we'll get back to you with a quote right away!</p>
+              <button className="contact-scroll-btn contact-scroll-btn-primary" onClick={scrollToContact}>
+                Fill Out Contact Form
               </button>
+              <a href="tel:8605267583" className="unavailable-call">📞 Or Call Us: (860) 526-7583</a>
             </div>
           </div>
 
