@@ -1,12 +1,50 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import AddressAutocomplete from '../components/AddressAutocomplete';
 import SEOHead from '../components/SEOHead';
 import OptimizedImage from '../components/OptimizedImage';
+import { useFirebase } from '../contexts/FirebaseContext';
 import './InstantQuotePage.css';
 
 const InstantQuotePage = () => {
   const navigate = useNavigate();
+  const { db } = useFirebase();
+  const contactFormRef = useRef(null);
+  const [contactData, setContactData] = useState({ name: '', phone: '', message: '' });
+  const [submitStatus, setSubmitStatus] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+
+  const scrollToContact = () => {
+    contactFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    if (!contactData.name || !contactData.phone) {
+      setSubmitStatus('Please enter your name and phone number.');
+      return;
+    }
+    setSubmitting(true);
+    try {
+      await addDoc(collection(db, 'quotes'), {
+        name: contactData.name,
+        phone: contactData.phone,
+        description: contactData.message || 'No message provided',
+        service: 'General Inquiry',
+        email: '',
+        address: '',
+        createdAt: serverTimestamp(),
+        createdBy: 'website-instant-quote-contact',
+      });
+      setSubmitStatus('success');
+      setContactData({ name: '', phone: '', message: '' });
+    } catch (err) {
+      setSubmitStatus('Something went wrong. Please call us at (860) 526-7583.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -79,6 +117,12 @@ const InstantQuotePage = () => {
               <span className="trust-item">✓ No Credit Card Required</span>
               <span className="trust-item">✓ 100% Free Quote</span>
               <span className="trust-item">✓ Instant Results</span>
+            </div>
+            <div className="contact-fallback">
+              <p className="contact-fallback-text">Prefer to talk to someone?</p>
+              <button className="contact-scroll-btn" onClick={scrollToContact}>
+                Get in Contact
+              </button>
             </div>
           </div>
 
@@ -233,6 +277,49 @@ const InstantQuotePage = () => {
               Visit Our Main Website
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* Simple Contact Form */}
+      <div className="simple-contact-section" ref={contactFormRef}>
+        <div className="simple-contact-inner">
+          <h2 className="simple-contact-title">Not Sure? We'll Help You Out</h2>
+          <p className="simple-contact-subtitle">Leave your name and number and we'll call you back with a quote.</p>
+          {submitStatus === 'success' ? (
+            <div className="contact-success">
+              <span>✓</span> Got it! We'll give you a call soon.
+            </div>
+          ) : (
+            <form className="simple-contact-form" onSubmit={handleContactSubmit}>
+              <input
+                className="simple-contact-input"
+                type="text"
+                placeholder="Your Name"
+                value={contactData.name}
+                onChange={(e) => setContactData({ ...contactData, name: e.target.value })}
+              />
+              <input
+                className="simple-contact-input"
+                type="tel"
+                placeholder="Phone Number"
+                value={contactData.phone}
+                onChange={(e) => setContactData({ ...contactData, phone: e.target.value })}
+              />
+              <textarea
+                className="simple-contact-input simple-contact-textarea"
+                placeholder="Anything you'd like us to know? (optional)"
+                rows={3}
+                value={contactData.message}
+                onChange={(e) => setContactData({ ...contactData, message: e.target.value })}
+              />
+              {submitStatus && submitStatus !== 'success' && (
+                <p className="contact-error">{submitStatus}</p>
+              )}
+              <button className="simple-contact-submit" type="submit" disabled={submitting}>
+                {submitting ? 'Sending...' : 'Send My Info'}
+              </button>
+            </form>
+          )}
         </div>
       </div>
 

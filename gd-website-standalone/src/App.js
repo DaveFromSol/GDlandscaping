@@ -516,6 +516,7 @@ function App() {
                 <div className="footer-section">
                   <h4>Contact</h4>
                   <p>Phone: <a href="tel:8605267583">(860) 526-7583</a></p>
+                  <a href="tel:8605267583" className="call-now-btn">📞 Call Now</a>
                   <p>Email: <a href="mailto:contact@gdlandscaping.com">contact@gdlandscaping.com</a></p>
                   <div className="footer-cta-links">
                     <Link to="/instant-quote" className="footer-cta-btn">Get Instant Quote</Link>

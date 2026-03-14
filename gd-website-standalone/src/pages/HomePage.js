@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
@@ -6,6 +6,11 @@ import QuoteSection from '../components/QuoteSection';
 import OptimizedImage from '../components/OptimizedImage';
 
 const HomePage = () => {
+  const quoteSectionRef = useRef(null);
+
+  const scrollToContact = () => {
+    quoteSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
   const structuredData = [
     {
       "@context": "https://schema.org",
@@ -348,6 +353,11 @@ const HomePage = () => {
               <h1>Beautiful Lawns in Summer, Clear Driveways in Winter</h1>
               <p>G&D Landscaping keeps your property beautiful year-round — from lawn care to snow removal. Serving Berlin, Hartford County, and surrounding Connecticut communities within 25 miles.</p>
 
+              <div className="hero-cta-buttons">
+                <a href="/instant-quote" className="hero-cta-quote">Get a Quote</a>
+                <a href="tel:8605267583" className="hero-cta-call">📞 Call Now</a>
+              </div>
+
               <div className="homepage-address-input-container">
                 <div className="homepage-input-badge">⚡ GET INSTANT QUOTE ⚡</div>
                 <div className="homepage-input-wrapper">
@@ -364,6 +374,12 @@ const HomePage = () => {
                     <span className="homepage-benefit-item">✓ See Property Size</span>
                     <span className="homepage-benefit-item">✓ Instant Pricing</span>
                     <span className="homepage-benefit-item">✓ Book Online</span>
+                  </div>
+                  <div className="homepage-contact-fallback">
+                    <span className="homepage-contact-fallback-text">Prefer to talk to someone?</span>
+                    <button className="homepage-contact-scroll-btn" onClick={scrollToContact}>
+                      Get in Contact
+                    </button>
                   </div>
                 </div>
               </div>
@@ -533,12 +549,14 @@ const HomePage = () => {
           </div>
         </div>
 
-        <QuoteSection
-          title="Get Your Free Quote Today"
-          subtitle="Choose your preferred method to request a quote - instant or detailed form"
-          locationName="Home"
-          source="Home Page Form"
-        />
+        <div ref={quoteSectionRef}>
+          <QuoteSection
+            title="Get Your Free Quote Today"
+            subtitle="Choose your preferred method to request a quote - instant or detailed form"
+            locationName="Home"
+            source="Home Page Form"
+          />
+        </div>
 
 
 

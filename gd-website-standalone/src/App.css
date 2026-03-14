@@ -578,6 +578,62 @@ body.map-modal-open .website-nav {
   flex-wrap: wrap;
 }
 
+.hero-cta-buttons {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 24px 0 32px;
+  justify-content: center;
+}
+
+.hero-cta-quote {
+  background: #22c55e;
+  color: white;
+  padding: 14px 32px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 700;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);
+}
+
+.hero-cta-quote:hover {
+  background: #16a34a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(34, 197, 94, 0.5);
+}
+
+.hero-cta-call {
+  background: #fbbf24;
+  color: #1f2937;
+  padding: 14px 32px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 700;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(251, 191, 36, 0.4);
+}
+
+.hero-cta-call:hover {
+  background: #f59e0b;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.5);
+}
+
+@media (max-width: 480px) {
+  .hero-cta-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hero-cta-quote,
+  .hero-cta-call {
+    text-align: center;
+  }
+}
+
 .cta-primary {
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
@@ -710,6 +766,48 @@ body.map-modal-open .homepage-input-badge {
   border-radius: 12px;
   border: 2px solid rgba(255, 255, 255, 0.3);
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Homepage contact fallback (below instant quote in hero) */
+.homepage-contact-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+.homepage-contact-fallback-text {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  margin: 0;
+}
+
+.homepage-contact-scroll-btn {
+  background: transparent;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  letter-spacing: 0.3px;
+}
+
+.homepage-contact-scroll-btn:hover {
+  background: white;
+  color: #2d5016;
+  border-color: white;
+}
+
+@media (max-width: 768px) {
+  .homepage-contact-fallback {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 
 /* Animations removed for cleaner look */
@@ -5693,6 +5791,26 @@ body.map-modal-open .homepage-input-badge {
 .footer-cta-btn:hover {
   background: #16a34a;
   transform: translateY(-2px);
+}
+
+.call-now-btn {
+  display: inline-block;
+  background: #fbbf24;
+  color: #1f2937;
+  padding: 10px 22px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 6px 0 14px;
+  transition: all 0.25s ease;
+  box-shadow: 0 3px 10px rgba(251, 191, 36, 0.35);
+}
+
+.call-now-btn:hover {
+  background: #f59e0b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(251, 191, 36, 0.5);
 }
 
 .footer-cta-btn-secondary {

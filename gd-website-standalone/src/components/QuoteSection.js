@@ -35,6 +35,7 @@ const QuoteSection = ({
                   <h4>Phone</h4>
                   <p>(860) 526-7583</p>
                   <small>Call for immediate service</small>
+                  <a href="tel:8605267583" className="call-now-btn">📞 Call Now</a>
                 </div>
               </div>
 

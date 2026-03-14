@@ -254,6 +254,7 @@ Newsletter Signup: ${formData.newsletter ? 'Yes' : 'No'}`,
                   <h3>Phone</h3>
                   <p>(860) 526-7583</p>
                   <small>Call for immediate service</small>
+                  <a href="tel:8605267583" className="call-now-btn">📞 Call Now</a>
                 </div>
               </div>
 
