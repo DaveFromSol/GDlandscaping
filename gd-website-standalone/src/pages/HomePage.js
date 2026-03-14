@@ -359,27 +359,13 @@ const HomePage = () => {
               </div>
 
               <div className="homepage-address-input-container">
-                <div className="homepage-input-badge">⚡ GET INSTANT QUOTE ⚡</div>
                 <div className="homepage-input-wrapper">
-                  <div className="homepage-input-header">
-                    <span className="homepage-input-icon">📍</span>
-                    <h2 className="homepage-input-title">
-                      Type Your Address for Instant Quote
-                    </h2>
-                  </div>
-                  <div className="homepage-input-field">
-                    <AddressAutocomplete />
-                  </div>
-                  <div className="homepage-input-benefits">
-                    <span className="homepage-benefit-item">✓ See Property Size</span>
-                    <span className="homepage-benefit-item">✓ Instant Pricing</span>
-                    <span className="homepage-benefit-item">✓ Book Online</span>
-                  </div>
+                  <p className="homepage-unavailable-text">🔧 Instant quote temporarily unavailable — fill out the form below or give us a call!</p>
                   <div className="homepage-contact-fallback">
-                    <span className="homepage-contact-fallback-text">Prefer to talk to someone?</span>
                     <button className="homepage-contact-scroll-btn" onClick={scrollToContact}>
-                      Get in Contact
+                      Fill Out Contact Form
                     </button>
+                    <a href="tel:8605267583" className="hero-cta-call">📞 Call Now</a>
                   </div>
                 </div>
               </div>
