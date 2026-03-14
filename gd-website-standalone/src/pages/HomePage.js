@@ -354,7 +354,7 @@ const HomePage = () => {
               <p>G&D Landscaping keeps your property beautiful year-round — from lawn care to snow removal. Serving Berlin, Hartford County, and surrounding Connecticut communities within 25 miles.</p>
 
               <div className="hero-cta-buttons">
-                <a href="/instant-quote" className="hero-cta-quote">Get a Quote</a>
+                <a href="#get-quote" className="hero-cta-quote" onClick={(e) => { e.preventDefault(); quoteSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}>Get a Quote</a>
                 <a href="tel:8605267583" className="hero-cta-call">📞 Call Now</a>
               </div>
 
