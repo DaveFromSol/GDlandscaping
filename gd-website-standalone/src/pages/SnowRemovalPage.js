@@ -128,7 +128,7 @@ const SnowRemovalPage = () => {
     "image": [
       {
         "@type": "ImageObject",
-        "url": "https://www.gdlandscapingllc.com/GD_Landscaping_LLC_Snow_removal.JPG",
+        "url": "https://www.gdlandscapingllc.com/images/G&D_Landscaping_Snow_Removal.JPG",
         "description": "G&D Landscaping professional snow plow truck clearing driveway during winter storm in Connecticut",
         "width": 1920,
         "height": 1080
@@ -152,7 +152,7 @@ const SnowRemovalPage = () => {
       "@type": "LocalBusiness",
       "name": "G&D Landscaping",
       "logo": "https://www.gdlandscapingllc.com/GD.png",
-      "image": "https://www.gdlandscapingllc.com/GD_Landscaping_LLC_Snow_removal.JPG",
+      "image": "https://www.gdlandscapingllc.com/images/G&D_Landscaping_Snow_Removal.JPG",
       "telephone": "(860) 526-7583",
       "address": {
         "@type": "PostalAddress",
@@ -185,14 +185,14 @@ const SnowRemovalPage = () => {
       <div className="snow-removal-section">
         {/* Hero Section with Real Photo */}
         <div className="snow-hero" style={{
-          backgroundImage: 'linear-gradient(rgba(30, 58, 138, 0.7), rgba(59, 130, 246, 0.7)), url(/GD_Landscaping_LLC_Snow_removal.JPG)',
+          backgroundImage: 'linear-gradient(rgba(30, 58, 138, 0.7), rgba(59, 130, 246, 0.7)), url(/images/G&D_Landscaping_Snow_Removal.JPG)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed'
         }}>
           {/* SEO Image */}
           <img
-            src="/GD_Landscaping_LLC_Snow_removal.JPG"
+            src="/images/G&D_Landscaping_Snow_Removal.JPG"
             alt="G&D Landscaping professional snow plow truck clearing driveway during winter storm in Connecticut"
             style={{display: 'none'}}
             width="1920"
@@ -373,7 +373,7 @@ const SnowRemovalPage = () => {
               <div className="gallery-item-featured">
                 <div className="gallery-image-wrapper">
                   <img
-                    src="/GD_Landscaping_LLC_Snow_removal.JPG"
+                    src="/images/G&D_Landscaping_Snow_Removal.JPG"
                     alt="G&D Landscaping professional snow plow truck clearing residential driveway in Connecticut winter"
                     loading="lazy"
                     width="800"

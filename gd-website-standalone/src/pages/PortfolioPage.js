@@ -6,6 +6,13 @@ const PortfolioPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const portfolioItems = [
     {
+      id: 9,
+      title: 'Snow Removal Service',
+      description: 'Professional snow removal and driveway clearing in Connecticut',
+      image: '/images/G&D_Landscaping_Snow_Removal.JPG',
+      category: 'Snow Removal'
+    },
+    {
       id: 6,
       title: 'Commercial Property Care',
       description: 'Professional landscaping for commercial properties',
