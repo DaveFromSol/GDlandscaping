@@ -1,0 +1,9 @@
+{
+  "buildCommand": "cd gd-website-standalone && npm install && npm run build",
+  "outputDirectory": "gd-website-standalone/build",
+  "installCommand": "echo 'skip root install'",
+  "framework": "create-react-app",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
