@@ -1,241 +1,56 @@
-import React, { useEffect, useRef, useState } from 'react';
-import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-import { useNavigate } from 'react-router-dom';
-import PropertyMapModal from './PropertyMapModal';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const AddressAutocomplete = () => {
-  const geocoderContainerRef = useRef(null);
-  const geocoderRef = useRef(null);
-  const [selectedAddress, setSelectedAddress] = useState('');
-  const [showMap, setShowMap] = useState(false);
-  const [addressData, setAddressData] = useState(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!geocoderContainerRef.current) return;
-
-    // Prevent duplicate geocoder initialization
-    if (geocoderRef.current) return;
-
-    const geocoder = new MapboxGeocoder({
-      accessToken: process.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
-      types: 'address',
-      countries: 'us',
-      bbox: [-73.2, 41.2, -71.3, 42.7], // CT and Central MA bounding box
-      proximity: {
-        longitude: -72.7553,
-        latitude: 41.6219
-      }, // Berlin, CT
-      placeholder: 'Enter your address for instant quote...',
-      mapboxgl: null, // We're not using a map, just the geocoder
-    });
-
-    geocoderRef.current = geocoder;
-    geocoder.addTo(geocoderContainerRef.current);
-
-    // Handle address selection
-    geocoder.on('result', (e) => {
-      const address = e.result.place_name;
-      const coordinates = e.result.center; // [longitude, latitude]
-
-      setSelectedAddress(address);
-      setAddressData({
-        address: address,
-        coordinates: coordinates
-      });
-
-      // Show the map modal
-      setShowMap(true);
-    });
-
-    // Clean up - don't call onRemove as it causes errors in some cases
-    // The geocoder will be cleaned up when the component unmounts anyway
-    return () => {
-      if (geocoderRef.current) {
-        // Clear the container to remove the geocoder DOM elements
-        if (geocoderContainerRef.current) {
-          geocoderContainerRef.current.innerHTML = '';
-        }
-        geocoderRef.current = null;
-      }
-    };
-  }, []);
-
-  // Add/remove body class when modal opens/closes to hide badges
-  useEffect(() => {
-    if (showMap) {
-      document.body.classList.add('map-modal-open');
-      // Allow background scrolling - don't lock body overflow
-    } else {
-      document.body.classList.remove('map-modal-open');
-    }
-
-    return () => {
-      document.body.classList.remove('map-modal-open');
-    };
-  }, [showMap]);
-
-  const handleMapClose = () => {
-    setShowMap(false);
-  };
-
-  const handleMapConfirm = (data) => {
-    setShowMap(false);
-
-    // Redirect to quote page with property data for instant pricing
-    navigate('/quote', {
-      state: {
-        address: data.address,
-        coordinates: data.coordinates,
-        propertySize: data.propertySize,
-        parcelGeometry: data.parcelGeometry
-      }
-    });
-  };
-
   return (
-    <>
-      <div style={{
-        width: '100%',
-        maxWidth: '600px',
-        margin: '0 auto'
-      }}>
-        <div
-          ref={geocoderContainerRef}
+    <div style={{
+      width: '100%',
+      maxWidth: '600px',
+      margin: '0 auto',
+      background: '#fefce8',
+      border: '2px solid #fbbf24',
+      borderRadius: '12px',
+      padding: '20px 24px',
+      textAlign: 'center',
+    }}>
+      <div style={{ fontSize: '28px', marginBottom: '8px' }}>🔧</div>
+      <p style={{ fontWeight: '700', fontSize: '17px', color: '#92400e', margin: '0 0 6px' }}>
+        Instant Quote Temporarily Unavailable
+      </p>
+      <p style={{ fontSize: '14px', color: '#78350f', margin: '0 0 14px' }}>
+        Fill out our contact form and we'll get back to you with a quote right away!
+      </p>
+      <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <Link
+          to="/contact"
           style={{
-            fontSize: '16px'
+            background: '#16a34a',
+            color: '#fff',
+            padding: '10px 20px',
+            borderRadius: '8px',
+            textDecoration: 'none',
+            fontWeight: '600',
+            fontSize: '14px',
           }}
-        />
-      <style>{`
-        .mapboxgl-ctrl-geocoder {
-          min-width: 100%;
-          max-width: 100%;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-          border-radius: 8px;
-          font-size: 16px;
-          z-index: 1000;
-          position: relative !important;
-        }
-
-        .mapboxgl-ctrl-geocoder--input {
-          height: 60px;
-          padding: 0 50px 0 20px;
-          font-size: 18px;
-          color: #333;
-          border-radius: 8px;
-        }
-
-        .mapboxgl-ctrl-geocoder--input:focus {
-          outline: none;
-          box-shadow: 0 4px 20px rgba(45, 80, 22, 0.3);
-        }
-
-        .mapboxgl-ctrl-geocoder--icon-search {
-          top: 18px;
-          left: auto;
-          right: 15px;
-          width: 24px;
-          height: 24px;
-        }
-
-        .mapboxgl-ctrl-geocoder--button {
-          top: 18px;
-          right: 15px;
-        }
-
-        .mapboxgl-ctrl-geocoder--icon {
-          fill: #2d5016;
-        }
-
-        .mapboxgl-ctrl-geocoder--suggestion {
-          padding: 12px 20px;
-          font-size: 16px;
-          white-space: normal !important;
-          word-wrap: break-word !important;
-          overflow: visible !important;
-          text-overflow: clip !important;
-          line-height: 1.4 !important;
-          min-height: 50px;
-        }
-
-        .mapboxgl-ctrl-geocoder--suggestion-title {
-          font-weight: 600;
-          color: #333;
-          white-space: normal !important;
-          word-wrap: break-word !important;
-          overflow: visible !important;
-          text-overflow: clip !important;
-        }
-
-        .mapboxgl-ctrl-geocoder--suggestion-address {
-          color: #666;
-          font-size: 14px;
-          white-space: normal !important;
-          word-wrap: break-word !important;
-          overflow: visible !important;
-          text-overflow: clip !important;
-          margin-top: 4px;
-        }
-
-        .mapboxgl-ctrl-geocoder .suggestions {
-          border-radius: 0 0 8px 8px;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-          max-height: 400px !important;
-          overflow-y: auto !important;
-          overflow-x: hidden !important;
-          width: 100% !important;
-          min-width: 100% !important;
-          left: 0 !important;
-          right: 0 !important;
-          z-index: 1001;
-          position: absolute !important;
-          background: white;
-        }
-
-        .mapboxgl-ctrl-geocoder--suggestion:hover {
-          background-color: #f0f4ed;
-        }
-
-        /* Ensure suggestions container doesn't get clipped */
-        .mapboxgl-ctrl-geocoder .suggestions-wrapper {
-          overflow: visible !important;
-        }
-
-        @media (max-width: 768px) {
-          .mapboxgl-ctrl-geocoder--input {
-            height: 55px;
-            font-size: 16px;
-            padding: 0 45px 0 15px;
-          }
-
-          .mapboxgl-ctrl-geocoder--icon-search,
-          .mapboxgl-ctrl-geocoder--button {
-            top: 16px;
-          }
-
-          .mapboxgl-ctrl-geocoder--suggestion {
-            font-size: 14px;
-            padding: 10px 15px;
-          }
-
-          .mapboxgl-ctrl-geocoder--suggestion-address {
-            font-size: 12px;
-          }
-        }
-      `}</style>
+        >
+          Contact Us
+        </Link>
+        <a
+          href="tel:8605267583"
+          style={{
+            background: '#f59e0b',
+            color: '#fff',
+            padding: '10px 20px',
+            borderRadius: '8px',
+            textDecoration: 'none',
+            fontWeight: '600',
+            fontSize: '14px',
+          }}
+        >
+          📞 Call (860) 526-7583
+        </a>
       </div>
-
-      {/* Property Map Modal */}
-      {showMap && addressData && (
-        <PropertyMapModal
-          address={addressData.address}
-          coordinates={addressData.coordinates}
-          onClose={handleMapClose}
-          onConfirm={handleMapConfirm}
-        />
-      )}
-    </>
+    </div>
   );
 };
 
