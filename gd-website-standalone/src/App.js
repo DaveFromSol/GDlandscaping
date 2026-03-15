@@ -43,6 +43,16 @@ import FallCleanupNewingtonPage from './pages/FallCleanupNewingtonPage';
 import FallCleanupRockyHillPage from './pages/FallCleanupRockyHillPage';
 import FallCleanupWestHartfordPage from './pages/FallCleanupWestHartfordPage';
 import FallCleanupFarmingtonPage from './pages/FallCleanupFarmingtonPage';
+import SpringCleanupBerlinPage from './pages/SpringCleanupBerlinPage';
+import SpringCleanupBristolPage from './pages/SpringCleanupBristolPage';
+import SpringCleanupCromwellPage from './pages/SpringCleanupCromwellPage';
+import SpringCleanupHartfordPage from './pages/SpringCleanupHartfordPage';
+import SpringCleanupMiddletownPage from './pages/SpringCleanupMiddletownPage';
+import SpringCleanupNewBritainPage from './pages/SpringCleanupNewBritainPage';
+import SpringCleanupNewingtonPage from './pages/SpringCleanupNewingtonPage';
+import SpringCleanupRockyHillPage from './pages/SpringCleanupRockyHillPage';
+import SpringCleanupWestHartfordPage from './pages/SpringCleanupWestHartfordPage';
+import SpringCleanupFarmingtonPage from './pages/SpringCleanupFarmingtonPage';
 import BushTrimmingBerlinPage from './pages/BushTrimmingBerlinPage';
 import BushTrimmingBristolPage from './pages/BushTrimmingBristolPage';
 import BushTrimmingCromwellPage from './pages/BushTrimmingCromwellPage';
@@ -294,7 +304,17 @@ const CrawlPathLinks = () => {
       { text: 'Bush Trimming Middletown CT', url: '/bush-trimming-middletown-ct' },
       { text: 'Bush Trimming New Britain CT', url: '/bush-trimming-new-britain-ct' },
       { text: 'Bush Trimming Newington CT', url: '/bush-trimming-newington-ct' },
-      { text: 'Bush Trimming Rocky Hill CT', url: '/bush-trimming-rocky-hill-ct' }
+      { text: 'Bush Trimming Rocky Hill CT', url: '/bush-trimming-rocky-hill-ct' },
+      { text: 'Spring Cleanup Berlin CT', url: '/spring-cleanup-berlin-ct' },
+      { text: 'Spring Cleanup Bristol CT', url: '/spring-cleanup-bristol-ct' },
+      { text: 'Spring Cleanup Cromwell CT', url: '/spring-cleanup-cromwell-ct' },
+      { text: 'Spring Cleanup Farmington CT', url: '/spring-cleanup-farmington-ct' },
+      { text: 'Spring Cleanup Hartford CT', url: '/spring-cleanup-hartford-ct' },
+      { text: 'Spring Cleanup Middletown CT', url: '/spring-cleanup-middletown-ct' },
+      { text: 'Spring Cleanup New Britain CT', url: '/spring-cleanup-new-britain-ct' },
+      { text: 'Spring Cleanup Newington CT', url: '/spring-cleanup-newington-ct' },
+      { text: 'Spring Cleanup Rocky Hill CT', url: '/spring-cleanup-rocky-hill-ct' },
+      { text: 'Spring Cleanup West Hartford CT', url: '/spring-cleanup-west-hartford-ct' }
     ];
 
     // Shuffle and pick 5 random links
@@ -379,6 +399,17 @@ function App() {
               <Route path="/fall-cleanup-west-hartford" element={<Navigate to="/fall-cleanup-west-hartford-ct" replace />} />
               <Route path="/fall-cleanup-bristol" element={<Navigate to="/fall-cleanup-bristol-ct" replace />} />
 
+              <Route path="/spring-cleanup-berlin" element={<Navigate to="/spring-cleanup-berlin-ct" replace />} />
+              <Route path="/spring-cleanup-hartford" element={<Navigate to="/spring-cleanup-hartford-ct" replace />} />
+              <Route path="/spring-cleanup-farmington" element={<Navigate to="/spring-cleanup-farmington-ct" replace />} />
+              <Route path="/spring-cleanup-new-britain" element={<Navigate to="/spring-cleanup-new-britain-ct" replace />} />
+              <Route path="/spring-cleanup-cromwell" element={<Navigate to="/spring-cleanup-cromwell-ct" replace />} />
+              <Route path="/spring-cleanup-middletown" element={<Navigate to="/spring-cleanup-middletown-ct" replace />} />
+              <Route path="/spring-cleanup-rocky-hill" element={<Navigate to="/spring-cleanup-rocky-hill-ct" replace />} />
+              <Route path="/spring-cleanup-newington" element={<Navigate to="/spring-cleanup-newington-ct" replace />} />
+              <Route path="/spring-cleanup-west-hartford" element={<Navigate to="/spring-cleanup-west-hartford-ct" replace />} />
+              <Route path="/spring-cleanup-bristol" element={<Navigate to="/spring-cleanup-bristol-ct" replace />} />
+
               <Route path="/bush-trimming-berlin" element={<Navigate to="/bush-trimming-berlin-ct" replace />} />
               <Route path="/bush-trimming-hartford" element={<Navigate to="/bush-trimming-hartford-ct" replace />} />
               <Route path="/bush-trimming-farmington" element={<Navigate to="/bush-trimming-farmington-ct" replace />} />
@@ -430,6 +461,16 @@ function App() {
               <Route path="/fall-cleanup-rocky-hill-ct" element={<FallCleanupRockyHillPage />} />
               <Route path="/fall-cleanup-west-hartford-ct" element={<FallCleanupWestHartfordPage />} />
               <Route path="/fall-cleanup-farmington-ct" element={<FallCleanupFarmingtonPage />} />
+              <Route path="/spring-cleanup-berlin-ct" element={<SpringCleanupBerlinPage />} />
+              <Route path="/spring-cleanup-bristol-ct" element={<SpringCleanupBristolPage />} />
+              <Route path="/spring-cleanup-cromwell-ct" element={<SpringCleanupCromwellPage />} />
+              <Route path="/spring-cleanup-hartford-ct" element={<SpringCleanupHartfordPage />} />
+              <Route path="/spring-cleanup-middletown-ct" element={<SpringCleanupMiddletownPage />} />
+              <Route path="/spring-cleanup-new-britain-ct" element={<SpringCleanupNewBritainPage />} />
+              <Route path="/spring-cleanup-newington-ct" element={<SpringCleanupNewingtonPage />} />
+              <Route path="/spring-cleanup-rocky-hill-ct" element={<SpringCleanupRockyHillPage />} />
+              <Route path="/spring-cleanup-west-hartford-ct" element={<SpringCleanupWestHartfordPage />} />
+              <Route path="/spring-cleanup-farmington-ct" element={<SpringCleanupFarmingtonPage />} />
               <Route path="/bush-trimming-berlin-ct" element={<BushTrimmingBerlinPage />} />
               <Route path="/bush-trimming-bristol-ct" element={<BushTrimmingBristolPage />} />
               <Route path="/bush-trimming-cromwell-ct" element={<BushTrimmingCromwellPage />} />

@@ -296,6 +296,21 @@ const ServicesPage = () => {
                 </ul>
               </div>
               <div className="service-location-category">
+                <h3>🌱 Spring Cleanup by Town</h3>
+                <ul className="service-location-links">
+                  <li><Link to="/spring-cleanup-berlin-ct">Berlin Spring Cleanup</Link></li>
+                  <li><Link to="/spring-cleanup-bristol-ct">Bristol Spring Cleanup</Link></li>
+                  <li><Link to="/spring-cleanup-cromwell-ct">Cromwell Spring Cleanup</Link></li>
+                  <li><Link to="/spring-cleanup-farmington-ct">Farmington Spring Cleanup</Link></li>
+                  <li><Link to="/spring-cleanup-hartford-ct">Hartford Spring Cleanup</Link></li>
+                  <li><Link to="/spring-cleanup-middletown-ct">Middletown Spring Cleanup</Link></li>
+                  <li><Link to="/spring-cleanup-new-britain-ct">New Britain Spring Cleanup</Link></li>
+                  <li><Link to="/spring-cleanup-newington-ct">Newington Spring Cleanup</Link></li>
+                  <li><Link to="/spring-cleanup-rocky-hill-ct">Rocky Hill Spring Cleanup</Link></li>
+                  <li><Link to="/spring-cleanup-west-hartford-ct">West Hartford Spring Cleanup</Link></li>
+                </ul>
+              </div>
+              <div className="service-location-category">
                 <h3>🌱 Lawn Care by Town</h3>
                 <ul className="service-location-links">
                   <li><Link to="/lawn-care-berlin-ct">Berlin Lawn Care</Link></li>
