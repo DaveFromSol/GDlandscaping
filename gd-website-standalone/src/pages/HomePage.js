@@ -553,8 +553,8 @@ const HomePage = () => {
 
         <section className="before-after-gallery">
           <div className="container">
-            <h2>Before & After: Bush Trimming in Newington</h2>
-            <p className="section-subtitle">Precision hedge shaping and debris cleanup gave this Newington property instant curb appeal.</p>
+            <h2>See the Difference — Bush Trimming in Newington, CT</h2>
+            <p className="section-subtitle">One visit. Overgrown hedges shaped, debris hauled, and curb appeal transformed. This is what G&D Landscaping delivers on every job.</p>
             <div className="before-after-grid">
               <figure className="before-card">
                 <OptimizedImage
