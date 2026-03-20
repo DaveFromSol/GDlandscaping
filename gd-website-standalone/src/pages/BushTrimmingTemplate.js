@@ -4,6 +4,7 @@ import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
 import LocationGallery from '../components/LocationGallery';
 import QuoteSection from '../components/QuoteSection';
+import QuickQuoteForm from '../components/QuickQuoteForm';
 import FAQSection from '../components/FAQSection';
 import OptimizedImage from '../components/OptimizedImage';
 import RelatedServices from '../components/RelatedServices';
@@ -231,6 +232,16 @@ const BushTrimmingTemplate = ({
               </div>
             </div>
           </section>
+
+          <div className="town-quick-quote">
+            <div className="container">
+              <div className="quick-quote-wrapper">
+                <h2>Get a Free Quote</h2>
+                <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
+                <QuickQuoteForm source={`${townSlug}-bush-trimming`} />
+              </div>
+            </div>
+          </div>
 
           <QuoteSection
             title={resolvedQuote.title}

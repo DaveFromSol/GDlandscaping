@@ -3,6 +3,7 @@ import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
 import LocationGallery from '../components/LocationGallery';
 import QuoteSection from '../components/QuoteSection';
+import QuickQuoteForm from '../components/QuickQuoteForm';
 import OptimizedImage from '../components/OptimizedImage';
 
 const LawnCareBristolPage = () => {
@@ -261,7 +262,17 @@ const LawnCareBristolPage = () => {
           </div>
         </div>
 
-        <QuoteSection
+        <div className="town-quick-quote">
+              <div className="container">
+                <div className="quick-quote-wrapper">
+                  <h2>Get a Free Quote</h2>
+                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
+                  <QuickQuoteForm source="lawn-care-bristol" />
+                </div>
+              </div>
+            </div>
+
+            <QuoteSection
           title="Need a Detailed Bristol Quote?"
           subtitle="Share a few details about your Bristol property and we’ll follow up with pricing the same day."
           locationName="Bristol"

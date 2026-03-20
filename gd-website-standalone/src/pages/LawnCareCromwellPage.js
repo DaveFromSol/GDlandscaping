@@ -4,6 +4,7 @@ import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
 import LocationGallery from '../components/LocationGallery';
 import QuoteSection from '../components/QuoteSection';
+import QuickQuoteForm from '../components/QuickQuoteForm';
 
 const LawnCareCromwellPage = () => {
   const packages = [
@@ -241,7 +242,17 @@ const LawnCareCromwellPage = () => {
             </div>
           </section>
 
-          <QuoteSection
+          <div className="town-quick-quote">
+              <div className="container">
+                <div className="quick-quote-wrapper">
+                  <h2>Get a Free Quote</h2>
+                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
+                  <QuickQuoteForm source="lawn-care-cromwell" />
+                </div>
+              </div>
+            </div>
+
+            <QuoteSection
             title="Ready for a Cromwell Quote?"
             subtitle="Send us the basics about your Connecticut River property and we’ll reply with a detailed estimate ASAP."
             locationName="Cromwell"

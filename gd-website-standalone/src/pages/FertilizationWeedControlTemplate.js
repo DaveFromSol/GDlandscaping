@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import QuoteSection from '../components/QuoteSection';
+import QuickQuoteForm from '../components/QuickQuoteForm';
 import FAQSection from '../components/FAQSection';
 import OptimizedImage from '../components/OptimizedImage';
 import RelatedServices from '../components/RelatedServices';
@@ -263,6 +264,16 @@ const FertilizationWeedControlTemplate = ({
           currentService="fertilization"
           townName={cityName}
         />
+
+        <div className="town-quick-quote">
+          <div className="container">
+            <div className="quick-quote-wrapper">
+              <h2>Get a Free Quote</h2>
+              <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
+              <QuickQuoteForm source={`${townName.split(',')[0].toLowerCase().replace(/\s+/g, '-')}-fertilization`} />
+            </div>
+          </div>
+        </div>
 
         <QuoteSection
           title={cta?.title || `Start Your ${townName.split(',')[0]} Treatment Plan`}

@@ -4,6 +4,7 @@ import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
 import LocationGallery from '../components/LocationGallery';
 import QuoteSection from '../components/QuoteSection';
+import QuickQuoteForm from '../components/QuickQuoteForm';
 
 const LawnCareFarmingtonPage = () => {
   const packages = [
@@ -211,7 +212,17 @@ const LawnCareFarmingtonPage = () => {
             </div>
           </section>
 
-          <QuoteSection
+          <div className="town-quick-quote">
+              <div className="container">
+                <div className="quick-quote-wrapper">
+                  <h2>Get a Free Quote</h2>
+                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
+                  <QuickQuoteForm source="lawn-care-farmington" />
+                </div>
+              </div>
+            </div>
+
+            <QuoteSection
             title="Need a Farmington Quote?"
             subtitle="Share your acreage, gate access, and must-have services—we’ll customize your plan."
             locationName="Farmington"

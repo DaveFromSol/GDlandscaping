@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import QuoteSection from '../components/QuoteSection';
+import QuickQuoteForm from '../components/QuickQuoteForm';
 
 const SnowRemovalRockyHillPage = () => {
   const packages = [
@@ -258,7 +259,17 @@ const SnowRemovalRockyHillPage = () => {
             </div>
           </section>
 
-          <QuoteSection
+          <div className="town-quick-quote">
+              <div className="container">
+                <div className="quick-quote-wrapper">
+                  <h2>Get a Free Quote</h2>
+                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
+                  <QuickQuoteForm source="snow-removal-rocky-hill" />
+                </div>
+              </div>
+            </div>
+
+            <QuoteSection
             title="Reserve Rocky Hill Snow Removal"
             subtitle="Send your address and service priorities so we can confirm the right crew and route timing."
             locationName="Rocky Hill Snow"

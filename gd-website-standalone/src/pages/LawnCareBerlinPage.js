@@ -4,6 +4,7 @@ import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
 import LocationGallery from '../components/LocationGallery';
 import QuoteSection from '../components/QuoteSection';
+import QuickQuoteForm from '../components/QuickQuoteForm';
 
 const LawnCareBerlinPage = () => {
   const packages = [
@@ -319,7 +320,17 @@ const LawnCareBerlinPage = () => {
           </section>
 
           {/* Contact CTA */}
-          <QuoteSection
+          <div className="town-quick-quote">
+              <div className="container">
+                <div className="quick-quote-wrapper">
+                  <h2>Get a Free Quote</h2>
+                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
+                  <QuickQuoteForm source="lawn-care-berlin" />
+                </div>
+              </div>
+            </div>
+
+            <QuoteSection
             title="Need a Detailed Berlin Quote?"
             subtitle="Send us a few property details and our Berlin team will follow up with personalized pricing."
             locationName="Berlin"
