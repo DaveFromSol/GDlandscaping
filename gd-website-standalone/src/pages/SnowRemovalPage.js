@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import FAQSection from '../components/FAQSection';
+import QuickQuoteForm from '../components/QuickQuoteForm';
 
 const SnowRemovalPage = () => {
   const faqs = [
