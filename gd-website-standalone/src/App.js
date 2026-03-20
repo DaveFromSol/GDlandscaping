@@ -4,7 +4,11 @@ import './App.css';
 import { Analytics } from '@vercel/analytics/react';
 import { FirebaseProvider, useFirebase } from './contexts/FirebaseContext';
 import ScrollToTop from './components/ScrollToTop';
+import StickyMobileBar from './components/StickyMobileBar';
+import UrgencyBanner from './components/UrgencyBanner';
+import ExitIntentPopup from './components/ExitIntentPopup';
 import HomePage from './pages/HomePage';
+import CommercialPage from './pages/CommercialPage';
 import ServicesPage from './pages/ServicesPage';
 import PortfolioPage from './pages/PortfolioPage';
 import AboutPage from './pages/AboutPage';
@@ -188,6 +192,15 @@ const Navigation = () => {
             </li>
             <li>
               <Link
+                to="/commercial"
+                className={isActive('/commercial') ? 'active' : ''}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                🏢 Commercial
+              </Link>
+            </li>
+            <li>
+              <Link
                 to="/blog"
                 className={isActive('/blog') ? 'active' : ''}
                 onClick={() => setMobileMenuOpen(false)}
@@ -359,6 +372,7 @@ function App() {
         <ScrollToTop />
         <div className="website">
           <Navigation />
+          <UrgencyBanner />
 
           <main className="website-main">
             <Routes>
@@ -423,6 +437,7 @@ function App() {
 
               {/* Main pages */}
               <Route path="/" element={<HomePage />} />
+              <Route path="/commercial" element={<CommercialPage />} />
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/portfolio" element={<PortfolioPage />} />
               <Route path="/about" element={<AboutPage />} />
@@ -536,6 +551,7 @@ function App() {
                   <div className="footer-nav-links">
                     <Link to="/">Home</Link>
                     <Link to="/services">Services</Link>
+                    <Link to="/commercial">Commercial</Link>
                     <Link to="/blog">Blog</Link>
                     <Link to="/portfolio">Portfolio</Link>
                     <Link to="/about">About</Link>
@@ -576,6 +592,8 @@ function App() {
             </div>
           </footer>
           <Analytics />
+          <StickyMobileBar />
+          <ExitIntentPopup />
         </div>
       </Router>
     </FirebaseProvider>

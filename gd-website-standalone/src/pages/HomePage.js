@@ -3,13 +3,19 @@ import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import AddressAutocomplete from '../components/AddressAutocomplete';
 import QuoteSection from '../components/QuoteSection';
+import QuickQuoteForm from '../components/QuickQuoteForm';
 import OptimizedImage from '../components/OptimizedImage';
 
 const HomePage = () => {
   const quoteSectionRef = useRef(null);
+  const quickQuoteRef = useRef(null);
 
   const scrollToContact = () => {
     quoteSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const scrollToQuickQuote = () => {
+    quickQuoteRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
   const structuredData = [
     {
@@ -350,25 +356,24 @@ const HomePage = () => {
           <div className="hero-overlay"></div>
           <div className="hero-content">
             <div>
-              <h1>Beautiful Lawns in Summer, Clear Driveways in Winter</h1>
-              <p>G&D Landscaping keeps your property beautiful year-round — from lawn care to snow removal. Serving Berlin, Hartford County, and surrounding Connecticut communities within 25 miles.</p>
+              <h1>Professional Landscaping & Snow Removal Across Central Connecticut</h1>
+              <p>G&D Landscaping serves homeowners and businesses across Hartford, Middlesex, New Haven, and Tolland Counties — lawn care, spring & fall cleanups, bush trimming, fertilization, and 24/7 snow removal. Covering Berlin, New Britain, Bristol, Cromwell, Middletown, West Hartford, Newington, Rocky Hill, and 65+ Connecticut towns. Firefighter-owned. Fully insured. Licensed Home Improvement Contractor — HIC.0704814.</p>
 
               <div className="hero-cta-buttons">
-                <a href="#get-quote" className="hero-cta-quote" onClick={(e) => { e.preventDefault(); quoteSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}>Get a Quote</a>
+                <a href="#get-quote" className="hero-cta-quote" onClick={(e) => { e.preventDefault(); scrollToQuickQuote(); }}>Get a Free Quote</a>
                 <a href="tel:8605267583" className="hero-cta-call">📞 Call Now</a>
               </div>
+            </div>
+          </div>
+        </div>
 
-              <div className="homepage-address-input-container">
-                <div className="homepage-input-wrapper">
-                  <p className="homepage-unavailable-text">🔧 Instant quote temporarily unavailable — fill out the form below or give us a call!</p>
-                  <div className="homepage-contact-fallback">
-                    <button className="homepage-contact-scroll-btn" onClick={scrollToContact}>
-                      Fill Out Contact Form
-                    </button>
-                    <a href="tel:8605267583" className="hero-cta-call">📞 Call Now</a>
-                  </div>
-                </div>
-              </div>
+        {/* Quick Quote Section */}
+        <div id="quick-quote-section" ref={quickQuoteRef} className="quick-quote-section">
+          <div className="container">
+            <div className="quick-quote-wrapper">
+              <h2>Get a Free Quote</h2>
+              <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
+              <QuickQuoteForm source="homepage-quick-form" />
             </div>
           </div>
         </div>
