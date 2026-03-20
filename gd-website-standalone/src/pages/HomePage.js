@@ -378,75 +378,79 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="features">
+        <div className="homepage-why">
           <div className="container">
-            <h2>Why Choose G&D Landscaping?</h2>
-            <div className="features-grid">
-              <div className="feature">
-                <div className="feature-icon">⭐</div>
-                <h3>Expert Team</h3>
-                <p>Licensed professionals with years of experience in landscape design and maintenance.</p>
+            <div className="homepage-why-header">
+              <h2>Why Connecticut Homeowners Choose G&D Landscaping</h2>
+              <p>From Berlin to West Hartford, Newington to Bristol — here's what sets us apart from every other landscaping company in Hartford County.</p>
+            </div>
+
+            <div className="homepage-why-grid">
+              <div className="homepage-why-item">
+                <span className="homepage-why-check">✓</span>
+                <div>
+                  <strong>Licensed Home Improvement Contractor</strong>
+                  <span>HIC.0704814 — fully licensed by the State of Connecticut. Every job is covered, documented, and done right.</span>
+                </div>
               </div>
-              <div className="feature">
-                <div className="feature-icon">🛡️</div>
-                <h3>Fully Insured</h3>
-                <p>Complete insurance coverage for your peace of mind on every project.</p>
+              <div className="homepage-why-item">
+                <span className="homepage-why-check">✓</span>
+                <div>
+                  <strong>Fully Insured on Every Job</strong>
+                  <span>Complete liability coverage protects your property on every visit — lawn care, snow removal, cleanups, and more.</span>
+                </div>
               </div>
-              <div className="feature">
-                <div className="feature-icon">💯</div>
-                <h3>Satisfaction Guarantee</h3>
-                <p>We stand behind our work with a 100% satisfaction guarantee.</p>
+              <div className="homepage-why-item">
+                <span className="homepage-why-check">✓</span>
+                <div>
+                  <strong>Firefighter-Owned &amp; Community-Rooted</strong>
+                  <span>We're not a franchise. We're a local business built on reputation, serving the same Connecticut communities we live in.</span>
+                </div>
               </div>
-              <div className="feature">
-                <div className="feature-icon">🚒</div>
-                <h3>Firefighter-Owned</h3>
-                <p>Proudly owned and operated by a local firefighter committed to serving our community.</p>
+              <div className="homepage-why-item">
+                <span className="homepage-why-check">✓</span>
+                <div>
+                  <strong>Year-Round Service Across Central CT</strong>
+                  <span>Lawn care in spring and summer, fall cleanups in October, and 24/7 snow removal all winter — one crew, all year.</span>
+                </div>
+              </div>
+              <div className="homepage-why-item">
+                <span className="homepage-why-check">✓</span>
+                <div>
+                  <strong>65+ Towns in 4 Counties</strong>
+                  <span>Hartford, Middlesex, New Haven, and Tolland Counties. If you're in Central Connecticut, we cover your area.</span>
+                </div>
+              </div>
+              <div className="homepage-why-item">
+                <span className="homepage-why-check">✓</span>
+                <div>
+                  <strong>100% Satisfaction Guarantee</strong>
+                  <span>Not happy with the work? We come back and make it right — no arguments, no runaround.</span>
+                </div>
               </div>
             </div>
 
-            {/* Small showcase images integrated into features section */}
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '20px',
-              marginTop: '40px',
-              flexWrap: 'wrap'
-            }}>
+            <div className="homepage-why-images">
               <OptimizedImage
                 src="/commercial-property-landscaping-connecticut.jpeg"
                 alt="Commercial property landscaping and lawn maintenance services in Connecticut by G&D Landscaping"
                 width={300}
                 height={200}
-                style={{
-                  width: '300px',
-                  height: 'auto',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 16px rgba(0,0,0,0.08)'
-                }}
+                style={{ width: '300px', height: 'auto', borderRadius: '8px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
               />
               <OptimizedImage
                 src="/garden-landscape-design-hartford-county.jpeg"
                 alt="Professional garden and landscape design in Hartford County CT - custom lawn care and plantings"
                 width={300}
                 height={200}
-                style={{
-                  width: '300px',
-                  height: 'auto',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 16px rgba(0,0,0,0.08)'
-                }}
+                style={{ width: '300px', height: 'auto', borderRadius: '8px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
               />
               <OptimizedImage
                 src="/residential-lawn-service-berlin-ct.jpeg"
                 alt="Residential lawn mowing and care services in Berlin Connecticut - professional landscaping"
                 width={300}
                 height={200}
-                style={{
-                  width: '300px',
-                  height: 'auto',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 16px rgba(0,0,0,0.08)'
-                }}
+                style={{ width: '300px', height: 'auto', borderRadius: '8px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
               />
             </div>
           </div>
