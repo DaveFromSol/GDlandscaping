@@ -152,6 +152,7 @@ const SnowRemovalNewBritainPage = () => {
               </div>
               <h1>Snow Removal Service New Britain CT</h1>
               <p className="hero-subtitle">Hardware City storms pile up quickly. We plow, shovel, and de-ice Little Poland, Belvedere, the East Side, and commercial corridors before the city wakes up.</p>
+              <QuickQuoteForm source="snow-removal-new-britain" />
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get New Britain Quote
@@ -315,17 +316,6 @@ const SnowRemovalNewBritainPage = () => {
               </div>
             </div>
           </section>
-
-          <div className="town-quick-quote">
-              <div className="container">
-                <div className="quick-quote-wrapper">
-                  <h2>Get a Free Quote</h2>
-                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
-                  <QuickQuoteForm source="snow-removal-new-britain" />
-                </div>
-              </div>
-            </div>
-
             <QuoteSection
             title="Reserve New Britain Snow Service"
             subtitle="Tell us about your driveway, sidewalks, and business hours so we can assign the perfect route."

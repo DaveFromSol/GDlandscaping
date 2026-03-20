@@ -147,6 +147,7 @@ const SnowRemovalNewingtonPage = () => {
               </div>
               <h1>Snow Removal Service Newington CT</h1>
               <p className="hero-subtitle">Neighborhood-focused crews plow, shovel, and de-ice Newington Center, Maple Hill, and Cedar Mountain properties with precise timing so you never get snowed in.</p>
+              <QuickQuoteForm source="snow-removal-newington" />
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Newington Quote
@@ -259,17 +260,6 @@ const SnowRemovalNewingtonPage = () => {
               </div>
             </div>
           </section>
-
-          <div className="town-quick-quote">
-              <div className="container">
-                <div className="quick-quote-wrapper">
-                  <h2>Get a Free Quote</h2>
-                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
-                  <QuickQuoteForm source="snow-removal-newington" />
-                </div>
-              </div>
-            </div>
-
             <QuoteSection
             title="Request Newington Snow Service"
             subtitle="Send your address, driveway layout, and any trouble spots—we’ll recommend the right plan."

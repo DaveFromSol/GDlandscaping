@@ -206,6 +206,7 @@ const SnowRemovalPage = () => {
               </div>
               <h1>Professional Snow Removal Services</h1>
               <p className="hero-subtitle">Reliable winter maintenance for Berlin, CT and surrounding areas. Keep your property safe and accessible all season long.</p>
+              <QuickQuoteForm source="snow-removal" />
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Winter Quote

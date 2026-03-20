@@ -1,6 +1,5 @@
 import React from 'react';
 import SEOHead from '../components/SEOHead';
-import AddressAutocomplete from '../components/AddressAutocomplete';
 import LocationGallery from '../components/LocationGallery';
 import QuoteSection from '../components/QuoteSection';
 import QuickQuoteForm from '../components/QuickQuoteForm';
@@ -144,24 +143,7 @@ const LawnCareBristolPage = () => {
               <h1>Professional Lawn Care in Bristol, CT</h1>
               <p>G&D Landscaping provides expert lawn maintenance and landscaping services throughout Bristol. Expect clean lines, reliable scheduling, and lawns that look great all season.</p>
 
-              <div className="homepage-address-input-container">
-                <div className="homepage-input-badge">⚡ GET INSTANT QUOTE ⚡</div>
-                <div className="homepage-input-wrapper">
-                  <div className="homepage-input-header">
-                    <span className="homepage-input-icon">📍</span>
-                    <h2 className="homepage-input-title">
-                      Type Your Bristol Address for Instant Quote
-                    </h2>
-                  </div>
-                  <div className="homepage-input-field">
-                    <AddressAutocomplete />
-                  </div>
-                  <div className="homepage-input-benefits">
-                    <span className="homepage-benefit-item">✓ See Property Size</span>
-                    <span className="homepage-benefit-item">✓ Instant Pricing</span>
-                    <span className="homepage-benefit-item">✓ Book Online</span>
-                  </div>
-                </div>
+              <QuickQuoteForm source="lawn-care-bristol" />
               </div>
             </div>
           </div>
@@ -261,17 +243,6 @@ const LawnCareBristolPage = () => {
             </div>
           </div>
         </div>
-
-        <div className="town-quick-quote">
-              <div className="container">
-                <div className="quick-quote-wrapper">
-                  <h2>Get a Free Quote</h2>
-                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
-                  <QuickQuoteForm source="lawn-care-bristol" />
-                </div>
-              </div>
-            </div>
-
             <QuoteSection
           title="Need a Detailed Bristol Quote?"
           subtitle="Share a few details about your Bristol property and we’ll follow up with pricing the same day."

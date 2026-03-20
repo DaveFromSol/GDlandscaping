@@ -180,6 +180,7 @@ const SnowRemovalBristolPage = () => {
               </div>
               <h1>Professional Snow Removal in Bristol, CT</h1>
               <p className="hero-subtitle">Route-based crews plow, shovel, and de-ice Bristol properties before sunrise, then loop back for cleanups so windrows never block you in.</p>
+              <QuickQuoteForm source="snow-removal-bristol" />
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Bristol Winter Quote
@@ -363,17 +364,6 @@ const SnowRemovalBristolPage = () => {
               </div>
             </div>
           </section>
-
-          <div className="town-quick-quote">
-              <div className="container">
-                <div className="quick-quote-wrapper">
-                  <h2>Get a Free Quote</h2>
-                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
-                  <QuickQuoteForm source="snow-removal-bristol" />
-                </div>
-              </div>
-            </div>
-
             <QuoteSection
             title="Reserve Your Bristol Snow Route"
             subtitle="Send the address, priorities, and any trouble spots—we’ll reply with the best-fit plan for your property."

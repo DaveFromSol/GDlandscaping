@@ -4,7 +4,6 @@ import SEOHead from '../components/SEOHead';
 import QuoteSection from '../components/QuoteSection';
 import QuickQuoteForm from '../components/QuickQuoteForm';
 import FAQSection from '../components/FAQSection';
-import AddressAutocomplete from '../components/AddressAutocomplete';
 
 const phoneNumber = '(860) 526-7583';
 const phoneHref = 'tel:+18605267583';
@@ -225,7 +224,7 @@ const LeafRemovalPage = () => {
               </p>
               <div className="leaf-hero-address">
                 <h2>Check Fall Cleanup Availability Near You</h2>
-                <AddressAutocomplete />
+                <QuickQuoteForm source="leaf-removal" />
               </div>
               <div className="hero-buttons">
                 <Link to="/instant-quote" className="cta-primary">
@@ -396,17 +395,6 @@ const LeafRemovalPage = () => {
             </div>
           </section>
         </div>
-
-        <div className="town-quick-quote">
-              <div className="container">
-                <div className="quick-quote-wrapper">
-                  <h2>Get a Free Quote</h2>
-                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
-                  <QuickQuoteForm source="leaf-removal" />
-                </div>
-              </div>
-            </div>
-
             <QuoteSection
           title="Get Your Leaf Removal Estimate"
           subtitle="Share property details and photos for the most accurate fall cleanup plan."

@@ -145,6 +145,7 @@ const SnowRemovalFarmingtonPage = () => {
                 Neighborhood-focused crews plow, shovel, and de-ice Farmington Village, Unionville, and Talcott Mountain properties with precise timing so you
                 never get snowed in.
               </p>
+              <QuickQuoteForm source="snow-removal-farmington" />
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Farmington Quote
@@ -262,17 +263,6 @@ const SnowRemovalFarmingtonPage = () => {
               </div>
             </div>
           </section>
-
-          <div className="town-quick-quote">
-              <div className="container">
-                <div className="quick-quote-wrapper">
-                  <h2>Get a Free Quote</h2>
-                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
-                  <QuickQuoteForm source="snow-removal-farmington" />
-                </div>
-              </div>
-            </div>
-
             <QuoteSection
             title="Request Farmington Snow Service"
             subtitle="Send your address, driveway layout, and trouble spots—we’ll recommend the right plan."

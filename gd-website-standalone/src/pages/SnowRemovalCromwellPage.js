@@ -139,6 +139,7 @@ const SnowRemovalCromwellPage = () => {
               </div>
               <h1>Snow Removal Service Cromwell CT</h1>
               <p className="hero-subtitle">Riverfront squalls, steep drives, and city sidewalks get cleared on precise routes so Cromwell homeowners and storefronts stay open during every storm.</p>
+              <QuickQuoteForm source="snow-removal-cromwell" />
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Cromwell Quote
@@ -303,17 +304,6 @@ const SnowRemovalCromwellPage = () => {
               </div>
             </div>
           </section>
-
-          <div className="town-quick-quote">
-              <div className="container">
-                <div className="quick-quote-wrapper">
-                  <h2>Get a Free Quote</h2>
-                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
-                  <QuickQuoteForm source="snow-removal-cromwell" />
-                </div>
-              </div>
-            </div>
-
             <QuoteSection
             title="Reserve Cromwell Snow Service"
             subtitle="Tell us about your driveway, parking lot, or facility access and we’ll send a tailored snow plan."

@@ -264,17 +264,6 @@ const FertilizationWeedControlTemplate = ({
           currentService="fertilization"
           townName={cityName}
         />
-
-        <div className="town-quick-quote">
-          <div className="container">
-            <div className="quick-quote-wrapper">
-              <h2>Get a Free Quote</h2>
-              <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
-              <QuickQuoteForm source={`${townName.split(',')[0].toLowerCase().replace(/\s+/g, '-')}-fertilization`} />
-            </div>
-          </div>
-        </div>
-
         <QuoteSection
           title={cta?.title || `Start Your ${townName.split(',')[0]} Treatment Plan`}
           subtitle={cta?.subtitle || 'Share your property details and preferred start date. We will design a fertilization and weed control plan that fits your lawn.'}

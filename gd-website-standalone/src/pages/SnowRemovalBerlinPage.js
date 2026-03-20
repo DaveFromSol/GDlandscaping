@@ -139,6 +139,7 @@ const SnowRemovalBerlinPage = () => {
               </div>
               <h1>Snow Removal Service Berlin CT</h1>
               <p className="hero-subtitle">Storm-tracking crews clear Berlin driveways, sidewalks, and entrances before the morning rush, then return for follow-up service to keep everything open while temperatures swing.</p>
+              <QuickQuoteForm source="snow-removal-berlin" />
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Berlin Quote
@@ -303,17 +304,6 @@ const SnowRemovalBerlinPage = () => {
               </div>
             </div>
           </section>
-
-          <div className="town-quick-quote">
-              <div className="container">
-                <div className="quick-quote-wrapper">
-                  <h2>Get a Free Quote</h2>
-                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
-                  <QuickQuoteForm source="snow-removal-berlin" />
-                </div>
-              </div>
-            </div>
-
             <QuoteSection
             title="Request Berlin Snow Removal"
             subtitle="Prefer the traditional form? Share property details and we’ll confirm your route time right away."

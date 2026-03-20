@@ -180,6 +180,7 @@ const SnowRemovalWestHartfordPage = () => {
               </div>
               <h1>Professional Snow Removal in West Hartford, CT</h1>
               <p className="hero-subtitle">We plow, shovel, and de-ice West Hartford Center, Elmwood, Bishop's Corner, and Blue Back Square so retail, residential, and school properties stay open even during back-to-back storms.</p>
+              <QuickQuoteForm source="snow-removal-west-hartford" />
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get West Hartford Winter Quote
@@ -363,17 +364,6 @@ const SnowRemovalWestHartfordPage = () => {
               </div>
             </div>
           </section>
-
-          <div className="town-quick-quote">
-              <div className="container">
-                <div className="quick-quote-wrapper">
-                  <h2>Get a Free Quote</h2>
-                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
-                  <QuickQuoteForm source="snow-removal-west-hartford" />
-                </div>
-              </div>
-            </div>
-
             <QuoteSection
             title="Get a West Hartford Snow Plan"
             subtitle="Share your address and priorities so we can confirm the best route and response level."

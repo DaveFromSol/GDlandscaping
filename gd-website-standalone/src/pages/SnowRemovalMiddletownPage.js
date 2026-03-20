@@ -139,6 +139,7 @@ const SnowRemovalMiddletownPage = () => {
               </div>
               <h1>Snow Removal Service Middletown CT</h1>
               <p className="hero-subtitle">Campus traffic, riverfront wind, and steep neighborhoods demand precise winter care. Our crews plow, shovel, and de-ice every corner of Middletown on schedule.</p>
+              <QuickQuoteForm source="snow-removal-middletown" />
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Middletown Quote
@@ -303,17 +304,6 @@ const SnowRemovalMiddletownPage = () => {
               </div>
             </div>
           </section>
-
-          <div className="town-quick-quote">
-              <div className="container">
-                <div className="quick-quote-wrapper">
-                  <h2>Get a Free Quote</h2>
-                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
-                  <QuickQuoteForm source="snow-removal-middletown" />
-                </div>
-              </div>
-            </div>
-
             <QuoteSection
             title="Request Middletown Snow Service"
             subtitle="Share your address plus priority areas and we’ll finalize a route spot for your property."

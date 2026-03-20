@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
-import AddressAutocomplete from '../components/AddressAutocomplete';
 import LocationGallery from '../components/LocationGallery';
 import QuoteSection from '../components/QuoteSection';
 import QuickQuoteForm from '../components/QuickQuoteForm';
@@ -108,24 +107,7 @@ const LawnCareCromwellPage = () => {
               <h1>Lawn Care Service Cromwell CT</h1>
               <p className="hero-subtitle">Professional lawn maintenance for Cromwell residents and businesses. Keep your Connecticut River town property looking pristine with expert lawn care services.</p>
 
-              <div className="homepage-address-input-container">
-                <div className="homepage-input-badge">⚡ GET INSTANT QUOTE ⚡</div>
-                <div className="homepage-input-wrapper">
-                  <div className="homepage-input-header">
-                    <span className="homepage-input-icon">📍</span>
-                    <h2 className="homepage-input-title">
-                      Type Your Cromwell Address for Instant Quote
-                    </h2>
-                  </div>
-                  <div className="homepage-input-field">
-                    <AddressAutocomplete />
-                  </div>
-                  <div className="homepage-input-benefits">
-                    <span className="homepage-benefit-item">✓ See Property Size</span>
-                    <span className="homepage-benefit-item">✓ Instant Pricing</span>
-                    <span className="homepage-benefit-item">✓ Book Online</span>
-                  </div>
-                </div>
+              <QuickQuoteForm source="lawn-care-cromwell" />
               </div>
 
               <div className="hero-buttons">
@@ -241,17 +223,6 @@ const LawnCareCromwellPage = () => {
               ))}
             </div>
           </section>
-
-          <div className="town-quick-quote">
-              <div className="container">
-                <div className="quick-quote-wrapper">
-                  <h2>Get a Free Quote</h2>
-                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
-                  <QuickQuoteForm source="lawn-care-cromwell" />
-                </div>
-              </div>
-            </div>
-
             <QuoteSection
             title="Ready for a Cromwell Quote?"
             subtitle="Send us the basics about your Connecticut River property and we’ll reply with a detailed estimate ASAP."

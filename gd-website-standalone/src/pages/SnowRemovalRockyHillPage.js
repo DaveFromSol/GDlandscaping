@@ -147,6 +147,7 @@ const SnowRemovalRockyHillPage = () => {
               </div>
               <h1>Snow Removal Service Rocky Hill CT</h1>
               <p className="hero-subtitle">River humidity, steep drives, and business corridors each get a dedicated response so Rocky Hill properties stay open from the first flake to final melt.</p>
+              <QuickQuoteForm source="snow-removal-rocky-hill" />
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Rocky Hill Quote
@@ -258,17 +259,6 @@ const SnowRemovalRockyHillPage = () => {
               </div>
             </div>
           </section>
-
-          <div className="town-quick-quote">
-              <div className="container">
-                <div className="quick-quote-wrapper">
-                  <h2>Get a Free Quote</h2>
-                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
-                  <QuickQuoteForm source="snow-removal-rocky-hill" />
-                </div>
-              </div>
-            </div>
-
             <QuoteSection
             title="Reserve Rocky Hill Snow Removal"
             subtitle="Send your address and service priorities so we can confirm the right crew and route timing."

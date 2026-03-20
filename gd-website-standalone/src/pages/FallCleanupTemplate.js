@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
-import AddressAutocomplete from '../components/AddressAutocomplete';
 import LocationGallery from '../components/LocationGallery';
 import QuoteSection from '../components/QuoteSection';
 import QuickQuoteForm from '../components/QuickQuoteForm';
@@ -122,13 +121,7 @@ const FallCleanupTemplate = ({
               <h1>{hero.title}</h1>
               <p className="hero-subtitle">{hero.subtitle}</p>
 
-              <div style={{ margin: '30px 0', padding: '0 20px' }}>
-                <h2 style={{ color: '#78350f', fontSize: '24px', fontWeight: '600', marginBottom: '15px' }}>
-                  {hero.addressPrompt}
-                </h2>
-                <AddressAutocomplete />
-              </div>
-
+              <QuickQuoteForm source={`${townSlug}-fall-cleanup`} />
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   {hero.ctaPrimaryText}
@@ -283,17 +276,6 @@ const FallCleanupTemplate = ({
               </div>
             </div>
           </section>
-
-          <div className="town-quick-quote">
-            <div className="container">
-              <div className="quick-quote-wrapper">
-                <h2>Get a Free Quote</h2>
-                <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
-                <QuickQuoteForm source={`${townSlug}-fall-cleanup`} />
-              </div>
-            </div>
-          </div>
-
           <QuoteSection
             title={resolvedQuote.title}
             subtitle={resolvedQuote.subtitle}

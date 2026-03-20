@@ -142,6 +142,7 @@ const SnowRemovalHartfordPage = () => {
               </div>
               <h1>Snow Removal Service Hartford CT</h1>
               <p className="hero-subtitle">City-tested crews plow cramped drives, condo lots, and busy storefronts across Hartford while sidewalk teams keep entrances dry and ADA routes compliant.</p>
+              <QuickQuoteForm source="snow-removal-hartford" />
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
                   Get Hartford Quote
@@ -302,17 +303,6 @@ const SnowRemovalHartfordPage = () => {
               </div>
             </div>
           </section>
-
-          <div className="town-quick-quote">
-              <div className="container">
-                <div className="quick-quote-wrapper">
-                  <h2>Get a Free Quote</h2>
-                  <p className="quick-quote-intro">Tell us what you need and we'll call you back within 12 hours.</p>
-                  <QuickQuoteForm source="snow-removal-hartford" />
-                </div>
-              </div>
-            </div>
-
             <QuoteSection
             title="Schedule Hartford Snow Service"
             subtitle="Send your property layout and winter priorities—we’ll match you with the right crew and route time."
