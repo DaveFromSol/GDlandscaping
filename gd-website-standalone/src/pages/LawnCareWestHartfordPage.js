@@ -132,7 +132,6 @@ const LawnCareWestHartfordPage = () => {
               <p>G&D Landscaping provides expert lawn maintenance and landscaping services throughout West Hartford Center, Elmwood, Bishop's Corner, and all West Hartford neighborhoods. Beautiful, healthy lawns for West Hartford homes and businesses.</p>
 
               <QuickQuoteForm source="lawn-care-west-hartford" />
-              </div>
             </div>
           </div>
         </div>

@@ -107,7 +107,6 @@ const LawnCareRockyHillPage = () => {
               <p className="hero-subtitle">Professional lawn maintenance for Rocky Hill residents and businesses. Keep your Connecticut River community property looking beautiful with expert lawn care.</p>
 
               <QuickQuoteForm source="lawn-care-rocky-hill" />
-              </div>
 
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">

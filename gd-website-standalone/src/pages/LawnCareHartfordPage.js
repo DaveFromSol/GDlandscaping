@@ -132,7 +132,6 @@ const LawnCareHartfordPage = () => {
               <p className="hero-subtitle">Professional lawn maintenance for Hartford residents and businesses. Keep Connecticut's capital city properties looking their best year-round with G&D Landscaping's expert lawn care services.</p>
 
               <QuickQuoteForm source="lawn-care-hartford" />
-              </div>
 
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">

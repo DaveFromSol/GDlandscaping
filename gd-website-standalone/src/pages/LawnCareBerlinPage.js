@@ -129,7 +129,6 @@ const LawnCareBerlinPage = () => {
               <p className="hero-subtitle">Professional lawn maintenance for Berlin residents and businesses. Your local Berlin landscaping experts dedicated to keeping your property beautiful year-round.</p>
 
               <QuickQuoteForm source="lawn-care-berlin" />
-              </div>
 
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">

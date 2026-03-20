@@ -108,7 +108,6 @@ const LawnCareMiddletownPage = () => {
               <p className="hero-subtitle">Professional lawn maintenance for Middletown residents and businesses. Keep your university town property looking exceptional with expert lawn care services.</p>
 
               <QuickQuoteForm source="lawn-care-middletown" />
-              </div>
 
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">

@@ -144,7 +144,6 @@ const LawnCareBristolPage = () => {
               <p>G&D Landscaping provides expert lawn maintenance and landscaping services throughout Bristol. Expect clean lines, reliable scheduling, and lawns that look great all season.</p>
 
               <QuickQuoteForm source="lawn-care-bristol" />
-              </div>
             </div>
           </div>
         </div>

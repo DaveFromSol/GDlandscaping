@@ -107,7 +107,6 @@ const LawnCareNewingtonPage = () => {
               <p className="hero-subtitle">Professional lawn maintenance for Newington residents and businesses. Keep your community property looking pristine with expert lawn care services.</p>
 
               <QuickQuoteForm source="lawn-care-newington" />
-              </div>
 
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">

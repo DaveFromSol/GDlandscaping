@@ -129,7 +129,6 @@ const LawnCareNewBritainPage = () => {
               <p className="hero-subtitle">Professional lawn maintenance for New Britain residents and businesses. Keep your Hardware City property looking its best year-round with G&D Landscaping's expert lawn care services.</p>
 
               <QuickQuoteForm source="lawn-care-new-britain" />
-              </div>
 
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">

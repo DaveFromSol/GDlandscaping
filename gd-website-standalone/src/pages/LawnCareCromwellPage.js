@@ -108,7 +108,6 @@ const LawnCareCromwellPage = () => {
               <p className="hero-subtitle">Professional lawn maintenance for Cromwell residents and businesses. Keep your Connecticut River town property looking pristine with expert lawn care services.</p>
 
               <QuickQuoteForm source="lawn-care-cromwell" />
-              </div>
 
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">

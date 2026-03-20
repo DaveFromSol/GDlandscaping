@@ -108,7 +108,6 @@ const LawnCareFarmingtonPage = () => {
               <p className="hero-subtitle">Professional lawn maintenance for Farmington residents and businesses. Keep Unionville, Devonwood, and Talcott Mountain properties lush and polished all season.</p>
 
               <QuickQuoteForm source="lawn-care-farmington" />
-              </div>
 
               <div className="hero-buttons">
                 <Link to="/contact" className="cta-primary">
