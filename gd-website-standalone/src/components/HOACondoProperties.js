@@ -10,7 +10,6 @@ import {
   orderBy,
   serverTimestamp
 } from 'firebase/firestore';
-import GoogleAddressAutocomplete from './GoogleAddressAutocomplete';
 
 const HOACondoProperties = ({ db }) => {
   const [properties, setProperties] = useState([]);
@@ -357,10 +356,12 @@ const HOACondoProperties = ({ db }) => {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Address *
                       </label>
-                      <GoogleAddressAutocomplete
+                      <input
+                        type="text"
                         value={currentAddress.location}
-                        onChange={(address) => setCurrentAddress({ ...currentAddress, location: address })}
+                        onChange={(e) => setCurrentAddress({ ...currentAddress, location: e.target.value })}
                         placeholder="123 Main St, Hartford, CT"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 

@@ -11,7 +11,6 @@ import {
   serverTimestamp
 } from 'firebase/firestore';
 import { useFirebase } from '../contexts/FirebaseContext';
-import GoogleAddressAutocomplete from './GoogleAddressAutocomplete';
 
 const Customers = ({ user }) => {
   const { db } = useFirebase();
@@ -505,15 +504,10 @@ const Customers = ({ user }) => {
                             Address <span className="text-red-500">*</span>
                             <span className="text-gray-500 font-normal ml-1">(Google autocomplete)</span>
                           </label>
-                          <GoogleAddressAutocomplete
+                          <input
+                            type="text"
                             value={currentAddress.location}
-                            onChange={(value) => setCurrentAddress({...currentAddress, location: value})}
-                            onPlaceSelected={(addressData) => {
-                              setCurrentAddress({
-                                ...currentAddress,
-                                location: addressData.fullAddress
-                              });
-                            }}
+                            onChange={(e) => setCurrentAddress({...currentAddress, location: e.target.value})}
                             placeholder="123 Main St, Berlin, CT 06037"
                             className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white"
                           />
@@ -587,19 +581,11 @@ const Customers = ({ user }) => {
                         Address
                         <span className="text-xs text-gray-500 font-normal ml-2">(Start typing for suggestions)</span>
                       </label>
-                      <GoogleAddressAutocomplete
+                      <input
+                        type="text"
                         value={newCustomer.address}
-                        onChange={(value) => setNewCustomer({...newCustomer, address: value})}
-                        onPlaceSelected={(addressData) => {
-                          setNewCustomer({
-                            ...newCustomer,
-                            address: addressData.street || addressData.fullAddress,
-                            city: addressData.city,
-                            state: addressData.state,
-                            zip: addressData.zip
-                          });
-                        }}
-                        placeholder="Start typing your address..."
+                        onChange={(e) => setNewCustomer({...newCustomer, address: e.target.value})}
+                        placeholder="123 Main St, Berlin, CT 06037"
                         className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                       />
                     </div>

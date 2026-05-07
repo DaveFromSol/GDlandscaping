@@ -4,9 +4,7 @@ import SEOHead from '../components/SEOHead';
 import Leads from '../components/Leads';
 import Customers from '../components/Customers';
 import Employees from '../components/Employees';
-import SnowRemovalMap from '../components/SnowRemovalMap';
 import HOACondoProperties from '../components/HOACondoProperties';
-import GoogleAddressAutocomplete from '../components/GoogleAddressAutocomplete';
 import {
   collection,
   addDoc,
@@ -69,6 +67,7 @@ const AdminDashboard = ({ user, onLogout }) => {
     address: '',
     serviceType: 'lawn-maintenance',
     estimatedTime: '30',
+    startTime: '',
     notes: '',
     priority: 'normal',
     expectedPayment: '',
@@ -77,7 +76,11 @@ const AdminDashboard = ({ user, onLogout }) => {
     paymentMethod: 'cash'
   });
   const [isAddingJob, setIsAddingJob] = useState(false);
+  const [showAddJobForm, setShowAddJobForm] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState(null); // { lat, lng }
+  const [locationSortActive, setLocationSortActive] = useState(false);
+  const [locationLoading, setLocationLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [recurringModalJob, setRecurringModalJob] = useState(null);
   const [recurringSettings, setRecurringSettings] = useState({
@@ -903,6 +906,7 @@ const AdminDashboard = ({ user, onLogout }) => {
         address: '',
         serviceType: 'lawn-maintenance',
         estimatedTime: '30',
+        startTime: '',
         notes: '',
         priority: 'normal',
         expectedPayment: '',
@@ -913,7 +917,7 @@ const AdminDashboard = ({ user, onLogout }) => {
 
       // Reload jobs
       await loadJobsForDate();
-      alert('Job added successfully!');
+      setShowAddJobForm(false);
 
     } catch (error) {
       console.error('Error adding job:', error);
@@ -1431,6 +1435,57 @@ const AdminDashboard = ({ user, onLogout }) => {
     }, 0);
   };
 
+  const haversineMi = (lat1, lng1, lat2, lng2) => {
+    const R = 3958.8;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) ** 2 +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  };
+
+  const geocodeAddress = async (address) => {
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`
+      );
+      const data = await res.json();
+      if (data.length > 0) return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+    } catch (_) {}
+    return null;
+  };
+
+  const activateLocationSort = async () => {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser.');
+      return;
+    }
+    setLocationLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const loc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        setCurrentLocation(loc);
+        // Geocode any jobs that don't yet have cached coords
+        const pending = jobs.filter(j => j.address && !j._coords);
+        await Promise.all(pending.map(async (j) => {
+          j._coords = await geocodeAddress(j.address);
+        }));
+        setLocationSortActive(true);
+        setLocationLoading(false);
+      },
+      (err) => {
+        setLocationLoading(false);
+        alert('Could not get your location. Please allow location access and try again.');
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  };
+
+  const getJobDistanceKm = (job) => {
+    if (!currentLocation || !job._coords) return null;
+    return haversineMi(currentLocation.lat, currentLocation.lng, job._coords.lat, job._coords.lng);
+  };
+
   const getAllJobsRevenue = () => {
     return allJobs.reduce((total, job) => {
       const payment = job.actualPayment || job.expectedPayment || 0;
@@ -1493,6 +1548,16 @@ const AdminDashboard = ({ user, onLogout }) => {
                   🏠 Overview
                 </button>
               )}
+              <button
+                onClick={() => setActiveTab('routes')}
+                className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
+                  activeTab === 'routes'
+                    ? 'border-green-600 text-green-700 bg-green-50'
+                    : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
+                }`}
+              >
+                📅 Schedule
+              </button>
               {userPermissions.viewSnowRoutes && (
                 <button
                   onClick={() => setActiveTab('snow-removal')}
@@ -1556,18 +1621,6 @@ const AdminDashboard = ({ user, onLogout }) => {
                   }`}
                 >
                   👨‍💼 Employees
-                </button>
-              )}
-              {userRole === 'admin' && (
-                <button
-                  onClick={() => setActiveTab('routes')}
-                  className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
-                    activeTab === 'routes'
-                      ? 'border-green-600 text-green-700 bg-green-50'
-                      : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
-                  }`}
-                >
-                  🗺️ Routes
                 </button>
               )}
             </nav>
@@ -1651,7 +1704,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                   }}
                 >
                   <div style={{ fontSize: '32px', marginBottom: '8px' }}>📅</div>
-                  <div style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>Schedule Job</div>
+                  <div style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>Schedule</div>
                 </button>
 
                 <button
@@ -2627,169 +2680,244 @@ const AdminDashboard = ({ user, onLogout }) => {
           </div>
         )}
 
-        {/* Route Planner Tab */}
-        {activeTab === 'routes' && (
-          <div className="space-y-6">
-            {/* Calendar Header and Controls */}
-            <div className="bg-white shadow-lg rounded-xl p-4 sm:p-6 md:p-8 border border-gray-100">
-              <div className="flex flex-col gap-4 sm:gap-6 mb-6 sm:mb-8">
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">Route Planner</h2>
-                  <p className="text-xs sm:text-sm text-gray-500">Manage and optimize your daily schedule</p>
-                </div>
-
-                {/* View Toggle - Mobile Optimized */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                  <div className="flex items-center gap-2 order-2 sm:order-1">
-                    {/* Previous/Next Navigation */}
-                    {(viewType === 'month' || viewType === 'year') && (
-                      <button
-                        onClick={() => {
-                          const date = new Date(selectedDate + 'T12:00:00');
-                          if (viewType === 'month') {
-                            date.setMonth(date.getMonth() - 1);
-                          } else {
-                            date.setFullYear(date.getFullYear() - 1);
-                          }
-                          setSelectedDate(date.toISOString().split('T')[0]);
-                        }}
-                        className="p-2 sm:p-2.5 border-2 border-gray-300 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all flex-shrink-0"
-                        title={`Previous ${viewType}`}
-                      >
-                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
-                      </button>
-                    )}
-
-                    <div className="grid grid-cols-4 bg-gray-50 rounded-xl p-1 sm:p-1.5 border border-gray-200 flex-1 sm:flex-none">
-                      <button
-                        onClick={() => setViewType('day')}
-                        className={`px-2 sm:px-4 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
-                          viewType === 'day'
-                            ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
-                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                        }`}
-                      >
-                        Day
-                      </button>
-                      <button
-                        onClick={() => setViewType('week')}
-                        className={`px-2 sm:px-4 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
-                          viewType === 'week'
-                            ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
-                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                        }`}
-                      >
-                        Week
-                      </button>
-                      <button
-                        onClick={() => setViewType('month')}
-                        className={`px-2 sm:px-4 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
-                          viewType === 'month'
-                            ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
-                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                        }`}
-                      >
-                        Month
-                      </button>
-                      <button
-                        onClick={() => setViewType('year')}
-                        className={`px-2 sm:px-4 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
-                          viewType === 'year'
-                            ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-md'
-                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                        }`}
-                      >
-                        Year
-                      </button>
-                    </div>
-
-                    {(viewType === 'month' || viewType === 'year') && (
-                      <button
-                        onClick={() => {
-                          const date = new Date(selectedDate + 'T12:00:00');
-                          if (viewType === 'month') {
-                            date.setMonth(date.getMonth() + 1);
-                          } else {
-                            date.setFullYear(date.getFullYear() + 1);
-                          }
-                          setSelectedDate(date.toISOString().split('T')[0]);
-                        }}
-                        className="p-2 sm:p-2.5 border-2 border-gray-300 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all flex-shrink-0"
-                        title={`Next ${viewType}`}
-                      >
-                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </button>
-                    )}
-                  </div>
-
-                  <input
-                    type="date"
-                    value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                    className="px-3 sm:px-4 py-2 sm:py-2.5 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 font-medium text-gray-700 text-sm sm:text-base order-1 sm:order-2"
-                  />
-                </div>
-              </div>
-
-              {/* Date Display and Stats */}
-              <div className="flex flex-col gap-4 sm:gap-6">
-                <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-500 mb-1">Showing schedule for</p>
-                  <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
-                    {viewType === 'day' && formatDate(selectedDate)}
-                    {viewType === 'week' && `Week of ${formatDate(getWeekDays(selectedDate)[0])}`}
-                    {viewType === 'month' && new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-                    {viewType === 'year' && new Date(selectedDate + 'T12:00:00').getFullYear()}
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-3 sm:p-4 rounded-xl border border-blue-200">
-                    <div className="text-xl sm:text-2xl font-bold text-blue-700">
-                      {viewType === 'day' ? jobs.length : allJobs.length}
-                    </div>
-                    <div className="text-[10px] sm:text-xs font-semibold text-blue-600 uppercase tracking-wide mt-1">Total Jobs</div>
-                  </div>
-                  <div className="bg-gradient-to-br from-green-50 to-green-100 p-3 sm:p-4 rounded-xl border border-green-200">
-                    <div className="text-xl sm:text-2xl font-bold text-green-700">
-                      {viewType === 'day'
-                        ? jobs.filter(j => j.status === 'completed').length
-                        : allJobs.filter(j => j.status === 'completed').length}
-                    </div>
-                    <div className="text-[10px] sm:text-xs font-semibold text-green-600 uppercase tracking-wide mt-1">Completed</div>
-                  </div>
-                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-3 sm:p-4 rounded-xl border border-orange-200">
-                    <div className="text-xl sm:text-2xl font-bold text-orange-700">
-                      {formatTime(viewType === 'day' ? getTotalTime() : allJobs.reduce((total, job) => total + parseInt(job.estimatedTime), 0))}
-                    </div>
-                    <div className="text-[10px] sm:text-xs font-semibold text-orange-600 uppercase tracking-wide mt-1">Total Time</div>
-                  </div>
-                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-3 sm:p-4 rounded-xl border border-emerald-200">
-                    <div className="text-xl sm:text-2xl font-bold text-emerald-700">
-                      ${(viewType === 'day' ? getTotalRevenue() : getAllJobsRevenue()).toFixed(2)}
-                    </div>
-                    <div className="text-[10px] sm:text-xs font-semibold text-emerald-600 uppercase tracking-wide mt-1">Revenue</div>
-                  </div>
-                </div>
+        {/* Schedule Tab */}
+        {activeTab === 'routes' && userRole === 'employee' && (
+          <div className="space-y-4 max-w-lg mx-auto">
+            {/* Employee header */}
+            <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl p-5 text-white shadow-lg">
+              <h2 className="text-xl font-bold mb-1">My Jobs Today</h2>
+              <p className="text-sm opacity-90">
+                {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+              </p>
+              <div className="flex items-center gap-4 mt-3 text-sm font-semibold">
+                <span>✅ {jobs.filter(j => j.status === 'completed').length} done</span>
+                <span>📋 {jobs.filter(j => j.status !== 'completed').length} remaining</span>
+                <button
+                  onClick={locationSortActive ? () => setLocationSortActive(false) : activateLocationSort}
+                  disabled={locationLoading}
+                  className={`ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                    locationSortActive
+                      ? 'bg-white text-green-700 shadow'
+                      : 'bg-white/20 text-white hover:bg-white/30'
+                  }`}
+                >
+                  {locationLoading ? (
+                    <span className="animate-spin inline-block w-3 h-3 border-2 border-white border-t-transparent rounded-full"></span>
+                  ) : (
+                    <span>📍</span>
+                  )}
+                  {locationSortActive ? 'Sorted by Distance' : 'Sort by Distance'}
+                </button>
               </div>
             </div>
 
-            {/* Calendar Views */}
-            {viewType === 'day' && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Day view content - existing form and job list */}
-              {/* Add Job Form */}
-              <div className="bg-white shadow-lg rounded-xl p-6 border border-gray-100">
-                <div className="flex items-center justify-between mb-6">
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">Add New Job</h3>
-                    <p className="text-sm text-gray-500 mt-1">Schedule a job for this date</p>
+            {loading ? (
+              <div className="text-center py-16 text-gray-400">
+                <div className="animate-spin w-10 h-10 border-4 border-green-500 border-t-transparent rounded-full mx-auto mb-3"></div>
+                <p>Loading your jobs...</p>
+              </div>
+            ) : jobs.length === 0 ? (
+              <div className="text-center py-16 text-gray-400 bg-white rounded-2xl shadow">
+                <div className="text-5xl mb-3">🌿</div>
+                <p className="text-lg font-semibold">No jobs scheduled today</p>
+                <p className="text-sm mt-1">Check back later</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {jobs
+                  .slice()
+                  .sort((a, b) => {
+                    if (a.status === 'completed' && b.status !== 'completed') return 1;
+                    if (b.status === 'completed' && a.status !== 'completed') return -1;
+                    if (locationSortActive) {
+                      const dA = getJobDistanceKm(a);
+                      const dB = getJobDistanceKm(b);
+                      if (dA === null && dB === null) return 0;
+                      if (dA === null) return 1;
+                      if (dB === null) return -1;
+                      return dA - dB;
+                    }
+                    return (a.startTime || '').localeCompare(b.startTime || '');
+                  })
+                  .map((job, index) => (
+                  <div
+                    key={job.id}
+                    className={`rounded-2xl border-2 p-4 shadow-sm transition-all ${
+                      job.status === 'completed'
+                        ? 'border-green-200 bg-green-50 opacity-70'
+                        : 'border-gray-200 bg-white'
+                    }`}
+                  >
+                    {/* Job header */}
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="w-7 h-7 rounded-full bg-gray-100 text-gray-600 text-xs font-bold flex items-center justify-center flex-shrink-0">
+                          {index + 1}
+                        </span>
+                        <div>
+                          <h3 className={`font-bold text-base leading-tight ${job.status === 'completed' ? 'line-through text-gray-400' : 'text-gray-900'}`}>
+                            {job.customerName}
+                          </h3>
+                          <span className="text-xs font-semibold text-emerald-600 capitalize">
+                            {job.serviceType.replace(/-/g, ' ')}
+                          </span>
+                        </div>
+                      </div>
+                      <span
+                        className="text-xs font-bold px-2 py-1 rounded-lg text-white flex-shrink-0"
+                        style={{ backgroundColor: getPriorityColor(job.priority) }}
+                      >
+                        {job.priority.toUpperCase()}
+                      </span>
+                    </div>
+
+                    {/* Time + duration */}
+                    {(job.startTime || job.estimatedTime) && (
+                      <div className="flex items-center gap-3 mb-3 text-sm text-gray-600">
+                        {job.startTime && (
+                          <span className="font-semibold text-blue-700">
+                            🕐 {(() => { const [h, m] = job.startTime.split(':'); const hr = parseInt(h); return `${hr % 12 || 12}:${m} ${hr < 12 ? 'AM' : 'PM'}`; })()}
+                          </span>
+                        )}
+                        {job.estimatedTime && (
+                          <span className="text-gray-500">⏱ {formatTime(parseInt(job.estimatedTime))}</span>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Tappable address */}
+                    {job.address && (
+                      <a
+                        href={`https://maps.apple.com/?daddr=${encodeURIComponent(job.address)}&dirflg=d`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-start gap-2 mb-3 p-3 bg-blue-50 border border-blue-100 rounded-xl text-blue-700 text-sm font-medium no-underline active:bg-blue-100"
+                      >
+                        <span className="text-base leading-none mt-0.5">📍</span>
+                        <span className="leading-snug flex-1">{job.address}</span>
+                        {locationSortActive && getJobDistanceKm(job) !== null && (
+                          <span className="ml-1 text-xs font-bold text-emerald-600 flex-shrink-0 bg-emerald-50 px-1.5 py-0.5 rounded-lg">
+                            {getJobDistanceKm(job) < 0.1
+                              ? `${Math.round(getJobDistanceKm(job) * 5280)} ft`
+                              : `${getJobDistanceKm(job).toFixed(1)} mi`}
+                          </span>
+                        )}
+                        <span className="ml-auto text-blue-400 flex-shrink-0">→</span>
+                      </a>
+                    )}
+
+                    {/* Notes */}
+                    {job.notes && (
+                      <div className="mb-3 px-3 py-2 bg-yellow-50 border border-yellow-100 rounded-xl text-sm text-gray-700">
+                        📝 {job.notes}
+                      </div>
+                    )}
+
+                    {/* Complete button */}
+                    {job.status !== 'completed' ? (
+                      <button
+                        onClick={() => toggleJobStatus(job.id, job.status)}
+                        className="w-full py-4 rounded-xl font-bold text-base bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-md active:from-green-600 active:to-emerald-600 transition-all"
+                      >
+                        ✓ Mark Complete
+                      </button>
+                    ) : (
+                      <div className="flex items-center justify-between">
+                        <span className="text-green-600 font-bold text-sm">✅ Completed</span>
+                        <button
+                          onClick={() => toggleJobStatus(job.id, job.status)}
+                          className="text-xs text-gray-400 underline"
+                        >
+                          Undo
+                        </button>
+                      </div>
+                    )}
                   </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Route Planner Tab (admin only) */}
+        {activeTab === 'routes' && userRole !== 'employee' && (
+          <div className="space-y-3">
+            {/* Compact header bar */}
+            <div className="bg-white shadow rounded-xl px-4 py-3 border border-gray-100">
+              <div className="flex flex-wrap items-center gap-2">
+                {/* View toggle */}
+                <div className="flex bg-gray-100 rounded-lg p-0.5 text-xs font-semibold">
+                  {['day','week','month','year'].map(v => (
+                    <button
+                      key={v}
+                      onClick={() => setViewType(v)}
+                      className={`px-3 py-1.5 rounded-md capitalize transition-all ${
+                        viewType === v
+                          ? 'bg-green-600 text-white shadow-sm'
+                          : 'text-gray-500 hover:text-gray-800'
+                      }`}
+                    >{v}</button>
+                  ))}
                 </div>
+
+                {/* Prev/Next for month/year */}
+                {(viewType === 'month' || viewType === 'year') && (
+                  <>
+                    <button onClick={() => { const d = new Date(selectedDate+'T12:00:00'); viewType==='month' ? d.setMonth(d.getMonth()-1) : d.setFullYear(d.getFullYear()-1); setSelectedDate(d.toISOString().split('T')[0]); }} className="p-1.5 rounded-lg border border-gray-200 hover:border-green-500 hover:bg-green-50 transition-all">
+                      <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <button onClick={() => { const d = new Date(selectedDate+'T12:00:00'); viewType==='month' ? d.setMonth(d.getMonth()+1) : d.setFullYear(d.getFullYear()+1); setSelectedDate(d.toISOString().split('T')[0]); }} className="p-1.5 rounded-lg border border-gray-200 hover:border-green-500 hover:bg-green-50 transition-all">
+                      <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                  </>
+                )}
+
+                {/* Date picker */}
+                <input
+                  type="date"
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  className="px-2 py-1.5 border border-gray-200 rounded-lg text-xs text-gray-700 focus:ring-1 focus:ring-green-500 focus:border-green-500"
+                />
+
+                {/* Current period label */}
+                <span className="text-sm font-semibold text-gray-700 flex-1">
+                  {viewType === 'day' && formatDate(selectedDate)}
+                  {viewType === 'week' && `Week of ${formatDate(getWeekDays(selectedDate)[0])}`}
+                  {viewType === 'month' && new Date(selectedDate+'T12:00:00').toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                  {viewType === 'year' && new Date(selectedDate+'T12:00:00').getFullYear()}
+                </span>
+
+                {/* Compact stats */}
+                <div className="flex items-center gap-3 text-xs ml-auto">
+                  <span className="text-blue-600 font-semibold">{viewType === 'day' ? jobs.length : allJobs.length} jobs</span>
+                  <span className="text-green-600 font-semibold">{viewType === 'day' ? jobs.filter(j=>j.status==='completed').length : allJobs.filter(j=>j.status==='completed').length} done</span>
+                  <span className="text-emerald-600 font-semibold">${(viewType === 'day' ? getTotalRevenue() : getAllJobsRevenue()).toFixed(0)}</span>
+                </div>
+
+                {/* + Add Job button */}
+                <button
+                  onClick={() => setShowAddJobForm(true)}
+                  className="flex items-center gap-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-3 py-2 rounded-lg transition-all shadow-sm"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4"/></svg>
+                  Add Job
+                </button>
+              </div>
+            </div>
+
+            {/* Add Job Modal */}
+            {showAddJobForm && (
+              <div className="fixed inset-0 bg-black bg-opacity-40 z-[1000] flex items-end sm:items-center justify-center p-0 sm:p-4" onClick={() => setShowAddJobForm(false)}>
+                <div className="bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                  <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 sticky top-0 bg-white rounded-t-2xl">
+                    <div>
+                      <h3 className="text-base font-bold text-gray-900">Add Job</h3>
+                      <p className="text-xs text-gray-500">{formatDate(selectedDate)}</p>
+                    </div>
+                    <button onClick={() => setShowAddJobForm(false)} className="text-gray-400 hover:text-gray-600 text-xl font-light leading-none">✕</button>
+                  </div>
+                  <div className="px-5 py-4">
                 <form onSubmit={handleAddJob}>
                   <div className="space-y-4">
                     <div className="customer-autocomplete-container" style={{ position: 'relative' }}>
@@ -2881,21 +3009,28 @@ const AdminDashboard = ({ user, onLogout }) => {
                         Address *
                         <span className="text-xs text-gray-500 ml-2">(Start typing for suggestions)</span>
                       </label>
-                      <GoogleAddressAutocomplete
+                      <input
+                        type="text"
                         value={newJob.address}
-                        onChange={(value) => setNewJob({...newJob, address: value})}
-                        onPlaceSelected={(addressData) => {
-                          setNewJob({
-                            ...newJob,
-                            address: addressData.fullAddress
-                          });
-                        }}
-                        placeholder="Start typing the job address..."
+                        onChange={(e) => setNewJob({...newJob, address: e.target.value})}
+                        placeholder="123 Main St, Berlin, CT 06037"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Start Time
+                        </label>
+                        <input
+                          type="time"
+                          value={newJob.startTime}
+                          onChange={(e) => setNewJob({...newJob, startTime: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        />
+                      </div>
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           Service Type
@@ -2910,10 +3045,13 @@ const AdminDashboard = ({ user, onLogout }) => {
                           <option value="snow-removal">Snow Removal</option>
                           <option value="landscaping">Landscaping</option>
                           <option value="tree-service">Tree Service</option>
+                          <option value="hardscaping">Hardscaping</option>
                           <option value="other">Other</option>
                         </select>
                       </div>
+                    </div>
 
+                    <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           Estimated Time
@@ -3010,13 +3148,20 @@ const AdminDashboard = ({ user, onLogout }) => {
                     <button
                       type="submit"
                       disabled={isAddingJob}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 px-4 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {isAddingJob ? 'Adding Job...' : 'Add Job to Schedule'}
+                      {isAddingJob ? 'Adding...' : 'Add Job'}
                     </button>
                   </div>
                 </form>
+                  </div>
+                </div>
               </div>
+            )}
+
+            {/* Calendar Views */}
+            {viewType === 'day' && (
+              <div className="space-y-3">
 
               {/* Edit Job Form */}
               {editingJob && (
@@ -3345,38 +3490,63 @@ const AdminDashboard = ({ user, onLogout }) => {
               )}
 
               {/* Job List */}
-              <div className="bg-white shadow-lg rounded-xl p-6 border border-gray-100">
-                <div className="flex justify-between items-center mb-6">
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">Today's Jobs</h3>
-                    <p className="text-sm text-gray-500 mt-1">{formatDate(selectedDate)}</p>
-                  </div>
-                  {jobs.length >= 2 && (
+              <div className="bg-white shadow rounded-xl p-4 border border-gray-100">
+                <div className="flex items-center justify-between mb-3 gap-2 flex-wrap">
+                  <h3 className="text-sm font-bold text-gray-700">
+                    {formatDate(selectedDate)} · <span className="text-gray-500 font-normal">{jobs.length} job{jobs.length !== 1 ? 's' : ''}</span>
+                  </h3>
+                  <div className="flex items-center gap-2">
                     <button
-                      onClick={optimizeRoute}
-                      className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white text-sm font-semibold py-3 px-6 rounded-xl transition-all shadow-md hover:shadow-lg transform hover:scale-105"
+                      onClick={locationSortActive ? () => setLocationSortActive(false) : activateLocationSort}
+                      disabled={locationLoading}
+                      className={`flex items-center gap-1 text-xs font-semibold py-1.5 px-3 rounded-lg transition-all border ${
+                        locationSortActive
+                          ? 'bg-emerald-50 border-emerald-400 text-emerald-700'
+                          : 'bg-gray-50 border-gray-200 text-gray-600 hover:border-emerald-300 hover:text-emerald-700'
+                      }`}
                     >
-                      Open in Maps
+                      {locationLoading
+                        ? <span className="animate-spin inline-block w-3 h-3 border-2 border-emerald-500 border-t-transparent rounded-full"></span>
+                        : '📍'}
+                      {locationSortActive ? 'By Distance' : 'Sort by Distance'}
                     </button>
-                  )}
+                    {jobs.length >= 2 && (
+                      <button
+                        onClick={optimizeRoute}
+                        className="text-xs bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-3 rounded-lg transition-all"
+                      >
+                        Open in Maps
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {loading ? (
-                  <div className="text-center py-8">
-                    <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-2"></div>
-                    Loading jobs...
+                  <div className="text-center py-6 text-gray-400 text-sm">
+                    <div className="animate-spin w-6 h-6 border-4 border-green-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+                    Loading...
                   </div>
                 ) : jobs.length === 0 ? (
-                  <div className="text-center py-16 text-gray-400">
-                    <svg className="mx-auto h-16 w-16 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <p className="text-lg font-medium">No jobs scheduled</p>
-                    <p className="text-sm mt-1">Add a job to get started</p>
+                  <div className="text-center py-10 text-gray-400">
+                    <p className="text-sm font-medium">No jobs scheduled</p>
+                    <button onClick={() => setShowAddJobForm(true)} className="mt-2 text-xs text-green-600 font-semibold underline">+ Add one</button>
                   </div>
                 ) : (
                   <div className="space-y-3 max-h-96 overflow-y-auto pr-1 sm:pr-2">
-                    {jobs.map((job, index) => (
+                    {jobs
+                      .slice()
+                      .sort((a, b) => {
+                        if (!locationSortActive) return 0;
+                        if (a.status === 'completed' && b.status !== 'completed') return 1;
+                        if (b.status === 'completed' && a.status !== 'completed') return -1;
+                        const dA = getJobDistanceKm(a);
+                        const dB = getJobDistanceKm(b);
+                        if (dA === null && dB === null) return 0;
+                        if (dA === null) return 1;
+                        if (dB === null) return -1;
+                        return dA - dB;
+                      })
+                      .map((job, index) => (
                       <div key={job.id} className={`border-2 rounded-xl p-3 sm:p-5 transition-all hover:shadow-md ${
                         job.status === 'completed'
                           ? 'border-green-200 bg-gradient-to-br from-green-50 to-emerald-50'
@@ -3420,12 +3590,32 @@ const AdminDashboard = ({ user, onLogout }) => {
                               <h4 className={`text-base sm:text-lg font-bold mb-1 ${job.status === 'completed' ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
                                 {job.customerName}
                               </h4>
+                              {job.startTime && (
+                                <p className="text-xs sm:text-sm font-semibold text-blue-600 mb-1">
+                                  🕐 {(() => { const [h, m] = job.startTime.split(':'); const hr = parseInt(h); return `${hr % 12 || 12}:${m} ${hr < 12 ? 'AM' : 'PM'}`; })()}
+                                </p>
+                              )}
                               <p className="text-xs sm:text-sm text-gray-600 mb-1 flex items-start gap-1.5 sm:gap-2">
                                 <svg className="w-3 h-3 sm:w-4 sm:h-4 mt-0.5 flex-shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                                <span className="break-words">{job.address}</span>
+                                <a
+                                  href={`https://maps.apple.com/?daddr=${encodeURIComponent(job.address)}&dirflg=d`}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="break-words text-blue-600 underline"
+                                  onClick={e => e.stopPropagation()}
+                                >
+                                  {job.address}
+                                </a>
+                                {locationSortActive && getJobDistanceKm(job) !== null && (
+                                  <span className="ml-1 flex-shrink-0 text-xs font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-lg whitespace-nowrap">
+                                    {getJobDistanceKm(job) < 1
+                                      ? `${Math.round(getJobDistanceKm(job) * 1000)} m`
+                                      : `${getJobDistanceKm(job).toFixed(1)} km`}
+                                  </span>
+                                )}
                               </p>
                               <p className="text-xs sm:text-sm font-medium text-emerald-600 capitalize">{job.serviceType.replace('-', ' ')}</p>
 
@@ -3538,6 +3728,7 @@ const AdminDashboard = ({ user, onLogout }) => {
             )}
 
             {/* Week View */}
+
             {viewType === 'week' && (
               <div className="bg-white shadow-lg rounded-xl p-6 border border-gray-100">
                 <div className="flex items-center justify-between mb-6">
@@ -3572,7 +3763,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                     return (
                       <div
                         key={date}
-                        className={`min-h-24 p-2 border-2 rounded-xl cursor-pointer transition-all hover:shadow-md ${
+                        className={`min-h-48 p-2 border-2 rounded-xl cursor-pointer transition-all hover:shadow-md ${
                           isSelected
                             ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100'
                             : isToday
@@ -3593,7 +3784,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                         </div>
 
                         <div className="space-y-1">
-                          {dayJobs.slice(0, 3).map(job => (
+                          {dayJobs.map(job => (
                             <div
                               key={job.id}
                               className={`text-xs p-1 rounded text-white truncate flex items-center justify-between ${
@@ -3606,11 +3797,6 @@ const AdminDashboard = ({ user, onLogout }) => {
                               {job.status === 'completed' && <span>✓</span>}
                             </div>
                           ))}
-                          {dayJobs.length > 3 && (
-                            <div className="text-xs text-gray-500 text-center">
-                              +{dayJobs.length - 3} more
-                            </div>
-                          )}
                         </div>
                       </div>
                     );
@@ -4036,21 +4222,6 @@ const AdminDashboard = ({ user, onLogout }) => {
                 </div>
               </div>
 
-              {/* Route Map */}
-              <div className="bg-white rounded-lg shadow">
-                <div className="px-6 py-4 border-b border-gray-200">
-                  <h3 className="text-lg font-semibold text-gray-900">Route Map</h3>
-                  <p className="text-sm text-gray-500 mt-1">Optimized routes for today's operations</p>
-                </div>
-                <div className="p-6">
-                  <SnowRemovalMap
-                    contracts={customers.filter(c => c.snowRemoval)}
-                    hoaCondoProperties={hoaCondoProperties}
-                    db={db}
-                    userPermissions={userPermissions}
-                  />
-                </div>
-              </div>
             </div>
 
             {/* Team Assignments */}

@@ -6,6 +6,27 @@ const PortfolioPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const portfolioItems = [
     {
+      id: 1,
+      title: 'Lawn Care — Berlin, CT',
+      description: 'Fresh cut and clean striping on a residential lawn in Berlin, CT',
+      image: '/images/BerlinCT_LawnCare_GD_landscaping.jpeg',
+      category: 'Lawn Care'
+    },
+    {
+      id: 2,
+      title: 'Lawn Mowing Service',
+      description: 'Professional lawn mowing by G&D Landscaping LLC',
+      image: '/images/GD_Landscaping_Lawn_Mowing.jpeg',
+      category: 'Lawn Care'
+    },
+    {
+      id: 3,
+      title: 'Lawn Mowing — Berlin & Hartford County',
+      description: 'Precision mowing across Berlin and Hartford County, CT',
+      image: '/images/Lawn_Mowing_Berlin_CT.jpeg',
+      category: 'Lawn Care'
+    },
+    {
       id: 9,
       title: 'Snow Removal Service',
       description: 'Professional snow removal and driveway clearing in Connecticut',

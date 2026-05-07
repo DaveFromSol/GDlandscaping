@@ -5,6 +5,8 @@ import AddressAutocomplete from '../components/AddressAutocomplete';
 import QuoteSection from '../components/QuoteSection';
 import QuickQuoteForm from '../components/QuickQuoteForm';
 import OptimizedImage from '../components/OptimizedImage';
+import { ReactGoogleReviews } from 'react-google-reviews';
+import 'react-google-reviews/dist/index.css';
 
 const HomePage = () => {
   const quoteSectionRef = useRef(null);
@@ -513,34 +515,13 @@ const HomePage = () => {
         <div className="testimonials-section">
           <div className="container">
             <h2>What Our Customers Say</h2>
-            <p className="section-subtitle">Don't just take our word for it - hear from our satisfied customers</p>
-            
-            <div className="testimonials-grid">
-              <div className="testimonial">
-                <div className="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p>"G&D Landscaping transformed our backyard into a beautiful oasis. Professional, reliable, and fantastic results!"</p>
-                <div className="testimonial-author">
-                  <strong>Sarah Johnson</strong>
-                  <span>Homeowner</span>
-                </div>
-              </div>
-              <div className="testimonial">
-                <div className="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p>"Just opened but already showing exceptional quality! Their attention to detail and professional approach is outstanding. Can't wait to see them grow!"</p>
-                <div className="testimonial-author">
-                  <strong>Mike Chen</strong>
-                  <span>Property Manager</span>
-                </div>
-              </div>
-              <div className="testimonial">
-                <div className="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p>"Their fall cleanup service saved us so much time. Professional team, fair pricing, and they left everything spotless."</p>
-                <div className="testimonial-author">
-                  <strong>Lisa Martinez</strong>
-                  <span>Residential Customer</span>
-                </div>
-              </div>
-            </div>
+            <p className="section-subtitle">Real reviews from our Google Business profile</p>
+            <ReactGoogleReviews
+              layout="carousel"
+              featurableId="796e3d36-f890-4b06-9c03-61ce14b1bf9c"
+              theme="light"
+              structuredData={true}
+            />
           </div>
         </div>
 
