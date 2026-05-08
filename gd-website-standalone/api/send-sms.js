@@ -32,11 +32,15 @@ export default async function handler(req, res) {
     return;
   }
 
+  // Normalize to +1XXXXXXXXXX
+  const digits = phone.replace(/\D/g, '');
+  const normalized = digits.length === 10 ? `+1${digits}` : `+${digits}`;
+
   try {
     const response = await fetch('https://textbelt.com/text', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone, message, key: '8f4c6902e0c6465968e135ad04ce4fda2985ea08a4LUjwbE2BXiBW7sqvipQgrOY' })
+      body: JSON.stringify({ phone: normalized, message, key: '8f4c6902e0c6465968e135ad04ce4fda2985ea08a4LUjwbE2BXiBW7sqvipQgrOY' })
     });
 
     const data = await response.json();
