@@ -65,6 +65,7 @@ const AdminDashboard = ({ user, onLogout }) => {
   const [newJob, setNewJob] = useState({
     customerName: '',
     address: '',
+    phone: '',
     serviceType: 'lawn-maintenance',
     estimatedTime: '30',
     startTime: '',
@@ -772,7 +773,8 @@ const AdminDashboard = ({ user, onLogout }) => {
     setNewJob({
       ...newJob,
       customerName: customer.name,
-      address: fullAddress
+      address: fullAddress,
+      phone: customer.phone || ''
     });
     setShowCustomerAutocomplete(false);
   };
@@ -904,6 +906,7 @@ const AdminDashboard = ({ user, onLogout }) => {
       setNewJob({
         customerName: '',
         address: '',
+        phone: '',
         serviceType: 'lawn-maintenance',
         estimatedTime: '30',
         startTime: '',
@@ -1484,6 +1487,31 @@ const AdminDashboard = ({ user, onLogout }) => {
   const getJobDistanceKm = (job) => {
     if (!currentLocation || !job._coords) return null;
     return haversineMi(currentLocation.lat, currentLocation.lng, job._coords.lat, job._coords.lng);
+  };
+
+  const sendOnMyWayText = async (job) => {
+    const phone = job.phone;
+    if (!phone) {
+      alert('No phone number on this job. Edit the job to add one.');
+      return;
+    }
+    const name = job.customerName?.split(' ')[0] || 'there';
+    const message = `Hi ${name}, G&D Landscaping is on the way to your property! We'll be arriving shortly. Questions? Call or text us anytime.`;
+    try {
+      const res = await fetch('/api/send-sms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, message })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert(`✅ Text sent to ${job.customerName}!`);
+      } else {
+        alert(`Failed to send text: ${data.error}`);
+      }
+    } catch (err) {
+      alert('Could not send text. Check your internet connection.');
+    }
   };
 
   const getAllJobsRevenue = () => {
@@ -3018,6 +3046,20 @@ const AdminDashboard = ({ user, onLogout }) => {
                       />
                     </div>
 
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Customer Phone
+                        <span className="text-xs text-gray-500 ml-2">(for "On My Way" texts)</span>
+                      </label>
+                      <input
+                        type="tel"
+                        value={newJob.phone}
+                        onChange={(e) => setNewJob({...newJob, phone: e.target.value})}
+                        placeholder="(860) 555-0100"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </div>
+
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -3676,6 +3718,15 @@ const AdminDashboard = ({ user, onLogout }) => {
                                 title="Remove recurring status"
                               >
                                 STOP
+                              </button>
+                            )}
+                            {job.status !== 'completed' && (
+                              <button
+                                onClick={() => sendOnMyWayText(job)}
+                                className="flex-1 sm:flex-none px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-all shadow-sm hover:shadow-md whitespace-nowrap"
+                                title={job.phone ? `Text ${job.customerName}` : 'No phone number on this job'}
+                              >
+                                📱 ON MY WAY
                               </button>
                             )}
                             <button
