@@ -43,11 +43,20 @@ export default async function handler(req, res) {
       body: JSON.stringify({ phone: normalized, message, key: '8f4c6902e0c6465968e135ad04ce4fda2985ea08a4LUjwbE2BXiBW7sqvipQgrOY' })
     });
 
-    const data = await response.json();
-    console.log('TextBelt raw response:', data);
+    const raw = await response.text();
+    console.log('TextBelt status:', response.status);
+    console.log('TextBelt raw body:', raw);
+
+    let data;
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      data = { success: false, error: `Non-JSON response (${response.status}): ${raw.slice(0, 200)}` };
+    }
+
     res.status(200).json(data);
   } catch (error) {
-    console.error('TextBelt error:', error);
-    res.status(500).json({ success: false, error: 'Failed to send SMS' });
+    console.error('TextBelt fetch error:', error);
+    res.status(500).json({ success: false, error: error.message });
   }
 }
