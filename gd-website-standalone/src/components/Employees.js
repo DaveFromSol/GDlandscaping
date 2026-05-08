@@ -7,6 +7,7 @@ import {
   doc,
   onSnapshot,
   query,
+  where,
   orderBy,
   serverTimestamp
 } from 'firebase/firestore';
@@ -16,6 +17,8 @@ const Employees = ({ db, auth, secondaryAuth }) => {
   const [employees, setEmployees] = useState([]);
   const [showAddEmployee, setShowAddEmployee] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null);
+  const [clockEntries, setClockEntries] = useState([]);
+  const [now, setNow] = useState(new Date());
   const [newEmployee, setNewEmployee] = useState({
     name: '',
     email: '',
@@ -47,6 +50,83 @@ const Employees = ({ db, auth, secondaryAuth }) => {
 
     return () => unsubscribe();
   }, [db]);
+
+  // Real-time listener for today's clock entries
+  useEffect(() => {
+    if (!db) return;
+    const today = new Date().toISOString().split('T')[0];
+    const q = query(
+      collection(db, 'clockEntries'),
+      where('date', '==', today)
+    );
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setClockEntries(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
+    });
+    return () => unsubscribe();
+  }, [db]);
+
+  // Tick every second so elapsed time updates live
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const toDate = (ts) => ts?.toDate ? ts.toDate() : ts ? new Date(ts) : null;
+
+  const getActiveEntry = (employeeId) =>
+    clockEntries.find(e => e.employeeId === employeeId && !e.clockOut);
+
+  const getTodayEntries = (employeeId) =>
+    clockEntries.filter(e => e.employeeId === employeeId);
+
+  const getElapsed = (entry) => {
+    if (!entry) return null;
+    const start = toDate(entry.clockIn);
+    if (!start) return null;
+    const end = entry.clockOut ? toDate(entry.clockOut) : now;
+    const ms = Math.max(0, end - start);
+    const hrs = Math.floor(ms / 3600000);
+    const mins = Math.floor((ms % 3600000) / 60000);
+    const secs = Math.floor((ms % 60000) / 1000);
+    if (hrs > 0) return `${hrs}h ${mins}m ${secs}s`;
+    if (mins > 0) return `${mins}m ${secs}s`;
+    return `${secs}s`;
+  };
+
+  const getTotalHours = (employeeId) => {
+    const entries = getTodayEntries(employeeId);
+    const ms = entries.reduce((sum, e) => {
+      const start = toDate(e.clockIn);
+      const end = e.clockOut ? toDate(e.clockOut) : now;
+      return sum + Math.max(0, end - start);
+    }, 0);
+    const hrs = Math.floor(ms / 3600000);
+    const mins = Math.floor((ms % 3600000) / 60000);
+    return hrs > 0 ? `${hrs}h ${mins}m` : mins > 0 ? `${mins}m` : '0m';
+  };
+
+  const handleClockToggle = async (employee) => {
+    if (!db) return;
+    const active = getActiveEntry(employee.id);
+    if (active) {
+      await updateDoc(doc(db, 'clockEntries', active.id), { clockOut: serverTimestamp() });
+    } else {
+      await addDoc(collection(db, 'clockEntries'), {
+        employeeId: employee.id,
+        employeeName: employee.name,
+        date: new Date().toISOString().split('T')[0],
+        clockIn: serverTimestamp(),
+        clockOut: null
+      });
+    }
+  };
+
+  const formatTime = (ts) => {
+    const d = toDate(ts);
+    if (!d) return '';
+    return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  };
+
 
   const handleSaveEmployee = async () => {
     if (!db || !secondaryAuth) return;
@@ -175,7 +255,97 @@ const Employees = ({ db, auth, secondaryAuth }) => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+
+      {/* ── Clock In / Out Panel ── */}
+      <div className="bg-white rounded-2xl shadow border border-gray-100">
+        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+          <div>
+            <h2 className="text-lg font-bold text-gray-900">🕐 Time Clock</h2>
+            <p className="text-xs text-gray-500 mt-0.5">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
+          </div>
+          <div className="flex gap-3 text-xs font-semibold">
+            <span className="text-green-600">{employees.filter(e => getActiveEntry(e.id)).length} clocked in</span>
+            <span className="text-gray-400">·</span>
+            <span className="text-gray-500">{employees.length} total</span>
+          </div>
+        </div>
+
+        {employees.length === 0 ? (
+          <div className="px-6 py-8 text-center text-gray-400 text-sm">No employees yet — add one below.</div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+            {employees.map(employee => {
+              const active = getActiveEntry(employee.id);
+              const todayEntries = getTodayEntries(employee.id);
+              const totalHours = todayEntries.length > 0 ? getTotalHours(employee.id) : null;
+              const elapsed = active ? getElapsed(active) : null;
+
+              return (
+                <div
+                  key={employee.id}
+                  className={`rounded-xl border-2 p-4 flex flex-col gap-3 transition-all ${
+                    active
+                      ? 'border-green-400 bg-gradient-to-br from-green-50 to-emerald-50 shadow-md'
+                      : 'border-gray-200 bg-white'
+                  }`}
+                >
+                  {/* Name + status */}
+                  <div className="flex items-center gap-2">
+                    <span className={`w-3 h-3 rounded-full flex-shrink-0 ${active ? 'bg-green-500 shadow-sm shadow-green-300' : 'bg-gray-300'}`}></span>
+                    <span className="font-bold text-gray-900 text-sm truncate">{employee.name}</span>
+                    {active && (
+                      <span className="ml-auto text-[10px] font-bold bg-green-500 text-white px-2 py-0.5 rounded-full flex-shrink-0">IN</span>
+                    )}
+                  </div>
+
+                  {/* Elapsed timer */}
+                  <div className="text-center py-1">
+                    {active ? (
+                      <>
+                        <div className="text-2xl font-mono font-bold text-green-700 tracking-tight">{elapsed}</div>
+                        <div className="text-xs text-green-600 mt-0.5">Since {formatTime(active.clockIn)}</div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="text-2xl font-mono font-bold text-gray-300">--:--</div>
+                        {totalHours && (
+                          <div className="text-xs text-gray-500 mt-0.5">Today: {totalHours}</div>
+                        )}
+                      </>
+                    )}
+                  </div>
+
+                  {/* Single toggle button */}
+                  <button
+                    onClick={() => handleClockToggle(employee)}
+                    className={`w-full py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm active:scale-95 ${
+                      active
+                        ? 'bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 text-white'
+                        : 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white'
+                    }`}
+                  >
+                    {active ? '⏹ Clock Out' : '▶ Clock In'}
+                  </button>
+
+                  {/* Today's punch history */}
+                  {todayEntries.length > 0 && (
+                    <div className="space-y-1 border-t border-gray-100 pt-2">
+                      {todayEntries.map((entry, i) => (
+                        <div key={entry.id} className="flex justify-between text-[11px] text-gray-500">
+                          <span>#{i + 1} In {formatTime(entry.clockIn)}</span>
+                          <span>{entry.clockOut ? `Out ${formatTime(entry.clockOut)}` : <span className="text-green-600 font-semibold">working…</span>}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* ── Employee Management ── */}
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Employee Management</h2>
@@ -385,42 +555,48 @@ const Employees = ({ db, auth, secondaryAuth }) => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {employees.map((employee) => (
-                <tr key={employee.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{employee.name}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-600">{employee.email}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-600">{employee.phone || '-'}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      employee.role === 'admin'
-                        ? 'bg-purple-100 text-purple-800'
-                        : 'bg-blue-100 text-blue-800'
-                    }`}>
-                      {employee.role || 'employee'}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <button
-                      onClick={() => handleEditEmployee(employee)}
-                      className="text-blue-600 hover:text-blue-900 mr-3"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDeleteEmployee(employee.id)}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {employees.map((employee) => {
+                const active = getActiveEntry(employee.id);
+                return (
+                  <tr key={employee.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-2">
+                        <span className={`w-2 h-2 rounded-full flex-shrink-0 ${active ? 'bg-green-500' : 'bg-gray-300'}`}></span>
+                        <div className="text-sm font-medium text-gray-900">{employee.name}</div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-600">{employee.email}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-600">{employee.phone || '-'}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                        employee.role === 'admin'
+                          ? 'bg-purple-100 text-purple-800'
+                          : 'bg-blue-100 text-blue-800'
+                      }`}>
+                        {employee.role || 'employee'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <button
+                        onClick={() => handleEditEmployee(employee)}
+                        className="text-blue-600 hover:text-blue-900 mr-3"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteEmployee(employee.id)}
+                        className="text-red-600 hover:text-red-900"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
               {employees.length === 0 && (
                 <tr>
                   <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
@@ -432,6 +608,7 @@ const Employees = ({ db, auth, secondaryAuth }) => {
           </table>
         </div>
       </div>
+
     </div>
   );
 };
