@@ -4,6 +4,7 @@ import SEOHead from '../components/SEOHead';
 import Leads from '../components/Leads';
 import Customers from '../components/Customers';
 import Employees from '../components/Employees';
+import Invoices from '../components/Invoices';
 import HOACondoProperties from '../components/HOACondoProperties';
 import {
   collection,
@@ -1654,6 +1655,18 @@ const AdminDashboard = ({ user, onLogout }) => {
                   👨‍💼 Employees
                 </button>
               )}
+              {userRole === 'admin' && (
+                <button
+                  onClick={() => setActiveTab('invoices')}
+                  className={`py-3 sm:py-4 px-3 sm:px-4 border-b-3 font-semibold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
+                    activeTab === 'invoices'
+                      ? 'border-green-600 text-green-700 bg-green-50'
+                      : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
+                  }`}
+                >
+                  🧾 Invoices
+                </button>
+              )}
             </nav>
           </div>
         </div>
@@ -2237,6 +2250,11 @@ const AdminDashboard = ({ user, onLogout }) => {
           <Employees db={db} auth={auth} secondaryAuth={secondaryAuth} />
         )}
 
+        {activeTab === 'invoices' && (
+          <div className="space-y-6">
+            <Invoices />
+          </div>
+        )}
 
         {activeTab === 'quotes' && (
           <div className="space-y-6">
