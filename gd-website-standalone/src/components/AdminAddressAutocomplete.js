@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 const AdminAddressAutocomplete = ({ value, onChange, onSelect, placeholder, className }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const debounceRef = useRef(null);
   const wrapperRef = useRef(null);
 
@@ -22,29 +23,34 @@ const AdminAddressAutocomplete = ({ value, onChange, onSelect, placeholder, clas
     clearTimeout(debounceRef.current);
     if (val.length < 3) { setSuggestions([]); setOpen(false); return; }
     debounceRef.current = setTimeout(async () => {
+      setLoading(true);
       try {
-        const res = await fetch(`/api/address-autocomplete?input=${encodeURIComponent(val)}`);
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&limit=6&countrycodes=us&addressdetails=1&q=${encodeURIComponent(val)}`,
+          { headers: { 'Accept-Language': 'en' } }
+        );
         const data = await res.json();
-        setSuggestions(data.predictions || []);
-        setOpen((data.predictions || []).length > 0);
-      } catch { setSuggestions([]); setOpen(false); }
-    }, 300);
+        setSuggestions(data);
+        setOpen(data.length > 0);
+      } catch {
+        setSuggestions([]);
+        setOpen(false);
+      } finally {
+        setLoading(false);
+      }
+    }, 350);
   };
 
-  const handleSelect = (prediction) => {
-    const address = prediction.description.replace(', USA', '');
-    onChange(address);
-    if (onSelect) {
-      // Parse street, city, state, zip from description
-      const parts = prediction.description.split(', ');
-      onSelect({
-        fullAddress: address,
-        street: parts[0] || '',
-        city: parts[1] || '',
-        state: parts[2]?.split(' ')[0] || '',
-        zip: parts[2]?.split(' ')[1] || ''
-      });
-    }
+  const handleSelect = (result) => {
+    const addr = result.address || {};
+    const street = [addr.house_number, addr.road].filter(Boolean).join(' ');
+    const city = addr.city || addr.town || addr.village || addr.hamlet || '';
+    const state = addr.state || '';
+    const zip = addr.postcode || '';
+    const full = [street, city, `${state} ${zip}`.trim()].filter(Boolean).join(', ');
+
+    onChange(full);
+    if (onSelect) onSelect({ fullAddress: full, street, city, state, zip });
     setSuggestions([]);
     setOpen(false);
   };
@@ -59,6 +65,11 @@ const AdminAddressAutocomplete = ({ value, onChange, onSelect, placeholder, clas
         className={className}
         autoComplete="off"
       />
+      {loading && (
+        <div style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)' }}>
+          <div style={{ width: '14px', height: '14px', border: '2px solid #d1d5db', borderTopColor: '#16a34a', borderRadius: '50%', animation: 'spin 0.6s linear infinite' }} />
+        </div>
+      )}
       {open && suggestions.length > 0 && (
         <div style={{
           position: 'absolute', top: '100%', left: 0, right: 0,
@@ -66,15 +77,15 @@ const AdminAddressAutocomplete = ({ value, onChange, onSelect, placeholder, clas
           borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.12)',
           zIndex: 1000, marginTop: '4px', overflow: 'hidden'
         }}>
-          {suggestions.map((p) => (
+          {suggestions.map((r) => (
             <div
-              key={p.place_id}
-              onMouseDown={() => handleSelect(p)}
+              key={r.place_id}
+              onMouseDown={() => handleSelect(r)}
               style={{ padding: '10px 14px', cursor: 'pointer', borderBottom: '1px solid #f3f4f6', fontSize: '0.875rem' }}
               onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f0fdf4'}
               onMouseLeave={e => e.currentTarget.style.backgroundColor = 'white'}
             >
-              <span style={{ color: '#111827' }}>📍 {p.description.replace(', USA', '')}</span>
+              <span style={{ color: '#111827' }}>📍 {r.display_name.replace(', United States', '')}</span>
             </div>
           ))}
         </div>
