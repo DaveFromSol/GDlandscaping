@@ -1504,10 +1504,12 @@ const AdminDashboard = ({ user, onLogout }) => {
         body: JSON.stringify({ phone, message })
       });
       const data = await res.json();
+      console.log('TextBelt response:', data);
       if (data.success) {
         alert(`✅ Text sent to ${job.customerName}!`);
       } else {
-        alert(`Failed to send text: ${data.error}`);
+        const reason = data.error || data.message || data.errorMessage || JSON.stringify(data);
+        alert(`Failed to send text: ${reason}`);
       }
     } catch (err) {
       alert('Could not send text. Check your internet connection.');
