@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import AdminAddressAutocomplete from './AdminAddressAutocomplete';
 import {
   collection,
   addDoc,
@@ -581,10 +582,16 @@ const Customers = ({ user }) => {
                         Address
                         <span className="text-xs text-gray-500 font-normal ml-2">(Start typing for suggestions)</span>
                       </label>
-                      <input
-                        type="text"
+                      <AdminAddressAutocomplete
                         value={newCustomer.address}
-                        onChange={(e) => setNewCustomer({...newCustomer, address: e.target.value})}
+                        onChange={(val) => setNewCustomer({...newCustomer, address: val})}
+                        onSelect={(data) => setNewCustomer({
+                          ...newCustomer,
+                          address: data.street,
+                          city: data.city,
+                          state: data.state,
+                          zip: data.zip
+                        })}
                         placeholder="123 Main St, Berlin, CT 06037"
                         className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                       />

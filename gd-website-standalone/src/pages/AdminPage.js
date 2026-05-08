@@ -22,6 +22,7 @@ import {
 } from 'firebase/firestore';
 import { signOut, createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from 'firebase/auth';
 import { useFirebase } from '../contexts/FirebaseContext';
+import AdminAddressAutocomplete from '../components/AdminAddressAutocomplete';
 
 const AdminDashboard = ({ user, onLogout }) => {
   const { db, auth, secondaryAuth } = useFirebase();
@@ -3039,10 +3040,10 @@ const AdminDashboard = ({ user, onLogout }) => {
                         Address *
                         <span className="text-xs text-gray-500 ml-2">(Start typing for suggestions)</span>
                       </label>
-                      <input
-                        type="text"
+                      <AdminAddressAutocomplete
                         value={newJob.address}
-                        onChange={(e) => setNewJob({...newJob, address: e.target.value})}
+                        onChange={(val) => setNewJob({...newJob, address: val})}
+                        onSelect={(data) => setNewJob({...newJob, address: data.fullAddress})}
                         placeholder="123 Main St, Berlin, CT 06037"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       />
