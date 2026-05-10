@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const StickyMobileBar = () => {
   const [visible, setVisible] = useState(false);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,7 +18,7 @@ const StickyMobileBar = () => {
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  if (!visible) return null;
+  if (!visible || pathname === '/admin') return null;
 
   return (
     <div className="sticky-mobile-bar">
