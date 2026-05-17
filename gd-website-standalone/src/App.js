@@ -365,17 +365,17 @@ const CrawlPathLinks = () => {
   );
 };
 
-function App() {
-  return (
-    <FirebaseProvider>
-      <Router>
-        <ScrollToTop />
-        <div className="website">
-          <Navigation />
-          <UrgencyBanner />
+function AppShell() {
+  const location = useLocation();
+  const isAdmin = location.pathname === '/admin';
 
-          <main className="website-main">
-            <Routes>
+  return (
+    <div className={isAdmin ? '' : 'website'}>
+      {!isAdmin && <Navigation />}
+      {!isAdmin && <UrgencyBanner />}
+
+      <main className={isAdmin ? '' : 'website-main'}>
+        <Routes>
               {/* Redirect index.html to root (SEO fix for duplicate homepage) */}
               <Route path="/index.html" element={<Navigate to="/" replace />} />
 
@@ -540,9 +540,9 @@ function App() {
               {/* 404 Catch-all route - MUST be last */}
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
-          </main>
+      </main>
 
-          <footer className="website-footer">
+      {!isAdmin && <footer className="website-footer">
             <div className="container">
               <div className="footer-content">
                 <div className="footer-section">
@@ -590,11 +590,20 @@ function App() {
                 <p>&copy; 2025 G&D Landscaping. All rights reserved.</p>
               </div>
             </div>
-          </footer>
-          <Analytics />
-          <StickyMobileBar />
-          <ExitIntentPopup />
-        </div>
+          </footer>}
+      <Analytics />
+      {!isAdmin && <StickyMobileBar />}
+      {!isAdmin && <ExitIntentPopup />}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <FirebaseProvider>
+      <Router>
+        <ScrollToTop />
+        <AppShell />
       </Router>
     </FirebaseProvider>
   );

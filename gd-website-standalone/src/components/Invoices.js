@@ -41,7 +41,7 @@ const statusColors = {
   void:   { bg: '#f3f4f6', text: '#6b7280', label: 'Void' },
 };
 
-export default function Invoices() {
+export default function Invoices({ prefilledCustomer = null }) {
   const { db } = useFirebase();
   const [invoices, setInvoices] = useState([]);
   const [customers, setCustomers] = useState([]);
@@ -51,6 +51,7 @@ export default function Invoices() {
   const [downloading, setDownloading] = useState(null);
   const [previewInvoice, setPreviewInvoice] = useState(null);
   const invoiceRef = useRef(null);
+  const prefilledApplied = useRef(false);
 
   useEffect(() => {
     const q = query(collection(db, 'invoices'), orderBy('createdAt', 'desc'));
@@ -65,6 +66,28 @@ export default function Invoices() {
       setCustomers(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
     });
   }, [db]);
+
+  // ── prefill from property lookup ──────────────────────────────────────────
+  useEffect(() => {
+    if (!prefilledCustomer || prefilledApplied.current) return;
+    // If it has an `id` it's a matched customer record — select them
+    if (prefilledCustomer.id && customers.length > 0) {
+      handleCustomerSelect(prefilledCustomer.id);
+      setShowForm(true);
+      prefilledApplied.current = true;
+    } else if (prefilledCustomer.customerAddress && customers.length >= 0) {
+      // No match found — just pre-fill the address field
+      setForm(f => ({ ...f, customerAddress: prefilledCustomer.customerAddress }));
+      setShowForm(true);
+      prefilledApplied.current = true;
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prefilledCustomer, customers]);
+
+  // Reset prefill tracking when prop clears
+  useEffect(() => {
+    if (!prefilledCustomer) prefilledApplied.current = false;
+  }, [prefilledCustomer]);
 
   // ── line item helpers ──────────────────────────────────────────────────────
   const updateLine = (index, field, value) => {

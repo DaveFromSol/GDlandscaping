@@ -24,7 +24,7 @@ const SnowRemovalPage = () => {
     },
     {
       question: "What areas do you service for snow removal?",
-      answer: "We provide snow removal services throughout Central Connecticut including Berlin, Hartford, Cromwell, Middletown, West Hartford, Newington, Wethersfield, Rocky Hill, Glastonbury, Manchester, Bristol, and Farmington."
+      answer: "We provide snow removal services throughout Central Connecticut — Hartford, Middlesex, Tolland, and New Haven Counties. That includes Berlin, Hartford, West Hartford, Newington, Cromwell, Middletown, Wethersfield, Rocky Hill, Glastonbury, Manchester, Bristol, Farmington, Meriden, Wallingford, Cheshire, Vernon, and 50+ more towns. Not sure if we reach you? Just call or send us a message."
     },
     {
       question: "Can you handle commercial snow removal?",
@@ -318,16 +318,14 @@ const SnowRemovalPage = () => {
           <section className="service-areas">
             <div className="section-header">
               <h2>Snow Removal Service Areas</h2>
-              <p className="section-subtitle">Serving Berlin, CT and surrounding communities with reliable winter maintenance</p>
+              <p className="section-subtitle">Serving 65+ towns across Hartford, Middlesex, Tolland, and New Haven Counties — don't see your town? Just ask.</p>
             </div>
 
-            <div className="areas-content">
-              <div className="primary-areas">
-                <h3>Primary Service Area - Hartford County</h3>
+            <div className="areas-grid">
+              <div className="area-section">
+                <h3>Hartford County</h3>
                 <div className="towns-grid">
                   <span className="town">Berlin</span>
-                  <span className="town">Cromwell</span>
-                  <span className="town">Middletown</span>
                   <span className="town">Hartford</span>
                   <span className="town">West Hartford</span>
                   <span className="town">Newington</span>
@@ -337,6 +335,71 @@ const SnowRemovalPage = () => {
                   <span className="town">Manchester</span>
                   <span className="town">Bristol</span>
                   <span className="town">Farmington</span>
+                  <span className="town">New Britain</span>
+                  <span className="town">Plainville</span>
+                  <span className="town">Southington</span>
+                  <span className="town">Avon</span>
+                  <span className="town">Simsbury</span>
+                </div>
+              </div>
+
+              <div className="area-section">
+                <h3>Middlesex County</h3>
+                <div className="towns-grid">
+                  <span className="town">Cromwell</span>
+                  <span className="town">Middletown</span>
+                  <span className="town">Middlefield</span>
+                  <span className="town">Portland</span>
+                  <span className="town">East Hampton</span>
+                  <span className="town">Durham</span>
+                </div>
+              </div>
+
+              <div className="area-section">
+                <h3>Tolland County</h3>
+                <div className="towns-grid">
+                  <span className="town">Vernon</span>
+                  <span className="town">Tolland</span>
+                  <span className="town">Ellington</span>
+                  <span className="town">Bolton</span>
+                  <span className="town">Coventry</span>
+                </div>
+              </div>
+
+              <div className="area-section">
+                <h3>New Haven County</h3>
+                <div className="towns-grid">
+                  <span className="town">Wallingford</span>
+                  <span className="town">Meriden</span>
+                  <span className="town">Cheshire</span>
+                  <span className="town">North Haven</span>
+                  <span className="town">Hamden</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="service-radius">
+              <div className="radius-info">
+                <h4>❄️ Don't See Your Town?</h4>
+                <p>We serve all of Central Connecticut for snow removal — residential driveways, commercial parking lots, and everything in between. If you're within our service area, we've got you covered 24/7 all winter long.</p>
+                <p className="coverage-note">Not sure if we reach you? <a href="/contact">Contact us</a> — we'll let you know right away.</p>
+              </div>
+              <div className="areas-stats">
+                <div className="stat-box">
+                  <div className="stat-number">65+</div>
+                  <div className="stat-label">Towns Served</div>
+                </div>
+                <div className="stat-box">
+                  <div className="stat-number">4</div>
+                  <div className="stat-label">CT Counties</div>
+                </div>
+                <div className="stat-box">
+                  <div className="stat-number">24/7</div>
+                  <div className="stat-label">Emergency Service</div>
+                </div>
+                <div className="stat-box">
+                  <div className="stat-number">1"</div>
+                  <div className="stat-label">Trigger Depth</div>
                 </div>
               </div>
             </div>

@@ -114,14 +114,19 @@ const Customers = ({ user }) => {
   }, [db, customers]);
 
   const addCustomer = async () => {
-    if (!newCustomer.name || !newCustomer.phone) {
-      alert('Name and phone are required');
+    if (!newCustomer.phone) {
+      alert('Phone is required');
       return;
     }
+
+    const resolvedName = newCustomer.name.trim() ||
+      [newCustomer.address, newCustomer.city].filter(Boolean).join(', ') ||
+      'Unknown';
 
     try {
       const customerData = {
         ...newCustomer,
+        name: resolvedName,
         totalSpent: newCustomer.totalSpent ? parseFloat(newCustomer.totalSpent) : 0,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
@@ -400,174 +405,165 @@ const Customers = ({ user }) => {
         </div>
       </div>
 
-      {/* Add/Edit Customer Modal */}
+      {/* Add/Edit Customer Drawer */}
       {showAddCustomer && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-start justify-center pt-10 pb-10">
-          <div className="relative mx-auto w-11/12 md:w-3/4 lg:w-2/3 shadow-2xl rounded-2xl bg-white max-h-[calc(100vh-80px)] overflow-hidden my-auto border border-gray-200">
-            {/* Modal Header */}
-            <div className="sticky top-0 z-10 px-8 py-6 bg-gradient-to-r from-blue-600 to-indigo-700 border-b border-blue-500">
-              <div className="flex items-center gap-4">
-                <div className="bg-white bg-opacity-20 p-3 rounded-xl backdrop-blur-sm">
-                  <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-white">
-                    {editingCustomer ? 'Edit Customer' : 'Add New Customer'}
-                  </h3>
-                  <p className="text-sm text-blue-100 mt-1">
-                    {editingCustomer ? 'Update customer information' : 'Fill in the details to create a new customer'}
-                  </p>
-                </div>
-                <button
-                  onClick={() => {
-                    setShowAddCustomer(false);
-                    setEditingCustomer(null);
-                    resetForm();
-                  }}
-                  className="text-white hover:bg-white hover:bg-opacity-20 p-2 rounded-lg transition-all"
-                  title="Close"
-                >
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+        <div className="fixed inset-0 z-50 flex">
+          {/* Backdrop */}
+          <div
+            className="flex-1 bg-black bg-opacity-40"
+            onClick={() => { setShowAddCustomer(false); setEditingCustomer(null); resetForm(); }}
+          />
+          {/* Drawer */}
+          <div className="w-full max-w-lg bg-white flex flex-col shadow-2xl">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-white">
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">
+                  {editingCustomer ? 'Edit Customer' : 'New Customer'}
+                </h3>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  {editingCustomer ? 'Update customer information' : 'Add a customer to your database'}
+                </p>
               </div>
+              <button
+                onClick={() => { setShowAddCustomer(false); setEditingCustomer(null); resetForm(); }}
+                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
 
-            {/* Modal Body */}
-            <div className="p-8 overflow-y-auto max-h-[calc(100vh-280px)]">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">
-                    Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={newCustomer.name}
-                    onChange={(e) => setNewCustomer({...newCustomer, name: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                    placeholder="Customer name"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">
-                    Phone <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="tel"
-                    value={newCustomer.phone}
-                    onChange={(e) => setNewCustomer({...newCustomer, phone: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                    placeholder="(860) 123-4567"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Email</label>
-                  <input
-                    type="email"
-                    value={newCustomer.email}
-                    onChange={(e) => setNewCustomer({...newCustomer, email: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                    placeholder="customer@email.com"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Customer Type</label>
-                  <select
-                    value={newCustomer.customerType}
-                    onChange={(e) => setNewCustomer({...newCustomer, customerType: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white cursor-pointer"
-                  >
-                    <option value="Residential">Residential</option>
-                    <option value="Commercial">Commercial</option>
-                    <option value="HOA">HOA / Condo</option>
-                    <option value="Multi-family">Multi-family</option>
-                  </select>
-                </div>
-                {/* Conditional Address Section */}
-                {newCustomer.customerType === 'HOA' ? (
-                  /* Multiple Addresses for HOA/Condo */
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-bold text-gray-700 mb-3">
-                      Property Addresses
-                      <span className="ml-2 text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
-                        {newCustomer.addresses.length}/40
-                      </span>
-                    </label>
+            {/* Body */}
+            <div className="flex-1 overflow-y-auto">
 
-                    {/* Add Address Form */}
-                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-5 mb-4">
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="md:col-span-2">
-                          <label className="block text-xs font-bold text-gray-700 mb-2">
-                            Address <span className="text-red-500">*</span>
-                            <span className="text-gray-500 font-normal ml-1">(Google autocomplete)</span>
-                          </label>
-                          <input
-                            type="text"
-                            value={currentAddress.location}
-                            onChange={(e) => setCurrentAddress({...currentAddress, location: e.target.value})}
-                            placeholder="123 Main St, Berlin, CT 06037"
-                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-xs font-bold text-gray-700 mb-2">Unit/Building #</label>
-                          <input
-                            type="text"
-                            value={currentAddress.unitNumber}
-                            onChange={(e) => setCurrentAddress({...currentAddress, unitNumber: e.target.value})}
-                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500"
-                            placeholder="Unit 101"
-                          />
-                        </div>
-                        <div className="md:col-span-2">
-                          <label className="block text-xs font-bold text-gray-700 mb-2">Special Instructions</label>
-                          <input
-                            type="text"
-                            value={currentAddress.specialInstructions}
-                            onChange={(e) => setCurrentAddress({...currentAddress, specialInstructions: e.target.value})}
-                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500"
-                            placeholder="Gate code, parking instructions, etc."
-                          />
-                        </div>
-                        <div className="flex items-end">
-                          <button
-                            type="button"
-                            onClick={addAddress}
-                            className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-xl hover:from-blue-700 hover:to-indigo-800 font-bold shadow-md hover:shadow-lg transition-all"
-                          >
-                            + Add Address
-                          </button>
-                        </div>
-                      </div>
+              {/* Section: Contact */}
+              <div className="px-6 pt-5 pb-4">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Contact Info</p>
+                <div className="space-y-3">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-600 mb-1">Name <span className="text-gray-400 font-normal">(optional)</span></label>
+                      <input
+                        type="text"
+                        value={newCustomer.name}
+                        onChange={(e) => setNewCustomer({...newCustomer, name: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                        placeholder="Full name (defaults to address)"
+                      />
                     </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-600 mb-1">Phone <span className="text-red-500">*</span></label>
+                      <input
+                        type="tel"
+                        value={newCustomer.phone}
+                        onChange={(e) => setNewCustomer({...newCustomer, phone: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                        placeholder="(860) 123-4567"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">Email</label>
+                    <input
+                      type="email"
+                      value={newCustomer.email}
+                      onChange={(e) => setNewCustomer({...newCustomer, email: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                      placeholder="customer@email.com"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-600 mb-1">Type</label>
+                      <select
+                        value={newCustomer.customerType}
+                        onChange={(e) => setNewCustomer({...newCustomer, customerType: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white"
+                      >
+                        <option value="Residential">Residential</option>
+                        <option value="Commercial">Commercial</option>
+                        <option value="HOA">HOA / Condo</option>
+                        <option value="Multi-family">Multi-family</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-600 mb-1">Status</label>
+                      <select
+                        value={newCustomer.status}
+                        onChange={(e) => setNewCustomer({...newCustomer, status: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white"
+                      >
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                        <option value="VIP">VIP</option>
+                        <option value="On Hold">On Hold</option>
+                        <option value="Cancelled">Cancelled</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                    {/* Address List */}
+              <div className="mx-6 border-t border-gray-100" />
+
+              {/* Section: Property */}
+              <div className="px-6 pt-4 pb-4">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Property</p>
+
+                {newCustomer.customerType === 'HOA' ? (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold text-gray-600">Addresses</span>
+                      <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">{newCustomer.addresses.length}/40</span>
+                    </div>
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 space-y-2">
+                      <AdminAddressAutocomplete
+                        value={currentAddress.location}
+                        onChange={(val) => setCurrentAddress({...currentAddress, location: val})}
+                        onSelect={(data) => setCurrentAddress({...currentAddress, location: data.fullAddress})}
+                        placeholder="123 Main St, Berlin, CT 06037"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                      />
+                      <div className="grid grid-cols-2 gap-2">
+                        <input
+                          type="text"
+                          value={currentAddress.unitNumber}
+                          onChange={(e) => setCurrentAddress({...currentAddress, unitNumber: e.target.value})}
+                          className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                          placeholder="Unit / Building #"
+                        />
+                        <input
+                          type="text"
+                          value={currentAddress.specialInstructions}
+                          onChange={(e) => setCurrentAddress({...currentAddress, specialInstructions: e.target.value})}
+                          className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                          placeholder="Gate code, notes…"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={addAddress}
+                        className="w-full py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors"
+                      >
+                        + Add Address
+                      </button>
+                    </div>
                     {newCustomer.addresses.length > 0 && (
-                      <div className="space-y-3 max-h-64 overflow-y-auto">
+                      <div className="space-y-2 max-h-48 overflow-y-auto">
                         {newCustomer.addresses.map((addr, index) => (
-                          <div key={index} className="flex items-start gap-3 p-4 bg-white border-2 border-gray-200 rounded-xl hover:border-blue-300 transition-all">
-                            <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-md">
-                              {index + 1}
-                            </div>
+                          <div key={index} className="flex items-start gap-2 p-3 bg-white border border-gray-200 rounded-lg">
+                            <span className="w-5 h-5 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">{index + 1}</span>
                             <div className="flex-1 min-w-0">
-                              <p className="font-bold text-gray-900">{addr.location}</p>
-                              {addr.unitNumber && (
-                                <p className="text-sm text-gray-600 mt-1">Unit: {addr.unitNumber}</p>
-                              )}
-                              {addr.specialInstructions && (
-                                <p className="text-xs text-gray-500 mt-1">{addr.specialInstructions}</p>
-                              )}
+                              <p className="text-sm font-medium text-gray-900 truncate">{addr.location}</p>
+                              {addr.unitNumber && <p className="text-xs text-gray-500">{addr.unitNumber}</p>}
+                              {addr.specialInstructions && <p className="text-xs text-gray-400">{addr.specialInstructions}</p>}
                             </div>
-                            <button
-                              type="button"
-                              onClick={() => removeAddress(index)}
-                              className="flex-shrink-0 px-3 py-2 bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-lg hover:from-red-600 hover:to-rose-700 text-sm font-semibold shadow-sm hover:shadow-md transition-all"
-                            >
-                              Remove
+                            <button type="button" onClick={() => removeAddress(index)} className="text-red-400 hover:text-red-600 p-1 flex-shrink-0">
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                              </svg>
                             </button>
                           </div>
                         ))}
@@ -575,13 +571,9 @@ const Customers = ({ user }) => {
                     )}
                   </div>
                 ) : (
-                  /* Single Address for Residential/Commercial */
-                  <>
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-bold text-gray-700 mb-2">
-                        Address
-                        <span className="text-xs text-gray-500 font-normal ml-2">(Start typing for suggestions)</span>
-                      </label>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-600 mb-1">Address</label>
                       <AdminAddressAutocomplete
                         value={newCustomer.address}
                         onChange={(val) => setNewCustomer({...newCustomer, address: val})}
@@ -593,161 +585,144 @@ const Customers = ({ user }) => {
                           zip: data.zip
                         })}
                         placeholder="123 Main St, Berlin, CT 06037"
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                       />
+                      {(newCustomer.city || newCustomer.zip) && (
+                        <p className="mt-1.5 text-xs text-gray-500 flex items-center gap-1">
+                          <svg className="w-3 h-3 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          {[newCustomer.city, newCustomer.state, newCustomer.zip].filter(Boolean).join(', ')}
+                        </p>
+                      )}
                     </div>
                     <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">City</label>
+                      <label className="block text-xs font-semibold text-gray-600 mb-1">Property Size (acres)</label>
                       <input
                         type="text"
-                        value={newCustomer.city}
-                        onChange={(e) => setNewCustomer({...newCustomer, city: e.target.value})}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                        placeholder="Berlin"
+                        value={newCustomer.propertySize}
+                        onChange={(e) => setNewCustomer({...newCustomer, propertySize: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                        placeholder="e.g. 0.5"
                       />
                     </div>
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">State</label>
-                      <input
-                        type="text"
-                        value={newCustomer.state}
-                        onChange={(e) => setNewCustomer({...newCustomer, state: e.target.value})}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                        placeholder="CT"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">ZIP Code</label>
-                      <input
-                        type="text"
-                        value={newCustomer.zip}
-                        onChange={(e) => setNewCustomer({...newCustomer, zip: e.target.value})}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                        placeholder="06037"
-                      />
-                    </div>
-                  </>
-                )}
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Status</label>
-                  <select
-                    value={newCustomer.status}
-                    onChange={(e) => setNewCustomer({...newCustomer, status: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white cursor-pointer"
-                  >
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                    <option value="VIP">VIP</option>
-                    <option value="On Hold">On Hold</option>
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Property Size (acres)</label>
-                  <input
-                    type="text"
-                    value={newCustomer.propertySize}
-                    onChange={(e) => setNewCustomer({...newCustomer, propertySize: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                    placeholder="0.5"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Payment Method</label>
-                  <select
-                    value={newCustomer.paymentMethod}
-                    onChange={(e) => setNewCustomer({...newCustomer, paymentMethod: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white cursor-pointer"
-                  >
-                    <option value="Cash">Cash</option>
-                    <option value="Check">Check</option>
-                    <option value="Venmo">Venmo</option>
-                    <option value="Zelle">Zelle</option>
-                    <option value="Credit Card">Credit Card</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Total Spent ($)</label>
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={newCustomer.totalSpent}
-                    onChange={(e) => setNewCustomer({...newCustomer, totalSpent: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                    placeholder="0.00"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Last Service Date</label>
-                  <input
-                    type="date"
-                    value={newCustomer.lastServiceDate}
-                    onChange={(e) => setNewCustomer({...newCustomer, lastServiceDate: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Snow Removal Priority</label>
-                  <select
-                    value={newCustomer.priority}
-                    onChange={(e) => setNewCustomer({...newCustomer, priority: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white cursor-pointer"
-                  >
-                    <option value="Normal">Normal</option>
-                    <option value="High">High</option>
-                    <option value="Low">Low</option>
-                  </select>
-                </div>
-                <div className="md:col-span-2">
-                  <div className="flex items-center gap-4 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl">
-                    <input
-                      type="checkbox"
-                      id="snowRemoval"
-                      checked={newCustomer.snowRemoval}
-                      onChange={(e) => setNewCustomer({...newCustomer, snowRemoval: e.target.checked})}
-                      className="w-6 h-6 text-blue-600 border-gray-300 rounded-lg focus:ring-blue-500 cursor-pointer"
-                    />
-                    <label htmlFor="snowRemoval" className="text-sm font-bold text-gray-900 cursor-pointer flex-1">
-                      Snow Removal Contract
-                      <span className="block text-xs font-medium text-gray-600 mt-1">Enable this customer for snow removal operations</span>
-                    </label>
-                    <svg className="w-8 h-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                    </svg>
                   </div>
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Notes</label>
-                  <textarea
-                    value={newCustomer.notes}
-                    onChange={(e) => setNewCustomer({...newCustomer, notes: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"
-                    rows="3"
-                    placeholder="Additional notes, preferences, special instructions..."
-                  />
+                )}
+              </div>
+
+              <div className="mx-6 border-t border-gray-100" />
+
+              {/* Section: Service Details */}
+              <div className="px-6 pt-4 pb-4">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Service Details</p>
+                <div className="space-y-3">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-600 mb-1">Payment</label>
+                      <select
+                        value={newCustomer.paymentMethod}
+                        onChange={(e) => setNewCustomer({...newCustomer, paymentMethod: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                      >
+                        <option value="Cash">Cash</option>
+                        <option value="Check">Check</option>
+                        <option value="Venmo">Venmo</option>
+                        <option value="Zelle">Zelle</option>
+                        <option value="Credit Card">Credit Card</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-600 mb-1">Snow Priority</label>
+                      <select
+                        value={newCustomer.priority}
+                        onChange={(e) => setNewCustomer({...newCustomer, priority: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                      >
+                        <option value="Normal">Normal</option>
+                        <option value="High">High</option>
+                        <option value="Low">Low</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-600 mb-1">Last Service</label>
+                      <input
+                        type="date"
+                        value={newCustomer.lastServiceDate}
+                        onChange={(e) => setNewCustomer({...newCustomer, lastServiceDate: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-600 mb-1">Total Spent ($)</label>
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={newCustomer.totalSpent}
+                        onChange={(e) => setNewCustomer({...newCustomer, totalSpent: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                        placeholder="0.00"
+                      />
+                    </div>
+                  </div>
+                  {/* Snow Removal Toggle */}
+                  <button
+                    type="button"
+                    onClick={() => setNewCustomer({...newCustomer, snowRemoval: !newCustomer.snowRemoval})}
+                    className={`w-full flex items-center justify-between px-4 py-3 rounded-lg border-2 transition-all ${
+                      newCustomer.snowRemoval
+                        ? 'border-blue-500 bg-blue-50'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <svg className={`w-5 h-5 ${newCustomer.snowRemoval ? 'text-blue-600' : 'text-gray-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                      </svg>
+                      <div className="text-left">
+                        <p className={`text-sm font-semibold ${newCustomer.snowRemoval ? 'text-blue-800' : 'text-gray-700'}`}>Snow Removal Contract</p>
+                        <p className="text-xs text-gray-500">Include in snow removal routes</p>
+                      </div>
+                    </div>
+                    <div className={`w-10 h-6 rounded-full transition-colors relative flex-shrink-0 ${newCustomer.snowRemoval ? 'bg-blue-600' : 'bg-gray-300'}`}>
+                      <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-all ${newCustomer.snowRemoval ? 'left-5' : 'left-1'}`} />
+                    </div>
+                  </button>
                 </div>
               </div>
+
+              <div className="mx-6 border-t border-gray-100" />
+
+              {/* Section: Notes */}
+              <div className="px-6 pt-4 pb-6">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Notes</p>
+                <textarea
+                  value={newCustomer.notes}
+                  onChange={(e) => setNewCustomer({...newCustomer, notes: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none resize-none"
+                  rows="3"
+                  placeholder="Gate codes, access instructions, preferences…"
+                />
+              </div>
+
             </div>
 
-            {/* Modal Footer */}
-            <div className="sticky bottom-0 px-8 py-5 bg-gradient-to-r from-gray-50 to-slate-50 border-t-2 border-gray-200 flex justify-end gap-3">
+            {/* Footer */}
+            <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex gap-3">
               <button
-                onClick={() => {
-                  setShowAddCustomer(false);
-                  setEditingCustomer(null);
-                  resetForm();
-                }}
-                className="px-6 py-3 bg-white border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-100 hover:border-gray-400 transition-all shadow-sm hover:shadow-md"
+                onClick={() => { setShowAddCustomer(false); setEditingCustomer(null); resetForm(); }}
+                className="flex-1 py-2.5 border border-gray-300 text-gray-700 font-semibold rounded-lg text-sm hover:bg-gray-100 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={editingCustomer ? updateCustomer : addCustomer}
-                className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-bold rounded-xl hover:from-blue-700 hover:to-indigo-800 transition-all shadow-md hover:shadow-lg"
+                className="flex-1 py-2.5 bg-blue-600 text-white font-bold rounded-lg text-sm hover:bg-blue-700 transition-colors"
               >
-                {editingCustomer ? 'Update Customer' : 'Add Customer'}
+                {editingCustomer ? 'Save Changes' : 'Add Customer'}
               </button>
             </div>
           </div>

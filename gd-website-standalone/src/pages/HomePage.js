@@ -511,8 +511,8 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Customer Testimonials */}
-        <div className="testimonials-section">
+        {/* Social Proof / Reviews Section */}
+        <div className="reviews-section">
           <div className="container">
             <h2>What Our Customers Say</h2>
             <p className="section-subtitle">Real reviews from our Google Business profile</p>

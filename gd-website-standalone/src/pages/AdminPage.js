@@ -24,6 +24,9 @@ import {
 import { signOut, createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from 'firebase/auth';
 import { useFirebase } from '../contexts/FirebaseContext';
 import AdminAddressAutocomplete from '../components/AdminAddressAutocomplete';
+import RouteMap from '../components/RouteMap';
+import ParcelService from '../services/ParcelService';
+const parcelService = new ParcelService();
 
 const AdminDashboard = ({ user, onLogout }) => {
   const { db, auth, secondaryAuth } = useFirebase();
@@ -82,6 +85,7 @@ const AdminDashboard = ({ user, onLogout }) => {
   const [showAddJobForm, setShowAddJobForm] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null); // { lat, lng }
+  const [showRouteMap, setShowRouteMap] = useState(false);
   const [locationSortActive, setLocationSortActive] = useState(false);
   const [locationLoading, setLocationLoading] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -105,6 +109,30 @@ const AdminDashboard = ({ user, onLogout }) => {
     displayName: '',
     linkedCustomerId: ''
   });
+
+  // Actions tab state
+  const [activeAction, setActiveAction] = useState('');
+  const [propertyAddress, setPropertyAddress] = useState('');
+  const [propertyCoords, setPropertyCoords] = useState(null); // { lat, lon }
+  const [propertyLookupLoading, setPropertyLookupLoading] = useState(false);
+  const [propertyMapDownloading, setPropertyMapDownloading] = useState(false);
+  const [propertyData, setPropertyData] = useState(null);
+  const [propertyLookupError, setPropertyLookupError] = useState('');
+  const [prefilledInvoiceCustomer, setPrefilledInvoiceCustomer] = useState(null);
+
+  // Quick-add bar state (Schedule tab)
+  const [qaName, setQaName] = useState('');
+  const [qaAddress, setQaAddress] = useState('');
+  const [qaPhone, setQaPhone] = useState('');
+  const [qaService, setQaService] = useState('lawn-maintenance');
+  const [qaTime, setQaTime] = useState(() => {
+    const now = new Date();
+    const m = now.getMinutes() < 30 ? 30 : 0;
+    const h = now.getMinutes() < 30 ? now.getHours() : (now.getHours() + 1) % 24;
+    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+  });
+  const [qaShowSuggestions, setQaShowSuggestions] = useState(false);
+  const [qaIsAdding, setQaIsAdding] = useState(false);
 
   // HOA/Condo Properties state
   const [hoaCondoProperties, setHOACondoProperties] = useState([]);
@@ -738,6 +766,40 @@ const AdminDashboard = ({ user, onLogout }) => {
     } catch (error) {
       console.error('Error upserting customer:', error);
       // Don't fail the job if customer creation fails
+    }
+  };
+
+  // Quick Add handler (Schedule tab inline bar)
+  const handleQuickAdd = async () => {
+    if (!qaName.trim()) return;
+    setQaIsAdding(true);
+    try {
+      const jobData = {
+        customerName: qaName.trim(),
+        address: qaAddress,
+        phone: qaPhone,
+        serviceType: qaService,
+        startTime: qaTime,
+        estimatedTime: '60',
+        notes: '',
+        priority: 'normal',
+        expectedPayment: '',
+        actualPayment: '',
+        paymentStatus: 'pending',
+        paymentMethod: 'cash',
+        scheduledDate: selectedDate,
+        status: 'scheduled',
+        createdAt: serverTimestamp(),
+        createdBy: 'admin-quick-add'
+      };
+      await addDoc(collection(db, 'jobs'), jobData);
+      await upsertCustomerFromJob(jobData, selectedDate);
+      await loadJobsForDate();
+      setQaName(''); setQaAddress(''); setQaPhone('');
+    } catch (err) {
+      console.error('Quick add failed:', err);
+    } finally {
+      setQaIsAdding(false);
     }
   };
 
@@ -1664,7 +1726,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                       : 'border-transparent text-gray-500 hover:text-green-600 hover:border-green-300 hover:bg-green-50'
                   }`}
                 >
-                  🧾 Invoices
+                  ⚡ Actions
                 </button>
               )}
             </nav>
@@ -2252,7 +2314,206 @@ const AdminDashboard = ({ user, onLogout }) => {
 
         {activeTab === 'invoices' && (
           <div className="space-y-6">
-            <Invoices />
+
+            {/* Action Picker */}
+            <div className="flex gap-3">
+              <button
+                onClick={() => { setActiveAction('new-invoice'); setPropertyData(null); setPropertyLookupError(''); }}
+                className={`flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm border-2 transition-all ${
+                  activeAction === 'new-invoice'
+                    ? 'border-green-600 bg-green-600 text-white shadow-md'
+                    : 'border-gray-200 bg-white text-gray-700 hover:border-green-400 hover:text-green-700'
+                }`}
+              >
+                🧾 New Invoice
+              </button>
+              <button
+                onClick={() => { setActiveAction('property-lookup'); setPropertyData(null); setPropertyLookupError(''); }}
+                className={`flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm border-2 transition-all ${
+                  activeAction === 'property-lookup'
+                    ? 'border-green-600 bg-green-600 text-white shadow-md'
+                    : 'border-gray-200 bg-white text-gray-700 hover:border-green-400 hover:text-green-700'
+                }`}
+              >
+                🔍 Property Lookup
+              </button>
+            </div>
+
+            {/* New Invoice */}
+            {(activeAction === 'new-invoice' || activeAction === '') && (
+              <Invoices prefilledCustomer={activeAction === 'new-invoice' ? prefilledInvoiceCustomer : null} />
+            )}
+
+            {/* Property Lookup */}
+            {activeAction === 'property-lookup' && (
+              <div className="bg-white rounded-xl shadow border border-gray-100 p-6 space-y-4">
+                <h3 className="text-lg font-bold text-gray-900">Property Lookup</h3>
+                <div className="flex gap-3 items-end">
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                    <AdminAddressAutocomplete
+                      value={propertyAddress}
+                      onChange={setPropertyAddress}
+                      onSelect={(result) => {
+                        setPropertyAddress(result.fullAddress);
+                        setPropertyCoords({ lat: result.lat, lon: result.lon });
+                        setPropertyData(null);
+                        setPropertyLookupError('');
+                      }}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="123 Main St, Berlin, CT 06037"
+                    />
+                  </div>
+                  <button
+                    disabled={!propertyCoords || propertyLookupLoading}
+                    onClick={async () => {
+                      setPropertyLookupLoading(true);
+                      setPropertyLookupError('');
+                      setPropertyData(null);
+                      try {
+                        const data = await parcelService.getParcelData(propertyCoords.lat, propertyCoords.lon, propertyAddress);
+                        setPropertyData(data);
+                      } catch (err) {
+                        setPropertyLookupError('Lookup failed. Try a more specific CT address.');
+                      } finally {
+                        setPropertyLookupLoading(false);
+                      }
+                    }}
+                    className="px-5 py-2.5 bg-green-600 text-white rounded-lg text-sm font-semibold hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 whitespace-nowrap"
+                  >
+                    {propertyLookupLoading
+                      ? <><div style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.35)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin 0.6s linear infinite' }} /> Fetching…</>
+                      : 'Look Up'}
+                  </button>
+                </div>
+
+                {propertyLookupError && (
+                  <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm">{propertyLookupError}</div>
+                )}
+
+                {propertyData && !propertyLookupLoading && (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        const summary = `${propertyData.areaAcres?.toFixed(2)} acres (${propertyData.areaSquareFeet?.toLocaleString()} sq ft)${propertyData.parcelId ? ` | Parcel: ${propertyData.parcelId}` : ''}`;
+                        setNewJob(j => ({ ...j, address: propertyAddress, notes: summary }));
+                        setShowAddJobForm(true);
+                      }}
+                      className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                      Create Job
+                    </button>
+                    <button
+                      onClick={() => {
+                        const streetNum = propertyAddress.match(/^\d+/)?.[0];
+                        const match = streetNum
+                          ? customers.find(c => c.address && c.address.startsWith(streetNum + ' '))
+                          : null;
+                        setPrefilledInvoiceCustomer(match || { customerAddress: propertyAddress });
+                        setActiveAction('new-invoice');
+                      }}
+                      className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-white border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                      Create Invoice
+                    </button>
+                  </div>
+                )}
+
+                {propertyData && (() => {
+                  const token = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
+                  const hasMap = propertyData.boundaryCoordinates && propertyData.boundaryCoordinates.length > 0 && token;
+                  const buildMapUrl = (w, h) => {
+                    const geojson = JSON.stringify({
+                      type: 'Feature',
+                      geometry: { type: 'Polygon', coordinates: [propertyData.boundaryCoordinates] },
+                      properties: { fill: '#10b981', 'fill-opacity': 0.35, stroke: '#059669', 'stroke-width': 3 }
+                    });
+                    return `https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v12/static/geojson(${encodeURIComponent(geojson)})/auto/${w}x${h}@2x?padding=60&access_token=${token}`;
+                  };
+
+                  return (
+                    <div className="mt-2 rounded-xl border border-gray-200 overflow-hidden">
+                      <div className="flex items-center justify-between px-5 py-3 bg-gray-50 border-b border-gray-200">
+                        <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${propertyData.isEstimate ? 'bg-amber-100 text-amber-800' : 'bg-green-100 text-green-800'}`}>
+                          {propertyData.isEstimate ? 'Estimated' : '✓ Official CT Parcel Data'}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => {
+                              const txt = `${propertyAddress} — ${propertyData.areaAcres?.toFixed(2)} acres (${propertyData.areaSquareFeet?.toLocaleString()} sq ft)${propertyData.parcelId ? ` | Parcel: ${propertyData.parcelId}` : ''}`;
+                              navigator.clipboard.writeText(txt);
+                            }}
+                            className="text-xs px-3 py-1.5 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 text-gray-600 font-medium"
+                          >
+                            Copy
+                          </button>
+                          {hasMap && (
+                            <button
+                              disabled={propertyMapDownloading}
+                              onClick={async () => {
+                                setPropertyMapDownloading(true);
+                                try {
+                                  const res = await fetch(buildMapUrl(1200, 900));
+                                  const blob = await res.blob();
+                                  const link = document.createElement('a');
+                                  link.href = URL.createObjectURL(blob);
+                                  link.download = `property-layout-${propertyAddress.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.png`;
+                                  link.click();
+                                  URL.revokeObjectURL(link.href);
+                                } catch {
+                                  // silently fail — map preview still visible
+                                } finally {
+                                  setPropertyMapDownloading(false);
+                                }
+                              }}
+                              className="text-xs px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-60 font-medium flex items-center gap-1.5"
+                            >
+                              {propertyMapDownloading ? (
+                                <><div style={{ width: 12, height: 12, border: '2px solid rgba(255,255,255,0.4)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin 0.6s linear infinite' }} /> Downloading…</>
+                              ) : (
+                                <>
+                                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                  </svg>
+                                  Download Layout
+                                </>
+                              )}
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 divide-x divide-gray-200">
+                        <div className="p-5 text-center">
+                          <div className="text-3xl font-bold text-green-700">{propertyData.areaAcres?.toFixed(2)}</div>
+                          <div className="text-xs text-gray-500 mt-1 uppercase tracking-wide">Acres</div>
+                        </div>
+                        <div className="p-5 text-center">
+                          <div className="text-3xl font-bold text-green-700">{propertyData.areaSquareFeet?.toLocaleString()}</div>
+                          <div className="text-xs text-gray-500 mt-1 uppercase tracking-wide">Sq Ft</div>
+                        </div>
+                        <div className="p-5 text-center">
+                          <div className="text-sm font-bold text-gray-700 break-all">{propertyData.parcelId || '—'}</div>
+                          <div className="text-xs text-gray-500 mt-1 uppercase tracking-wide">Parcel ID</div>
+                        </div>
+                      </div>
+                      {hasMap && (
+                        <div className="border-t border-gray-200">
+                          <img
+                            src={buildMapUrl(800, 400)}
+                            alt="Property boundary"
+                            className="w-full object-cover"
+                            style={{ maxHeight: 280 }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
+
           </div>
         )}
 
@@ -2944,6 +3205,21 @@ const AdminDashboard = ({ user, onLogout }) => {
                   <span className="text-emerald-600 font-semibold">${(viewType === 'day' ? getTotalRevenue() : getAllJobsRevenue()).toFixed(0)}</span>
                 </div>
 
+                {/* Route Map toggle */}
+                {viewType === 'day' && (
+                  <button
+                    onClick={() => setShowRouteMap(v => !v)}
+                    className={`flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-lg transition-all shadow-sm border ${
+                      showRouteMap
+                        ? 'bg-green-600 text-white border-green-600'
+                        : 'bg-white text-gray-600 border-gray-200 hover:border-green-400 hover:text-green-700'
+                    }`}
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                    Map
+                  </button>
+                )}
+
                 {/* + Add Job button */}
                 <button
                   onClick={() => setShowAddJobForm(true)}
@@ -2954,6 +3230,95 @@ const AdminDashboard = ({ user, onLogout }) => {
                 </button>
               </div>
             </div>
+
+            {/* Quick Add Bar */}
+            {viewType === 'day' && (
+              <div className="bg-white shadow rounded-xl px-4 py-3 border border-gray-100">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Quick Add Job</p>
+                <div className="flex flex-wrap gap-2 items-end">
+                  {/* Customer autocomplete */}
+                  <div className="relative flex-1 min-w-[180px]">
+                    <input
+                      type="text"
+                      value={qaName}
+                      onChange={(e) => {
+                        setQaName(e.target.value);
+                        setQaAddress(''); setQaPhone('');
+                        setQaShowSuggestions(e.target.value.length > 0);
+                      }}
+                      onFocus={() => setQaShowSuggestions(qaName.length > 0 || true)}
+                      onBlur={() => setTimeout(() => setQaShowSuggestions(false), 150)}
+                      placeholder="Customer name…"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
+                    />
+                    {qaShowSuggestions && (
+                      <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-48 overflow-y-auto">
+                        {customers
+                          .filter(c => !qaName || c.name.toLowerCase().includes(qaName.toLowerCase()))
+                          .slice(0, 8)
+                          .map(c => (
+                            <div
+                              key={c.id}
+                              onMouseDown={() => {
+                                setQaName(c.name);
+                                setQaAddress([c.address, c.city, c.state, c.zip].filter(Boolean).join(', '));
+                                setQaPhone(c.phone || '');
+                                setQaShowSuggestions(false);
+                              }}
+                              className="px-3 py-2 cursor-pointer hover:bg-green-50 border-b border-gray-50 last:border-0"
+                            >
+                              <p className="text-sm font-semibold text-gray-900">{c.name}</p>
+                              {c.address && <p className="text-xs text-gray-500 truncate">{c.address}{c.city ? `, ${c.city}` : ''}</p>}
+                            </div>
+                          ))}
+                        {customers.filter(c => !qaName || c.name.toLowerCase().includes(qaName.toLowerCase())).length === 0 && (
+                          <div className="px-3 py-2 text-xs text-gray-400">No matches — will create new customer</div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  {/* Service */}
+                  <select
+                    value={qaService}
+                    onChange={(e) => setQaService(e.target.value)}
+                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500 outline-none bg-white"
+                  >
+                    <option value="lawn-maintenance">Lawn Maintenance</option>
+                    <option value="leaf-cleanup">Leaf Cleanup</option>
+                    <option value="snow-removal">Snow Removal</option>
+                    <option value="landscaping">Landscaping</option>
+                    <option value="tree-service">Tree Service</option>
+                    <option value="hardscaping">Hardscaping</option>
+                    <option value="other">Other</option>
+                  </select>
+                  {/* Time */}
+                  <input
+                    type="time"
+                    value={qaTime}
+                    onChange={(e) => setQaTime(e.target.value)}
+                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500 outline-none"
+                  />
+                  {/* Add button */}
+                  <button
+                    onClick={handleQuickAdd}
+                    disabled={!qaName.trim() || qaIsAdding}
+                    className="flex items-center gap-1.5 px-4 py-2 bg-green-600 text-white text-sm font-bold rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    {qaIsAdding
+                      ? <><div style={{width:14,height:14,border:'2px solid rgba(255,255,255,0.4)',borderTopColor:'white',borderRadius:'50%',animation:'spin 0.6s linear infinite'}}/> Adding…</>
+                      : '+ Add'}
+                  </button>
+                  {/* Full form button */}
+                  <button
+                    onClick={() => setShowAddJobForm(true)}
+                    className="px-3 py-2 text-xs text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    More options
+                  </button>
+                </div>
+                {qaAddress && <p className="mt-1.5 text-xs text-gray-400 flex items-center gap-1"><svg className="w-3 h-3 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg>{qaAddress}</p>}
+              </div>
+            )}
 
             {/* Add Job Modal */}
             {showAddJobForm && (
@@ -3225,6 +3590,15 @@ const AdminDashboard = ({ user, onLogout }) => {
             {/* Calendar Views */}
             {viewType === 'day' && (
               <div className="space-y-3">
+
+              {/* Route Map */}
+              {showRouteMap && (
+                <RouteMap
+                  jobs={jobs}
+                  currentLocation={currentLocation}
+                  date={selectedDate}
+                />
+              )}
 
               {/* Edit Job Form */}
               {editingJob && (
