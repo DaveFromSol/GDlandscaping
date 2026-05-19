@@ -13,15 +13,17 @@ import {
 } from 'firebase/firestore';
 import { useFirebase } from '../contexts/FirebaseContext';
 
-const Customers = ({ user }) => {
+const Customers = ({ user, onMowingScheduleChange }) => {
   const { db } = useFirebase();
   const [customers, setCustomers] = useState([]);
   const [customerRevenue, setCustomerRevenue] = useState({});
   const [showAddCustomer, setShowAddCustomer] = useState(false);
   const [editingCustomer, setEditingCustomer] = useState(null);
   const [filterStatus, setFilterStatus] = useState('all');
+  const [formError, setFormError] = useState('');
   const [sortBy, setSortBy] = useState('name');
   const [searchTerm, setSearchTerm] = useState('');
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const [newCustomer, setNewCustomer] = useState({
     name: '',
     email: '',
@@ -41,7 +43,9 @@ const Customers = ({ user }) => {
     tags: [],
     snowRemoval: false,
     priority: 'Normal',
-    addresses: [] // For HOA/Condo with multiple addresses
+    addresses: [], // For HOA/Condo with multiple addresses
+    mowingFrequency: 'none',
+    mowingDay: 1
   });
 
   const [currentAddress, setCurrentAddress] = useState({
@@ -69,7 +73,7 @@ const Customers = ({ user }) => {
       setCustomers(customersData);
     }, (error) => {
       console.error('Error fetching customers:', error);
-      alert('Error connecting to database. Please check your internet connection.');
+      console.error('Database connection error');
     });
 
     return () => unsubscribe();
@@ -114,8 +118,9 @@ const Customers = ({ user }) => {
   }, [db, customers]);
 
   const addCustomer = async () => {
+    setFormError('');
     if (!newCustomer.phone) {
-      alert('Phone is required');
+      setFormError('Phone number is required');
       return;
     }
 
@@ -134,18 +139,33 @@ const Customers = ({ user }) => {
         serviceCount: 0
       };
 
-      await addDoc(collection(db, 'customers'), customerData);
+      const docRef = await addDoc(collection(db, 'customers'), customerData);
+
+      if (newCustomer.mowingFrequency !== 'none' && onMowingScheduleChange) {
+        await onMowingScheduleChange(
+          { id: docRef.id, ...customerData },
+          { mowingFrequency: 'none' }
+        );
+      }
 
       resetForm();
       setShowAddCustomer(false);
     } catch (error) {
       console.error('Error adding customer:', error);
-      alert('Error adding customer. Please try again.');
+      setFormError('Error saving customer. Try again.');
     }
   };
 
   const updateCustomer = async () => {
     if (!editingCustomer) return;
+
+    const prevSchedule = {
+      mowingFrequency: editingCustomer.mowingFrequency || 'none',
+      mowingDay: editingCustomer.mowingDay ?? 1
+    };
+    const scheduleChanged =
+      prevSchedule.mowingFrequency !== newCustomer.mowingFrequency ||
+      prevSchedule.mowingDay !== newCustomer.mowingDay;
 
     try {
       const customerRef = doc(db, 'customers', editingCustomer.id);
@@ -156,23 +176,29 @@ const Customers = ({ user }) => {
         updatedBy: user.email || 'unknown'
       });
 
+      if (scheduleChanged && onMowingScheduleChange) {
+        await onMowingScheduleChange(
+          { id: editingCustomer.id, ...newCustomer },
+          prevSchedule
+        );
+      }
+
       resetForm();
       setShowAddCustomer(false);
       setEditingCustomer(null);
     } catch (error) {
       console.error('Error updating customer:', error);
-      alert('Error updating customer. Please try again.');
+      setFormError('Error updating customer. Try again.');
     }
   };
 
   const deleteCustomer = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this customer?')) return;
-
     try {
       await deleteDoc(doc(db, 'customers', id));
+      setConfirmDeleteId(null);
     } catch (error) {
       console.error('Error deleting customer:', error);
-      alert('Error deleting customer. Please try again.');
+      setConfirmDeleteId(null);
     }
   };
 
@@ -186,7 +212,7 @@ const Customers = ({ user }) => {
       });
     } catch (error) {
       console.error('Error updating customer status:', error);
-      alert('Error updating customer status. Please try again.');
+      console.error('Error updating customer status');
     }
   };
 
@@ -211,7 +237,9 @@ const Customers = ({ user }) => {
       tags: customer.tags || [],
       snowRemoval: customer.snowRemoval || false,
       priority: customer.priority || 'Normal',
-      addresses: customer.addresses || []
+      addresses: customer.addresses || [],
+      mowingFrequency: customer.mowingFrequency || 'none',
+      mowingDay: customer.mowingDay ?? 1
     });
     setShowAddCustomer(true);
   };
@@ -236,7 +264,9 @@ const Customers = ({ user }) => {
       tags: [],
       snowRemoval: false,
       priority: 'Normal',
-      addresses: []
+      addresses: [],
+      mowingFrequency: 'none',
+      mowingDay: 1
     });
     setCurrentAddress({
       location: '',
@@ -247,12 +277,12 @@ const Customers = ({ user }) => {
 
   const addAddress = () => {
     if (!currentAddress.location.trim()) {
-      alert('Please enter an address');
+      setFormError('Please enter an address');
       return;
     }
 
     if (newCustomer.addresses.length >= 40) {
-      alert('Maximum 40 addresses allowed');
+      setFormError('Maximum 40 addresses allowed');
       return;
     }
 
@@ -411,7 +441,7 @@ const Customers = ({ user }) => {
           {/* Backdrop */}
           <div
             className="flex-1 bg-black bg-opacity-40"
-            onClick={() => { setShowAddCustomer(false); setEditingCustomer(null); resetForm(); }}
+            onClick={() => { setShowAddCustomer(false); setEditingCustomer(null); resetForm(); setFormError(''); }}
           />
           {/* Drawer */}
           <div className="w-full max-w-lg bg-white flex flex-col shadow-2xl">
@@ -426,7 +456,7 @@ const Customers = ({ user }) => {
                 </p>
               </div>
               <button
-                onClick={() => { setShowAddCustomer(false); setEditingCustomer(null); resetForm(); }}
+                onClick={() => { setShowAddCustomer(false); setEditingCustomer(null); resetForm(); setFormError(''); }}
                 className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -696,6 +726,52 @@ const Customers = ({ user }) => {
 
               <div className="mx-6 border-t border-gray-100" />
 
+              {/* Section: Mowing Schedule */}
+              <div className="px-6 pt-4 pb-4">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Mowing Schedule</p>
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-2">Frequency</label>
+                    <div className="flex gap-2">
+                      {[{value:'none',label:'None'},{value:'weekly',label:'Weekly'},{value:'biweekly',label:'Bi-Weekly'}].map(opt => (
+                        <button key={opt.value} type="button"
+                          onClick={() => setNewCustomer({...newCustomer, mowingFrequency: opt.value})}
+                          className={`flex-1 py-2 rounded-lg border-2 text-sm font-semibold transition-all ${
+                            newCustomer.mowingFrequency === opt.value
+                              ? 'border-green-500 bg-green-50 text-green-800'
+                              : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+                          }`}>{opt.label}</button>
+                      ))}
+                    </div>
+                  </div>
+                  {newCustomer.mowingFrequency !== 'none' && (
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-600 mb-2">Service Day</label>
+                      <div className="flex gap-1.5">
+                        {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((day, idx) => (
+                          <button key={idx} type="button"
+                            onClick={() => setNewCustomer({...newCustomer, mowingDay: idx})}
+                            className={`flex-1 py-2 rounded-lg border-2 text-xs font-bold transition-all ${
+                              newCustomer.mowingDay === idx
+                                ? 'border-green-500 bg-green-500 text-white'
+                                : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+                            }`}>{day}</button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {newCustomer.mowingFrequency !== 'none' && (
+                    <p className="text-xs text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+                      {newCustomer.mowingFrequency === 'weekly' ? 'Weekly' : 'Every other week'} on{' '}
+                      {['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][newCustomer.mowingDay]}
+                      {' — jobs auto-generated for 1 year'}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="mx-6 border-t border-gray-100" />
+
               {/* Section: Notes */}
               <div className="px-6 pt-4 pb-6">
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Notes</p>
@@ -711,9 +787,14 @@ const Customers = ({ user }) => {
             </div>
 
             {/* Footer */}
+            {formError && (
+              <div className="mx-6 mb-0 mt-2 px-3 py-2 bg-red-50 border border-red-200 rounded-lg text-xs text-red-700 font-medium">
+                {formError}
+              </div>
+            )}
             <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex gap-3">
               <button
-                onClick={() => { setShowAddCustomer(false); setEditingCustomer(null); resetForm(); }}
+                onClick={() => { setShowAddCustomer(false); setEditingCustomer(null); resetForm(); setFormError(''); }}
                 className="flex-1 py-2.5 border border-gray-300 text-gray-700 font-semibold rounded-lg text-sm hover:bg-gray-100 transition-colors"
               >
                 Cancel
@@ -947,50 +1028,70 @@ const Customers = ({ user }) => {
                     </td>
                     <td className="px-6 py-5">
                       <div className="flex flex-wrap gap-2">
-                        {customer.phone && (
-                          <a
-                            href={`tel:${customer.phone}`}
-                            className="inline-flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs font-semibold rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all shadow-sm hover:shadow-md"
-                            title="Call customer"
-                          >
-                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                            </svg>
-                            Call
-                          </a>
+                        {confirmDeleteId === customer.id ? (
+                          <>
+                            <span className="text-xs font-semibold text-red-700 self-center">Delete this customer?</span>
+                            <button
+                              onClick={() => deleteCustomer(customer.id)}
+                              className="inline-flex items-center gap-1 px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-lg transition-colors"
+                            >
+                              Yes, Delete
+                            </button>
+                            <button
+                              onClick={() => setConfirmDeleteId(null)}
+                              className="inline-flex items-center gap-1 px-3 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 text-xs font-bold rounded-lg transition-colors"
+                            >
+                              Cancel
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            {customer.phone && (
+                              <a
+                                href={`tel:${customer.phone}`}
+                                className="inline-flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs font-semibold rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all shadow-sm hover:shadow-md"
+                                title="Call customer"
+                              >
+                                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                </svg>
+                                Call
+                              </a>
+                            )}
+                            {customer.email && (
+                              <a
+                                href={`mailto:${customer.email}`}
+                                className="inline-flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-xs font-semibold rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all shadow-sm hover:shadow-md"
+                                title="Send email"
+                              >
+                                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                                Email
+                              </a>
+                            )}
+                            <button
+                              onClick={() => editCustomer(customer)}
+                              className="inline-flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-purple-500 to-violet-600 text-white text-xs font-semibold rounded-lg hover:from-purple-600 hover:to-violet-700 transition-all shadow-sm hover:shadow-md"
+                              title="Edit customer"
+                            >
+                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                              </svg>
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => setConfirmDeleteId(customer.id)}
+                              className="inline-flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-red-500 to-rose-600 text-white text-xs font-semibold rounded-lg hover:from-red-600 hover:to-rose-700 transition-all shadow-sm hover:shadow-md"
+                              title="Delete customer"
+                            >
+                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                              Delete
+                            </button>
+                          </>
                         )}
-                        {customer.email && (
-                          <a
-                            href={`mailto:${customer.email}`}
-                            className="inline-flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-xs font-semibold rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all shadow-sm hover:shadow-md"
-                            title="Send email"
-                          >
-                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
-                            Email
-                          </a>
-                        )}
-                        <button
-                          onClick={() => editCustomer(customer)}
-                          className="inline-flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-purple-500 to-violet-600 text-white text-xs font-semibold rounded-lg hover:from-purple-600 hover:to-violet-700 transition-all shadow-sm hover:shadow-md"
-                          title="Edit customer"
-                        >
-                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                          </svg>
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => deleteCustomer(customer.id)}
-                          className="inline-flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-red-500 to-rose-600 text-white text-xs font-semibold rounded-lg hover:from-red-600 hover:to-rose-700 transition-all shadow-sm hover:shadow-md"
-                          title="Delete customer"
-                        >
-                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-                          Delete
-                        </button>
                       </div>
                       {customer.notes && (
                         <div className="mt-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-lg">

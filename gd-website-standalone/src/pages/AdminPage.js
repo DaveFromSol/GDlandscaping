@@ -144,6 +144,30 @@ const AdminDashboard = ({ user, onLogout }) => {
   const [assignmentDate, setAssignmentDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedContractForAssignment, setSelectedContractForAssignment] = useState(null);
 
+  // Toast notifications & confirm dialog
+  const [toasts, setToasts] = useState([]);
+  const [confirmState, setConfirmState] = useState({ show: false, message: '', subtext: '', confirmText: 'Confirm', confirmClass: 'bg-red-600 hover:bg-red-700', resolve: null });
+
+  const showToast = useCallback((message, type = 'success') => {
+    const id = Date.now() + Math.random();
+    setToasts(prev => [...prev, { id, message, type }]);
+    setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 4000);
+  }, []);
+
+  const showConfirm = useCallback((message, { subtext = '', confirmText = 'Confirm', danger = true } = {}) =>
+    new Promise(resolve => {
+      setConfirmState({
+        show: true, message, subtext, confirmText,
+        confirmClass: danger ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white',
+        resolve
+      });
+    }), []);
+
+  const handleConfirmResult = (result) => {
+    if (confirmState.resolve) confirmState.resolve(result);
+    setConfirmState({ show: false, message: '', subtext: '', confirmText: 'Confirm', confirmClass: '', resolve: null });
+  };
+
   const teams = [
     { id: 'alpha', name: 'Team Alpha', lead: 'John D.', color: 'blue', truck: 'Truck 1' },
     { id: 'bravo', name: 'Team Bravo', lead: 'Mike S.', color: 'green', truck: 'Truck 2' },
@@ -217,7 +241,7 @@ const AdminDashboard = ({ user, onLogout }) => {
       setQuotes(quotesData);
     }, (error) => {
       console.error('Error fetching quotes:', error);
-      alert('Error connecting to database. Please check your internet connection and try again.');
+      showToast('Database connection error', 'error');
     });
 
     return () => unsubscribe();
@@ -392,7 +416,7 @@ const AdminDashboard = ({ user, onLogout }) => {
       setShowAddQuote(false);
     } catch (error) {
       console.error('Error adding quote:', error);
-      alert('Error adding quote. Please check your internet connection and try again.');
+      showToast('Error adding quote', 'error');
     }
   };
 
@@ -406,18 +430,18 @@ const AdminDashboard = ({ user, onLogout }) => {
       });
     } catch (error) {
       console.error('Error updating quote:', error);
-      alert('Error updating quote. Please check your internet connection and try again.');
+      showToast('Error updating quote', 'error');
     }
   };
 
   const deleteQuote = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this quote?')) return;
+    if (!await showConfirm('Delete this quote?', { confirmText: 'Delete' })) return;
 
     try {
       await deleteDoc(doc(db, 'quotes', id));
     } catch (error) {
       console.error('Error deleting quote:', error);
-      alert('Error deleting quote. Please check your internet connection and try again.');
+      showToast('Error deleting quote', 'error');
     }
   };
 
@@ -449,12 +473,12 @@ const AdminDashboard = ({ user, onLogout }) => {
       setShowAddQuote(false);
     } catch (error) {
       console.error('Error updating quote:', error);
-      alert('Error updating quote. Please check your internet connection and try again.');
+      showToast('Error updating quote', 'error');
     }
   };
 
   const convertQuoteToLead = async (quote) => {
-    if (!window.confirm(`Convert "${quote.name}" to a lead in the pipeline?`)) return;
+    if (!await showConfirm(`Convert "${quote.name}" to a lead?`, { confirmText: 'Convert', danger: false })) return;
 
     try {
       const leadData = {
@@ -487,10 +511,10 @@ const AdminDashboard = ({ user, onLogout }) => {
         updatedBy: user.email || 'unknown'
       });
 
-      alert(`Successfully added "${quote.name}" to lead pipeline!`);
+      showToast(`${quote.name} added to lead pipeline`);
     } catch (error) {
       console.error('Error converting quote to lead:', error);
-      alert('Error converting quote to lead. Please check your internet connection and try again.');
+      showToast('Error converting to lead', 'error');
     }
   };
 
@@ -520,18 +544,18 @@ const AdminDashboard = ({ user, onLogout }) => {
       });
     } catch (error) {
       console.error('Error updating booking:', error);
-      alert('Error updating booking. Please check your internet connection and try again.');
+      showToast('Error updating booking', 'error');
     }
   };
 
   const deleteBooking = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this booking?')) return;
+    if (!await showConfirm('Delete this booking?', { confirmText: 'Delete' })) return;
 
     try {
       await deleteDoc(doc(db, 'bookings', id));
     } catch (error) {
       console.error('Error deleting booking:', error);
-      alert('Error deleting booking. Please check your internet connection and try again.');
+      showToast('Error deleting booking', 'error');
     }
   };
 
@@ -861,17 +885,17 @@ const AdminDashboard = ({ user, onLogout }) => {
 
   const createUserAccount = async () => {
     if (!auth || !db) {
-      alert('Authentication not available');
+      showToast('Authentication not available', 'error');
       return;
     }
 
     if (!newUserAccount.email || !newUserAccount.password) {
-      alert('Email and password are required');
+      showToast('Email and password are required', 'error');
       return;
     }
 
     if (newUserAccount.password.length < 6) {
-      alert('Password must be at least 6 characters');
+      showToast('Password must be at least 6 characters', 'error');
       return;
     }
 
@@ -907,19 +931,19 @@ const AdminDashboard = ({ user, onLogout }) => {
         });
       }
 
-      alert('✅ User account created successfully!');
+      showToast('User account created');
       setNewUserAccount({ email: '', password: '', displayName: '', linkedCustomerId: '' });
       loadUserAccounts();
     } catch (error) {
       console.error('Error creating user:', error);
       if (error.code === 'auth/email-already-in-use') {
-        alert('This email is already in use');
+        showToast('This email is already in use', 'error');
       } else if (error.code === 'auth/invalid-email') {
-        alert('Invalid email address');
+        showToast('Invalid email address', 'error');
       } else if (error.code === 'auth/weak-password') {
-        alert('Password is too weak');
+        showToast('Password is too weak', 'error');
       } else {
-        alert('Error creating user account: ' + error.message);
+        showToast('Error creating account: ' + error.message, 'error');
       }
     }
   };
@@ -935,18 +959,18 @@ const AdminDashboard = ({ user, onLogout }) => {
         updatedAt: serverTimestamp()
       });
 
-      alert('✅ Customer linked to user account!');
+      showToast('Customer linked to user account');
       loadUserAccounts();
     } catch (error) {
       console.error('Error linking customer:', error);
-      alert('Error linking customer to user');
+      showToast('Error linking customer to user', 'error');
     }
   };
 
   const handleAddJob = async (e) => {
     e.preventDefault();
     if (!db) {
-      alert('Database not available. Please check Firebase setup.');
+      showToast('Database not available', 'error');
       return;
     }
 
@@ -988,7 +1012,7 @@ const AdminDashboard = ({ user, onLogout }) => {
 
     } catch (error) {
       console.error('Error adding job:', error);
-      alert('Error adding job. Please try again.');
+      showToast('Error adding job', 'error');
     } finally {
       setIsAddingJob(false);
     }
@@ -1017,13 +1041,13 @@ const AdminDashboard = ({ user, onLogout }) => {
 
     if (!startDate) {
       console.error('❌ Cannot generate recurring jobs without a start date');
-      alert('Error: Cannot generate recurring jobs without a start date');
+      showToast('Error: missing start date for recurring jobs', 'error');
       return [];
     }
 
     if (!db) {
       console.error('❌ Database not available');
-      alert('Error: Database not available');
+      showToast('Database not available', 'error');
       return [];
     }
 
@@ -1092,6 +1116,7 @@ const AdminDashboard = ({ user, onLogout }) => {
           actualPayment: 0,
           paymentStatus: 'pending',
           paymentMethod: jobTemplate.paymentMethod || 'cash',
+          mowingCustomerId: jobTemplate.mowingCustomerId || null,
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp()
         };
@@ -1110,10 +1135,105 @@ const AdminDashboard = ({ user, onLogout }) => {
     return generatedJobs;
   };
 
+  // Returns the next calendar date (YYYY-MM-DD) that falls on mowingDay (0=Sun…6=Sat),
+  // strictly after today (minimum: tomorrow).
+  const getNextOccurrence = (mowingDay) => {
+    const tomorrow = new Date();
+    tomorrow.setHours(0, 0, 0, 0);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const daysUntil = (mowingDay - tomorrow.getDay() + 7) % 7;
+    const target = new Date(tomorrow);
+    target.setDate(tomorrow.getDate() + daysUntil);
+    return target.toISOString().split('T')[0];
+  };
+
+  // Deletes all future 'scheduled' mowing jobs linked to a customer via synthetic parent ID.
+  const deleteFutureMowingJobs = async (customerId) => {
+    const today = new Date().toISOString().split('T')[0];
+    const q = query(
+      collection(db, 'jobs'),
+      where('parentRecurringJobId', '==', `customer_${customerId}`),
+      where('status', '==', 'scheduled')
+    );
+    const snap = await getDocs(q);
+    await Promise.all(
+      snap.docs
+        .filter(d => (d.data().scheduledDate || '') >= today)
+        .map(d => deleteDoc(doc(db, 'jobs', d.id)))
+    );
+  };
+
+  // Called by Customers component when a customer's mowing schedule is saved.
+  const handleMowingScheduleChange = async (customer, prevSchedule) => {
+    const { mowingFrequency, mowingDay } = customer;
+
+    if (mowingFrequency === 'none') {
+      if (prevSchedule.mowingFrequency !== 'none') {
+        if (!await showConfirm(`Remove recurring mowing for ${customer.name || customer.address}?`, { subtext: 'All future scheduled mowing jobs will be deleted.', confirmText: 'Remove' })) return;
+        await deleteFutureMowingJobs(customer.id);
+      }
+      return;
+    }
+
+    if (prevSchedule.mowingFrequency !== 'none') {
+      if (!await showConfirm(`Update mowing schedule for ${customer.name || customer.address}?`, { subtext: 'Future jobs will be deleted and regenerated on the new schedule.', confirmText: 'Update' })) return;
+      await deleteFutureMowingJobs(customer.id);
+    }
+
+    const syntheticParentId = `customer_${customer.id}`;
+    const startDate = getNextOccurrence(mowingDay);
+
+    const jobTemplate = {
+      customerName: customer.name || customer.address || 'Unknown',
+      address: customer.address || '',
+      serviceType: 'lawn-maintenance',
+      estimatedTime: 60,
+      notes: customer.notes || '',
+      priority: customer.priority === 'High' ? 'high' : 'normal',
+      expectedPayment: 0,
+      paymentMethod: (customer.paymentMethod || 'cash').toLowerCase(),
+      recurrenceType: mowingFrequency,
+      recurrenceEndDate: '',
+      mowingCustomerId: customer.id,
+    };
+
+    // Create the first occurrence (generateRecurringJobs advances past the seed date)
+    await addDoc(collection(db, 'jobs'), {
+      customerName: jobTemplate.customerName,
+      address: jobTemplate.address,
+      serviceType: jobTemplate.serviceType,
+      estimatedTime: jobTemplate.estimatedTime,
+      notes: jobTemplate.notes,
+      priority: jobTemplate.priority,
+      expectedPayment: jobTemplate.expectedPayment,
+      scheduledDate: startDate,
+      date: startDate,
+      parentRecurringJobId: syntheticParentId,
+      isRecurringInstance: true,
+      isRecurring: false,
+      recurrenceType: 'none',
+      status: 'scheduled',
+      actualPayment: 0,
+      paymentStatus: 'pending',
+      paymentMethod: jobTemplate.paymentMethod,
+      mowingCustomerId: customer.id,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+
+    // Generate week 2 through 1 year
+    await generateRecurringJobs(syntheticParentId, startDate, jobTemplate);
+
+    // Navigate to the Schedule tab on the first occurrence so the user sees the job
+    setSelectedDate(startDate);
+    setViewType('day');
+    setActiveTab('routes');
+  };
+
   const handleUpdateJob = async (e) => {
     e.preventDefault();
     if (!db) {
-      alert('Database not available. Please check Firebase setup.');
+      showToast('Database not available', 'error');
       return;
     }
 
@@ -1154,18 +1274,18 @@ const AdminDashboard = ({ user, onLogout }) => {
         await loadJobsForRange();
       }
 
-      alert('Job updated successfully!');
+      showToast('Job updated');
 
     } catch (error) {
       console.error('Error updating job:', error);
-      alert('Error updating job. Please try again.');
+      showToast('Error updating job', 'error');
     } finally {
       setLoading(false);
     }
   };
 
   const handleDeleteJob = async (jobId) => {
-    if (!window.confirm('Are you sure you want to delete this job?')) return;
+    if (!await showConfirm('Delete this job?', { confirmText: 'Delete' })) return;
 
     try {
       await deleteDoc(doc(db, 'jobs', jobId));
@@ -1176,7 +1296,7 @@ const AdminDashboard = ({ user, onLogout }) => {
       }
     } catch (error) {
       console.error('Error deleting job:', error);
-      alert('Error deleting job.');
+      showToast('Error deleting job', 'error');
     }
   };
 
@@ -1192,7 +1312,7 @@ const AdminDashboard = ({ user, onLogout }) => {
 
       if (!jobSnapshot.exists()) {
         console.error(`❌ Job ${jobId} does not exist in Firebase`);
-        alert('This job no longer exists in the database. It may have been deleted. Refreshing the view...');
+        showToast('Job not found — it may have been deleted', 'error');
 
         // Remove from local state
         setJobs(prevJobs => prevJobs.filter(j => j.id !== jobId));
@@ -1245,7 +1365,7 @@ const AdminDashboard = ({ user, onLogout }) => {
       }
     } catch (error) {
       console.error('❌ Error updating job status:', error);
-      alert(`Error updating job status: ${error.message}`);
+      showToast(`Error updating job status: ${error.message}`, 'error');
 
       // Reload to revert optimistic update if there was an error
       await loadJobsForDate();
@@ -1292,19 +1412,17 @@ const AdminDashboard = ({ user, onLogout }) => {
         await loadJobsForRange(startDate, endDate);
       }
 
-      alert('Job set to recurring! Future instances have been generated.');
+      showToast('Recurring schedule created');
     } catch (error) {
       console.error('Error making job recurring:', error);
-      alert('Error making job recurring. Please try again.');
+      showToast('Error setting recurring schedule', 'error');
     } finally {
       setLoading(false);
     }
   };
 
   const handleRemoveRecurring = async (job) => {
-    if (!window.confirm(`Remove recurring status from "${job.customerName}"?\n\nThis will also delete all future scheduled instances of this job.`)) {
-      return;
-    }
+    if (!await showConfirm(`Remove recurring schedule for "${job.customerName}"?`, { subtext: 'All future scheduled instances will be deleted.', confirmText: 'Remove' })) return;
 
     try {
       setLoading(true);
@@ -1340,10 +1458,10 @@ const AdminDashboard = ({ user, onLogout }) => {
         await loadJobsForRange(startDate, endDate);
       }
 
-      alert(`Recurring status removed! Deleted ${futureJobsSnapshot.size} future instances.`);
+      showToast(`Recurring removed — ${futureJobsSnapshot.size} future jobs deleted`);
     } catch (error) {
       console.error('Error removing recurring:', error);
-      alert('Error removing recurring status. Please try again.');
+      showToast('Error removing recurring status', 'error');
     } finally {
       setLoading(false);
     }
@@ -1367,7 +1485,7 @@ const AdminDashboard = ({ user, onLogout }) => {
 
       // Check if contract is already assigned to this team on this date
       if (currentAssignments.includes(contractId)) {
-        alert('This contract is already assigned to this team for the selected date.');
+        showToast('Contract already assigned to this team', 'info');
         return;
       }
 
@@ -1395,14 +1513,12 @@ const AdminDashboard = ({ user, onLogout }) => {
       setSelectedContractForAssignment(null);
     } catch (error) {
       console.error('Error assigning contract:', error);
-      alert('Error assigning contract. Please try again.');
+      showToast('Error assigning contract', 'error');
     }
   };
 
   const handleUnassignContract = async (contractId, teamId) => {
-    if (!window.confirm('Remove this contract from the team assignment?')) {
-      return;
-    }
+    if (!await showConfirm('Remove this contract from the team?', { confirmText: 'Remove' })) return;
 
     try {
       const assignmentKey = `${assignmentDate}_${teamId}`;
@@ -1425,7 +1541,7 @@ const AdminDashboard = ({ user, onLogout }) => {
       console.log(`✅ Removed contract ${contractId} from team ${teamId}`);
     } catch (error) {
       console.error('Error unassigning contract:', error);
-      alert('Error removing assignment. Please try again.');
+      showToast('Error removing assignment', 'error');
     }
   };
 
@@ -1478,7 +1594,7 @@ const AdminDashboard = ({ user, onLogout }) => {
 
   const optimizeRoute = () => {
     if (jobs.length < 2) {
-      alert('Need at least 2 jobs to optimize route.');
+      showToast('Need at least 2 jobs to optimize route', 'info');
       return;
     }
 
@@ -1524,7 +1640,7 @@ const AdminDashboard = ({ user, onLogout }) => {
 
   const activateLocationSort = async () => {
     if (!navigator.geolocation) {
-      alert('Geolocation is not supported by your browser.');
+      showToast('Geolocation not supported by your browser', 'error');
       return;
     }
     setLocationLoading(true);
@@ -1542,7 +1658,7 @@ const AdminDashboard = ({ user, onLogout }) => {
       },
       (err) => {
         setLocationLoading(false);
-        alert('Could not get your location. Please allow location access and try again.');
+        showToast('Could not get location — allow location access', 'error');
       },
       { enableHighAccuracy: true, timeout: 10000 }
     );
@@ -1556,7 +1672,7 @@ const AdminDashboard = ({ user, onLogout }) => {
   const sendOnMyWayText = async (job) => {
     const phone = job.phone;
     if (!phone) {
-      alert('No phone number on this job. Edit the job to add one.');
+      showToast('No phone number on this job', 'error');
       return;
     }
     const name = job.customerName?.split(' ')[0] || 'there';
@@ -1570,13 +1686,13 @@ const AdminDashboard = ({ user, onLogout }) => {
       const data = await res.json();
       console.log('TextBelt response:', data);
       if (data.success) {
-        alert(`✅ Text sent to ${job.customerName}!`);
+        showToast(`Text sent to ${job.customerName}`);
       } else {
         const reason = data.error || data.message || data.errorMessage || JSON.stringify(data);
-        alert(`Failed to send text: ${reason}`);
+        showToast(`Failed to send text: ${reason}`, 'error');
       }
     } catch (err) {
-      alert('Could not send text. Check your internet connection.');
+      showToast('Could not send text', 'error');
     }
   };
 
@@ -2305,7 +2421,7 @@ const AdminDashboard = ({ user, onLogout }) => {
         )}
 
         {activeTab === 'customers' && (
-          <Customers user={user} />
+          <Customers user={user} onMowingScheduleChange={handleMowingScheduleChange} />
         )}
 
         {activeTab === 'employees' && (
@@ -2924,8 +3040,8 @@ const AdminDashboard = ({ user, onLogout }) => {
                   💾 Export Data
                 </button>
                 <button
-                  onClick={() => {
-                    if (window.confirm('This will clear all data. Are you sure?')) {
+                  onClick={async () => {
+                    if (await showConfirm('Clear all quote data?', { subtext: 'This cannot be undone.', confirmText: 'Clear All' })) {
                       setQuotes([]);
                       localStorage.removeItem('gdlandscaping-quotes');
                       localStorage.removeItem('gdlandscaping-stats');
@@ -4159,7 +4275,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                         onClick={() => {
                           const addresses = jobs.map(job => job.address).join('\n');
                           navigator.clipboard.writeText(addresses);
-                          alert('Addresses copied to clipboard!');
+                          showToast('Addresses copied to clipboard', 'info');
                         }}
                         className="sm:flex-none px-4 py-2.5 sm:py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg sm:rounded-md transition-colors text-sm"
                         title="Copy all addresses"
@@ -5027,7 +5143,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                         document.getElementById('linkExistingCustomer').value = '';
                         document.getElementById('linkExistingUser').value = '';
                       } else {
-                        alert('Please select both a customer and a user account');
+                        showToast('Select both a customer and user account', 'error');
                       }
                     }}
                     className="w-full mt-4 bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
@@ -5197,6 +5313,45 @@ const AdminDashboard = ({ user, onLogout }) => {
           </div>
         )}
       </div>
+
+      {/* Toast Notifications */}
+      <div className="fixed bottom-4 right-4 z-[9999] flex flex-col gap-2 pointer-events-none">
+        {toasts.map(toast => (
+          <div key={toast.id} className={`flex items-center gap-2 px-4 py-3 rounded-xl shadow-xl text-white text-sm font-semibold pointer-events-auto max-w-xs ${
+            toast.type === 'success' ? 'bg-green-600' :
+            toast.type === 'error' ? 'bg-red-600' : 'bg-blue-600'
+          }`}>
+            <span className="text-base leading-none">
+              {toast.type === 'success' ? '✓' : toast.type === 'error' ? '✕' : 'ℹ'}
+            </span>
+            <span>{toast.message}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Confirm Dialog */}
+      {confirmState.show && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[9998] flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl shadow-2xl max-w-sm w-full p-6">
+            <p className="text-base font-semibold text-gray-900">{confirmState.message}</p>
+            {confirmState.subtext && <p className="text-sm text-gray-500 mt-1">{confirmState.subtext}</p>}
+            <div className="flex gap-3 mt-5">
+              <button
+                onClick={() => handleConfirmResult(false)}
+                className="flex-1 py-2.5 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleConfirmResult(true)}
+                className={`flex-1 py-2.5 font-semibold rounded-lg transition-colors ${confirmState.confirmClass}`}
+              >
+                {confirmState.confirmText}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -5213,7 +5368,7 @@ const AdminPage = () => {
       await signOut(auth);
     } catch (error) {
       console.error('Error signing out:', error);
-      alert('Error signing out. Please try again.');
+      console.error('Sign out failed:', error);
     }
   };
 
