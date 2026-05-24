@@ -89,12 +89,6 @@ const AdminDashboard = ({ user, onLogout }) => {
   const [locationSortActive, setLocationSortActive] = useState(false);
   const [locationLoading, setLocationLoading] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [recurringModalJob, setRecurringModalJob] = useState(null);
-  const [recurringSettings, setRecurringSettings] = useState({
-    recurrenceType: 'weekly',
-    recurrenceEndDate: ''
-  });
-
   // Customer autocomplete state
   const [customers, setCustomers] = useState([]);
   const [filteredCustomers, setFilteredCustomers] = useState([]);
@@ -1177,8 +1171,10 @@ const AdminDashboard = ({ user, onLogout }) => {
 
     if (prevSchedule.mowingFrequency !== 'none') {
       if (!await showConfirm(`Update mowing schedule for ${customer.name || customer.address}?`, { subtext: 'Future jobs will be deleted and regenerated on the new schedule.', confirmText: 'Update' })) return;
-      await deleteFutureMowingJobs(customer.id);
     }
+
+    // Always wipe future jobs before generating — prevents duplicates from repeated saves
+    await deleteFutureMowingJobs(customer.id);
 
     const syntheticParentId = `customer_${customer.id}`;
     const startDate = getNextOccurrence(mowingDay);
@@ -1190,10 +1186,15 @@ const AdminDashboard = ({ user, onLogout }) => {
       estimatedTime: 60,
       notes: customer.notes || '',
       priority: customer.priority === 'High' ? 'high' : 'normal',
-      expectedPayment: 0,
+      expectedPayment: parseFloat(customer.mowingPrice) || 0,
       paymentMethod: (customer.paymentMethod || 'cash').toLowerCase(),
       recurrenceType: mowingFrequency,
-      recurrenceEndDate: '',
+      recurrenceEndDate: customer.mowingEndDate || (() => {
+        const now = new Date();
+        const nov15 = new Date(now.getFullYear(), 10, 15);
+        if (now >= nov15) nov15.setFullYear(nov15.getFullYear() + 1);
+        return nov15.toISOString().split('T')[0];
+      })(),
       mowingCustomerId: customer.id,
     };
 
@@ -1228,6 +1229,53 @@ const AdminDashboard = ({ user, onLogout }) => {
     setSelectedDate(startDate);
     setViewType('day');
     setActiveTab('routes');
+  };
+
+  const handleCleanupDuplicateJobs = async () => {
+    if (!await showConfirm('Remove duplicate jobs?', {
+      subtext: 'For any customer + date with multiple jobs, the oldest will be kept and duplicates deleted. This cannot be undone.',
+      confirmText: 'Clean Up',
+      danger: true
+    })) return;
+
+    try {
+      showToast('Scanning for duplicates…', 'info');
+      const snapshot = await getDocs(collection(db, 'jobs'));
+      const allJobDocs = snapshot.docs.map(d => ({
+        id: d.id,
+        ...d.data(),
+        _createdAtMs: d.data().createdAt?.toMillis?.() || 0
+      }));
+
+      // Group by customerName + scheduledDate
+      const groups = {};
+      for (const job of allJobDocs) {
+        const date = job.scheduledDate || job.date || 'unknown';
+        const name = (job.customerName || 'unknown').toLowerCase().trim();
+        const key = `${name}||${date}`;
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(job);
+      }
+
+      const duplicateGroups = Object.values(groups).filter(g => g.length > 1);
+      if (duplicateGroups.length === 0) {
+        showToast('No duplicates found — all clean!', 'success');
+        return;
+      }
+
+      let totalDeleted = 0;
+      for (const group of duplicateGroups) {
+        // Keep oldest (lowest createdAt); if equal, keep first doc returned
+        group.sort((a, b) => a._createdAtMs - b._createdAtMs);
+        const toDelete = group.slice(1);
+        await Promise.all(toDelete.map(dup => deleteDoc(doc(db, 'jobs', dup.id))));
+        totalDeleted += toDelete.length;
+      }
+
+      showToast(`Removed ${totalDeleted} duplicate job${totalDeleted !== 1 ? 's' : ''}`, 'success');
+    } catch (err) {
+      showToast('Cleanup failed: ' + err.message, 'error');
+    }
   };
 
   const handleUpdateJob = async (e) => {
@@ -1373,51 +1421,6 @@ const AdminDashboard = ({ user, onLogout }) => {
         const { startDate, endDate } = getDateRange(selectedDate, viewType);
         await loadJobsForRange(startDate, endDate);
       }
-    }
-  };
-
-  const handleMakeRecurring = async () => {
-    if (!recurringModalJob) return;
-
-    try {
-      setLoading(true);
-
-      // Update the original job to mark it as recurring
-      const jobRef = doc(db, 'jobs', recurringModalJob.id);
-      await updateDoc(jobRef, {
-        recurrenceType: recurringSettings.recurrenceType,
-        recurrenceEndDate: recurringSettings.recurrenceEndDate || null,
-        isRecurring: true,
-        updatedAt: serverTimestamp()
-      });
-
-      // Generate future recurring job instances
-      const jobData = {
-        ...recurringModalJob,
-        recurrenceType: recurringSettings.recurrenceType,
-        recurrenceEndDate: recurringSettings.recurrenceEndDate || null,
-        isRecurring: true
-      };
-
-      const startDate = recurringModalJob.scheduledDate || recurringModalJob.date;
-      await generateRecurringJobs(recurringModalJob.id, startDate, jobData);
-
-      // Close modal and reload
-      setRecurringModalJob(null);
-      setRecurringSettings({ recurrenceType: 'weekly', recurrenceEndDate: '' });
-
-      await loadJobsForDate();
-      if (viewType !== 'day') {
-        const { startDate, endDate } = getDateRange(selectedDate, viewType);
-        await loadJobsForRange(startDate, endDate);
-      }
-
-      showToast('Recurring schedule created');
-    } catch (error) {
-      console.error('Error making job recurring:', error);
-      showToast('Error setting recurring schedule', 'error');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -3336,6 +3339,17 @@ const AdminDashboard = ({ user, onLogout }) => {
                   </button>
                 )}
 
+                {/* Clean up duplicates */}
+                <button
+                  onClick={handleCleanupDuplicateJobs}
+                  title="Remove duplicate jobs (same customer + same date)"
+                  className="flex items-center gap-1.5 bg-white hover:bg-red-50 text-gray-500 hover:text-red-600 border border-gray-200 hover:border-red-300 text-xs font-bold px-3 py-2 rounded-lg transition-all shadow-sm"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                  Dedup
+                </button>
+
+
                 {/* + Add Job button */}
                 <button
                   onClick={() => setShowAddJobForm(true)}
@@ -3967,81 +3981,6 @@ const AdminDashboard = ({ user, onLogout }) => {
                 </div>
               )}
 
-              {/* Make Recurring Modal */}
-              {recurringModalJob && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 z-[1001] flex items-center justify-center p-4">
-                  <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-                    <h3 className="text-lg font-semibold mb-4">🔄 Make Job Recurring</h3>
-
-                    <div className="mb-4">
-                      <p className="text-sm text-gray-600 mb-3">
-                        Set up a recurring schedule for <strong>{recurringModalJob.customerName}</strong>
-                      </p>
-
-                      <div className="space-y-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Repeat Frequency
-                          </label>
-                          <select
-                            value={recurringSettings.recurrenceType}
-                            onChange={(e) => setRecurringSettings({...recurringSettings, recurrenceType: e.target.value})}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-                          >
-                            <option value="weekly">Weekly (Every 7 days)</option>
-                            <option value="biweekly">Bi-weekly (Every 14 days)</option>
-                            <option value="monthly">Monthly (Same date)</option>
-                          </select>
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Generate Until (Optional)
-                          </label>
-                          <input
-                            type="date"
-                            value={recurringSettings.recurrenceEndDate}
-                            onChange={(e) => setRecurringSettings({...recurringSettings, recurrenceEndDate: e.target.value})}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-                            min={new Date().toISOString().split('T')[0]}
-                          />
-                          <p className="text-xs text-gray-500 mt-1">Leave blank to generate for 1 year</p>
-                        </div>
-
-                        <div className="p-3 bg-purple-50 border border-purple-200 rounded-md">
-                          <p className="text-sm text-purple-800">
-                            <strong>ℹ️ This will create:</strong>
-                            {recurringSettings.recurrenceType === 'weekly' && ' A new job every week'}
-                            {recurringSettings.recurrenceType === 'biweekly' && ' A new job every 2 weeks'}
-                            {recurringSettings.recurrenceType === 'monthly' && ' A new job monthly'}
-                            {recurringSettings.recurrenceEndDate
-                              ? ` until ${new Date(recurringSettings.recurrenceEndDate).toLocaleDateString()}`
-                              : ' for the next year'}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-3">
-                      <button
-                        onClick={() => setRecurringModalJob(null)}
-                        className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
-                        disabled={loading}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        onClick={handleMakeRecurring}
-                        className="flex-1 px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-md transition-colors disabled:opacity-50"
-                        disabled={loading}
-                      >
-                        {loading ? 'Creating...' : '🔄 Make Recurring'}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-
               {/* Job List */}
               <div className="bg-white shadow rounded-xl p-4 border border-gray-100">
                 <div className="flex items-center justify-between mb-3 gap-2 flex-wrap">
@@ -4210,18 +4149,6 @@ const AdminDashboard = ({ user, onLogout }) => {
                           </div>
 
                           <div className="flex flex-row sm:flex-col gap-2 w-full sm:w-auto sm:ml-4">
-                            {job.status === 'completed' && !job.isRecurring && (
-                              <button
-                                onClick={() => {
-                                  setRecurringModalJob(job);
-                                  setRecurringSettings({ recurrenceType: 'weekly', recurrenceEndDate: '' });
-                                }}
-                                className="flex-1 sm:flex-none px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white text-[10px] sm:text-xs font-bold rounded-lg transition-all shadow-sm hover:shadow-md whitespace-nowrap"
-                                title="Make this job recurring"
-                              >
-                                REPEAT
-                              </button>
-                            )}
                             {job.isRecurring && (
                               <button
                                 onClick={() => handleRemoveRecurring(job)}

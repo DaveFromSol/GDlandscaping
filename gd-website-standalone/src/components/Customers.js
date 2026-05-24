@@ -24,6 +24,11 @@ const Customers = ({ user, onMowingScheduleChange }) => {
   const [sortBy, setSortBy] = useState('name');
   const [searchTerm, setSearchTerm] = useState('');
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const [activeCustomerTab, setActiveCustomerTab] = useState('all');
+  const [recurringModalCustomer, setRecurringModalCustomer] = useState(null);
+  const [recurringForm, setRecurringForm] = useState({ frequency: 'weekly', day: 1, price: '' });
+  const [editingRecurringId, setEditingRecurringId] = useState(null);
+  const [recurringInlineEdit, setRecurringInlineEdit] = useState({});
   const [newCustomer, setNewCustomer] = useState({
     name: '',
     email: '',
@@ -213,6 +218,103 @@ const Customers = ({ user, onMowingScheduleChange }) => {
     } catch (error) {
       console.error('Error updating customer status:', error);
       console.error('Error updating customer status');
+    }
+  };
+
+  const getNov15EndDate = () => {
+    const now = new Date();
+    const nov15 = new Date(now.getFullYear(), 10, 15);
+    if (now >= nov15) nov15.setFullYear(nov15.getFullYear() + 1);
+    return nov15.toISOString().split('T')[0];
+  };
+
+  const openRecurringModal = (customer) => {
+    setRecurringForm({
+      frequency: customer.mowingFrequency && customer.mowingFrequency !== 'none' ? customer.mowingFrequency : 'weekly',
+      day: customer.mowingDay ?? 1,
+      price: customer.mowingPrice != null ? String(customer.mowingPrice) : ''
+    });
+    setRecurringModalCustomer(customer);
+  };
+
+  const handleSetRecurring = async () => {
+    if (!recurringModalCustomer || !onMowingScheduleChange) return;
+    const prevSchedule = {
+      mowingFrequency: recurringModalCustomer.mowingFrequency || 'none',
+      mowingDay: recurringModalCustomer.mowingDay ?? 1
+    };
+    const endDate = getNov15EndDate();
+    const priceVal = parseFloat(recurringForm.price) || 0;
+    const updatedCustomer = {
+      ...recurringModalCustomer,
+      mowingFrequency: recurringForm.frequency,
+      mowingDay: recurringForm.day,
+      mowingEndDate: endDate,
+      mowingPrice: priceVal
+    };
+    try {
+      await updateDoc(doc(db, 'customers', recurringModalCustomer.id), {
+        mowingFrequency: recurringForm.frequency,
+        mowingDay: recurringForm.day,
+        mowingEndDate: endDate,
+        mowingPrice: priceVal,
+        updatedAt: serverTimestamp()
+      });
+      await onMowingScheduleChange(updatedCustomer, prevSchedule);
+      setRecurringModalCustomer(null);
+    } catch (err) {
+      console.error('Error setting recurring schedule:', err);
+    }
+  };
+
+  const handleRemoveRecurring = async (customer) => {
+    if (!onMowingScheduleChange) return;
+    const prevSchedule = {
+      mowingFrequency: customer.mowingFrequency || 'weekly',
+      mowingDay: customer.mowingDay ?? 1
+    };
+    try {
+      await updateDoc(doc(db, 'customers', customer.id), {
+        mowingFrequency: 'none',
+        updatedAt: serverTimestamp()
+      });
+      await onMowingScheduleChange({ ...customer, mowingFrequency: 'none' }, prevSchedule);
+      setRecurringModalCustomer(null);
+    } catch (err) {
+      console.error('Error removing recurring schedule:', err);
+    }
+  };
+
+  const saveRecurringInlineEdit = async (customer) => {
+    const ed = recurringInlineEdit;
+    const priceVal = parseFloat(ed.price) || 0;
+    const endDate = getNov15EndDate();
+    const prevSchedule = {
+      mowingFrequency: customer.mowingFrequency || 'none',
+      mowingDay: customer.mowingDay ?? 1
+    };
+    const updatedCustomer = {
+      ...customer,
+      mowingFrequency: ed.frequency,
+      mowingDay: ed.day,
+      mowingPrice: priceVal,
+      mowingEndDate: endDate
+    };
+    try {
+      await updateDoc(doc(db, 'customers', customer.id), {
+        mowingFrequency: ed.frequency,
+        mowingDay: ed.day,
+        mowingPrice: priceVal,
+        mowingEndDate: endDate,
+        updatedAt: serverTimestamp()
+      });
+      if (onMowingScheduleChange) {
+        await onMowingScheduleChange(updatedCustomer, prevSchedule);
+      }
+      setEditingRecurringId(null);
+      setRecurringInlineEdit({});
+    } catch (err) {
+      console.error('Error saving recurring schedule:', err);
     }
   };
 
@@ -726,52 +828,6 @@ const Customers = ({ user, onMowingScheduleChange }) => {
 
               <div className="mx-6 border-t border-gray-100" />
 
-              {/* Section: Mowing Schedule */}
-              <div className="px-6 pt-4 pb-4">
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Mowing Schedule</p>
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-600 mb-2">Frequency</label>
-                    <div className="flex gap-2">
-                      {[{value:'none',label:'None'},{value:'weekly',label:'Weekly'},{value:'biweekly',label:'Bi-Weekly'}].map(opt => (
-                        <button key={opt.value} type="button"
-                          onClick={() => setNewCustomer({...newCustomer, mowingFrequency: opt.value})}
-                          className={`flex-1 py-2 rounded-lg border-2 text-sm font-semibold transition-all ${
-                            newCustomer.mowingFrequency === opt.value
-                              ? 'border-green-500 bg-green-50 text-green-800'
-                              : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
-                          }`}>{opt.label}</button>
-                      ))}
-                    </div>
-                  </div>
-                  {newCustomer.mowingFrequency !== 'none' && (
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-600 mb-2">Service Day</label>
-                      <div className="flex gap-1.5">
-                        {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((day, idx) => (
-                          <button key={idx} type="button"
-                            onClick={() => setNewCustomer({...newCustomer, mowingDay: idx})}
-                            className={`flex-1 py-2 rounded-lg border-2 text-xs font-bold transition-all ${
-                              newCustomer.mowingDay === idx
-                                ? 'border-green-500 bg-green-500 text-white'
-                                : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
-                            }`}>{day}</button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  {newCustomer.mowingFrequency !== 'none' && (
-                    <p className="text-xs text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
-                      {newCustomer.mowingFrequency === 'weekly' ? 'Weekly' : 'Every other week'} on{' '}
-                      {['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][newCustomer.mowingDay]}
-                      {' — jobs auto-generated for 1 year'}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <div className="mx-6 border-t border-gray-100" />
-
               {/* Section: Notes */}
               <div className="px-6 pt-4 pb-6">
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Notes</p>
@@ -810,6 +866,200 @@ const Customers = ({ user, onMowingScheduleChange }) => {
         </div>
       )}
 
+      {/* Tab switcher */}
+      <div className="flex gap-2 bg-white rounded-xl border border-gray-200 shadow p-1.5 w-fit">
+        <button
+          onClick={() => setActiveCustomerTab('all')}
+          className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${activeCustomerTab === 'all' ? 'bg-blue-600 text-white shadow' : 'text-gray-500 hover:text-gray-800'}`}
+        >
+          All Customers
+        </button>
+        <button
+          onClick={() => setActiveCustomerTab('recurring')}
+          className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-bold transition-all ${activeCustomerTab === 'recurring' ? 'bg-green-600 text-white shadow' : 'text-gray-500 hover:text-gray-800'}`}
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Recurring
+          <span className={`text-xs px-1.5 py-0.5 rounded-full font-bold ${activeCustomerTab === 'recurring' ? 'bg-white bg-opacity-25 text-white' : 'bg-green-100 text-green-700'}`}>
+            {customers.filter(c => c.mowingFrequency && c.mowingFrequency !== 'none').length}
+          </span>
+        </button>
+      </div>
+
+      {/* Recurring Clients Tab */}
+      {activeCustomerTab === 'recurring' && (() => {
+        const recurringCustomers = customers
+          .filter(c => c.mowingFrequency && c.mowingFrequency !== 'none')
+          .sort((a, b) => (a.mowingDay ?? 1) - (b.mowingDay ?? 1));
+        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        const dayShort = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+        const totalWeekly = recurringCustomers.reduce((s, c) => s + (parseFloat(c.mowingPrice) || 0), 0);
+
+        return (
+          <div className="space-y-4">
+            {/* Summary bar */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="bg-green-50 border border-green-200 rounded-xl px-5 py-4">
+                <p className="text-xs font-bold text-green-600 uppercase tracking-wider mb-1">Recurring Clients</p>
+                <p className="text-2xl font-bold text-green-900">{recurringCustomers.length}</p>
+              </div>
+              <div className="bg-blue-50 border border-blue-200 rounded-xl px-5 py-4">
+                <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">Weekly Revenue</p>
+                <p className="text-2xl font-bold text-blue-900">
+                  ${recurringCustomers.filter(c => c.mowingFrequency === 'weekly').reduce((s, c) => s + (parseFloat(c.mowingPrice) || 0), 0).toFixed(0)}
+                </p>
+              </div>
+              <div className="bg-purple-50 border border-purple-200 rounded-xl px-5 py-4">
+                <p className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-1">Bi-Weekly Revenue</p>
+                <p className="text-2xl font-bold text-purple-900">
+                  ${recurringCustomers.filter(c => c.mowingFrequency === 'biweekly').reduce((s, c) => s + (parseFloat(c.mowingPrice) || 0), 0).toFixed(0)}
+                </p>
+              </div>
+            </div>
+
+            {/* Table */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow overflow-hidden">
+              <div className="px-6 py-4 border-b border-gray-100 bg-gray-50 flex items-center justify-between">
+                <h3 className="text-sm font-bold text-gray-800">Recurring Schedule</h3>
+                <p className="text-xs text-gray-500">Click a row to edit • Changes regenerate jobs through Nov 15</p>
+              </div>
+              {recurringCustomers.length === 0 ? (
+                <div className="py-16 text-center text-gray-400 text-sm">
+                  No recurring customers yet — use "Make Recurring" on a customer to get started.
+                </div>
+              ) : (
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-gray-200 bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left">Customer</th>
+                      <th className="px-4 py-3 text-left">Frequency</th>
+                      <th className="px-4 py-3 text-left">Day</th>
+                      <th className="px-4 py-3 text-left">Price / Visit</th>
+                      <th className="px-4 py-3 text-left">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {recurringCustomers.map(customer => {
+                      const isEditing = editingRecurringId === customer.id;
+                      return (
+                        <tr key={customer.id} className={`transition-colors ${isEditing ? 'bg-green-50' : 'hover:bg-gray-50'}`}>
+                          {/* Customer */}
+                          <td className="px-6 py-4">
+                            <p className="text-sm font-bold text-gray-900">{customer.name}</p>
+                            {customer.address && <p className="text-xs text-gray-500 mt-0.5">{customer.address}{customer.city ? `, ${customer.city}` : ''}</p>}
+                          </td>
+
+                          {/* Frequency */}
+                          <td className="px-4 py-4">
+                            {isEditing ? (
+                              <div className="flex gap-1.5">
+                                {[{v:'weekly',l:'Weekly'},{v:'biweekly',l:'Bi-Wkly'}].map(o => (
+                                  <button key={o.v} type="button"
+                                    onClick={() => setRecurringInlineEdit(e => ({...e, frequency: o.v}))}
+                                    className={`px-2.5 py-1.5 rounded-lg border text-xs font-bold transition-all ${recurringInlineEdit.frequency === o.v ? 'border-green-500 bg-green-500 text-white' : 'border-gray-300 text-gray-600'}`}
+                                  >{o.l}</button>
+                                ))}
+                              </div>
+                            ) : (
+                              <span className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-bold ${customer.mowingFrequency === 'weekly' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'}`}>
+                                {customer.mowingFrequency === 'weekly' ? 'Weekly' : 'Bi-Weekly'}
+                              </span>
+                            )}
+                          </td>
+
+                          {/* Day */}
+                          <td className="px-4 py-4">
+                            {isEditing ? (
+                              <div className="flex gap-1">
+                                {dayShort.map((d, i) => (
+                                  <button key={i} type="button"
+                                    onClick={() => setRecurringInlineEdit(e => ({...e, day: i}))}
+                                    className={`w-7 h-7 rounded-lg border text-[10px] font-bold transition-all ${recurringInlineEdit.day === i ? 'border-green-500 bg-green-500 text-white' : 'border-gray-300 text-gray-600 hover:border-gray-400'}`}
+                                  >{d}</button>
+                                ))}
+                              </div>
+                            ) : (
+                              <span className="text-sm font-semibold text-gray-700">{days[customer.mowingDay ?? 1]}</span>
+                            )}
+                          </td>
+
+                          {/* Price */}
+                          <td className="px-4 py-4">
+                            {isEditing ? (
+                              <div className="relative w-28">
+                                <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-500 text-sm font-bold">$</span>
+                                <input
+                                  type="number"
+                                  min="0"
+                                  step="5"
+                                  value={recurringInlineEdit.price}
+                                  onChange={e => setRecurringInlineEdit(ed => ({...ed, price: e.target.value}))}
+                                  className="w-full pl-6 pr-2 py-1.5 border border-green-400 rounded-lg text-sm font-bold text-gray-800 focus:ring-2 focus:ring-green-400 outline-none"
+                                />
+                              </div>
+                            ) : (
+                              <span className={`text-sm font-bold ${customer.mowingPrice ? 'text-green-700' : 'text-gray-400'}`}>
+                                {customer.mowingPrice ? `$${parseFloat(customer.mowingPrice).toFixed(0)}` : 'Not set'}
+                              </span>
+                            )}
+                          </td>
+
+                          {/* Actions */}
+                          <td className="px-4 py-4">
+                            {isEditing ? (
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => saveRecurringInlineEdit(customer)}
+                                  className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-bold rounded-lg transition-colors"
+                                >
+                                  Save
+                                </button>
+                                <button
+                                  onClick={() => { setEditingRecurringId(null); setRecurringInlineEdit({}); }}
+                                  className="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-bold rounded-lg transition-colors"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => {
+                                    setEditingRecurringId(customer.id);
+                                    setRecurringInlineEdit({
+                                      frequency: customer.mowingFrequency,
+                                      day: customer.mowingDay ?? 1,
+                                      price: customer.mowingPrice != null ? String(customer.mowingPrice) : ''
+                                    });
+                                  }}
+                                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition-colors"
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  onClick={() => handleRemoveRecurring(customer)}
+                                  className="px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-700 text-xs font-bold rounded-lg transition-colors"
+                                >
+                                  Stop
+                                </button>
+                              </div>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* All Customers Tab */}
+      {activeCustomerTab === 'all' && <>
       {/* Filters and Search */}
       <div className="bg-white shadow-lg rounded-xl p-6 border border-gray-100">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
@@ -871,6 +1121,7 @@ const Customers = ({ user, onMowingScheduleChange }) => {
       </div>
 
       {/* Customers List */}
+
       <div className="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
         <div className="px-6 py-5 bg-gradient-to-r from-gray-50 to-slate-50 border-b border-gray-200">
           <div className="flex items-center gap-3">
@@ -1071,6 +1322,22 @@ const Customers = ({ user, onMowingScheduleChange }) => {
                               </a>
                             )}
                             <button
+                              onClick={() => openRecurringModal(customer)}
+                              className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg transition-all shadow-sm hover:shadow-md ${
+                                customer.mowingFrequency && customer.mowingFrequency !== 'none'
+                                  ? 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white'
+                                  : 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white'
+                              }`}
+                              title="Set recurring mowing schedule"
+                            >
+                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                              </svg>
+                              {customer.mowingFrequency && customer.mowingFrequency !== 'none'
+                                ? `${customer.mowingFrequency === 'weekly' ? 'Weekly' : 'Bi-Weekly'} · ${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][customer.mowingDay ?? 1]}`
+                                : 'Make Recurring'}
+                            </button>
+                            <button
                               onClick={() => editCustomer(customer)}
                               className="inline-flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-purple-500 to-violet-600 text-white text-xs font-semibold rounded-lg hover:from-purple-600 hover:to-violet-700 transition-all shadow-sm hover:shadow-md"
                               title="Edit customer"
@@ -1111,6 +1378,114 @@ const Customers = ({ user, onMowingScheduleChange }) => {
           </div>
         )}
       </div>
+      </>}
+
+      {/* Make Recurring Modal */}
+      {recurringModalCustomer && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[1100] flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
+            {/* Header */}
+            <div className="px-6 pt-5 pb-4 border-b border-gray-100">
+              <h3 className="text-base font-bold text-gray-900">Recurring Mowing Schedule</h3>
+              <p className="text-sm text-gray-500 mt-0.5">{recurringModalCustomer.name}</p>
+            </div>
+
+            <div className="px-6 py-5 space-y-5">
+              {/* End date info */}
+              <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2.5">
+                <svg className="w-4 h-4 text-amber-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span className="text-xs font-semibold text-amber-800">
+                  Jobs generated through <strong>November 15, {getNov15EndDate().split('-')[0]}</strong>
+                </span>
+              </div>
+
+              {/* Frequency */}
+              <div>
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Frequency</p>
+                <div className="flex gap-2">
+                  {[{value:'weekly',label:'Weekly'},{value:'biweekly',label:'Bi-Weekly'}].map(opt => (
+                    <button key={opt.value} type="button"
+                      onClick={() => setRecurringForm(f => ({...f, frequency: opt.value}))}
+                      className={`flex-1 py-3 rounded-xl border-2 text-sm font-bold transition-all ${
+                        recurringForm.frequency === opt.value
+                          ? 'border-green-500 bg-green-50 text-green-800'
+                          : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
+                      }`}
+                    >{opt.label}</button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Day of week */}
+              <div>
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Service Day</p>
+                <div className="flex gap-1">
+                  {['Su','Mo','Tu','We','Th','Fr','Sa'].map((d, i) => (
+                    <button key={i} type="button"
+                      onClick={() => setRecurringForm(f => ({...f, day: i}))}
+                      className={`flex-1 py-2.5 rounded-lg border-2 text-xs font-bold transition-all ${
+                        recurringForm.day === i
+                          ? 'border-green-500 bg-green-500 text-white'
+                          : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
+                      }`}
+                    >{d}</button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Price */}
+              <div>
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Price Per Visit</p>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-bold">$</span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="5"
+                    value={recurringForm.price}
+                    onChange={e => setRecurringForm(f => ({...f, price: e.target.value}))}
+                    placeholder="0"
+                    className="w-full pl-7 pr-4 py-2.5 border-2 border-gray-200 rounded-xl text-sm font-bold focus:ring-2 focus:ring-green-400 focus:border-green-400 outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Summary */}
+              <p className="text-xs text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2.5 font-medium">
+                {recurringForm.frequency === 'weekly' ? 'Every week' : 'Every other week'} on{' '}
+                {['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][recurringForm.day]},
+                through November 15{recurringForm.price ? ` · $${recurringForm.price}/visit` : ''}
+              </p>
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 pb-5 flex flex-col gap-2">
+              <button
+                onClick={handleSetRecurring}
+                className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-colors text-sm"
+              >
+                Set Schedule
+              </button>
+              {recurringModalCustomer.mowingFrequency && recurringModalCustomer.mowingFrequency !== 'none' && (
+                <button
+                  onClick={() => handleRemoveRecurring(recurringModalCustomer)}
+                  className="w-full py-2.5 text-red-600 hover:bg-red-50 font-semibold rounded-xl transition-colors text-sm border border-red-200"
+                >
+                  Remove Recurring Schedule
+                </button>
+              )}
+              <button
+                onClick={() => setRecurringModalCustomer(null)}
+                className="w-full py-2.5 text-gray-600 hover:bg-gray-50 font-semibold rounded-xl transition-colors text-sm"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
