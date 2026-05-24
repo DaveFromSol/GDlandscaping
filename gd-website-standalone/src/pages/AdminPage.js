@@ -2514,8 +2514,18 @@ const AdminDashboard = ({ user, onLogout }) => {
                   <div className="flex gap-2">
                     <button
                       onClick={() => {
+                        const ac = propertyData.areaAcres || 0;
+                        const getPrice = (a) => {
+                          if (a <= 0.3)  return 50;  if (a <= 0.6)  return 60;
+                          if (a <= 0.8)  return 70;  if (a <= 1.0)  return 85;
+                          if (a <= 1.2)  return 100; if (a <= 1.5)  return 120;
+                          if (a <= 1.75) return 140; if (a <= 2.0)  return 160;
+                          if (a <= 2.5)  return 185; if (a <= 3.0)  return 215;
+                          if (a <= 4.0)  return 260; if (a <= 5.0)  return 310;
+                          return Math.round((310 + (a - 5) * 55) / 5) * 5;
+                        };
                         const summary = `${propertyData.areaAcres?.toFixed(2)} acres (${propertyData.areaSquareFeet?.toLocaleString()} sq ft)${propertyData.parcelId ? ` | Parcel: ${propertyData.parcelId}` : ''}`;
-                        setNewJob(j => ({ ...j, address: propertyAddress, notes: summary }));
+                        setNewJob(j => ({ ...j, address: propertyAddress, notes: summary, expectedPayment: getPrice(ac) }));
                         setShowAddJobForm(true);
                       }}
                       className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors"
@@ -2539,6 +2549,71 @@ const AdminDashboard = ({ user, onLogout }) => {
                     </button>
                   </div>
                 )}
+
+                {propertyData && (() => {
+                  const acres = propertyData.areaAcres || 0;
+                  const getMowingPrice = (ac) => {
+                    if (ac <= 0.3)  return 50;
+                    if (ac <= 0.6)  return 60;
+                    if (ac <= 0.8)  return 70;
+                    if (ac <= 1.0)  return 85;
+                    if (ac <= 1.2)  return 100;
+                    if (ac <= 1.5)  return 120;
+                    if (ac <= 1.75) return 140;
+                    if (ac <= 2.0)  return 160;
+                    if (ac <= 2.5)  return 185;
+                    if (ac <= 3.0)  return 215;
+                    if (ac <= 4.0)  return 260;
+                    if (ac <= 5.0)  return 310;
+                    return Math.round((310 + (ac - 5) * 55) / 5) * 5; // ~$55/acre beyond 5
+                  };
+                  const weeklyPrice = getMowingPrice(acres);
+                  // Bi-weekly premium: 50% more for tiny lots, sliding down to 30% more for large lots
+                  const biweeklyMultiplier = 1.50 - Math.min(acres / 3.0, 1) * 0.20;
+                  const biweeklyPrice = Math.round(weeklyPrice * biweeklyMultiplier / 5) * 5;
+
+                  return (
+                    <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <p className="text-xs font-bold text-green-700 uppercase tracking-wider">Estimated Mowing Price</p>
+                        <span className="text-xs text-green-600 bg-white border border-green-200 rounded-lg px-2 py-1 font-semibold">
+                          {acres.toFixed(2)} acres
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3 mb-3">
+                        <div className="bg-white rounded-xl border border-green-200 px-4 py-3 text-center">
+                          <p className="text-2xl font-bold text-green-700">${weeklyPrice}</p>
+                          <p className="text-xs font-semibold text-gray-500 mt-0.5">Weekly</p>
+                        </div>
+                        <div className="bg-white rounded-xl border border-green-200 px-4 py-3 text-center">
+                          <p className="text-2xl font-bold text-emerald-600">${biweeklyPrice}</p>
+                          <p className="text-xs font-semibold text-gray-500 mt-0.5">Bi-Weekly</p>
+                        </div>
+                      </div>
+                      {/* Tier breakdown */}
+                      <div className="text-xs text-green-700 space-y-0.5">
+                        {[
+                          [0, 0.3, 50], [0.3, 0.6, 60], [0.6, 0.8, 70],
+                          [0.8, 1.0, 85], [1.0, 1.2, 100], [1.2, 1.5, 120],
+                          [1.5, 1.75, 140], [1.75, 2.0, 160], [2.0, 2.5, 185],
+                          [2.5, 3.0, 215], [3.0, 4.0, 260], [4.0, 5.0, 310]
+                        ].map(([lo, hi, price]) => {
+                          const active = acres > lo && acres <= hi;
+                          return (
+                            <div key={lo} className={`flex justify-between rounded px-2 py-0.5 font-medium ${active ? 'bg-green-200 text-green-900 font-bold' : 'text-green-600'}`}>
+                              <span>{lo}–{hi} acres</span>
+                              <span>${price}/wk</span>
+                            </div>
+                          );
+                        })}
+                        <div className={`flex justify-between rounded px-2 py-0.5 font-medium ${acres > 5 ? 'bg-green-200 text-green-900 font-bold' : 'text-green-600'}`}>
+                          <span>5.0+ acres</span>
+                          <span>$310+/wk</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 {propertyData && (() => {
                   const token = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
