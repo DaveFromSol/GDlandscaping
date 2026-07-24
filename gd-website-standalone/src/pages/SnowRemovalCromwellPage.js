@@ -108,7 +108,7 @@ const SnowRemovalCromwellPage = () => {
   return (
     <>
       <SEOHead
-        title="Snow Removal Cromwell CT | Professional Winter Services | G&D Landscaping"
+        title="Snow Removal Cromwell CT | G&D Landscaping"
         description="Reliable snow removal services in Cromwell, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Cromwell CT, snow plowing Cromwell Connecticut, winter services Cromwell, ice management Cromwell CT, residential snow removal Cromwell, commercial snow plowing Cromwell"
         canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-cromwell-ct"

@@ -121,7 +121,7 @@ const SnowRemovalNewBritainPage = () => {
   return (
     <>
       <SEOHead
-        title="Snow Removal New Britain CT | Professional Winter Services | G&D Landscaping"
+        title="Snow Removal New Britain CT | G&D Landscaping"
         description="Reliable snow removal services in New Britain, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal New Britain CT, snow plowing New Britain Connecticut, winter services New Britain, ice management New Britain CT, residential snow removal New Britain, commercial snow plowing New Britain"
         canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-new-britain-ct"

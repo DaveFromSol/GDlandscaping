@@ -79,6 +79,7 @@ import BlogSnowReadinessCommercialPage from './pages/BlogSnowReadinessCommercial
 import BlogHedgeTrimmingSecretsPage from './pages/BlogHedgeTrimmingSecretsPage';
 import BlogHOAGroundsManagementPage from './pages/BlogHOAGroundsManagementPage';
 import BlogSustainableLandscapingPage from './pages/BlogSustainableLandscapingPage';
+import HardscapingPage from './pages/HardscapingPage';
 import LoginPage from './pages/LoginPage';
 import AccountPage from './pages/AccountPage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -533,6 +534,7 @@ function AppShell() {
               <Route path="/blog/hedge-trimming-secrets" element={<BlogHedgeTrimmingSecretsPage />} />
               <Route path="/blog/hoa-grounds-management" element={<BlogHOAGroundsManagementPage />} />
               <Route path="/blog/sustainable-landscaping-connecticut" element={<BlogSustainableLandscapingPage />} />
+              <Route path="/hardscaping" element={<HardscapingPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/account" element={<AccountPage />} />
               <Route path="/admin" element={<AdminPage />} />
@@ -568,6 +570,7 @@ function AppShell() {
                     <li><Link to="/fall-cleanup-berlin-ct">Fall Cleanup</Link></li>
                     <li><Link to="/bush-trimming-berlin-ct">Bush Trimming</Link></li>
                     <li><Link to="/fertilization-weed-control-berlin-ct">Fertilization & Weed Control</Link></li>
+                    <li><Link to="/hardscaping">Hardscaping & Patios</Link></li>
                   </ul>
                 </div>
                 <div className="footer-section">

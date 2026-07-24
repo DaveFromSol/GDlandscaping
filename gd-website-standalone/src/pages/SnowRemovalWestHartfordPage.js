@@ -149,7 +149,7 @@ const SnowRemovalWestHartfordPage = () => {
   return (
     <>
       <SEOHead
-        title="Snow Removal West Hartford CT | Professional Winter Services | G&D Landscaping"
+        title="Snow Removal West Hartford CT | G&D Landscaping"
         description="Reliable snow removal services in West Hartford, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal West Hartford CT, snow plowing West Hartford Connecticut, winter services West Hartford, ice management West Hartford CT, residential snow removal West Hartford, commercial snow plowing West Hartford, West Hartford Center snow removal, Elmwood winter services"
         canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-west-hartford-ct"

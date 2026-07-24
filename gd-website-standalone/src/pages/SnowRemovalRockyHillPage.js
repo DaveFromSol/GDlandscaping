@@ -117,7 +117,7 @@ const SnowRemovalRockyHillPage = () => {
   return (
     <>
       <SEOHead
-        title="Snow Removal Rocky Hill CT | Professional Winter Services | G&D Landscaping"
+        title="Snow Removal Rocky Hill CT | G&D Landscaping"
         description="Reliable snow removal services in Rocky Hill, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Rocky Hill CT, snow plowing Rocky Hill Connecticut, winter services Rocky Hill, ice management Rocky Hill CT, residential snow removal Rocky Hill"
         canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-rocky-hill-ct"

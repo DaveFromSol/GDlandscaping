@@ -108,7 +108,7 @@ const SnowRemovalBerlinPage = () => {
   return (
     <>
       <SEOHead
-        title="Snow Removal Berlin CT | Professional Winter Services | G&D Landscaping"
+        title="Snow Removal Berlin CT | G&D Landscaping"
         description="Reliable snow removal services in Berlin, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Berlin CT, snow plowing Berlin Connecticut, winter services Berlin, ice management Berlin CT, residential snow removal Berlin, commercial snow plowing Berlin"
         canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-berlin-ct"

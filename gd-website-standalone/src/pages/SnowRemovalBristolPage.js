@@ -149,7 +149,7 @@ const SnowRemovalBristolPage = () => {
   return (
     <>
       <SEOHead
-        title="Snow Removal Bristol CT | Professional Winter Services | G&D Landscaping"
+        title="Snow Removal Bristol CT | G&D Landscaping"
         description="Reliable snow removal services in Bristol, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Bristol CT, snow plowing Bristol Connecticut, winter services Bristol, ice management Bristol CT, residential snow removal Bristol, commercial snow plowing Bristol"
         canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-bristol-ct"

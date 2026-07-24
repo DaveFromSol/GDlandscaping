@@ -83,7 +83,7 @@ const LawnCareFarmingtonPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care Farmington CT | Professional Lawn Maintenance Services | G&D Landscaping"
+        title="Lawn Care Farmington CT | G&D Landscaping"
         description="Professional lawn care services in Farmington, CT. Weekly mowing, fertilization, weed control, and complete yard maintenance for Unionville, Devonwood, and surrounding neighborhoods."
         keywords="lawn care Farmington CT, lawn mowing Farmington Connecticut, landscaping Farmington, yard maintenance Farmington CT"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-farmington-ct"

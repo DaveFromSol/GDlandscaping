@@ -107,7 +107,7 @@ const LawnCareHartfordPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care Hartford CT | Professional Lawn Maintenance Services | G&D Landscaping"
+        title="Lawn Care Hartford CT | G&D Landscaping"
         description="Professional lawn care services in Hartford, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance. Serving all Hartford neighborhoods."
         keywords="lawn care Hartford CT, lawn mowing Hartford Connecticut, landscaping Hartford, yard maintenance Hartford CT, fertilization Hartford, weed control Hartford"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-hartford-ct"

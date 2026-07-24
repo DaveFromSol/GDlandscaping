@@ -110,7 +110,7 @@ const ContactPage = () => {
   return (
     <>
       <SEOHead
-        title="Contact G&D Landscaping | Free Quotes — Hartford County, CT Lawn Care & Snow Removal"
+        title="Contact G&D Landscaping | Hartford County CT"
         description="Contact G&D Landscaping for a free quote on lawn care, snow removal, spring & fall cleanups, and more. Serving Hartford, Middlesex, New Haven, and Tolland Counties, CT. Licensed HIC.0704814."
         keywords="contact G&D Landscaping Berlin CT, free landscaping quote Connecticut, lawn care estimate Hartford County, snow removal quote Berlin, landscaping consultation CT"
         canonicalUrl="https://www.gdlandscapingllc.com/contact"

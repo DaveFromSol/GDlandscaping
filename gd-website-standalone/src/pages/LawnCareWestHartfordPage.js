@@ -94,7 +94,7 @@ const LawnCareWestHartfordPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care West Hartford CT | Professional Lawn Maintenance Services | G&D Landscaping"
+        title="Lawn Care West Hartford CT | G&D Landscaping"
         description="Professional lawn care services in West Hartford, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for West Hartford homes and businesses."
         keywords="lawn care West Hartford CT, lawn mowing West Hartford Connecticut, landscaping West Hartford, yard maintenance West Hartford CT, fertilization West Hartford, weed control West Hartford, West Hartford Center lawn care, Elmwood landscaping"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-west-hartford-ct"

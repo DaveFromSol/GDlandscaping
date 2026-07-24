@@ -112,7 +112,7 @@ const SnowRemovalFarmingtonPage = () => {
   return (
     <>
       <SEOHead
-        title="Snow Removal Farmington CT | Professional Winter Services | G&D Landscaping"
+        title="Snow Removal Farmington CT | G&D Landscaping"
         description="Reliable snow removal services in Farmington, Connecticut. Seasonal packages for homes and businesses across Unionville, Devonwood, and Talcott Mountain."
         keywords="snow removal Farmington CT, snow plowing Farmington Connecticut, winter services Farmington, ice management Farmington CT"
         canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-farmington-ct"

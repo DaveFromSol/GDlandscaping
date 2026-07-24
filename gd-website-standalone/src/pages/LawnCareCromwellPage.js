@@ -83,7 +83,7 @@ const LawnCareCromwellPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care Cromwell CT | Professional Lawn Maintenance Services | G&D Landscaping"
+        title="Lawn Care Cromwell CT | G&D Landscaping"
         description="Professional lawn care services in Cromwell, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for all Cromwell neighborhoods."
         keywords="lawn care Cromwell CT, lawn mowing Cromwell Connecticut, landscaping Cromwell, yard maintenance Cromwell CT, fertilization Cromwell, weed control Cromwell"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-cromwell-ct"

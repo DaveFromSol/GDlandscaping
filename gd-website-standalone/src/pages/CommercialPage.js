@@ -35,7 +35,7 @@ const CommercialPage = () => {
   return (
     <>
       <SEOHead
-        title="Commercial Landscaping & Snow Removal Contracts — Hartford County, CT | G&D Landscaping"
+        title="Commercial Landscaping Hartford County CT | G&D Landscaping"
         description="G&D Landscaping provides commercial landscaping and snow removal contracts for property managers, HOAs, office parks, retail centers, and apartment complexes across Hartford, Middlesex, New Haven, and Tolland Counties, CT. Licensed HIC.0704814. Fully insured."
         keywords="commercial landscaping Hartford County CT, property management landscaping Connecticut, commercial snow removal contracts CT, HOA landscaping Connecticut, office park lawn care CT, apartment complex landscaping Hartford, commercial grounds maintenance Connecticut"
         canonicalUrl="https://www.gdlandscapingllc.com/commercial"

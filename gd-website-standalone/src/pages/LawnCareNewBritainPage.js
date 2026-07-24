@@ -103,7 +103,7 @@ const LawnCareNewBritainPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care New Britain CT | Professional Lawn Maintenance Services | G&D Landscaping"
+        title="Lawn Care New Britain CT | G&D Landscaping"
         description="Professional lawn care services in New Britain, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance. Serving all New Britain neighborhoods."
         keywords="lawn care New Britain CT, lawn mowing New Britain Connecticut, landscaping New Britain, yard maintenance New Britain CT, fertilization New Britain, weed control New Britain"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-new-britain-ct"

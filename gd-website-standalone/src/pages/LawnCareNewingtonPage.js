@@ -82,7 +82,7 @@ const LawnCareNewingtonPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care Newington CT | Professional Lawn Maintenance Services | G&D Landscaping"
+        title="Lawn Care Newington CT | G&D Landscaping"
         description="Professional lawn care services in Newington, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for all Newington properties."
         keywords="lawn care Newington CT, lawn mowing Newington Connecticut, landscaping Newington, yard maintenance Newington CT, fertilization Newington"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-newington-ct"

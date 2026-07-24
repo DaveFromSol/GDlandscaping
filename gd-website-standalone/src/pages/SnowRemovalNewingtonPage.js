@@ -117,7 +117,7 @@ const SnowRemovalNewingtonPage = () => {
   return (
     <>
       <SEOHead
-        title="Snow Removal Newington CT | Professional Winter Services | G&D Landscaping"
+        title="Snow Removal Newington CT | G&D Landscaping"
         description="Reliable snow removal services in Newington, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Newington CT, snow plowing Newington Connecticut, winter services Newington, ice management Newington CT, residential snow removal Newington"
         canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-newington-ct"

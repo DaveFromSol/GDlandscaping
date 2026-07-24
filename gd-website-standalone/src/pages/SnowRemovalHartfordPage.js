@@ -112,7 +112,7 @@ const SnowRemovalHartfordPage = () => {
   return (
     <>
       <SEOHead
-        title="Snow Removal Hartford CT | Professional Winter Services | G&D Landscaping"
+        title="Snow Removal Hartford CT | G&D Landscaping"
         description="Reliable snow removal services in Hartford, Connecticut. Seasonal packages for homes and businesses. Fast response, professional equipment, fully insured. Call (860) 526-7583."
         keywords="snow removal Hartford CT, snow plowing Hartford Connecticut, winter services Hartford, ice management Hartford CT, residential snow removal Hartford, commercial snow plowing Hartford"
         canonicalUrl="https://www.gdlandscapingllc.com/snow-removal-hartford-ct"

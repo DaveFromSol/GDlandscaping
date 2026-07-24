@@ -83,7 +83,7 @@ const LawnCareMiddletownPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care Middletown CT | Professional Lawn Maintenance Services | G&D Landscaping"
+        title="Lawn Care Middletown CT | G&D Landscaping"
         description="Professional lawn care services in Middletown, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for all Middletown areas."
         keywords="lawn care Middletown CT, lawn mowing Middletown Connecticut, landscaping Middletown, yard maintenance Middletown CT, fertilization Middletown, weed control Middletown"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-middletown-ct"

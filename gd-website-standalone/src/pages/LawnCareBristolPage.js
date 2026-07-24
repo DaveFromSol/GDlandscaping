@@ -106,7 +106,7 @@ const LawnCareBristolPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care Bristol CT | Professional Lawn Maintenance Services | G&D Landscaping"
+        title="Lawn Care Bristol CT | G&D Landscaping"
         description="Professional lawn care services in Bristol, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for homes and businesses."
         keywords="lawn care Bristol CT, lawn mowing Bristol Connecticut, landscaping Bristol, yard maintenance Bristol CT, fertilization Bristol, weed control Bristol"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-bristol-ct"

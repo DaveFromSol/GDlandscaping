@@ -268,7 +268,7 @@ const HomePage = () => {
   return (
     <>
       <SEOHead
-        title="Professional Landscaping in Berlin CT | G&D Landscaping - Lawn Care & Snow Removal"
+        title="Landscaping Berlin CT | Lawn Care & Snow Removal | G&D"
         description="Beautiful lawns in summer, clear driveways in winter. G&D Landscaping provides year-round landscaping and snow removal services in Berlin, Hartford County CT."
         keywords="landscaping Berlin CT, lawn care Connecticut, snow removal Berlin, lawn mowing Hartford County, landscape design Berlin CT, hardscaping Connecticut, bush trimming Berlin, leaf cleanup Hartford County, fertilization services CT"
         canonicalUrl="https://www.gdlandscapingllc.com/"

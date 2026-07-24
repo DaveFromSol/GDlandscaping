@@ -103,7 +103,7 @@ const LawnCareBerlinPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care Berlin CT | Professional Lawn Maintenance Services | G&D Landscaping"
+        title="Lawn Care Berlin CT | G&D Landscaping"
         description="Professional lawn care services in Berlin, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance. Serving all Berlin neighborhoods."
         keywords="lawn care Berlin CT, lawn mowing Berlin Connecticut, landscaping Berlin, yard maintenance Berlin CT, fertilization Berlin, weed control Berlin"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-berlin-ct"

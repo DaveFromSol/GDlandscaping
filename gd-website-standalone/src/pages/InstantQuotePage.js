@@ -75,7 +75,7 @@ const InstantQuotePage = () => {
   return (
     <>
       <SEOHead
-        title="Instant Lawn Care Quote | G&D Landscaping - Free 30-Second Property Quote Berlin CT"
+        title="Free Lawn Care Quote | G&D Landscaping Berlin CT"
         description="Get your lawn care quote in 30 seconds! See your property boundary on a map + instant accurate pricing. All CT supported. No credit card required. 100% free."
         keywords="instant lawn quote, free lawn care estimate, property boundary detection, lawn mowing quote Berlin CT, instant landscaping quote Connecticut, lawn care pricing Berlin"
         canonicalUrl="https://www.gdlandscapingllc.com/instant-quote"

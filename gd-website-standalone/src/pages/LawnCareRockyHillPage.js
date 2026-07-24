@@ -82,7 +82,7 @@ const LawnCareRockyHillPage = () => {
   return (
     <>
       <SEOHead
-        title="Lawn Care Rocky Hill CT | Professional Lawn Maintenance Services | G&D Landscaping"
+        title="Lawn Care Rocky Hill CT | G&D Landscaping"
         description="Professional lawn care services in Rocky Hill, Connecticut. Weekly mowing, fertilization, weed control, and complete yard maintenance for Rocky Hill properties."
         keywords="lawn care Rocky Hill CT, lawn mowing Rocky Hill Connecticut, landscaping Rocky Hill, yard maintenance Rocky Hill CT, fertilization Rocky Hill"
         canonicalUrl="https://www.gdlandscapingllc.com/lawn-care-rocky-hill-ct"

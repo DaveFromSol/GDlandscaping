@@ -88,7 +88,7 @@ const PortfolioPage = () => {
   return (
     <>
       <SEOHead
-        title="G&D Landscaping Portfolio - Before & After Photos | Berlin CT Landscaping Projects"
+        title="Landscaping Portfolio | G&D Landscaping Berlin CT"
         description="View our landscaping portfolio featuring residential and commercial projects in Berlin CT and Hartford County. See lawn maintenance, landscape design, and hardscaping transformations."
         keywords="landscaping portfolio Berlin CT, before after landscaping photos Hartford County, residential landscape design Connecticut, hardscaping projects Berlin CT, lawn transformation photos"
         canonicalUrl="https://www.gdlandscapingllc.com/portfolio"
