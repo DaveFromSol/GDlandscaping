@@ -434,15 +434,15 @@ const HomePage = () => {
 
             <div className="homepage-why-images">
               <OptimizedImage
-                src="/commercial-property-landscaping-connecticut.jpeg"
-                alt="Commercial property landscaping and lawn maintenance services in Connecticut by G&D Landscaping"
+                src="/landscape-design-gd-landscaping.jpeg"
+                alt="Professional landscape design and construction by G&D Landscaping in Berlin CT"
                 width={300}
                 height={200}
                 style={{ width: '300px', height: 'auto', borderRadius: '8px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
               />
               <OptimizedImage
-                src="/garden-landscape-design-hartford-county.jpeg"
-                alt="Professional garden and landscape design in Hartford County CT - custom lawn care and plantings"
+                src="/garden-design-gd-landscaping.jpeg"
+                alt="Custom garden design and planting services by G&D Landscaping in Hartford County CT"
                 width={300}
                 height={200}
                 style={{ width: '300px', height: 'auto', borderRadius: '8px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
