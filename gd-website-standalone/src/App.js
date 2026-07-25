@@ -157,20 +157,46 @@ const Navigation = () => {
         <div className="nav-container">
           <div className="logo">
             <Link to="/">
-              <img src="/GD.png" alt="G&D Landscaping - Professional Landscaping Services Berlin CT" style={{height: '70px', marginRight: '10px'}} />
+              <img src="/GD.png" alt="G&D Landscaping - Professional Landscaping Services Berlin CT" style={{height: '52px', marginRight: '8px'}} />
               <h2>G&D Landscaping</h2>
             </Link>
           </div>
 
-          {/* Mobile Hamburger Button */}
-          <button
-            className={`mobile-menu-toggle ${mobileMenuOpen ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
+          {/* Mobile/Tablet: Auth button + Hamburger */}
+          <div className="nav-mobile-actions">
+            {user ? (
+              <Link
+                to="/account"
+                className={`account-link ${isActive('/account') ? 'active' : ''}`}
+                aria-label="Account"
+              >
+                <span className="user-avatar-small">
+                  {user.photoURL ? (
+                    <img src={user.photoURL} alt={user.displayName || 'User'} />
+                  ) : (
+                    <span>{(user.displayName || user.email || 'U')[0].toUpperCase()}</span>
+                  )}
+                </span>
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className={`login-link ${isActive('/login') ? 'active' : ''}`}
+                aria-label="Login"
+              >
+                🔐
+              </Link>
+            )}
+            <button
+              className={`mobile-menu-toggle ${mobileMenuOpen ? 'active' : ''}`}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
 
           <ul className={`nav-menu ${mobileMenuOpen ? 'mobile-open' : ''}`}>
             <li>
@@ -183,12 +209,21 @@ const Navigation = () => {
               </Link>
             </li>
             <li>
-              <Link 
+              <Link
                 to="/services"
                 className={isActive('/services') ? 'active' : ''}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 🌱 Services
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/hardscaping"
+                className={isActive('/hardscaping') ? 'active' : ''}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                🪨 Hardscaping
               </Link>
             </li>
             <li>

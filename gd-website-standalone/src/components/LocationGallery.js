@@ -2,16 +2,16 @@ import React from 'react';
 
 const galleryImages = [
   {
-    src: '/commercial-property-landscaping-connecticut.jpeg',
-    label: 'Weekly mowing & crisp striping'
+    src: '/snow-removal-trucks-gd-landscaping.jpeg',
+    label: 'Snow removal fleet ready for winter'
   },
   {
-    src: '/garden-landscape-design-hartford-county.jpeg',
-    label: 'Clean garden bed edging'
+    src: '/garden-design-gd-landscaping.jpeg',
+    label: 'Custom garden design & planting'
   },
   {
-    src: '/residential-lawn-service-berlin-ct.jpeg',
-    label: 'Commercial property care'
+    src: '/landscape-design-gd-landscaping.jpeg',
+    label: 'Custom landscape construction'
   }
 ];
 

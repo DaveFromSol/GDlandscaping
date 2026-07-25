@@ -179,31 +179,33 @@ const InstantQuotePage = () => {
             <div className="showcase-grid">
               <div className="showcase-item">
                 <div className="showcase-image-wrapper">
-                  <OptimizedImage
-                    src="/residential-lawn-service-berlin-ct.jpeg"
-                    alt="Residential Lawn Service - Professional Landscaping Work in Berlin CT by G&D Landscaping"
+                  <img
+                    src="/snow-removal-trucks-gd-landscaping.jpeg"
+                    alt="G&D Landscaping snow removal truck fleet with plows during Connecticut winter storm"
                     width={600}
                     height={400}
+                    style={{ width: '100%', height: '400px', objectFit: 'cover', objectPosition: 'center 18%' }}
                   />
                   <div className="showcase-overlay">
-                    <div className="showcase-category">Lawn Care</div>
-                    <h3>Residential Lawn Service</h3>
-                    <p>Premium lawn care and maintenance services</p>
+                    <div className="showcase-category">Snow Removal</div>
+                    <h3>24/7 Snow Removal Fleet</h3>
+                    <p>Professional winter plowing across Central Connecticut</p>
                   </div>
                 </div>
               </div>
               <div className="showcase-item">
                 <div className="showcase-image-wrapper">
-                  <OptimizedImage
-                    src="/commercial-property-landscaping-connecticut.jpeg"
-                    alt="Commercial Property Care - Professional Landscaping for Businesses in Connecticut"
+                  <img
+                    src="/garden-design-gd-landscaping.jpeg"
+                    alt="Custom landscape design and garden installation by G&D Landscaping in Hartford County CT"
                     width={600}
                     height={400}
+                    style={{ width: '100%', height: '400px', objectFit: 'cover' }}
                   />
                   <div className="showcase-overlay">
-                    <div className="showcase-category">Commercial</div>
-                    <h3>Commercial Property Care</h3>
-                    <p>Professional landscaping for commercial properties</p>
+                    <div className="showcase-category">Landscape Design</div>
+                    <h3>Custom Landscape Design</h3>
+                    <p>Professional design & installation across Central CT</p>
                   </div>
                 </div>
               </div>

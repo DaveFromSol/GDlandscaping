@@ -41,10 +41,20 @@ const ServicesPage = () => {
 
   const services = [
     {
+      id: 4,
+      name: 'Hardscaping & Outdoor Living',
+      description: 'Patios, retaining walls, walkways, fire pits & outdoor living spaces built for Connecticut\'s climate.',
+      price: 'Custom Pricing',
+      image: '🏗️',
+      features: ['Patio installation', 'Retaining walls', 'Walkways & steps', 'Fire pits & fireplaces', 'Outdoor kitchens', 'Grading & drainage'],
+      link: '/hardscaping',
+      specialty: true
+    },
+    {
       id: 1,
       name: 'Lawn Maintenance',
       description: 'Regular mowing, edging, and lawn care',
-      price: 'Starting at $40',
+      price: 'Starting at $65',
       image: '🌱',
       features: ['Weekly mowing', 'Edge trimming', 'Leaf removal', 'Fertilization']
     },
@@ -52,7 +62,7 @@ const ServicesPage = () => {
       id: 2,
       name: 'Landscape Design',
       description: 'Custom landscape design and installation',
-      price: 'Starting at $500',
+      price: 'Starting at $750',
       image: '🌿',
       features: ['Design consultation', '3D renderings', 'Plant selection', 'Installation']
     },
@@ -60,23 +70,15 @@ const ServicesPage = () => {
       id: 3,
       name: 'Tree Services',
       description: 'Tree trimming, removal, and maintenance',
-      price: 'Starting at $100',
+      price: 'Starting at $175',
       image: '🌳',
       features: ['Tree trimming', 'Tree removal', 'Stump grinding', 'Emergency service']
-    },
-    {
-      id: 4,
-      name: 'Hardscaping',
-      description: 'Patios, walkways, and retaining walls',
-      price: 'Starting at $300',
-      image: '🏗️',
-      features: ['Patio installation', 'Walkway creation', 'Retaining walls', 'Outdoor kitchens']
     },
     {
       id: 5,
       name: 'Irrigation Systems',
       description: 'Sprinkler system installation and repair',
-      price: 'Starting at $800',
+      price: 'Starting at $1,200',
       image: '💧',
       features: ['System design', 'Installation', 'Repairs', 'Seasonal maintenance']
     },
@@ -84,7 +86,7 @@ const ServicesPage = () => {
       id: 6,
       name: 'Seasonal Cleanup',
       description: 'Fall yard cleanup services and seasonal maintenance',
-      price: 'Starting at $100',
+      price: 'Starting at $175',
       image: '🍂',
       features: ['Leaf removal', 'Debris cleanup', 'Mulching', 'Plant preparation']
     },
@@ -92,7 +94,7 @@ const ServicesPage = () => {
       id: 7,
       name: 'Leaf Removal & Haul Away',
       description: 'Dedicated crews with high-capacity vacuums for spotless fall cleanups.',
-      price: 'Seasonal packages from $179',
+      price: 'Seasonal packages from $249',
       image: '🍁',
       features: [
         'Curb-to-bed clearing and detailing',
@@ -106,7 +108,7 @@ const ServicesPage = () => {
       id: 8,
       name: 'Snow Removal',
       description: 'Professional winter snow removal and ice management',
-      price: 'Seasonal packages from $500',
+      price: 'Seasonal packages from $700',
       image: '❄️',
       features: ['Snow plowing', 'Driveway clearing', 'Walkway maintenance', 'Salt application', '24/7 emergency service']
     },
@@ -114,7 +116,7 @@ const ServicesPage = () => {
       id: 9,
       name: 'Lawn Fertilization',
       description: 'Professional lawn care and nutrient programs',
-      price: 'Starting at $95',
+      price: 'Starting at $150',
       image: '🌾',
       features: ['Soil testing', 'Custom fertilizer programs', 'Weed control', 'Disease prevention']
     },
@@ -122,7 +124,7 @@ const ServicesPage = () => {
       id: 10,
       name: 'Outdoor Lighting',
       description: 'Landscape and security lighting installation',
-      price: 'Starting at $400',
+      price: 'Starting at $650',
       image: '💡',
       features: ['LED installations', 'Security lighting', 'Pathway lights', 'Accent lighting']
     },
@@ -130,7 +132,7 @@ const ServicesPage = () => {
       id: 11,
       name: 'Mulching Services',
       description: 'Premium mulch installation and maintenance',
-      price: 'Starting at $120',
+      price: 'Starting at $195',
       image: '🪵',
       features: ['Premium mulch selection', 'Bed preparation', 'Weed barrier installation', 'Annual refresh']
     },
@@ -138,7 +140,7 @@ const ServicesPage = () => {
       id: 12,
       name: 'Pressure Washing',
       description: 'Professional cleaning for driveways and patios',
-      price: 'Starting at $180',
+      price: 'Starting at $275',
       image: '💦',
       features: ['Driveway cleaning', 'Patio restoration', 'Walkway maintenance', 'Surface sealing']
     }
@@ -226,10 +228,58 @@ const ServicesPage = () => {
               <p>From basic lawn maintenance to complete landscape transformations, we offer comprehensive services to meet all your outdoor needs.</p>
             </div>
           </div>
-          
+
+          {/* Landscape Construction Highlight */}
+          <div style={{
+            background: 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)',
+            borderRadius: '16px',
+            padding: '36px 40px',
+            marginBottom: '40px',
+            border: '1px solid rgba(16,185,129,0.25)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '24px'
+          }}>
+            <div style={{ flex: '1 1 380px' }}>
+              <p style={{ color: '#059669', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', fontSize: '0.8rem', marginBottom: '10px' }}>
+                Our Specialty
+              </p>
+              <h2 style={{ color: '#064e3b', fontSize: '1.6rem', fontWeight: 800, marginBottom: '10px', lineHeight: 1.3 }}>
+                Landscape Construction &amp; Hardscaping
+              </h2>
+              <p style={{ color: '#374151', lineHeight: 1.6, marginBottom: 0 }}>
+                Custom patios, retaining walls, walkways, and outdoor living spaces — engineered for Connecticut's four-season climate and built to last 25+ years.
+              </p>
+            </div>
+            <Link to="/hardscaping" style={{
+              background: '#059669', color: 'white', padding: '14px 28px',
+              borderRadius: '8px', textDecoration: 'none', fontWeight: 700,
+              fontSize: '1rem', whiteSpace: 'nowrap', flexShrink: 0,
+              boxShadow: '0 4px 14px rgba(5,150,105,0.3)'
+            }}>
+              View Hardscaping →
+            </Link>
+          </div>
+
           <div className="services-grid">
             {services.map(service => (
-              <div key={service.id} className="service-card">
+              <div key={service.id} className="service-card" style={service.specialty ? {
+                border: '2px solid #10b981',
+                boxShadow: '0 4px 20px rgba(16, 185, 129, 0.12)',
+                position: 'relative'
+              } : {}}>
+                {service.specialty && (
+                  <div style={{
+                    position: 'absolute', top: '-12px', right: '16px',
+                    background: '#10b981', color: 'white', padding: '5px 14px',
+                    borderRadius: '20px', fontSize: '12px', fontWeight: 700,
+                    letterSpacing: '0.03em', boxShadow: '0 4px 10px rgba(16,185,129,0.3)'
+                  }}>
+                    OUR SPECIALTY
+                  </div>
+                )}
                 <div className="service-header">
                   <div className="service-icon">{service.image}</div>
                   <div className="service-title-price">
@@ -246,11 +296,11 @@ const ServicesPage = () => {
                     ))}
                   </ul>
                 </div>
-                <Link 
+                <Link
                   to={service.link || '/contact'}
                   className="service-cta"
                 >
-                  {service.link ? 'View Service' : 'Get Quote'}
+                  {service.link ? 'View Service Details' : 'Get Quote'}
                 </Link>
               </div>
             ))}

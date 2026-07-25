@@ -114,7 +114,7 @@ const LawnCareNewBritainPage = () => {
         {/* New Britain Hero Section */}
         <div className="lawn-hero">
           <div className="lawn-hero-video">
-            <video autoPlay muted loop playsInline preload="auto" poster="/garden-landscape-design-hartford-county.jpeg">
+            <video autoPlay muted loop playsInline preload="auto" poster="/garden-design-gd-landscaping.jpeg">
               <source src="/AdobeStock_657294798.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>

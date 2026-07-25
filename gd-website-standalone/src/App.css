@@ -10,10 +10,17 @@
   box-sizing: border-box;
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 .website {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   line-height: 1.6;
   color: #333;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 /* Fall Cleanup Banner */
@@ -125,16 +132,16 @@
 
 /* Navigation */
 .website-nav {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.12);
   color: #1f2937;
   padding: 0.4rem 0;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   transition: transform 0.3s ease, all 0.3s ease;
 }
 
@@ -177,6 +184,7 @@ body.map-modal-open .website-nav {
   align-items: center;
   text-decoration: none;
   transition: transform 0.3s ease;
+  flex-shrink: 0;
 }
 
 .logo:hover {
@@ -191,7 +199,7 @@ body.map-modal-open .website-nav {
 }
 
 .logo h2 {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #1f2937;
   background: linear-gradient(135deg, #10b981, #059669);
@@ -199,22 +207,46 @@ body.map-modal-open .website-nav {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin: 0;
-  margin-left: 1rem;
+  margin-left: 0.75rem;
   letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
 .nav-menu {
   display: flex;
   list-style: none;
-  gap: 0.75rem;
+  gap: 0.35rem;
   margin: 0;
   padding: 0;
+  flex-wrap: nowrap;
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1024px) {
   .mobile-menu-toggle {
     display: none !important;
   }
+  .nav-mobile-actions {
+    display: none !important;
+  }
+}
+
+.nav-mobile-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-mobile-actions .login-link,
+.nav-mobile-actions .account-link {
+  padding: 0.4rem 0.7rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.nav-mobile-actions .login-link:hover,
+.nav-mobile-actions .account-link:hover {
+  background: rgba(16, 185, 129, 0.18);
 }
 
 
@@ -376,9 +408,9 @@ body.map-modal-open .website-nav {
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   .nav-menu {
-    display: none; /* Hide by default on mobile */
+    display: none; /* Hide by default on mobile & tablet */
   }
 }
 
@@ -386,9 +418,9 @@ body.map-modal-open .website-nav {
   background: none;
   border: none;
   color: #4b5563;
-  font-size: 1rem;
+  font-size: 0.88rem;
   font-weight: 500;
-  padding: 0.5rem 1rem;
+  padding: 0.45rem 0.7rem;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -396,8 +428,9 @@ body.map-modal-open .website-nav {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.35rem;
   overflow: hidden;
+  white-space: nowrap;
 }
 
 .nav-menu a::before {
@@ -441,10 +474,11 @@ body.map-modal-open .website-nav {
 .login-link {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  border-radius: 12px;
+  gap: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 10px;
   font-weight: 500;
+  font-size: 0.88rem;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -452,6 +486,7 @@ body.map-modal-open .website-nav {
   border: none;
   color: #4b5563;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .user-avatar-small {
@@ -539,7 +574,7 @@ body.map-modal-open .website-nav {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.15) 100%);
+  background: linear-gradient(135deg, rgba(15, 26, 15, 0.55) 0%, rgba(5, 10, 5, 0.35) 100%);
   z-index: -1;
 }
 
@@ -3261,7 +3296,7 @@ body.map-modal-open .homepage-input-badge {
   transform: rotate(45deg) translate(-5px, -6px);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   /* Show mobile menu toggle and overlay */
   .mobile-menu-toggle {
     display: flex !important;
@@ -6157,15 +6192,16 @@ body.map-modal-open .homepage-input-badge {
 /* Featured Services Section - HomePage */
 .featured-services-section {
   padding: 80px 20px;
-  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  background: #ffffff;
 }
 
 .featured-services-section h2 {
   font-size: 40px;
-  color: #1a472a;
+  color: #1a2e1a;
   text-align: center;
   margin-bottom: 12px;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .featured-services-section .section-subtitle {
@@ -6177,21 +6213,21 @@ body.map-modal-open .homepage-input-badge {
 
 .featured-services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .featured-service-card {
   background: white;
-  border-radius: 16px;
-  padding: 32px 24px;
+  border-radius: 12px;
+  padding: 28px 22px;
   text-decoration: none;
   color: inherit;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  border: 3px solid transparent;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+  border: 1px solid #e5e7eb;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -6200,31 +6236,34 @@ body.map-modal-open .homepage-input-badge {
 }
 
 .featured-service-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(34, 197, 94, 0.2);
-  border-color: #22c55e;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(16, 185, 129, 0.14);
+  border-color: #10b981;
 }
 
 .featured-service-card.featured {
-  border-color: #f97316;
-  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+  border: 2px solid #10b981;
+  background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.12);
 }
 
 .featured-service-card.featured:hover {
-  border-color: #ea580c;
-  box-shadow: 0 12px 30px rgba(249, 115, 22, 0.25);
+  border-color: #059669;
+  box-shadow: 0 12px 32px rgba(16, 185, 129, 0.2);
 }
 
 .service-card-badge {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  background: #f97316;
+  top: -12px;
+  right: 16px;
+  background: #10b981;
   color: white;
-  padding: 6px 14px;
+  padding: 5px 14px;
   border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
 }
 
 .service-card-icon {
@@ -7408,7 +7447,7 @@ body.map-modal-open .homepage-input-badge {
    ============================================= */
 
 .homepage-why {
-  background: #fff;
+  background: #f9fafb;
   padding: 4rem 0;
 }
 
@@ -7418,17 +7457,19 @@ body.map-modal-open .homepage-input-badge {
 }
 
 .homepage-why-header h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1a2e1a;
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #111827;
   margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
 }
 
 .homepage-why-header p {
   color: #6b7280;
-  font-size: 1rem;
-  max-width: 580px;
+  font-size: 1.05rem;
+  max-width: 620px;
   margin: 0 auto;
+  line-height: 1.6;
 }
 
 .homepage-why-grid {
@@ -7442,20 +7483,21 @@ body.map-modal-open .homepage-input-badge {
   display: flex;
   gap: 0.9rem;
   align-items: flex-start;
-  background: #f8fafc;
+  background: white;
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   padding: 1.25rem;
-  transition: box-shadow 0.2s, transform 0.15s;
+  transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
 }
 
 .homepage-why-item:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.1);
   transform: translateY(-2px);
+  border-color: rgba(16, 185, 129, 0.35);
 }
 
 .homepage-why-check {
-  background: #22c55e;
+  background: #10b981;
   color: #fff;
   border-radius: 50%;
   width: 24px;
@@ -7471,16 +7513,16 @@ body.map-modal-open .homepage-input-badge {
 
 .homepage-why-item strong {
   display: block;
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   font-weight: 700;
-  color: #1a2e1a;
+  color: #111827;
   margin-bottom: 0.3rem;
 }
 
 .homepage-why-item span {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: #6b7280;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 .homepage-why-images {

@@ -358,6 +358,21 @@ const HomePage = () => {
           <div className="hero-overlay"></div>
           <div className="hero-content">
             <div>
+              <span style={{
+                display: 'inline-block',
+                background: 'rgba(16, 185, 129, 0.95)',
+                color: 'white',
+                fontWeight: 700,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                fontSize: '0.75rem',
+                padding: '6px 16px',
+                borderRadius: '20px',
+                marginBottom: '16px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+              }}>
+                Landscape Construction &amp; Design
+              </span>
               <h1>Professional Landscaping & Snow Removal Across Central Connecticut</h1>
               <p>G&D Landscaping serves homeowners and businesses across Hartford, Middlesex, New Haven, and Tolland Counties — lawn care, spring & fall cleanups, bush trimming, fertilization, and 24/7 snow removal. Covering Berlin, New Britain, Bristol, Cromwell, Middletown, West Hartford, Newington, Rocky Hill, and 65+ Connecticut towns. Firefighter-owned. Fully insured. Licensed Home Improvement Contractor — HIC.0704814.</p>
 
@@ -433,26 +448,20 @@ const HomePage = () => {
             </div>
 
             <div className="homepage-why-images">
-              <OptimizedImage
+              <img
                 src="/landscape-design-gd-landscaping.jpeg"
                 alt="Professional landscape design and construction by G&D Landscaping in Berlin CT"
-                width={300}
-                height={200}
-                style={{ width: '300px', height: 'auto', borderRadius: '8px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
+                style={{ width: '300px', height: '200px', objectFit: 'cover', borderRadius: '8px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
               />
-              <OptimizedImage
+              <img
                 src="/garden-design-gd-landscaping.jpeg"
                 alt="Custom garden design and planting services by G&D Landscaping in Hartford County CT"
-                width={300}
-                height={200}
-                style={{ width: '300px', height: 'auto', borderRadius: '8px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
+                style={{ width: '300px', height: '200px', objectFit: 'cover', borderRadius: '8px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
               />
-              <OptimizedImage
-                src="/residential-lawn-service-berlin-ct.jpeg"
-                alt="Residential lawn mowing and care services in Berlin Connecticut - professional landscaping"
-                width={300}
-                height={200}
-                style={{ width: '300px', height: 'auto', borderRadius: '8px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
+              <img
+                src="/snow-removal-trucks-gd-landscaping.jpeg"
+                alt="G&D Landscaping snow removal trucks with plows during Connecticut winter storm"
+                style={{ width: '300px', height: '200px', objectFit: 'cover', objectPosition: 'center 18%', borderRadius: '8px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
               />
             </div>
           </div>
@@ -465,19 +474,19 @@ const HomePage = () => {
             <p className="section-subtitle">Professional year-round landscaping solutions for Connecticut properties</p>
 
             <div className="featured-services-grid">
+              <Link to="/hardscaping" className="featured-service-card featured">
+                <div className="service-card-badge">🪨 Our Specialty</div>
+                <div className="service-card-icon">🏗️</div>
+                <h3>Hardscaping & Outdoor Living</h3>
+                <p>Patios, retaining walls, walkways & fire features built to last</p>
+                <span className="service-card-arrow">See All Hardscaping →</span>
+              </Link>
+
               <Link to="/services" className="featured-service-card">
                 <div className="service-card-icon">🌱</div>
                 <h3>All Landscaping Services</h3>
                 <p>Lawn care, design, hardscaping & more</p>
                 <span className="service-card-arrow">View All Services →</span>
-              </Link>
-
-              <Link to="/leaf-removal" className="featured-service-card featured">
-                <div className="service-card-badge">🍂 Seasonal</div>
-                <div className="service-card-icon">🍁</div>
-                <h3>Fall Leaf Removal</h3>
-                <p>Professional cleanup & haul-away service</p>
-                <span className="service-card-arrow">Learn More →</span>
               </Link>
 
               <Link to="/snow-removal" className="featured-service-card">

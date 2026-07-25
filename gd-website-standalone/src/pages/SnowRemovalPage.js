@@ -44,7 +44,7 @@ const SnowRemovalPage = () => {
     {
       id: 1,
       name: 'Residential Basic',
-      price: 'Starting at $500/season',
+      price: 'Starting at $300/month',
       description: 'Perfect for small to medium residential properties',
       features: [
         'Driveway snow plowing (up to 2 cars)',
@@ -57,7 +57,7 @@ const SnowRemovalPage = () => {
     {
       id: 2,
       name: 'Residential Premium',
-      price: 'Starting at $1000/season',
+      price: 'Starting at $500/month',
       description: 'Comprehensive snow removal for larger homes',
       features: [
         'Full driveway and parking area',
@@ -129,7 +129,7 @@ const SnowRemovalPage = () => {
     "image": [
       {
         "@type": "ImageObject",
-        "url": "https://www.gdlandscapingllc.com/images/G&D_Landscaping_Snow_Removal.JPG",
+        "url": "https://www.gdlandscapingllc.com/snow-removal-trucks-gd-landscaping.jpeg",
         "description": "G&D Landscaping professional snow plow truck clearing driveway during winter storm in Connecticut",
         "width": 1920,
         "height": 1080
@@ -153,7 +153,7 @@ const SnowRemovalPage = () => {
       "@type": "LocalBusiness",
       "name": "G&D Landscaping",
       "logo": "https://www.gdlandscapingllc.com/GD.png",
-      "image": "https://www.gdlandscapingllc.com/images/G&D_Landscaping_Snow_Removal.JPG",
+      "image": "https://www.gdlandscapingllc.com/snow-removal-trucks-gd-landscaping.jpeg",
       "telephone": "(860) 526-7583",
       "address": {
         "@type": "PostalAddress",
@@ -186,14 +186,14 @@ const SnowRemovalPage = () => {
       <div className="snow-removal-section">
         {/* Hero Section with Real Photo */}
         <div className="snow-hero" style={{
-          backgroundImage: 'linear-gradient(rgba(30, 58, 138, 0.7), rgba(59, 130, 246, 0.7)), url(/images/G&D_Landscaping_Snow_Removal.JPG)',
+          backgroundImage: 'linear-gradient(rgba(30, 58, 138, 0.55), rgba(59, 130, 246, 0.55)), url(/snow-removal-trucks-gd-landscaping.jpeg)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundPosition: 'center 20%',
           backgroundAttachment: 'fixed'
         }}>
           {/* SEO Image */}
           <img
-            src="/images/G&D_Landscaping_Snow_Removal.JPG"
+            src="/snow-removal-trucks-gd-landscaping.jpeg"
             alt="G&D Landscaping professional snow plow truck clearing driveway during winter storm in Connecticut"
             style={{display: 'none'}}
             width="1920"
@@ -438,7 +438,7 @@ const SnowRemovalPage = () => {
               <div className="gallery-item-featured">
                 <div className="gallery-image-wrapper">
                   <img
-                    src="/images/G&D_Landscaping_Snow_Removal.JPG"
+                    src="/snow-removal-trucks-gd-landscaping.jpeg"
                     alt="G&D Landscaping professional snow plow truck clearing residential driveway in Connecticut winter"
                     loading="lazy"
                     width="800"

@@ -35,23 +35,23 @@ const PortfolioPage = () => {
     },
     {
       id: 6,
-      title: 'Commercial Property Care',
-      description: 'Professional landscaping for commercial properties',
-      image: '/commercial-property-landscaping-connecticut.jpeg',
-      category: 'Commercial'
+      title: 'Custom Landscape Construction',
+      description: 'Professional landscape design and construction across Central Connecticut',
+      image: '/landscape-design-gd-landscaping.jpeg',
+      category: 'Landscape Design'
     },
     {
       id: 7,
-      title: 'Residential Lawn Service',
-      description: 'Premium lawn care and maintenance services',
-      image: '/residential-lawn-service-berlin-ct.jpeg',
-      category: 'Lawn Care'
+      title: 'Snow Removal Fleet',
+      description: 'Professional snow removal and plowing across Central Connecticut',
+      image: '/snow-removal-trucks-gd-landscaping.jpeg',
+      category: 'Snow Removal'
     },
     {
       id: 8,
       title: 'Garden & Landscape Design',
       description: 'Custom landscape design and installation',
-      image: '/garden-landscape-design-hartford-county.jpeg',
+      image: '/garden-design-gd-landscaping.jpeg',
       category: 'Landscape Design'
     }
   ];
